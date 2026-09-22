@@ -35,6 +35,10 @@ function render(){
   const lt=tasks.filter(t=>t.category==="learning");document.querySelector("#learningDoneCount").textContent=lt.filter(t=>progress[t.id]).length;document.querySelector("#learningTotal").textContent="/"+lt.length;
   const mt=tasks.filter(t=>t.month===activeMonth), md=mt.filter(t=>progress[t.id]).length, mp=mt.length?Math.round(md/mt.length*100):0;
   document.querySelector("#activeMonthTitle").textContent=activeMonth;document.querySelector("#monthPct").textContent=mp+"%";document.querySelector("#monthCount").textContent=md+"/"+mt.length+" 完成";
+  const next=mt.filter(t=>!progress[t.id]).slice(0,3);
+  document.querySelector("#nextActions").innerHTML=next.length
+    ? next.map((t,i)=>'<div class="next-action category-'+t.category+'"><span class="next-index">0'+(i+1)+'</span><div><strong>'+t.title+'</strong><small>'+streamLabels[t.stream]+' · '+t.outcome+'</small></div></div>').join("")
+    : '<div class="next-empty">本月任务已全部完成 ✓</div>';
   document.querySelector("#monthPicker").innerHTML=months.map(m=>'<button class="'+(m===activeMonth?'active':'')+'" data-month="'+m+'">'+m.slice(2)+'</button>').join("");
   document.querySelectorAll("#monthPicker button").forEach(b=>b.onclick=()=>{activeMonth=b.dataset.month;view="month";render()});
   document.querySelectorAll("#viewTabs button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
@@ -42,7 +46,7 @@ function render(){
   const vm=months.filter(m=>list.some(t=>t.month===m));
   document.querySelector("#taskGroups").innerHTML=vm.map(m=>{
     const a=list.filter(t=>t.month===m), d=a.filter(t=>progress[t.id]).length, p=a.length?Math.round(d/a.length*100):0;
-    return '<section class="task-month"><div class="task-month-head"><div><strong>'+m+'</strong><span>'+d+'/'+a.length+'</span></div><div class="mini-line"><i style="width:'+p+'%"></i></div></div><div>'+a.map(t=>'<label class="task-item '+(progress[t.id]?'done':'')+'"><input type="checkbox" data-id="'+t.id+'" '+(progress[t.id]?'checked':'')+'><span class="checkmark">'+(progress[t.id]?'✓':'')+'</span><span class="task-copy"><span class="task-tags"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+'</span><strong>'+t.title+'</strong><span>'+t.detail+'</span><small>完成标准：'+t.outcome+'</small></span>'+(t.url?'<a href="'+t.url+'" target="_blank" rel="noreferrer">课程 ↗</a>':'')+'</label>').join("")+'</div></section>'
+    return '<section class="task-month"><div class="task-month-head"><div><strong>'+m+'</strong><span>'+d+'/'+a.length+'</span></div><div class="mini-line"><i style="width:'+p+'%"></i></div></div><div>'+a.map(t=>'<label class="task-item category-'+t.category+' '+(progress[t.id]?'done':'')+'"><input type="checkbox" data-id="'+t.id+'" '+(progress[t.id]?'checked':'')+'><span class="checkmark">'+(progress[t.id]?'✓':'')+'</span><span class="task-copy"><span class="task-tags"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+'</span><strong>'+t.title+'</strong><span>'+t.detail+'</span><small>完成标准：'+t.outcome+'</small></span>'+(t.url?'<a href="'+t.url+'" target="_blank" rel="noreferrer">课程 ↗</a>':'')+'</label>').join("")+'</div></section>'
   }).join("");
   document.querySelectorAll('.task-item input').forEach(el=>el.onchange=()=>toggle(el.dataset.id));
   document.querySelector("#paperGrid").innerHTML=papers.map(p=>'<article><div class="paper-code">'+p.code+'</div><div><h3>'+p.title+'</h3><p>'+p.desc+'</p></div><div class="paper-foot"><span>目标投稿 '+p.due+'</span><strong>'+pct(p.stream)+'%</strong></div><div class="progress-line thin"><i style="width:'+pct(p.stream)+'%"></i></div></article>').join("");
