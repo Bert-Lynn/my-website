@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>北航博士 AI 科研成长路线图</title>
+  <meta name="description" content="博士一年 AI 转向计划：课程、科研、论文投稿、Demo 与实习进度管理。" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="keywords" content="北航博士, AI学习路线, 人工智能科研, 机器学习, 计算机视觉, 运筹优化, 复杂系统, 博士科研规划" />
+  <meta name="theme-color" content="#f7f9fc" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="dash">
+    <header class="dash-topbar">
+      <div>
+        <span class="eyebrow">BUAA · PhD Year 1</span>
+        <h1>AI 研究与成长控制台</h1>
+      </div>
+      <div class="topbar-right">
+        <span>2026.09 至 2027.09</span>
+        <button id="resetBtn">重置</button>
+      </div>
+    </header>
+
+    <section class="summary-grid">
+      <article class="summary-primary">
+        <span class="eyebrow">年度总进度</span>
+        <div class="big-progress"><strong id="overallPct">0</strong><span>%</span></div>
+        <div class="progress-line"><i id="overallBar"></i></div>
+        <p id="overallCount">0 / 0 项已完成</p>
+      </article>
+      <article><span>论文投稿</span><strong><span id="paperSubmitCount">0</span><small>/3</small></strong><p>A、B、C 三条新增成果线</p></article>
+      <article><span>成熟 Demo</span><strong><span id="demoDoneCount">0</span><small>/2</small></strong><p>AirDemandLab 与 VisionLab</p></article>
+      <article><span>课程与基础</span><strong><span id="learningDoneCount">0</span><small id="learningTotal">/0</small></strong><p>只学对当前科研有用的内容</p></article>
+    </section>
+
+    <section class="month-focus">
+      <div class="month-focus-head">
+        <div>
+          <span class="eyebrow">当前执行窗口</span>
+          <h2 id="activeMonthTitle">2026.09</h2>
+          <p>优先完成这里，再往后推进。</p>
+        </div>
+        <div class="month-score"><strong id="monthPct">0%</strong><span id="monthCount">0/0 完成</span></div>
+      </div>
+      <div class="month-picker" id="monthPicker"></div>
+    </section>
+
+    <section class="workspace">
+      <nav class="view-tabs" id="viewTabs">
+        <button data-view="month" class="active">本月</button>
+        <button data-view="year">全年</button>
+        <button data-view="research">科研</button>
+        <button data-view="learning">课程</button>
+        <button data-view="demo">Demo</button>
+      </nav>
+      <div class="task-groups" id="taskGroups"></div>
+    </section>
+
+    <section class="research-board">
+      <div class="section-title"><span class="eyebrow">科研成果线</span><h2>一年内三篇新增投稿</h2></div>
+      <div class="paper-grid" id="paperGrid"></div>
+    </section>
+
+    <section class="split-board">
+      <div class="demo-board">
+        <div class="section-title"><span class="eyebrow">技术作品</span><h2>两个成熟 Demo</h2></div>
+        <div id="demoList"></div>
+      </div>
+      <div class="course-board">
+        <div class="section-title"><span class="eyebrow">课程入口</span><h2>只保留主课</h2></div>
+        <div class="course-list" id="courseList"></div>
+      </div>
+    </section>
+
+    <footer class="dash-footer">
+      <strong>执行规则</strong>
+      <p>每个月必须留下可检查的代码、实验、论文内容或 Demo 版本。课程不是成果，跑通代码也不是成果。</p>
+    </footer>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
