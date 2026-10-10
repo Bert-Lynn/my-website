@@ -476,7 +476,7 @@ function bar(percent){return '<div class="progress-line"><i style="width:'+perce
 function taskMarkup(t){
   const carried=t.month<activeMonth && !progress[t.id];
   const timing=(t.originalMonth!==t.month?'原计划 '+t.originalMonth+' → ':'')+'计划 '+t.month;
-  return '<article id="task-'+t.id+'" class="task-item category-'+t.category+' '+(progress[t.id]?'done':'')+'"><label class="task-check"><input id="check-'+t.id+'" type="checkbox" data-id="'+t.id+'" aria-label="完成：'+t.title+'" '+(progress[t.id]?'checked':'')+'></label><div class="task-copy"><label class="task-title" for="check-'+t.id+'">'+t.title+'</label><p>'+t.detail+'</p><small>完成标准 · '+t.outcome+'</small><div class="task-tags"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+(carried?'<i class="carry-tag">顺延待办</i>':'')+'</div><small class="task-timing">'+timing+'</small></div>'+(t.url?'<a href="'+t.url+'" target="_blank" rel="noreferrer" aria-label="打开'+t.title+'课程">课程 ↗</a>':'')+'</article>';
+  return '<article id="task-'+t.id+'" class="task-item category-'+t.category+' '+(progress[t.id]?'done':'')+'"><label class="task-check"><input id="check-'+t.id+'" type="checkbox" data-id="'+t.id+'" aria-label="完成：'+t.title+'" '+(progress[t.id]?'checked':'')+'></label><div class="task-copy"><label class="task-title" for="check-'+t.id+'">'+t.title+'</label><p>'+t.detail+'</p><small>完成标准 · '+t.outcome+'</small><div class="task-tags"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+(carried?'<i class="carry-tag">顺延待办</i>':'')+'</div><small class="task-timing">'+timing+'</small></div>'+(t.url?'<a href="'+t.url+'" target="_blank" rel="noreferrer" aria-label="打开'+t.title+'课程">课程 →</a>':'')+'</article>';
 }
 function taskGroup(title,a){
   const stats=tally(a),shown=pendingOnly?a.filter(t=>!progress[t.id]):a;
@@ -527,7 +527,7 @@ function render(){
   document.querySelector('#backlogCount').innerHTML=backlog.length+'<small>项</small>';
   document.querySelector('#backlogNote').textContent=backlog.length?'来自 '+backlog[0].month+' 起的未完成任务，已保留在清单中。先补齐，再推进。':'所选月之前没有未完成任务。按自己的节奏，推进眼前的一步。';
   const next=[...backlog,...mt.filter(t=>!progress[t.id])].slice(0,3);
-  document.querySelector('#nextActions').innerHTML=next.length?next.map((t,i)=>'<button class="next-action" data-next="'+t.id+'"><span class="next-index">0'+(i+1)+'</span><span><strong>'+t.title+'</strong><small>'+t.outcome+'</small><em>'+(t.month<activeMonth?'顺延自 '+t.month:streamLabels[t.stream])+' · 查看任务 ↗</em></span></button>').join(''):'<div class="next-empty">所选月待办已清空 ✓<br>可以回顾成果，或选择下个月。</div>';
+  document.querySelector('#nextActions').innerHTML=next.length?next.map((t,i)=>'<button class="next-action" data-next="'+t.id+'"><span class="next-index">0'+(i+1)+'</span><span><strong>'+t.title+'</strong><small>'+t.outcome+'</small><em>'+(t.month<activeMonth?'顺延自 '+t.month:streamLabels[t.stream])+' · 查看任务 →</em></span></button>').join(''):'<div class="next-empty">所选月待办已清空 ✓<br>可以回顾成果，或选择下个月。</div>';
   document.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>jumpToTask(b.dataset.next));
   document.querySelector('#monthPicker').innerHTML=months.map(m=>'<button class="'+(m===activeMonth?'active':'')+'" aria-pressed="'+(m===activeMonth)+'" data-month="'+m+'">'+m.slice(2)+'</button>').join('');
   document.querySelectorAll('#monthPicker button').forEach(b=>b.onclick=()=>{activeMonth=b.dataset.month;view='month';render();document.querySelector('[data-month="'+activeMonth+'"]').focus({preventScroll:true})});
@@ -551,7 +551,7 @@ document.querySelectorAll('#viewTabs button').forEach(b=>b.onclick=()=>{view=b.d
 document.querySelector('#todayBtn').onclick=()=>{activeMonth=currentMonth();view='month';render()};
 document.querySelector('#pendingOnly').onchange=e=>{pendingOnly=e.target.checked;render()};
 document.querySelector('#resetBtn').onclick=()=>{if(confirm('确定清空全部 41 项任务的勾选进度吗？此操作无法撤销。')){progress={};save();render();document.querySelector('#announcer').textContent='全部进度已重置。'}};
-document.querySelector('#courseList').innerHTML=courses.map(c=>'<a href="'+c[2]+'" target="_blank" rel="noreferrer"><span>'+c[0]+'</span><strong>'+c[1]+'</strong><i>↗</i></a>').join('');
+document.querySelector('#courseList').innerHTML=courses.map(c=>'<a href="'+c[2]+'" target="_blank" rel="noreferrer"><span>'+c[0]+'</span><strong>'+c[1]+'</strong><i>→</i></a>').join('');
 render();
 window.addEventListener('focus',refreshMonth);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshMonth()});
