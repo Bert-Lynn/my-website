@@ -1,5 +1,7 @@
 const assert = require('node:assert/strict');
-const { app } = require('./helpers/app-harness.cjs');
+const { app: baseApp } = require('./helpers/app-harness.cjs');
+// Career-specific regressions open the auxiliary development route explicitly.
+const app = (options = {}) => baseApp({ hash: '#today', ...options });
 const agentTrack = require('../data/career-curriculum.json').tracks.find(track => track.id === 'agent_engineering');
 const plain = value => JSON.parse(JSON.stringify(value));
 const sameNode = (actual, expected, message = 'same draft DOM node is retained') => assert(actual === expected, message);

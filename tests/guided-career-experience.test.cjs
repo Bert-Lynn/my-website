@@ -2,7 +2,9 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { app } = require('./helpers/app-harness.cjs');
+const { app: baseApp } = require('./helpers/app-harness.cjs');
+// Career-specific regressions open the auxiliary development route explicitly.
+const app = (options = {}) => baseApp({ hash: '#today', ...options });
 const catalog = require('../data/learning-modules.json');
 const curriculum = require('../data/career-curriculum.json');
 const project = require('../data/project-outline.json');
@@ -47,7 +49,7 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
   includes(h.query('.next-action-panel'), first.output, 'homepage says what the user will have made');
   includes(h.query('.next-action-panel'), '30', 'small first-session time estimate is visible');
   includes(h.query('.next-action-panel'), '项目目录', 'home says where actual work belongs');
-  includes(h.query('.next-action-panel'), '学习路线', 'home says where to continue next time');
+  includes(h.query('.next-action-panel'), '课程学习', 'development page says where to continue this optional work');
   includes(h.query('.flow-goal'), catalog.homeIntro.careerGoal, 'career why is visible next to the action');
   assert.equal(h.all('#careerToday [data-unit-check]').length, 0, 'homepage is not a course checkbox catalogue');
   assert.equal(h.all('.module-flow [data-open-module]').length, 6);
@@ -151,6 +153,6 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
     h.destroy();
   }
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-  assert.match(html, /career-ui\.js\?v=20261010-journey2/, 'new interactive entry bypasses stale old UI');
+  assert.match(html, /career-ui\.js\?v=20261010-taskfirst1/, 'new interactive entry bypasses stale old UI');
   console.log('PASS guided career experience: career purpose, one precise first action, output/save/source guidance, 30-minute on-ramp without new state, truthful independent progress, guarded CTA, resume and terminal-state paths, and saved original directions.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

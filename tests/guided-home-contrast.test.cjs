@@ -19,7 +19,7 @@ assert.equal(declaration('.next-action-panel h2', 'color'), 'var(--ink)');
 assert.equal(declaration('.primary-button', 'background'), 'var(--ink)');
 assert.equal(declaration('.primary-button', 'color'), 'var(--surface)!important');
 assert(!rules('.next-action-cta .primary-button').some(rule => /background\s*:\s*(?:#fff|var\(--surface\))/.test(rule)));
-for (const asset of ['career.css', 'career-ui.js']) assert(html.includes('./' + asset + '?v=20261010-journey2'), asset + ' cache invalidated');
+for (const asset of ['career.css', 'career-ui.js']) assert(html.includes('./' + asset + '?v=20261010-taskfirst1'), asset + ' cache invalidated');
 assert(css.includes('html{scroll-padding-top:100px}'), 'desktop navigation leaves room for the sticky header');
 assert(css.includes('@media(max-width:760px){html{scroll-padding-top:128px}'), 'narrow navigation leaves room for two header rows');
 console.log('PASS guided-home contrast: independent light panel, explicit charcoal heading, dark primary action, and refreshed assets. Pixel verification remains a separate live-browser check.');
