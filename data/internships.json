@@ -12,7 +12,7 @@
   "disclaimer": "这是一份为2027年准备的岗位与证据地图，不是录用承诺或实时招聘保证。薪资按具体页面原始区间记录；未公开不等于无薪。历史岗位只作路线/薪资样本，不能计为当前可投。",
   "criticalCaveats": [
     "2027年去实习不等于2027届毕业生；低年级博士优先日常实习、项目实习、科研实习，先核对预计毕业日期。",
-    "400–600元/天有具体历史招聘依据，但本次未核实任何同时满足当前HC明确、用户届别明确合格、个人日薪确认的岗位。",
+    "本次尚未核实同时具备当前可投证据、公开400–600日薪区间、明确适用资格的岗位；官网可检索且未公开薪资的岗位仍列作待确认机会。",
     "公开标价不是实际到手；问清税前/税后、出勤计薪、博士档、餐住补贴是否另算、合同主体。",
     "多数相关实习要求每周4–5天、连续3–6个月。每周8小时是准备阶段学习预算，不能当作到岗安排；需先与导师协调。",
     "官网动态页面抓取不全时，保留官方链接和聚合正文来源，不伪装成官网已核实。",
@@ -125,7 +125,43 @@
               "supports": "岗位、薪资、刷新/截止日期、在校生/27届优先、出勤和技能",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "optimization-modeling"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "sql-data",
+              "ml-validation",
+              "reproducible-workflow",
+              "decision-evaluation",
+              "api-delivery",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "完整编码能力与数据结构基础，不能仅用一个脚本的验收替代。",
+              "该课程只覆盖小规模MIP/容量配置；岗位实际定价、库存、网络调度场景需针对团队补充。",
+              "机器学习常用算法的理论广度仍需按面试要求补齐。"
+            ],
+            "mappingNote": "选择JD允许的运筹方向对照；关系数据库和Linux是优先项，不把整套工程课程视为硬门槛。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [
+              "sql-data"
+            ],
+            "directCoverageNotes": {
+              "optimization-modeling": "对应业务建模、模型实现与运筹基础；只证明课程所选模型范围，不等于熟悉所有运筹算法。"
+            },
+            "nonSkillBlockers": [
+              "公开标价200–400元/天，仅触及目标下限。",
+              "27届优先；需确认毕业较晚的在校博士是否接收。",
+              "平台显示截止2027-01-23，当前HC需再次确认；5天/周、3个月。"
+            ],
+            "sourceUrls": [
+              "https://www.shixiseng.com/intern/inn_ow94fr9nvxye?pcm=pc_SearchList"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         },
         {
           "id": "jd_or_salary_history",
@@ -171,7 +207,41 @@
               "supports": "450–500/天、已结束、管理科学工程、3年项目要求",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "optimization-modeling"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "reproducible-workflow",
+              "api-delivery",
+              "software-testing",
+              "decision-evaluation",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "至少3年供应链最优化/启发式项目经验，课程不能替代。",
+              "线性/整数/非线性/动态规划的深入掌握，或遗传/模拟退火/粒子群/ALNS的实现与改进；课程仅覆盖其中基础子集。",
+              "物流或电信网络领域理解、复杂生产系统融合与高效算法工程。"
+            ],
+            "mappingNote": "仅把约束建模映射为直接部分；部署、测试和对照评估是辅助作品建议，不能替代资深项目经历。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [
+              "pytorch-training"
+            ],
+            "directCoverageNotes": {
+              "optimization-modeling": "覆盖变量、目标、约束、求解状态与小实例验证；不覆盖全部优化理论、启发式与工业规模调优。"
+            },
+            "nonSkillBlockers": [
+              "已结束的历史薪资样本。",
+              "5天/周、至少3个月。"
+            ],
+            "sourceUrls": [
+              "https://www.nowcoder.com/jobs/detail/394654"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": [
@@ -234,7 +304,42 @@
               "supports": "500–510/天、已结束、日常实习面向在校生、4天/3个月、技能",
               "accessNote": "搜索索引全文可读；直接打开不稳定"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "api-delivery"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "sql-data",
+              "reproducible-workflow",
+              "software-testing",
+              "optimization-modeling",
+              "ml-validation",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "计算机理论、后端工程和数据结构的系统基础。",
+              "生产级数据链路、高可用/高性能架构与分布式系统，课程本地API只是起点。",
+              "Redis/MongoDB、消息队列、搜索引擎等基础组件为JD优先项，当前课程未系统教授。"
+            ],
+            "mappingNote": "接口交付只对应后端实现的入门部分；数据质量和运筹项目是支持证据。该岗不是Agent专岗，不把Agent作为雇主硬性要求。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [
+              "optimization-modeling"
+            ],
+            "directCoverageNotes": {
+              "api-delivery": "对应后端实现与模块复用的基础能力；课程FastAPI演示不等于大规模算法架构经验。"
+            },
+            "nonSkillBlockers": [
+              "页面已结束；历史500–510元/天不代表2027仍有同岗。",
+              "日常实习面向在校生，但专业是否适配需确认；至少4天/周、3个月。"
+            ],
+            "sourceUrls": [
+              "https://www.nowcoder.com/jobs/detail/441854"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         },
         {
           "id": "bytedance_ecommerce_or",
@@ -286,7 +391,42 @@
               "supports": "正文、届别、收录日期；未提供薪资",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "optimization-modeling",
+              "pytorch-training"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "sql-data",
+              "statistics-metrics",
+              "ml-validation",
+              "decision-evaluation",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "即时配送/物流的网络规划、订单分配、合单、路径优化建模与实际项目。",
+              "统计推断与运筹结合的机制设计，当前容量分配项目不能覆盖全部业务。",
+              "JD要求熟练训练框架，课程小MLP仅是最低入门证据；需按实际团队模型补充。"
+            ],
+            "mappingNote": "PyTorch在全局路线虽为选修，这条JD明确要求框架能力，若以它为目标便需补学；具体岗位有届别限制。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [],
+            "directCoverageNotes": {
+              "optimization-modeling": "对应物流决策的建模基础，尚未教授大规模物流求解。",
+              "pytorch-training": "对应训练框架基础子能力，不能据一次MLP练习声称熟练。"
+            },
+            "nonSkillBlockers": [
+              "标题/正文明确2027届，毕业窗口2026-09至2027-08。",
+              "官网正文未取得，技能来自聚合转引；当前HC和薪资未确认。"
+            ],
+            "sourceUrls": [
+              "https://jobs.bytedance.com/campus/position/7597373332220741941/detail",
+              "https://jobs.ultraai.site/jobs/bytedance_campus/7597373332220741941"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": []
@@ -341,7 +481,45 @@
               "supports": "200–500/天、出勤、运筹/统计背景、时序预测技能",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "sql-data",
+              "time-forecast",
+              "pytorch-training"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "statistics-metrics",
+              "ml-validation",
+              "reproducible-workflow",
+              "software-testing",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "Transformer、Seq2Seq、N-BEATS、DeepAR属于JD优先项，基础时序/MLP课程并未完整覆盖。",
+              "大规模酒店/销量预测的业务特征与分布变化需另做团队化验证。",
+              "算法与代码能力需通过独立实现/调试进一步检验。"
+            ],
+            "mappingNote": "SQL与数据质量单元只映射其pandas清洗/特征部分；原JD未写SQL硬门槛。PyTorch为此岗位要求的“了解框架”，不是泛指所有岗位都必修。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [
+              "time-forecast"
+            ],
+            "directCoverageNotes": {
+              "sql-data": "对应数据处理与特征工作；SQL语法本身是本路线附加准备。",
+              "time-forecast": "直接对应时序预测、模型对照和case分析。",
+              "pytorch-training": "对应了解PyTorch/TensorFlow的基础训练闭环；进阶深度时序模型尚未覆盖。"
+            },
+            "nonSkillBlockers": [
+              "200–500元/天仅部分重合，当前HC及发布日期未知。",
+              "4天/周、4个月。"
+            ],
+            "sourceUrls": [
+              "https://mnowpick.nowcoder.com/m/detail/index?channel=newCompanyPage&jobId=311880&pageSource=5012"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         },
         {
           "id": "meituan_planning_eval",
@@ -385,7 +563,40 @@
               "supports": "2026-09-10更新、无法投递、日常项目实习、技能与低年级说明",
               "accessNote": "官方搜索索引全文可读；直接抓取超时"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "sql-data"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "api-delivery",
+              "software-testing",
+              "statistics-metrics",
+              "ml-validation",
+              "reproducible-workflow",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "真实无人车数据集、判别器口径与场景评测体系仍需业务学习。",
+              "若选择规划算法分支，需另补C++、搜索/优化、learning-based planning或控制经验；不能由SQL分支自动覆盖。",
+              "多车调度服务、现场运营工具与大规模工程的可靠性超出本地项目。"
+            ],
+            "mappingNote": "JD允许数据开发、全栈、后端或规划中的任一分支；这里选择最贴本路线的SQL+Python分支，不能把全部分支当作已满足。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [],
+            "directCoverageNotes": {
+              "sql-data": "对应JD明确列出的SQL+Python数据开发分支，Python完整工程能力仍需另验。"
+            },
+            "nonSkillBlockers": [
+              "2026-09-10更新的官网页显示当前无法投递。",
+              "长期实习且尽快入职优先；明确出勤数字未公开。"
+            ],
+            "sourceUrls": [
+              "https://zhaopin.meituan.com/web/position/detail?highlightType=campus&jobUnionId=4757787198"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": []
@@ -440,7 +651,43 @@
               "supports": "正式岗位名称、在校生/出勤、语言/项目门槛、Agent工程职责",
               "accessNote": "官方搜索索引全文可读；直接抓取超时"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "ai-code",
+              "api-delivery",
+              "agent-evaluation"
+            ],
+            "supportingSkillIds": [
+              "reproducible-workflow",
+              "software-testing",
+              "ml-validation",
+              "statistics-metrics",
+              "sql-data",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "企业级Agent Runtime/Workflow、记忆管理和框架可治理性；课程仅有受控工具循环。",
+              "分布式系统、稳定性、日志/Trace/指标的生产级可观测体系。",
+              "搜索/推荐/广告引擎的业务链路和真实系统工具接入。"
+            ],
+            "mappingNote": "JD明确重视真实动手项目、AI辅助编码/排障、工具接入与评测；三个直接单元对应这些部分。未把企业级基础设施要求缩减成聊天Demo。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [],
+            "directCoverageNotes": {
+              "ai-code": "对应主动用AI提升编码和排查效率，且必须有本人审查/调试证据。",
+              "api-delivery": "对应可运行工程项目及真实能力接口的基础。",
+              "agent-evaluation": "对应工具调用与任务成功率/失败分析；课程不覆盖完整企业Agent底座。"
+            },
+            "nonSkillBlockers": [
+              "官方页可检索、当前HC需确认；日薪未公开。",
+              "至少4天/周，6个月以上优先。"
+            ],
+            "sourceUrls": [
+              "https://job.xiaohongshu.com/campus/position/21231"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         },
         {
           "id": "xiaohongshu_growth_agent_history",
@@ -485,7 +732,41 @@
               "supports": "400–500/天、已结束、Agent后端、基本技能与出勤",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "ai-code",
+              "api-delivery"
+            ],
+            "supportingSkillIds": [
+              "agent-evaluation",
+              "software-testing",
+              "reproducible-workflow",
+              "ml-validation",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "后端语言、数据结构和算法基础的系统熟练度。",
+              "社区增长业务系统与真实Agent落地经验；课程原型不能当作企业实习成果。"
+            ],
+            "mappingNote": "JD直接要求AI辅助需求拆解/编码/调试和后端基础；Agent/LLM既有经验列为优先，故课程Agent安全评测放支持项。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [
+              "agent-evaluation"
+            ],
+            "directCoverageNotes": {
+              "ai-code": "对应AI工具辅助研发提效与调试。",
+              "api-delivery": "对应后端基础代码与模块交付的入门部分，不能替代完整后端知识。"
+            },
+            "nonSkillBlockers": [
+              "已结束的400–500元/天历史样本，不可套给当前引擎Agent岗位。",
+              "5天/周，至少3个月。"
+            ],
+            "sourceUrls": [
+              "https://www.nowcoder.com/jobs/detail/432965"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": [
@@ -572,7 +853,42 @@
               "supports": "已结束、2025届优先、正文320/天、技能与出勤",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "sql-data",
+              "statistics-metrics"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "ml-validation",
+              "time-forecast",
+              "optimization-modeling",
+              "decision-evaluation",
+              "reproducible-workflow",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "Spark大数据处理。",
+              "因果推断、价格弹性、Uplift与收益管理，简单需求回归或离线对照不等于因果建模。",
+              "深入机器学习/数据挖掘及供需匹配模型；强化学习是优先经验但当前路线未教。"
+            ],
+            "mappingNote": "直接对应取数与效果分析；预测/优化课程是迁移支持，不能把它们算成已掌握因果定价、强化学习或Spark。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [],
+            "directCoverageNotes": {
+              "sql-data": "对应明确SQL要求及数据分析基础，未覆盖Spark。",
+              "statistics-metrics": "对应策略效果分析与指标意识；只含A/B设计草案，未覆盖因果估计方法。"
+            },
+            "nonSkillBlockers": [
+              "2025届转正历史岗位，已结束。",
+              "正文320元/天低于目标；至少4天/周、3个月，最好半年。"
+            ],
+            "sourceUrls": [
+              "https://www.nowcoder.com/jobs/detail/311944"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": [
@@ -643,7 +959,44 @@
               "supports": "日期、日常实习、专业、技能、会员定价/uplift业务；未公开薪资",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "sql-data",
+              "statistics-metrics",
+              "pytorch-training"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "ml-validation",
+              "optimization-modeling",
+              "decision-evaluation",
+              "reproducible-workflow",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "深度学习、数据结构、算法与编码需要达到JD实际面试深度，MLP入门验收不足以全覆盖。",
+              "Uplift/因果推断/强化学习与会员定价、推荐、人群预估中的至少一条业务建模能力。",
+              "线上商业化目标及真实实验机制，课程模拟收益不能声称线上增收。"
+            ],
+            "mappingNote": "SQL和训练框架是该岗明示要求，PyTorch选修在投此岗时转为岗位驱动补课；运筹经验是优先项，不能用运筹优势免除其他基础要求。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [
+              "optimization-modeling"
+            ],
+            "directCoverageNotes": {
+              "sql-data": "对应SQL与深入分析数据。",
+              "statistics-metrics": "对应从业务目标定义问题与分析效果；不等同因果推断掌握。",
+              "pytorch-training": "对应PyTorch/TensorFlow基础框架能力，仅覆盖小模型训练的部分要求。"
+            },
+            "nonSkillBlockers": [
+              "官方日常实习页2026-07-21，当前HC需确认；薪资与出勤未公开。"
+            ],
+            "sourceUrls": [
+              "https://talent.baidu.com/jobs/detail/INTERN/e0c5d573-11b1-4ff5-a83e-c1d67776e057"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         },
         {
           "id": "baidu_agent_j104743",
@@ -689,7 +1042,50 @@
               "supports": "日期、日常实习、Python/评测/Agent技能、出勤偏好；未公开薪资",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "sql-data",
+              "statistics-metrics",
+              "ml-validation",
+              "reproducible-workflow",
+              "agent-evaluation"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "api-delivery",
+              "software-testing",
+              "pytorch-training",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "搜索召回/排序、Query理解、LTR、相关性建模；通用工具Agent不能覆盖搜索算法。",
+              "Embedding/向量检索、Rerank、SFT/LoRA、DPO等属于可选优先方向，当前路线未系统教授。",
+              "真实线上A/B分桶、回归监控与弱标注/银标一致性校验，需要针对岗位新增证据。",
+              "NumPy/sklearn基础之外的机器学习理论广度仍需按岗位检查。"
+            ],
+            "mappingNote": "直接映射样本处理、验证拆分、实验评估、可复现与工具Agent职责；PyTorch和Coding Agent经验在任职要求中为优先项，支持项不应全部显示为硬门槛。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [
+              "ai-code",
+              "pytorch-training"
+            ],
+            "directCoverageNotes": {
+              "sql-data": "对应pandas/NumPy数据清洗与样本构造，原JD没有把SQL单列为必备。",
+              "statistics-metrics": "对应A/B指标与实验意识，课程只有设计练习而无真实线上实验。",
+              "ml-validation": "对应训练验证拆分、误差分析和评测。",
+              "reproducible-workflow": "对应实验复现、代码规范和文档要求。",
+              "agent-evaluation": "对应工具调用、结构化输出与搜索评测Agent原型，搜索专属模型尚未覆盖。"
+            },
+            "nonSkillBlockers": [
+              "官方日常实习页2026-08-19，当前HC需确认，薪资未公开。",
+              "6个月以上、每周4天以上优先。"
+            ],
+            "sourceUrls": [
+              "https://talent.baidu.com/jobs/detail/INTERN/22b11ac9-3920-4236-b079-49e13f5d08d3"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": []
@@ -758,7 +1154,44 @@
               "supports": "同职位正文及另一发布日期，未当作官方日期",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "optimization-modeling",
+              "api-delivery"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "sql-data",
+              "ml-validation",
+              "decision-evaluation",
+              "agent-evaluation",
+              "reproducible-workflow",
+              "software-testing",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "ADP、在线/随机优化、博弈/机制设计和工业启发式算法，当前MIP课程未完整覆盖。",
+              "对离线/在线系统有经验的工程深度，单机API演示不足。",
+              "电商物流真实大规模数据建模与ML结合优化。"
+            ],
+            "mappingNote": "直接映射优化建模与系统实现的基础部分；Agent在团队描述中出现，但不能据此把课程工具调用当作全部算法要求。该JD正文仍是聚合转引。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [],
+            "directCoverageNotes": {
+              "optimization-modeling": "对应MIP与业务建模；不包含ADP或全部优化方法。",
+              "api-delivery": "仅对应把算法交付成可运行服务的起步能力；不等于JD所需线上系统经验。"
+            },
+            "nonSkillBlockers": [
+              "日常实习信息来自聚合，官网未成功读取；HC、出勤、日薪未确认。"
+            ],
+            "sourceUrls": [
+              "https://campus-talent.alibaba.com/campus/position/199904240014",
+              "https://jobs.ultraai.site/jobs/alibaba_campus/internship:199904240014",
+              "https://www.jdwatch.work/jobs/jt5qtu3nb"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         },
         {
           "id": "alibaba_ecs_salary_history",
@@ -803,7 +1236,46 @@
               "supports": "400–500/天、2024窗口、2025届、出勤字段与ECS业务",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "statistics-metrics",
+              "optimization-modeling",
+              "time-forecast"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "sql-data",
+              "ml-validation",
+              "decision-evaluation",
+              "reproducible-workflow",
+              "pytorch-training",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "常用机器学习理论与实现广度，以及云资源调度的系统背景。",
+              "若选择强化学习/推荐/NLP等其他方向，需额外专项准备；当前三项不是全岗覆盖。",
+              "大规模数据处理和实际云平台工程经验。"
+            ],
+            "mappingNote": "这是多方向实习；按OR调度+时序预测方向映射工作内容，统计基础为明示要求。不表示每位候选人必须同时掌握所有岗位方向。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [
+              "pytorch-training"
+            ],
+            "directCoverageNotes": {
+              "statistics-metrics": "对应数理统计、数据分析素养。",
+              "optimization-modeling": "对应选定OR调度方向的基础，云调度规模与工程未覆盖。",
+              "time-forecast": "对应用户增长中的时序预测方向；只是岗位多方向中的一种。"
+            },
+            "nonSkillBlockers": [
+              "2024招聘、2025届窗口，已过期。",
+              "页面异常写7天/周、6个月，须核实，不当作默认可接受工时。"
+            ],
+            "sourceUrls": [
+              "https://mnowpick.nowcoder.com/m/detail/index?jobId=314714&urlSource=sitemap"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         },
         {
           "id": "alibaba_2027_or",
@@ -849,7 +1321,44 @@
               "supports": "2027届、薪资面议、已结束与截止冲突、预测-优化一体化技能",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "optimization-modeling",
+              "sql-data",
+              "decision-evaluation"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "time-forecast",
+              "ml-validation",
+              "reproducible-workflow",
+              "agent-evaluation",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "C++/Java/Julia至少一门高性能语言；当前路线主要Python，不覆盖此硬要求。",
+              "NumPy/Pandas/SciPy的熟练程度与高性能数值计算，SQL课程中的pandas只是子集。",
+              "OR-LLM/RL、因果推理与复杂系统/多智能体建模。",
+              "大规模优化与鲁棒性研究、开源/论文等优先证据。"
+            ],
+            "mappingNote": "映射预测-优化一体化职责；sql-data只代表pandas数据部分，不能说JD要求SQL或课程已经覆盖SciPy/高性能语言。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [],
+            "directCoverageNotes": {
+              "optimization-modeling": "对应优化建模基础；混合推理与大规模数值求解仍是缺口。",
+              "sql-data": "仅映射明确Python数据栈中的pandas子能力。",
+              "decision-evaluation": "对应预测-优化方案验证、可解释性和鲁棒性意识；课程小规模敏感性分析不等于研究级鲁棒优化。"
+            },
+            "nonSkillBlockers": [
+              "2027届限定；页面同时写已结束与未来截止，按关闭处理。",
+              "日薪面议。"
+            ],
+            "sourceUrls": [
+              "https://www.nowcoder.com/jobs/detail/439501"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": []
@@ -903,7 +1412,36 @@
               "supports": "400–450/天、已结束、深圳日常实习、出勤与技能",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [],
+            "supportingSkillIds": [
+              "ai-code",
+              "pytorch-training",
+              "ml-validation",
+              "agent-evaluation",
+              "statistics-metrics",
+              "reproducible-workflow",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "Agentic RL的算法研究、训练与评测，工具调用安全Agent不能替代。",
+              "多模态模型与数字人/游戏NPC的特定下游建模。",
+              "扎实编程与研究问题分析能力仍需独立证明；课程小MLP只是前置基础。"
+            ],
+            "mappingNote": "当前13项没有直接覆盖该岗核心Agentic RL研究能力，因此不填虚假的直接覆盖项；支持项只用于打基础。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [],
+            "directCoverageNotes": {},
+            "nonSkillBlockers": [
+              "已结束的深圳日常实习，历史400–450元/天。",
+              "5天/周、至少6个月；相关专业背景需招聘方判断。"
+            ],
+            "sourceUrls": [
+              "https://www.nowcoder.com/jobs/detail/384421?channel=npJobTab&deliverSource=1&pageSource=5001"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": [
@@ -972,7 +1510,40 @@
               "supports": "350–400/天、已结束、出勤、要求；方向混杂需注意",
               "accessNote": "网页正文或搜索索引可读"
             }
-          ]
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "pytorch-training",
+              "ml-validation"
+            ],
+            "supportingSkillIds": [
+              "ai-code",
+              "agent-evaluation",
+              "reproducible-workflow",
+              "software-testing",
+              "technical-interview"
+            ],
+            "uncoveredRequirements": [
+              "公式OCR或多模态大模型的开发、训练和优化。",
+              "LLM/多模态架构、数据构造与任务专属评测；小MLP并不能替代大模型经验。",
+              "职位职责写Agent/RAG，而要求块偏OCR/多模态，必须先与招聘方澄清实际方向。"
+            ],
+            "mappingNote": "只能把训练闭环和评测映射为部分基础；原JD未指定PyTorch，该单元是我们选择的训练框架实现，不是雇主指定技术栈。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "preferredSkillIds": [],
+            "directCoverageNotes": {
+              "pytorch-training": "对应模型训练/保存/推理的基础流程，框架选择是我们的建议。",
+              "ml-validation": "对应模型评测的通用基础，OCR/多模态指标与数据集尚未覆盖。"
+            },
+            "nonSkillBlockers": [
+              "已结束，公开350–400元/天只触及目标下限。",
+              "具体帖子要求211硕士及以上；4天/周、至少3个月。"
+            ],
+            "sourceUrls": [
+              "https://www.nowcoder.com/jobs/detail/382927"
+            ],
+            "mappedAt": "2026-10-10",
+            "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
         }
       ],
       "sources": [
