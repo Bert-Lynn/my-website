@@ -1,92 +1,49 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>北航博士 AI 科研成长路线图</title>
-  <meta name="description" content="博士一年 AI 转向计划：课程、科研、论文投稿、Demo 与实习进度管理。" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="keywords" content="北航博士, AI学习路线, 人工智能科研, 机器学习, 计算机视觉, 运筹优化, 复杂系统, 博士科研规划" />
-  <meta name="theme-color" content="#f7f9fc" />
-  <link rel="stylesheet" href="./styles.css?v=20261010-rollover" />
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>研究手记 · 博士成长路线图</title>
+<meta name="description" content="从每一步，走向下一篇论文。博士科研、课程与项目的真实进度和持续顺延任务。">
+<meta name="theme-color" content="#f6f5f1">
+<link rel="stylesheet" href="./styles.css?v=20261010-studio">
 </head>
 <body>
-  <main class="dash">
-    <header class="dash-topbar">
-      <div>
-        <span class="eyebrow">BUAA · PhD Year 1</span>
-        <h1>AI 研究与成长控制台</h1>
-      </div>
-      <div class="topbar-right">
-        <span>2026.10 至 2027.10</span>
-        <button id="resetBtn">重置</button>
-      </div>
-    </header>
-
-    <section class="summary-grid">
-      <article class="summary-primary">
-        <span class="eyebrow">年度总进度</span>
-        <div class="big-progress"><strong id="overallPct">0</strong><span>%</span></div>
-        <div class="progress-line"><i id="overallBar"></i></div>
-        <p id="overallCount">0 / 0 项已完成</p>
-      </article>
-      <article><span>论文投稿</span><strong><span id="paperSubmitCount">0</span><small>/3</small></strong><p>A、B、C 三条新增成果线</p></article>
-      <article><span>成熟 Demo</span><strong><span id="demoDoneCount">0</span><small>/2</small></strong><p>AirDemandLab 与 VisionLab</p></article>
-      <article><span>课程与基础</span><strong><span id="learningDoneCount">0</span><small id="learningTotal">/0</small></strong><p>只学对当前科研有用的内容</p></article>
-    </section>
-
-    <section class="month-focus">
-      <div class="month-focus-head">
-        <div>
-          <span class="eyebrow">当前执行窗口</span>
-          <h2 id="activeMonthTitle">2026.10</h2>
-          <p>先补未完成，再做本月计划。</p>
-        </div>
-        <div class="month-score"><strong id="monthPct">0%</strong><span id="monthCount">0/0 完成</span></div>
-      </div>
-      <div class="next-actions-panel">
-        <div class="next-actions-title">
-          <span>本月下一步</span>
-          <small>优先顺延任务 · 显示前 3 项</small>
-        </div>
-        <div id="nextActions" class="next-actions-list"></div>
-      </div>
-      <div class="month-picker" id="monthPicker"></div>
-    </section>
-
-    <section class="workspace">
-      <nav class="view-tabs" id="viewTabs">
-        <button data-view="month" class="active">本月</button>
-        <button data-view="year">全年</button>
-        <button data-view="research">科研</button>
-        <button data-view="learning">课程</button>
-        <button data-view="demo">Demo</button>
-      </nav>
-      <p class="rollover-note">未完成任务自动进入之后月份的顺延待办，直到手动勾选完成；全年保留原计划记录。2027.09 面试与实习投递目标保留，不必等论文 C 投稿。</p>
-      <div class="task-groups" id="taskGroups"></div>
-    </section>
-
-    <section class="research-board">
-      <div class="section-title"><span class="eyebrow">科研成果线</span><h2>三篇新增投稿目标</h2></div>
-      <div class="paper-grid" id="paperGrid"></div>
-    </section>
-
-    <section class="split-board">
-      <div class="demo-board">
-        <div class="section-title"><span class="eyebrow">技术作品</span><h2>两个成熟 Demo</h2></div>
-        <div id="demoList"></div>
-      </div>
-      <div class="course-board">
-        <div class="section-title"><span class="eyebrow">课程入口</span><h2>只保留主课</h2></div>
-        <div class="course-list" id="courseList"></div>
-      </div>
-    </section>
-
-    <footer class="dash-footer">
-      <strong>执行规则</strong>
-      <p>每个月必须留下可检查的代码、实验、论文内容或 Demo 版本。课程不是成果，跑通代码也不是成果。</p>
-    </footer>
-  </main>
-  <script src="./app.js?v=20261010-rollover"></script>
-</body>
-</html>
+<a class="skip-link" href="#workspace">跳到任务清单</a>
+<div class="app-shell">
+<aside class="sidebar">
+<a class="brand" href="#overview"><span class="brand-mark">研<span>↗</span></span><span>研究手记<small>PhD · YEAR ONE</small></span></a>
+<nav class="main-nav" aria-label="页面导航"><a href="#overview" class="selected"><span>◫</span>进度总览</a><a href="#workspace"><span>☷</span>执行清单</a><a href="#outcomes"><span>◎</span>成果路线</a><a href="#resources"><span>▤</span>学习资源</a></nav>
+<div class="sidebar-note"><span class="tiny-label">你的研究方向</span><strong>AI × 优化决策</strong><p>把学习变成实验，<br>把实验变成成果。</p><div class="sidebar-period">2026.10 → 2027.10</div></div>
+<div class="local-status"><i></i>进度保存在此浏览器</div>
+</aside>
+<main>
+<header class="topbar"><span>BUAA <b>/</b> 博士成长计划</span><span class="date-chip" id="todayLabel"></span></header>
+<section id="overview" class="overview">
+<div class="page-heading"><div><div class="eyebrow">YOUR RESEARCH, IN MOTION</div><h1>每一步，都走得清楚。</h1><p>看见积累，找到重点，然后完成下一件事。</p></div><a class="primary-button" href="#workspace">开始执行 <span>↗</span></a></div>
+<div class="overview-grid">
+<article class="overall-card"><div class="card-kicker"><span>整体完成度</span><span class="outline-tag">按实际勾选</span></div><div class="overall-value"><strong id="overallPct">0</strong><span>%</span><div><b id="overallCount">0 / 41 项</b><small id="overallNote">从第一项开始，积累会被看见。</small></div></div><div id="overallSegments" class="segments" aria-hidden="true"></div><div class="overall-foot"><span>每格代表一项任务</span><span id="remainingCount"></span></div><div class="dimension-list" id="dimensionProgress"></div></article>
+<article class="phase-card"><div class="card-kicker"><span>当前推进阶段</span><span id="stageIndex" class="outline-tag"></span></div><h2 id="stageTitle"></h2><p id="stageDesc"></p><div class="stage-track" id="stageTrack"></div><div class="stage-bottom"><span id="stageCount"></span><small>根据未完成任务判断，非时间推算</small></div></article>
+</div>
+<div class="milestone-strip"><div class="milestone-intro"><span class="eyebrow">ON THE HORIZON</span><h2>成果里程碑</h2><small>目标时间 ≠ 已完成</small></div><div id="milestones" class="milestones"></div></div>
+</section>
+<section class="execution-section" id="workspace">
+<div class="section-heading"><div><span class="eyebrow">01 / EXECUTION</span><h2>把计划，变成今天的行动</h2></div><button class="text-button" id="todayBtn">回到本月 ↗</button></div>
+<div class="execution-grid">
+<div class="task-panel">
+<div class="month-toolbar"><div><span class="tiny-label">正在查看</span><h3 id="activeMonthTitle"></h3></div><div class="month-summary"><strong id="monthPct"></strong><span id="monthCount"></span></div></div>
+<div class="month-picker" id="monthPicker" aria-label="选择月份"></div>
+<nav class="view-tabs" id="viewTabs" aria-label="任务视图"><button data-view="month">所选月</button><button data-view="year">全年</button><button data-view="research">科研</button><button data-view="learning">课程与基础</button><button data-view="demo">项目</button></nav>
+<div class="list-caption"><span id="viewCaption"></span><label class="pending-filter"><input type="checkbox" id="pendingOnly">只看未完成</label></div>
+<div id="taskGroups" class="task-groups"></div>
+<p class="rollover-note">未完成的任务会持续顺延，直到你勾选完成。全年视图保留每项任务的计划月份。</p>
+</div>
+<aside class="execution-side"><article class="next-card"><div class="card-kicker"><span>先做这几件</span><span class="accent-dot"></span></div><p>按所选月排序，优先补齐顺延任务。</p><div id="nextActions"></div></article><article class="backlog-card" id="backlogCard"><div><span class="tiny-label">顺延待办</span><strong id="backlogCount">0<small>项</small></strong></div><p id="backlogNote"></p></article><div class="gentle-note"><span>↳</span><p>完成不是“学过了”，<br>而是留下可检查的产出。</p></div></aside>
+</div>
+</section>
+<section id="outcomes"><div class="section-heading"><div><span class="eyebrow">02 / RESEARCH & BUILD</span><h2>成果，沿着这几条线生长</h2></div><span class="section-meta" id="outcomeCount"></span></div><div id="paperGrid" class="paper-grid"></div><div id="demoList" class="demo-grid"></div></section>
+<section id="resources"><div class="section-heading"><div><span class="eyebrow">03 / LEARNING LIBRARY</span><h2>需要时，回到这些主课</h2></div><span class="section-meta">学以致用，保持聚焦</span></div><div id="courseList" class="course-list"></div></section>
+<footer><div><strong>研究手记</strong><p id="saveStatus" role="status">只记录你的实际勾选 · 保存在当前浏览器，不跨设备同步</p></div><button id="resetBtn" class="text-button">重置全部进度</button></footer>
+<div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
+</main></div>
+<script src="./app.js?v=20261010-studio"></script>
+</body></html>

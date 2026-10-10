@@ -463,56 +463,97 @@ function refreshMonth(){
   const now=currentMonth();
   if(now!==observedMonth){if(activeMonth===observedMonth) activeMonth=now;observedMonth=now;render()}
 }
+let pendingOnly=false;
+const stages=[
+  {end:'2027.01',title:'打好基础，跑通实验',desc:'搭建编程与数据底座，建立可信基线，让第一个 Demo 跑起来。'},
+  {end:'2027.03',title:'完成首篇投稿',desc:'把论文 A 的实验整理成完整论文，同时推进决策优化研究。'},
+  {end:'2027.07',title:'拓展方法，沉淀成果',desc:'推进论文 B 投稿，锁定论文 C 的研究问题，迭代视觉项目。'},
+  {end:'2027.10',title:'成果收束，走向实习',desc:'完成论文 C 与成熟项目，带着可展示的成果准备面试与投递。'}
+];
+function stageTasks(i){return tasks.filter(t=>t.month<=stages[i].end && (!i||t.month>stages[i-1].end))}
+function tally(a){return {done:a.filter(t=>progress[t.id]).length,total:a.length,pct:a.length?Math.round(a.filter(t=>progress[t.id]).length/a.length*100):0}}
+function bar(percent){return '<div class="progress-line"><i style="width:'+percent+'%"></i></div>'}
 function taskMarkup(t){
   const carried=t.month<activeMonth && !progress[t.id];
   const timing=(t.originalMonth!==t.month?'原计划 '+t.originalMonth+' → ':'')+'计划 '+t.month;
-  return '<label class="task-item category-'+t.category+' '+(progress[t.id]?'done':'')+'"><input type="checkbox" data-id="'+t.id+'" '+(progress[t.id]?'checked':'')+'><span class="checkmark">'+(progress[t.id]?'✓':'')+'</span><span class="task-copy"><span class="task-tags"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+(carried?'<i class="carry-tag">顺延待办</i>':'')+'</span><strong>'+t.title+'</strong><span>'+t.detail+'</span><small>完成标准：'+t.outcome+'</small><small class="task-timing">'+timing+'</small></span>'+(t.url?'<a href="'+t.url+'" target="_blank" rel="noreferrer">课程 ↗</a>':'')+'</label>';
+  return '<article id="task-'+t.id+'" class="task-item category-'+t.category+' '+(progress[t.id]?'done':'')+'"><label class="task-check"><input id="check-'+t.id+'" type="checkbox" data-id="'+t.id+'" aria-label="完成：'+t.title+'" '+(progress[t.id]?'checked':'')+'></label><div class="task-copy"><label class="task-title" for="check-'+t.id+'">'+t.title+'</label><p>'+t.detail+'</p><small>完成标准 · '+t.outcome+'</small><div class="task-tags"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+(carried?'<i class="carry-tag">顺延待办</i>':'')+'</div><small class="task-timing">'+timing+'</small></div>'+(t.url?'<a href="'+t.url+'" target="_blank" rel="noreferrer" aria-label="打开'+t.title+'课程">课程 ↗</a>':'')+'</article>';
 }
 function taskGroup(title,a){
-  const done=a.filter(t=>progress[t.id]).length, percent=a.length?Math.round(done/a.length*100):0;
-  return '<section class="task-month"><div class="task-month-head"><div><strong>'+title+'</strong><span>'+done+'/'+a.length+'</span></div><div class="mini-line"><i style="width:'+percent+'%"></i></div></div><div>'+a.map(taskMarkup).join("")+'</div></section>';
+  const stats=tally(a),shown=pendingOnly?a.filter(t=>!progress[t.id]):a;
+  if(!shown.length) return '';
+  return '<section class="task-month"><div class="task-month-head"><strong>'+title+'</strong><span>'+stats.done+' / '+stats.total+' 已完成</span></div><div>'+shown.map(taskMarkup).join('')+'</div></section>';
 }
-function pct(stream){const a=tasks.filter(t=>t.stream===stream);return a.length?Math.round(a.filter(t=>progress[t.id]).length/a.length*100):0}
-function save(){localStorage.setItem(key,JSON.stringify(progress))}
-function toggle(id){progress[id]=!progress[id];save();render()}
+function pct(stream){return tally(tasks.filter(t=>t.stream===stream)).pct}
+function save(){
+  try{localStorage.setItem(key,JSON.stringify(progress));document.querySelector('#saveStatus').textContent='已保存到当前浏览器 · 不跨设备同步';return true}
+  catch{document.querySelector('#saveStatus').textContent='当前浏览器无法保存进度；请勿关闭页面，以免丢失本次勾选。';return false}
+}
+function toggle(id){
+  const source=document.activeElement;
+  const historyOpen=document.querySelector('.completed-history')?.open;
+  progress[id]=!progress[id];const saved=save();render();
+  if(historyOpen && document.querySelector('.completed-history')) document.querySelector('.completed-history').open=true;
+  const input=document.querySelector('#check-'+id);
+  if(source?.dataset?.id===id){if(input)input.focus({preventScroll:true});else document.querySelector('#pendingOnly').focus({preventScroll:true})}
+  document.querySelector('#announcer').textContent=(progress[id]?'已完成：':'已恢复待办：')+tasks.find(t=>t.id===id).title+(saved?'，进度已保存。':'，当前浏览器未能保存。');
+}
+function jumpToTask(id){
+  pendingOnly=false;document.querySelector('#pendingOnly').checked=false;view='month';render();
+  const el=document.querySelector('#task-'+id);if(el){el.classList.add('highlight');el.scrollIntoView({behavior:'smooth',block:'center'});el.querySelector('input').focus({preventScroll:true})}
+}
 function render(){
-  const done=tasks.filter(t=>progress[t.id]).length, overall=Math.round(done/tasks.length*100);
-  document.querySelector("#overallPct").textContent=overall;document.querySelector("#overallBar").style.width=overall+"%";document.querySelector("#overallCount").textContent=done+" / "+tasks.length+" 项已完成";
-  document.querySelector("#paperSubmitCount").textContent=["feb-a-submit","jun-b-submit","sep-c-submit"].filter(id=>progress[id]).length;
-  document.querySelector("#demoDoneCount").textContent=["feb-air-v1","aug-vision-v1"].filter(id=>progress[id]).length;
-  const lt=tasks.filter(t=>["learning","foundation"].includes(t.category));document.querySelector("#learningDoneCount").textContent=lt.filter(t=>progress[t.id]).length;document.querySelector("#learningTotal").textContent="/"+lt.length;
-  const months=[...new Set([...plannedMonths,currentMonth(),activeMonth])].sort();
-  const backlog=carriedTasks(activeMonth);
-  const mt=monthTasks(activeMonth), md=mt.filter(t=>progress[t.id]).length, mp=mt.length?Math.round(md/mt.length*100):0;
-  document.querySelector("#activeMonthTitle").textContent=activeMonth;document.querySelector("#monthPct").textContent=mp+"%";document.querySelector("#monthCount").textContent="计划 "+md+"/"+mt.length+" 完成 · 顺延 "+backlog.length+" 项";
+  const overall=tally(tasks),now=currentMonth();
+  document.querySelector('#todayLabel').textContent=now.replace('.',' / ')+' · 上海时间';
+  document.querySelector('#overallPct').textContent=overall.pct;
+  document.querySelector('#overallCount').textContent=overall.done+' / '+tasks.length+' 项已完成';
+  document.querySelector('#overallNote').textContent=overall.done===0?'从第一项开始，积累会被看见。':overall.done===tasks.length?'这一段旅程，已全部完成。':'每一次勾选，都让成果更近一步。';
+  document.querySelector('#remainingCount').textContent='还剩 '+(tasks.length-overall.done)+' 项';
+  document.querySelector('#overallSegments').innerHTML=tasks.map(t=>'<i class="'+(progress[t.id]?'complete':'')+'" title="'+t.title+'"></i>').join('');
+  document.querySelector('#dimensionProgress').innerHTML=[['科研','research'],['课程与基础','learning'],['项目','demo']].map(([label,c])=>{const a=tasks.filter(t=>c==='learning'?['learning','foundation'].includes(t.category):t.category===c),s=tally(a);return '<div class="dimension-row"><span>'+label+'</span>'+bar(s.pct)+'<strong>'+s.done+' / '+s.total+' 项</strong></div>'}).join('');
+  let si=stages.findIndex((s,i)=>stageTasks(i).some(t=>!progress[t.id]));const allDone=si<0;if(allDone)si=stages.length-1;
+  const ss=tally(stageTasks(si));
+  document.querySelector('#stageIndex').textContent=allDone?'全部完成':'阶段 0'+(si+1)+' / 04';
+  document.querySelector('#stageTitle').textContent=allDone?'本阶段计划已完成':stages[si].title;
+  document.querySelector('#stageDesc').textContent=allDone?'所有 41 项任务都已勾选完成。你可以在全年视图回顾每一项积累。':stages[si].desc;
+  document.querySelector('#stageTrack').innerHTML=stages.map((s,i)=>'<span class="'+(tally(stageTasks(i)).done===stageTasks(i).length?'complete':i===si?'current':'')+'" title="'+s.title+'"></span>').join('');
+  document.querySelector('#stageCount').textContent='本阶段 '+ss.done+' / '+ss.total+' 项已完成';
+  const milestoneDefs=[['feb-a-submit','论文 A 投稿','paperA'],['jun-b-submit','论文 B 投稿','paperB'],['sep-apply','实习投递',null],['sep-c-submit','论文 C 投稿','paperC']];
+  document.querySelector('#milestones').innerHTML=milestoneDefs.map(([id,title,stream])=>{const t=tasks.find(t=>t.id===id),done=!!progress[id];const status=done?'已完成':t.month<now?'待完成':stream&&pct(stream)>0?'推进中':'待完成';return '<div class="milestone"><time>'+t.month+'</time><strong>'+title+'</strong><span class="status-pill '+(done?'done':'')+'">'+status+'</span></div>'}).join('');
+  const months=[...new Set([...plannedMonths,now,activeMonth])].sort();
+  const backlog=carriedTasks(activeMonth),mt=monthTasks(activeMonth),ms=tally(mt);
+  document.querySelector('#activeMonthTitle').textContent=activeMonth;
+  document.querySelector('#monthPct').textContent=mt.length?ms.pct+'%':'—';
+  document.querySelector('#monthCount').textContent=mt.length?'当月计划 '+ms.done+' / '+mt.length+' 完成':'本月无新增计划';
+  document.querySelector('#backlogCount').innerHTML=backlog.length+'<small>项</small>';
+  document.querySelector('#backlogNote').textContent=backlog.length?'来自 '+backlog[0].month+' 起的未完成任务，已保留在清单中。先补齐，再推进。':'所选月之前没有未完成任务。按自己的节奏，推进眼前的一步。';
   const next=[...backlog,...mt.filter(t=>!progress[t.id])].slice(0,3);
-  document.querySelector("#nextActions").innerHTML=next.length
-    ? next.map((t,i)=>'<div class="next-action category-'+t.category+'"><span class="next-index">0'+(i+1)+'</span><div><strong>'+t.title+'</strong><small>'+(t.month<activeMonth?'顺延自 '+t.month+' · ':'')+streamLabels[t.stream]+' · '+t.outcome+'</small></div></div>').join("")
-    : '<div class="next-empty">此月没有待办或顺延任务 ✓</div>';
-  document.querySelector("#monthPicker").innerHTML=months.map(m=>'<button class="'+(m===activeMonth?'active':'')+'" data-month="'+m+'">'+m.slice(2)+'</button>').join("");
-  document.querySelectorAll("#monthPicker button").forEach(b=>b.onclick=()=>{activeMonth=b.dataset.month;view="month";render()});
-  document.querySelectorAll("#viewTabs button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
-  let list=view==="year"?tasks:view==="research"?tasks.filter(t=>t.category==="research"):view==="learning"?tasks.filter(t=>["learning","foundation"].includes(t.category)):view==="demo"?tasks.filter(t=>t.category==="demo"):mt;
-  if(view==="month"){
+  document.querySelector('#nextActions').innerHTML=next.length?next.map((t,i)=>'<button class="next-action" data-next="'+t.id+'"><span class="next-index">0'+(i+1)+'</span><span><strong>'+t.title+'</strong><small>'+t.outcome+'</small><em>'+(t.month<activeMonth?'顺延自 '+t.month:streamLabels[t.stream])+' · 查看任务 ↗</em></span></button>').join(''):'<div class="next-empty">所选月待办已清空 ✓<br>可以回顾成果，或选择下个月。</div>';
+  document.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>jumpToTask(b.dataset.next));
+  document.querySelector('#monthPicker').innerHTML=months.map(m=>'<button class="'+(m===activeMonth?'active':'')+'" aria-pressed="'+(m===activeMonth)+'" data-month="'+m+'">'+m.slice(2)+'</button>').join('');
+  document.querySelectorAll('#monthPicker button').forEach(b=>b.onclick=()=>{activeMonth=b.dataset.month;view='month';render();document.querySelector('[data-month="'+activeMonth+'"]').focus({preventScroll:true})});
+  document.querySelectorAll('#viewTabs button').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);b.setAttribute('aria-pressed',String(b.dataset.view===view))});
+  const captions={month:'所选月计划 + 此前未完成',year:'全部 41 项 · 按计划月份',research:'科研成果与论文任务',learning:'课程学习与基础能力',demo:'项目开发与实习投递'};
+  document.querySelector('#viewCaption').textContent=captions[view];
+  let list=view==='year'?tasks:view==='research'?tasks.filter(t=>t.category==='research'):view==='learning'?tasks.filter(t=>['learning','foundation'].includes(t.category)):view==='demo'?tasks.filter(t=>t.category==='demo'):mt;
+  let markup='';
+  if(view==='month'){
     const history=tasks.filter(t=>t.month<activeMonth && progress[t.id]);
-    document.querySelector("#taskGroups").innerHTML=
-      (backlog.length?taskGroup("顺延待办",backlog):"")+
-      (mt.length?taskGroup(activeMonth,mt):'<div class="next-empty">此月没有新安排；未完成任务会持续显示在上方。</div>')+
-      (history.length?'<details class="completed-history"><summary>已完成历史任务（'+history.length+'）· 可取消勾选</summary>'+taskGroup("已完成历史",history)+'</details>':"");
-  } else {
-    const vm=plannedMonths.filter(m=>list.some(t=>t.month===m));
-    document.querySelector("#taskGroups").innerHTML=vm.map(m=>taskGroup(m,list.filter(t=>t.month===m))).join("");
-  }
+    markup=(backlog.length?taskGroup('顺延待办 · 优先补齐',backlog):'')+taskGroup(activeMonth+' 计划',mt)+(history.length&&!pendingOnly?'<details class="completed-history"><summary>已完成历史任务（'+history.length+'）· 可取消勾选</summary>'+taskGroup('已完成历史',history)+'</details>':'');
+  }else markup=plannedMonths.filter(m=>list.some(t=>t.month===m)).map(m=>taskGroup(m,list.filter(t=>t.month===m))).join('');
+  document.querySelector('#taskGroups').innerHTML=markup||'<div class="next-empty">'+(pendingOnly?'当前视图没有未完成任务 ✓':'此月没有新安排；未完成任务会持续显示在这里。')+'</div>';
   document.querySelectorAll('.task-item input').forEach(el=>el.onchange=()=>toggle(el.dataset.id));
-  document.querySelector("#paperGrid").innerHTML=papers.map(p=>'<article><div class="paper-code">'+p.code+'</div><div><h3>'+p.title+'</h3><p>'+p.desc+'</p></div><div class="paper-foot"><span>目标投稿 '+p.due+'</span><strong>'+pct(p.stream)+'%</strong></div><div class="progress-line thin"><i style="width:'+pct(p.stream)+'%"></i></div></article>').join("");
-  document.querySelector("#demoList").innerHTML=demos.map(d=>'<article><div><h3>'+d.title+'</h3><p>'+d.desc+'</p></div><div class="demo-stat"><strong>'+pct(d.stream)+'%</strong><span>目标 '+d.due+'</span></div></article>').join("");
+  const submitted=['feb-a-submit','jun-b-submit','sep-c-submit'].filter(id=>progress[id]).length,finishedDemos=['feb-air-v1','aug-vision-v1'].filter(id=>progress[id]).length;
+  document.querySelector('#outcomeCount').textContent='已投稿 '+submitted+' / 3 · 成熟项目 '+finishedDemos+' / 2';
+  document.querySelector('#paperGrid').innerHTML=papers.map(p=>{const a=tasks.filter(t=>t.stream===p.stream),s=tally(a),next=a.find(t=>!progress[t.id]);return '<article><div class="paper-top"><div class="paper-code">'+p.code+'</div><span>目标投稿 · '+p.due+'</span></div><h3>'+p.title+'</h3><p>'+p.desc+'</p><div class="paper-foot"><span>'+s.done+' / '+s.total+' 项已完成</span><strong>'+s.pct+'%</strong></div>'+bar(s.pct)+'<div class="stream-next">'+(next?'下一步 · '+next.title:'全部任务已完成 ✓')+'</div></article>'}).join('');
+  document.querySelector('#demoList').innerHTML=demos.map((d,i)=>{const s=tally(tasks.filter(t=>t.stream===d.stream));return '<article><span class="demo-icon">'+(i?'◈':'⌁')+'</span><div><h3>'+d.title+'</h3><p>'+d.desc+'</p>'+bar(s.pct)+'</div><div class="demo-stat"><strong>'+s.pct+'%</strong><span>'+s.done+' / '+s.total+' 项</span><span>目标 '+d.due+'</span></div></article>'}).join('');
 }
-document.querySelectorAll("#viewTabs button").forEach(b=>b.onclick=()=>{view=b.dataset.view;render()});
-document.querySelector("#resetBtn").onclick=()=>{if(confirm("确定清空全部勾选进度吗？")){progress={};save();render()}};
-document.querySelector("#courseList").innerHTML=courses.map(c=>'<a href="'+c[2]+'" target="_blank" rel="noreferrer"><span>'+c[0]+'</span><strong>'+c[1]+'</strong><i>↗</i></a>').join("");
+document.querySelectorAll('#viewTabs button').forEach(b=>b.onclick=()=>{view=b.dataset.view;render()});
+document.querySelector('#todayBtn').onclick=()=>{activeMonth=currentMonth();view='month';render()};
+document.querySelector('#pendingOnly').onchange=e=>{pendingOnly=e.target.checked;render()};
+document.querySelector('#resetBtn').onclick=()=>{if(confirm('确定清空全部 41 项任务的勾选进度吗？此操作无法撤销。')){progress={};save();render();document.querySelector('#announcer').textContent='全部进度已重置。'}};
+document.querySelector('#courseList').innerHTML=courses.map(c=>'<a href="'+c[2]+'" target="_blank" rel="noreferrer"><span>'+c[0]+'</span><strong>'+c[1]+'</strong><i>↗</i></a>').join('');
 render();
-
-
-window.addEventListener("focus",refreshMonth);
-document.addEventListener("visibilitychange",()=>{if(!document.hidden) refreshMonth()});
+window.addEventListener('focus',refreshMonth);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshMonth()});
+window.addEventListener('storage',e=>{if(e.key===key){try{const saved=JSON.parse(e.newValue||'{}');if(saved&&typeof saved==='object'&&!Array.isArray(saved)){progress=saved;render()}}catch{}}});
 setInterval(refreshMonth,60000);
