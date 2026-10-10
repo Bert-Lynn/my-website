@@ -1,49 +1,28 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>研究手记 · 博士成长路线图</title>
-<meta name="description" content="从每一步，走向下一篇论文。博士科研、课程与项目的真实进度和持续顺延任务。">
-<meta name="theme-color" content="#f6f5f1">
-<link rel="stylesheet" href="./styles.css?v=20261010-studio">
-</head>
-<body>
-<a class="skip-link" href="#workspace">跳到任务清单</a>
-<div class="app-shell">
-<aside class="sidebar">
-<a class="brand" href="#overview"><span class="brand-mark">研<span>→</span></span><span>研究手记<small>PhD · YEAR ONE</small></span></a>
-<nav class="main-nav" aria-label="页面导航"><a href="#overview" class="selected"><span>◫</span>进度总览</a><a href="#workspace"><span>☷</span>执行清单</a><a href="#outcomes"><span>◎</span>成果路线</a><a href="#resources"><span>▤</span>学习资源</a></nav>
-<div class="sidebar-note"><span class="tiny-label">你的研究方向</span><strong>AI × 优化决策</strong><p>把学习变成实验，<br>把实验变成成果。</p><div class="sidebar-period">2026.10 → 2027.10</div></div>
-<div class="local-status"><i></i>进度保存在此浏览器</div>
-</aside>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>博士研究工作台</title><meta name="description" content="博士科研计划、实际完成进度、持续顺延任务与成果路线。"><meta name="theme-color" content="#f4f7fc"><link rel="stylesheet" href="./styles.css?v=20261010-workbench"></head>
+<body><a class="skip-link" href="#workspace">跳到任务清单</a>
+<div class="site-shell">
+<header class="app-header"><a href="#" id="homeBtn" class="brand" aria-label="博士研究工作台首页"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 25V7h8a6 6 0 0 1 0 12H7m8 0 9 6M21 4v7m-3-3h7"/></svg></span><span>博士研究工作台<small>AI × 优化决策</small></span></a><nav class="main-tabs" id="mainTabs" aria-label="工作台视图"><button data-page="execution" aria-pressed="true">执行计划</button><button data-page="outcomes" aria-pressed="false">成果路线</button><button data-page="resources" aria-pressed="false">学习资源</button></nav><button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span></button></header>
 <main>
-<header class="topbar"><span>BUAA <b>/</b> 博士成长计划</span><span class="date-chip" id="todayLabel"></span></header>
-<section id="overview" class="overview">
-<div class="page-heading"><div><div class="eyebrow">YOUR RESEARCH, IN MOTION</div><h1>每一步，都走得清楚。</h1><p>看见积累，找到重点，然后完成下一件事。</p></div><a class="primary-button" href="#workspace">开始执行 <span>→</span></a></div>
-<div class="overview-grid">
-<article class="overall-card"><div class="card-kicker"><span>整体完成度</span><span class="outline-tag">按实际勾选</span></div><div class="overall-value"><strong id="overallPct">0</strong><span>%</span><div><b id="overallCount">0 / 41 项</b><small id="overallNote">从第一项开始，积累会被看见。</small></div></div><div id="overallSegments" class="segments" aria-hidden="true"></div><div class="overall-foot"><span>每格代表一项任务</span><span id="remainingCount"></span></div><div class="dimension-list" id="dimensionProgress"></div></article>
-<article class="phase-card"><div class="card-kicker"><span>当前推进阶段</span><span id="stageIndex" class="outline-tag"></span></div><h2 id="stageTitle"></h2><p id="stageDesc"></p><div class="stage-track" id="stageTrack"></div><div class="stage-bottom"><span id="stageCount"></span><small>根据未完成任务判断，非时间推算</small></div></article>
-</div>
-<div class="milestone-strip"><div class="milestone-intro"><span class="eyebrow">ON THE HORIZON</span><h2>成果里程碑</h2><small>目标时间 ≠ 已完成</small></div><div id="milestones" class="milestones"></div></div>
+<div class="workspace-heading"><div><div class="period-label">2026.10 — 2027.10 · 博士成长计划</div><h1 id="pageTitle">本月执行计划</h1><p id="pageSubtitle">先补齐未完成的任务，再推进本月安排。</p></div><span class="today-label" id="todayLabel"></span></div>
+<section class="journey" aria-label="研究阶段路线"><div class="journey-heading"><h2>研究阶段</h2><p id="stageExplanation">高亮阶段由实际完成情况决定</p></div><div id="stageTrack" class="stage-track"></div></section>
+<div class="workspace-layout">
+<div class="main-column">
+<section id="workspace" class="page-panel" data-panel="execution">
+<div class="execution-stats"><div><span id="scopeCountLabel">本月计划完成</span><strong id="monthCount">0 / 4<small>项</small></strong></div><div><span id="pendingScopeLabel">所选月待办</span><strong id="pendingCount">4<small>项</small></strong></div><button id="backlogJump"><span>其中顺延</span><strong id="backlogCount">0<small>项</small></strong></button></div>
+<div class="task-panel"><div class="task-toolbar"><div class="month-controls"><button id="prevMonth" aria-label="上一个月">‹</button><label class="sr-only" for="monthPicker">选择月份</label><select id="monthPicker"></select><button id="nextMonth" aria-label="下一个月">›</button></div><button id="todayBtn" class="text-button">回到本月</button></div>
+<nav class="view-tabs" id="viewTabs" aria-label="任务视图"><button data-view="stage" id="stageViewTab" hidden>阶段任务</button><button data-view="month">所选月</button><button data-view="year">全部任务</button><button data-view="research">科研</button><button data-view="learning">课程与基础</button><button data-view="demo">项目</button></nav>
+<div class="list-caption"><span id="viewCaption"></span><label class="pending-filter"><input type="checkbox" id="pendingOnly">仅未完成</label></div><div id="taskGroups" class="task-groups"></div>
+<p class="rollover-note"><span aria-hidden="true">↳</span> 没做完的任务会一直留在顺延待办中，不会随月份消失。</p></div>
 </section>
-<section class="execution-section" id="workspace">
-<div class="section-heading"><div><span class="eyebrow">01 / EXECUTION</span><h2>把计划，变成今天的行动</h2></div><button class="text-button" id="todayBtn">回到本月 →</button></div>
-<div class="execution-grid">
-<div class="task-panel">
-<div class="month-toolbar"><div><span class="tiny-label">正在查看</span><h3 id="activeMonthTitle"></h3></div><div class="month-summary"><strong id="monthPct"></strong><span id="monthCount"></span></div></div>
-<div class="month-picker" id="monthPicker" aria-label="选择月份"></div>
-<nav class="view-tabs" id="viewTabs" aria-label="任务视图"><button data-view="month">所选月</button><button data-view="year">全年</button><button data-view="research">科研</button><button data-view="learning">课程与基础</button><button data-view="demo">项目</button></nav>
-<div class="list-caption"><span id="viewCaption"></span><label class="pending-filter"><input type="checkbox" id="pendingOnly">只看未完成</label></div>
-<div id="taskGroups" class="task-groups"></div>
-<p class="rollover-note">未完成的任务会持续顺延，直到你勾选完成。全年视图保留每项任务的计划月份。</p>
+<section id="outcomes" class="page-panel" data-panel="outcomes" hidden><div class="panel-heading"><h2>论文与项目进度</h2><span id="outcomeCount"></span></div><div id="paperGrid" class="paper-grid"></div><div class="panel-heading"><h2>可展示的技术作品</h2></div><div id="demoList" class="demo-grid"></div><div class="internship-note"><strong>2027.09 · AI 算法实习</strong><p>面试准备与投递按原目标推进，不必等论文 C 投稿。</p></div></section>
+<section id="resources" class="page-panel" data-panel="resources" hidden><div class="panel-heading"><h2>学习资源</h2><span>围绕当前任务，按需回看</span></div><div id="courseList" class="course-list"></div></section>
 </div>
-<aside class="execution-side"><article class="next-card"><div class="card-kicker"><span>先做这几件</span><span class="accent-dot"></span></div><p>按所选月排序，优先补齐顺延任务。</p><div id="nextActions"></div></article><article class="backlog-card" id="backlogCard"><div><span class="tiny-label">顺延待办</span><strong id="backlogCount">0<small>项</small></strong></div><p id="backlogNote"></p></article><div class="gentle-note"><span>↳</span><p>完成不是“学过了”，<br>而是留下可检查的产出。</p></div></aside>
-</div>
-</section>
-<section id="outcomes"><div class="section-heading"><div><span class="eyebrow">02 / RESEARCH & BUILD</span><h2>成果，沿着这几条线生长</h2></div><span class="section-meta" id="outcomeCount"></span></div><div id="paperGrid" class="paper-grid"></div><div id="demoList" class="demo-grid"></div></section>
-<section id="resources"><div class="section-heading"><div><span class="eyebrow">03 / LEARNING LIBRARY</span><h2>需要时，回到这些主课</h2></div><span class="section-meta">学以致用，保持聚焦</span></div><div id="courseList" class="course-list"></div></section>
-<footer><div><strong>研究手记</strong><p id="saveStatus" role="status">只记录你的实际勾选 · 保存在当前浏览器，不跨设备同步</p></div><button id="resetBtn" class="text-button">重置全部进度</button></footer>
-<div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
-</main></div>
-<script src="./app.js?v=20261010-studio"></script>
-</body></html>
+<aside class="progress-sidebar">
+<article class="progress-card"><div class="card-heading"><h2>整体进度</h2><span>实际勾选</span></div><div class="progress-ring" id="progressRing" role="img" aria-label="总体完成进度"><div><strong id="overallPct">0<span>%</span></strong><span id="overallCount">正在读取任务</span></div></div><div class="progress-caption" id="overallNote">完成第一项，点亮你的进度。</div><div id="dimensionProgress" class="dimension-list"></div><div class="progress-foot"><span id="remainingCount"></span><button id="showAllBtn">查看全部 →</button></div></article>
+<article class="cloud-card" id="cloudPanel"><div class="card-heading"><h2>进度存储</h2><span id="cloudMode">此浏览器</span></div><p id="cloudStatus">当前进度保存在这个浏览器中。</p><div id="cloudControls"></div><p id="saveStatus" role="status" class="save-status">本地保存 · 尚未连接云端</p></article>
+<article class="upcoming-card"><div class="card-heading"><h2>下一个里程碑</h2></div><div id="nextMilestone"></div><button id="showOutcomesBtn" class="text-button">查看全部成果路线 →</button></article>
+</aside></div>
+<footer><span>按实际完成记录进度，日期不会自动替你完成任务。</span><button id="resetBtn">重置进度</button></footer><div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+</main></div><script src="./cloud-config.js?v=20261010-workbench"></script><script src="./cloud-sync.js?v=20261010-workbench"></script><script src="./app.js?v=20261010-workbench"></script></body></html>
