@@ -4,6 +4,9 @@
   const SKILLS = ['ai-code','reproducible-workflow','sql-data','statistics-metrics','ml-validation','time-forecast','optimization-modeling','decision-evaluation','software-testing','api-delivery','agent-evaluation','technical-interview','pytorch-training'];
   const ROLES = ['decision_optimization','forecasting_ml','agent_engineering','search_recommendation','foundation_model_research'];
   const PROJECT = 'demand-decision-lab', MILESTONES = Array.from({length:7},(_,i)=>'ddl-m'+i);
+  const MAIN_PROJECT = 'ai-choice-assistant';
+  const PROJECTS = { [PROJECT]: MILESTONES, [MAIN_PROJECT]: Array.from({length:6},(_,i)=>'aca-m'+i) };
+  const milestoneKeys = Object.entries(PROJECTS).flatMap(([project,milestones])=>milestones.map(id=>'milestone:'+project+':'+id));
   const LEVELS = ['untested','learning','practicing','passed'];
   const copy = v => JSON.parse(JSON.stringify(v));
   const object = v => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -35,13 +38,13 @@
       if(past.some(v=>!v)) return null;
       return {...result,history:past};
     }
-    if(key.startsWith('milestone:'+PROJECT+':') && MILESTONES.includes(key.split(':')[2])) {
+    if(milestoneKeys.includes(key)) {
       if(!object(value)||!only(value,['status','evidenceUrl','completedAt'])||!['todo','doing','done'].includes(value.status)||!url(value.evidenceUrl)||!date(value.completedAt)) return null;
       return {status:value.status,evidenceUrl:value.evidenceUrl,completedAt:value.status==='done'?value.completedAt:''};
     }
     return null;
   }
-  const ids=['selectedRole',...SKILLS.map(id=>'skill:'+id),...MILESTONES.map(id=>'milestone:'+PROJECT+':'+id)];
+  const ids=['selectedRole',...SKILLS.map(id=>'skill:'+id),...milestoneKeys];
   function clean(value) {
     if(!object(value)) return {};
     const result={};
@@ -55,8 +58,8 @@
     const read=()=>{
       const flat=clean(store?.snapshot()||{}),skills={},milestones={};
       for(const id of SKILLS) if(flat['skill:'+id]) skills[id]=flat['skill:'+id];
-      for(const id of MILESTONES) if(flat['milestone:'+PROJECT+':'+id]) (milestones[PROJECT]||={})[id]=flat['milestone:'+PROJECT+':'+id];
-      return {selectedRole:flat.selectedRole||ROLES[0],skills,milestones};
+      for(const [project,projectMilestones] of Object.entries(PROJECTS)) for(const id of projectMilestones) if(flat['milestone:'+project+':'+id]) (milestones[project]||={})[id]=flat['milestone:'+project+':'+id];
+      return {selectedRole:flat.selectedRole||'agent_engineering',skills,milestones};
     };
     const notify=()=>{options.onChange?.(read()); if(root.dispatchEvent&&root.CustomEvent)root.dispatchEvent(new root.CustomEvent('careerprogresschange',{detail:read()}));};
     return {
@@ -79,7 +82,7 @@
         return store.set('skill:'+id,copy(next));
       },
       setMilestone(project,id,value){
-        if(!store||project!==PROJECT||!MILESTONES.includes(id)||!object(value)||!only(value,['status','evidenceUrl','completedAt']))return false;
+        if(!store||!milestoneKeys.includes('milestone:'+project+':'+id)||!object(value)||!only(value,['status','evidenceUrl','completedAt']))return false;
         const old=read().milestones[project]?.[id]||{status:'todo',evidenceUrl:'',completedAt:''};
         const candidate={...old,...value};
         if(candidate.status==='done'&&old.status!=='done')candidate.completedAt=value.completedAt||now();
@@ -89,7 +92,7 @@
       }
     };
   }
-  root.PhdCareerState={create,clean,ids,skills:SKILLS,roles:ROLES,project:PROJECT,milestones:MILESTONES};
+  root.PhdCareerState={create,clean,ids,skills:SKILLS,roles:ROLES,project:PROJECT,milestones:MILESTONES,projects:PROJECTS,mainProject:MAIN_PROJECT};
   if(root.document)root.phdCareerProgress=create();
   if(typeof module!=='undefined')module.exports=root.PhdCareerState;
 })(typeof window==='undefined'?globalThis:window);

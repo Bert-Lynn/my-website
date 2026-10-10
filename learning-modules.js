@@ -1,0 +1,1048 @@
+// Generated public data. Edit data/learning-modules.json and run node scripts/build-career-data.cjs.
+window.LEARNING_MODULES = {
+  "version": 1,
+  "curriculumVersion": 2,
+  "intro": {
+    "title": "按这6步，做出一个小工具",
+    "steps": [
+      "从首页第1个大模块开始。点进去，就能看到学什么、做什么和具体小节。",
+      "进去后按小节看资料、做练习。基础已经会的先试一遍，不必重刷课程；选学可以先跳过。",
+      "做出本模块的小成果，再继续下一步。每周通常安排6小时、最多8小时；论文返修周最多3小时。"
+    ],
+    "note": "当前优先准备AI应用开发。软件、演示和新论文仍要逐步完成，旧练习记录不会自动变成新项目成果。"
+  },
+  "budget": {
+    "weeklyCapHours": 8,
+    "plannedWeeklyHours": 6,
+    "bufferWeeklyHours": 2,
+    "revisionWeekHours": 3,
+    "fullProductEstimatedHours": 150,
+    "summary": "每周通常6小时，最多8小时；论文返修周最多3小时。先选一条路线，选学也占同一份时间。"
+  },
+  "projectExample": {
+    "title": "AI选项比较助手",
+    "description": "你接下来会做一个小型AI应用：给它候选表和条件，让它调用查询与计算工具，检查限制，再解释比较依据。",
+    "demoSteps": [
+      "读入候选表",
+      "明确预算和偏好",
+      "调用查询与计算工具",
+      "检查条件并解释依据",
+      "保存对比报告与调用记录"
+    ],
+    "example": "第一款演示叫“航班怎么选”：用虚构航班比较费用、总时间和限制；改一个条件，看看结果与解释如何变化。",
+    "stateLabel": "已确定学习方向 · 软件尚未建成",
+    "limitations": "演示使用虚构或获准使用的数据，不查询实时票价或代订机票。固定模拟回答不能证明真实AI表现。",
+    "byTrack": {
+      "agent_engineering": "重点是读表、理解条件、工具调用、错误处理、评测和交付。预测与资源分配是选学。",
+      "decision_optimization": "保留原预测与资源分配学习路线及记录，作为需要时的扩展；不是新助手第一版的必备步骤。"
+    }
+  },
+  "progressCopy": {
+    "module": "模块学习",
+    "unit": "小节练习",
+    "assessment": "动手检查",
+    "milestone": "项目成果",
+    "unitDone": "练习做完了",
+    "moduleCompletionNote": "模块进度按小节记录。看完资料、做完小节和做好项目分别记录，不会自动互相标成完成。",
+    "assessmentNote": "按检查项如实记录自己做到了什么；这是自己的检查记录。"
+  },
+  "tracks": [
+    {
+      "id": "decision_optimization",
+      "title": "预测和分配",
+      "description": "先学会预测数量、安排有限资源，再做成可操作的小工具。",
+      "estimatedHours": 124,
+      "firstDemoEstimatedHours": 76,
+      "firstDemoMilestoneId": "ddl-m3",
+      "requiredUnitCount": 26,
+      "requiredSkillCount": 11,
+      "requiredMilestoneIds": [
+        "ddl-m0",
+        "ddl-m1",
+        "ddl-m2",
+        "ddl-m3",
+        "ddl-m4",
+        "ddl-m6"
+      ],
+      "optionalMilestoneIds": [
+        "ddl-m5"
+      ],
+      "learningEstimatedMinutes": 3300,
+      "modules": [
+        {
+          "id": "code",
+          "title": "用AI写程序",
+          "learn": "学会把要求告诉AI，再自己运行、查错和修改一小段程序。",
+          "make": "你会写出一个能读入表格、输出统计结果的小程序，并保存修改记录。",
+          "done": "换一份数据还能运行；你能自己改一个统计规则，并解释两个边界测试。",
+          "unitIds": [
+            "u-python-diagnostic",
+            "u-ai-spec",
+            "u-git",
+            "u-debug"
+          ],
+          "milestoneIds": [
+            "ddl-m0"
+          ],
+          "skillIds": [
+            "ai-code"
+          ],
+          "relatedSkillIds": [
+            "ai-code",
+            "reproducible-workflow"
+          ],
+          "prerequisiteModuleIds": [],
+          "prerequisiteLabel": "从这里开始。先做小练习，看看哪些已经会了。",
+          "learningEstimatedMinutes": 390,
+          "branches": [],
+          "diagnosticUnitIds": [
+            "u-python-diagnostic"
+          ],
+          "diagnosticNote": "先用最多90分钟做基础小练习。已经会的知识不用重看，没做出来的部分再补；仍要如实记录练习是否完成。"
+        },
+        {
+          "id": "data",
+          "title": "整理数据",
+          "learn": "学会读表格、查重复和空值、合并表格，再按小时统计租车数量。",
+          "make": "你会做出一份数据来源说明、几条统计查询和一个能看数据结果的本地预览页。",
+          "done": "正常文件能显示统计结果；坏数据指出哪一行出错；两种统计方法的结果对得上。",
+          "unitIds": [
+            "u-data-card",
+            "u-pandas",
+            "u-sql-select",
+            "u-sql-join",
+            "u-sql-window",
+            "u-api"
+          ],
+          "milestoneIds": [
+            "ddl-m1"
+          ],
+          "skillIds": [
+            "sql-data"
+          ],
+          "relatedSkillIds": [
+            "sql-data",
+            "statistics-metrics",
+            "time-forecast",
+            "api-delivery"
+          ],
+          "prerequisiteModuleIds": [
+            "code"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 750,
+          "branches": [],
+          "notes": [
+            "这里先做最小预览页：页面提交数据，程序返回结果。后面的“做成小工具”再补完整测试和启动说明。",
+            "租车记录里没有真实车队容量、未满足需求或调度成本；之后用到的资源上限和成本将由你设置，并明确标成模拟。"
+          ]
+        },
+        {
+          "id": "forecast",
+          "title": "做需求预测",
+          "learn": "学会用过去的租车记录预测后面的数量，并公平比较几种预测方法。",
+          "make": "你会做出预测结果表、不同时间段的误差对比图和一份失败原因说明。",
+          "done": "预测只用当时已知的数据；几种方法用同一批测试数据比较，表现不好也如实记录。",
+          "unitIds": [
+            "u-metrics",
+            "u-uncertainty",
+            "u-leakage",
+            "u-baselines",
+            "u-lagged",
+            "u-tscv"
+          ],
+          "milestoneIds": [
+            "ddl-m2"
+          ],
+          "skillIds": [
+            "statistics-metrics",
+            "ml-validation",
+            "time-forecast"
+          ],
+          "relatedSkillIds": [
+            "statistics-metrics",
+            "time-forecast",
+            "ml-validation"
+          ],
+          "prerequisiteModuleIds": [
+            "data"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 870,
+          "branches": [
+            {
+              "id": "train-model",
+              "title": "需要时再练模型训练",
+              "label": "选学 · 暂时可以跳过",
+              "description": "只有目标岗位要求训练框架时再学；先完成当前路线，不同时增加一个大项目。",
+              "unitIds": [
+                "u-torch"
+              ],
+              "milestoneIds": [],
+              "skillIds": [
+                "pytorch-training"
+              ],
+              "relatedSkillIds": [
+                "pytorch-training"
+              ],
+              "prerequisiteUnitIds": [
+                "u-leakage"
+              ],
+              "learningEstimatedMinutes": 240,
+              "make": "你会训练并保存一个小模型，再重新读取它生成预测。",
+              "done": "重新读取模型后能重现结果，并解释训练、验证和测试数据分别用来做什么。",
+              "budgetNote": "选学占用同一周的学习时间，不另外加课。"
+            }
+          ]
+        },
+        {
+          "id": "allocation",
+          "title": "做资源安排",
+          "learn": "学会给定总资源和每个时段的上限，比较不同安排办法。",
+          "make": "你会做出一个按时段分配模拟资源的小程序，以及平均分配、简单规则和计算方案的对比表。",
+          "done": "方案不超过预算和时段上限；无解或超时会明确提示；小例子能用手算或穷举核对。",
+          "unitIds": [
+            "u-or-mip",
+            "u-or-scheduling",
+            "u-decision-eval"
+          ],
+          "milestoneIds": [
+            "ddl-m3"
+          ],
+          "skillIds": [
+            "optimization-modeling",
+            "decision-evaluation"
+          ],
+          "relatedSkillIds": [
+            "optimization-modeling",
+            "decision-evaluation"
+          ],
+          "prerequisiteModuleIds": [
+            "forecast"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 540,
+          "branches": [],
+          "notes": [
+            "这里只做模拟资源的时段分配，不做真实航空机组排班，也不声称带来真实企业节省。"
+          ]
+        },
+        {
+          "id": "app",
+          "title": "做成小工具",
+          "learn": "学会把已有程序接成能上传表格、改参数、看结果、导出报告的本地网页。",
+          "make": "你会做出“需求预测与资源安排小工具”的本地演示包、启动说明和自动检查程序。",
+          "done": "按说明能从头启动；正常与错误输入都有检查；真实试用者能完成一次操作，问题有记录。",
+          "unitIds": [
+            "u-pytest",
+            "u-test-param",
+            "u-api-testing",
+            "u-docker",
+            "u-ci"
+          ],
+          "milestoneIds": [
+            "ddl-m4"
+          ],
+          "skillIds": [
+            "reproducible-workflow",
+            "software-testing",
+            "api-delivery"
+          ],
+          "relatedSkillIds": [
+            "software-testing",
+            "api-delivery",
+            "reproducible-workflow"
+          ],
+          "prerequisiteModuleIds": [
+            "allocation"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 510,
+          "branches": [
+            {
+              "id": "ai-tools",
+              "title": "想加AI对话时再学",
+              "label": "选学 · 暂时可以跳过",
+              "description": "先把小工具做稳定，再让AI调用已有查询、计算和报告功能；AI不能随意改计算规则。",
+              "unitIds": [
+                "u-agent-tools",
+                "u-agent-loop",
+                "u-agent-evals"
+              ],
+              "milestoneIds": [
+                "ddl-m5"
+              ],
+              "skillIds": [
+                "agent-evaluation"
+              ],
+              "relatedSkillIds": [
+                "agent-evaluation"
+              ],
+              "prerequisiteUnitIds": [
+                "u-api-testing",
+                "u-leakage"
+              ],
+              "learningEstimatedMinutes": 450,
+              "make": "你会增加一个调用现有工具的对话入口，并保存调用记录和测试结果。",
+              "done": "错误参数、越权要求、超时等情况能被挡住；模拟回答和真实模型测试分开记录。",
+              "budgetNote": "选学占用同一周的学习时间，不另外加课。"
+            }
+          ],
+          "notes": [
+            "先在自己的电脑运行，不要求付费接口或公开发布。打包方式按原项目要求选择，课程阅读不会自动证明软件已经做完。"
+          ]
+        },
+        {
+          "id": "interview",
+          "title": "准备作品面试",
+          "learn": "学会把自己做过什么讲清楚，并练习现场改代码和回答项目问题。",
+          "make": "你会整理项目说明、运行步骤、三分钟演示、失败案例，以及按真实岗位要求修改的简历材料。",
+          "done": "别人能照说明运行；你能讲清AI帮了什么、自己改了什么，以及还有哪些限制。",
+          "unitIds": [
+            "u-algo",
+            "u-interview"
+          ],
+          "milestoneIds": [
+            "ddl-m6"
+          ],
+          "skillIds": [
+            "technical-interview"
+          ],
+          "relatedSkillIds": [
+            "technical-interview"
+          ],
+          "prerequisiteModuleIds": [
+            "app"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 240,
+          "branches": [],
+          "notes": [
+            "只写实际做完、能核查的内容。学完本路线不保证录用或薪资，资格与出勤安排还需按实际岗位确认。"
+          ]
+        }
+      ],
+      "flow": {
+        "startLabel": "从第1步开始",
+        "direction": "sequential",
+        "edges": [
+          {
+            "from": "code",
+            "to": "data",
+            "label": "完成后继续"
+          },
+          {
+            "from": "data",
+            "to": "forecast",
+            "label": "完成后继续"
+          },
+          {
+            "from": "forecast",
+            "to": "allocation",
+            "label": "完成后继续"
+          },
+          {
+            "from": "allocation",
+            "to": "app",
+            "label": "完成后继续"
+          },
+          {
+            "from": "app",
+            "to": "interview",
+            "label": "完成后继续"
+          }
+        ],
+        "branchLabel": "选学：需要时再展开"
+      },
+      "budgetNote": "总时间包含学习、练习、实现和检查，是规划估计。小节用时已经包含在内，不要重复相加。"
+    },
+    {
+      "id": "agent_engineering",
+      "title": "AI工具开发",
+      "description": "用一份候选表做起，学会处理条件、调用工具、检查解释，再交付一个可测试的小型AI应用。",
+      "estimatedHours": 100,
+      "firstDemoEstimatedHours": 50,
+      "firstDemoMilestoneId": "ddl-m4",
+      "requiredUnitCount": 23,
+      "requiredSkillCount": 9,
+      "requiredMilestoneIds": [
+        "ddl-m0",
+        "ddl-m1",
+        "ddl-m4",
+        "ddl-m5",
+        "ddl-m6"
+      ],
+      "optionalMilestoneIds": [
+        "ddl-m2",
+        "ddl-m3"
+      ],
+      "learningEstimatedMinutes": 2730,
+      "modules": [
+        {
+          "id": "code",
+          "title": "用AI写程序",
+          "learn": "学会把要求告诉AI，再自己运行、查错和修改一小段程序。",
+          "make": "你会写出一个能读入表格、输出统计结果的小程序，并保存修改记录。",
+          "done": "换一份数据还能运行；你能自己改一个统计规则，并解释两个边界测试。",
+          "unitIds": [
+            "u-python-diagnostic",
+            "u-ai-spec",
+            "u-git",
+            "u-debug"
+          ],
+          "milestoneIds": [
+            "ddl-m0"
+          ],
+          "skillIds": [
+            "ai-code"
+          ],
+          "relatedSkillIds": [
+            "ai-code",
+            "reproducible-workflow"
+          ],
+          "prerequisiteModuleIds": [],
+          "prerequisiteLabel": "从这里开始。先做小练习，看看哪些已经会了。",
+          "learningEstimatedMinutes": 390,
+          "branches": [],
+          "diagnosticUnitIds": [
+            "u-python-diagnostic"
+          ],
+          "diagnosticNote": "先用最多90分钟做基础小练习。已经会的知识不用重看，没做出来的部分再补；仍要如实记录练习是否完成。"
+        },
+        {
+          "id": "data",
+          "title": "整理数据",
+          "learn": "学会读表格、查缺失和重复，把候选项与使用者的条件整理清楚。",
+          "make": "你会先完成原表格练习，再为选项助手做出候选表说明、数据检查程序和本地预览页。",
+          "done": "正常表格能读入；坏字段指出具体位置；预算和必需条件有明确字段，虚构数据也有标注。",
+          "unitIds": [
+            "u-data-card",
+            "u-pandas",
+            "u-sql-select",
+            "u-sql-join",
+            "u-sql-window",
+            "u-api"
+          ],
+          "milestoneIds": [
+            "ddl-m1"
+          ],
+          "skillIds": [
+            "sql-data"
+          ],
+          "relatedSkillIds": [
+            "sql-data",
+            "statistics-metrics",
+            "time-forecast",
+            "api-delivery"
+          ],
+          "prerequisiteModuleIds": [
+            "code"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 750,
+          "branches": [],
+          "notes": [
+            "原数据课程仍以原公开数据学习；航班候选表另行建立，不替换原练习结果。",
+            "先检查候选项、币种、费用项和时间单位，再把条件交给后面的工具。"
+          ]
+        },
+        {
+          "id": "check-results",
+          "title": "检查结果",
+          "learn": "学会核对计算、保留测试问题，并说明结果哪里可能不可靠。",
+          "make": "你会完成原误差与测试数据练习，再为费用、时间和条件检查整理一份已知答案的小表。",
+          "done": "小表的计算能手工核对；测试问题与调整程序用的问题分开；错误和不能判断的情况有说明。",
+          "unitIds": [
+            "u-metrics",
+            "u-uncertainty",
+            "u-leakage"
+          ],
+          "milestoneIds": [],
+          "skillIds": [
+            "statistics-metrics",
+            "ml-validation"
+          ],
+          "relatedSkillIds": [
+            "statistics-metrics",
+            "time-forecast",
+            "ml-validation"
+          ],
+          "prerequisiteModuleIds": [
+            "data"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 390,
+          "branches": [
+            {
+              "id": "deeper-forecast",
+              "title": "想自己做预测时再学",
+              "label": "选学 · 暂时可以跳过",
+              "description": "在“检查结果”的基础上，补预测方法和按时间测试；不影响先做AI工具路线。",
+              "unitIds": [
+                "u-baselines",
+                "u-lagged",
+                "u-tscv"
+              ],
+              "milestoneIds": [
+                "ddl-m2"
+              ],
+              "skillIds": [
+                "time-forecast"
+              ],
+              "relatedSkillIds": [
+                "time-forecast",
+                "ml-validation"
+              ],
+              "prerequisiteUnitIds": [
+                "u-metrics",
+                "u-uncertainty",
+                "u-leakage"
+              ],
+              "learningEstimatedMinutes": 480,
+              "make": "你会做出几种预测方法的结果对比表。",
+              "done": "所有预测方法按相同的时间切分比较，预测时没有用到未来信息。",
+              "budgetNote": "选学占用同一周的学习时间，不另外加课。"
+            },
+            {
+              "id": "deeper-allocation",
+              "title": "想自己做分配时再学",
+              "label": "选学 · 暂时可以跳过",
+              "description": "先完成上面的预测选学，再做模拟资源分配和方案比较。",
+              "unitIds": [
+                "u-or-mip",
+                "u-or-scheduling",
+                "u-decision-eval"
+              ],
+              "milestoneIds": [
+                "ddl-m3"
+              ],
+              "skillIds": [
+                "optimization-modeling",
+                "decision-evaluation"
+              ],
+              "relatedSkillIds": [
+                "optimization-modeling",
+                "decision-evaluation"
+              ],
+              "prerequisiteUnitIds": [
+                "u-tscv",
+                "u-metrics"
+              ],
+              "learningEstimatedMinutes": 540,
+              "make": "你会做出满足预算和时段上限的模拟分配程序。",
+              "done": "小例子的结果可核对；无解、超时和模拟成本都有清楚说明。",
+              "budgetNote": "选学占用同一周的学习时间，不另外加课。"
+            },
+            {
+              "id": "train-model",
+              "title": "需要时再练模型训练",
+              "label": "选学 · 暂时可以跳过",
+              "description": "只有目标岗位要求训练框架时再学；先完成当前路线，不同时增加一个大项目。",
+              "unitIds": [
+                "u-torch"
+              ],
+              "milestoneIds": [],
+              "skillIds": [
+                "pytorch-training"
+              ],
+              "relatedSkillIds": [
+                "pytorch-training"
+              ],
+              "prerequisiteUnitIds": [
+                "u-leakage"
+              ],
+              "learningEstimatedMinutes": 240,
+              "make": "你会训练并保存一个小模型，再重新读取它生成预测。",
+              "done": "重新读取模型后能重现结果，并解释训练、验证和测试数据分别用来做什么。",
+              "budgetNote": "选学占用同一周的学习时间，不另外加课。"
+            }
+          ],
+          "notes": [
+            "原预测误差、抽样和防泄漏练习仍保留。迁移到AI助手时，另查计算正确、条件是否满足和解释是否有依据。"
+          ]
+        },
+        {
+          "id": "app",
+          "title": "做成小工具",
+          "learn": "学会把读表、条件输入、查询与计算接成一个可操作的本地网页。",
+          "make": "你会为AI选项比较助手做出表单版：上传样例、填写条件、比较结果并导出报告。",
+          "done": "不使用AI也能按按钮完成正确计算；正常与错误输入都有自动检查；按启动说明可重新运行。",
+          "unitIds": [
+            "u-pytest",
+            "u-test-param",
+            "u-api-testing",
+            "u-docker",
+            "u-ci"
+          ],
+          "milestoneIds": [
+            "ddl-m4"
+          ],
+          "skillIds": [
+            "reproducible-workflow",
+            "software-testing",
+            "api-delivery"
+          ],
+          "relatedSkillIds": [
+            "software-testing",
+            "api-delivery",
+            "reproducible-workflow"
+          ],
+          "prerequisiteModuleIds": [
+            "check-results"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 510,
+          "branches": [],
+          "notes": [
+            "先做好确定的计算与条件检查，再接AI。不要靠预写的推荐文案冒充工具调用。",
+            "本模块原接口和测试课程继续使用；新助手代码和运行结果另存。"
+          ]
+        },
+        {
+          "id": "ai-tools",
+          "title": "让AI调用工具",
+          "learn": "学会让AI读懂要求、选择查询和计算工具，再根据真实结果检查条件并解释。",
+          "make": "你会给助手增加真实工具调用、错误处理、调用记录和固定测试；航班比较是第一款演示。",
+          "done": "费用与时间来自工具计算；限制有逐项检查；真实AI与模拟测试分开，错误请求不会被写成成功。",
+          "unitIds": [
+            "u-agent-tools",
+            "u-agent-loop",
+            "u-agent-evals"
+          ],
+          "milestoneIds": [
+            "ddl-m5"
+          ],
+          "skillIds": [
+            "agent-evaluation"
+          ],
+          "relatedSkillIds": [
+            "agent-evaluation"
+          ],
+          "prerequisiteModuleIds": [
+            "app"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 450,
+          "branches": [],
+          "notes": [
+            "先用模拟回答调通连接，再使用获准的模型验证真实调用；模型费用和公开部署另行确认。",
+            "保留表单版，比较人工点按钮和AI调用的结果。原课程工具例子与新助手工具各自保留记录。"
+          ]
+        },
+        {
+          "id": "interview",
+          "title": "准备作品面试",
+          "learn": "学会把自己做过什么讲清楚，并练习现场改代码和回答项目问题。",
+          "make": "你会整理选项助手实际完成的代码、运行说明、三分钟航班演示和错误案例，用来讲清自己的工作。",
+          "done": "别人能照说明运行；你能讲清AI帮了什么、自己改了什么，以及还有哪些限制。",
+          "unitIds": [
+            "u-algo",
+            "u-interview"
+          ],
+          "milestoneIds": [
+            "ddl-m6"
+          ],
+          "skillIds": [
+            "technical-interview"
+          ],
+          "relatedSkillIds": [
+            "technical-interview"
+          ],
+          "prerequisiteModuleIds": [
+            "ai-tools"
+          ],
+          "prerequisiteLabel": "先做前一个模块；已经会的部分可以先检查，再按需补学。",
+          "learningEstimatedMinutes": 240,
+          "branches": [],
+          "notes": [
+            "只写实际做完、能核查的内容。学完本路线不保证录用或薪资，资格与出勤安排还需按实际岗位确认。"
+          ]
+        }
+      ],
+      "flow": {
+        "startLabel": "从第1步开始",
+        "direction": "sequential",
+        "edges": [
+          {
+            "from": "code",
+            "to": "data",
+            "label": "完成后继续"
+          },
+          {
+            "from": "data",
+            "to": "check-results",
+            "label": "完成后继续"
+          },
+          {
+            "from": "check-results",
+            "to": "app",
+            "label": "完成后继续"
+          },
+          {
+            "from": "app",
+            "to": "ai-tools",
+            "label": "完成后继续"
+          },
+          {
+            "from": "ai-tools",
+            "to": "interview",
+            "label": "完成后继续"
+          }
+        ],
+        "branchLabel": "选学：需要时再展开"
+      },
+      "budgetNote": "总时间包含学习、练习、实现和检查，是规划估计。小节用时已经包含在内，不要重复相加。",
+      "newProjectNote": "各课仍保留原资料与旧练习身份。新助手实践另存结果，旧课和旧项目完成记录不会自动变成新软件完成。"
+    }
+  ],
+  "unitLabels": {
+    "u-python-diagnostic": {
+      "title": "先试一段Python程序",
+      "description": "先做最多90分钟的小练习，看看读文件、循环、函数和查错哪些已经会了。",
+      "kind": "diagnostic",
+      "kindLabel": "先试再补学",
+      "technicalTitle": "Python按需诊断与函数修复",
+      "progressId": "u-python-diagnostic",
+      "estimatedMinutes": 90,
+      "exercise": "最多用90分钟写一个读表程序：按类别统计数量；遇到空文件、缺失值或重复记录时给出提示。可以让AI起草，但自己改一次分组规则。",
+      "done": "程序跑过正常和错误输入；留下两条边界检查；能解释分组怎么算。未做出来的部分先记下，不必重刷整门课。"
+    },
+    "u-ai-spec": {
+      "title": "让AI按要求写代码",
+      "description": "写清输入、输出和不能做的事，再检查AI改了哪些代码。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "AI辅助开发：规格→差异审查→测试",
+      "progressId": "u-ai-spec",
+      "estimatedMinutes": 90,
+      "exercise": "给AI写清读表程序的输入、输出和错误处理要求。检查它新增的依赖与文件操作，故意放入一个空值或分组错误，再定位并修复。",
+      "done": "保存修改前后的代码和运行结果；能指出AI改了哪里、错误为什么发生，以及自己怎样确认修好了。"
+    },
+    "u-git": {
+      "title": "保存修改，撤销错误",
+      "description": "用Git记录每次修改，练习找回一次改坏的版本。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "Git：记录、分支与撤销一次错误",
+      "progressId": "u-git",
+      "estimatedMinutes": 120,
+      "exercise": "用Git提交一次程序修改；再故意把一个计算改错并提交，随后撤销这个错误。保留修改前后实际运行结果。",
+      "done": "能在Git历史中找到修改和撤销操作，解释每次改了什么；撤销后程序恢复正常。"
+    },
+    "u-debug": {
+      "title": "找到程序哪里出错",
+      "description": "读报错、加日志，定位出错的位置后再修改。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "调试：定位错误而非只重试提示词",
+      "progressId": "u-debug",
+      "estimatedMinutes": 90,
+      "exercise": "给读表程序放入一个可重复的错误，用报错、日志或调试器找出位置；修复后，用原来的失败输入再运行一次。",
+      "done": "留下失败输入、报错位置、修改内容和修复后的结果；能解释原因，而不只是重新向AI提问。"
+    },
+    "u-data-card": {
+      "title": "弄清数据能说明什么",
+      "description": "记录数据从哪里来、每列是什么意思、使用许可和缺少的信息。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "数据卡与许可：明确标签、来源及不可验证事项",
+      "progressId": "u-data-card",
+      "estimatedMinutes": 90,
+      "exercise": "读原资料中的公开租车数据，写一页来源说明：来源与许可、主要字段、数量之间的关系，以及缺少的容量和成本信息。迁移到新助手时，另写候选表说明并标明哪些行是虚构的。",
+      "done": "原数据说明含来源、许可和限制；指出同期两项数量之和就是目标数量，不能拿它们提前预测答案。新助手数据说明另存，不能拿旧说明冒充。"
+    },
+    "u-pandas": {
+      "title": "用Python整理表格",
+      "description": "用pandas分组统计和合并表格，检查是否多算或漏算。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "pandas：按粒度聚合与合并校验",
+      "progressId": "u-pandas",
+      "estimatedMinutes": 150,
+      "exercise": "用pandas按类别计算总量、平均值和行数；再合并一张类别说明表。故意加入重复键，检查合并前后行数是否异常。",
+      "done": "结果能用小表手算核对；重复键不会悄悄造成重复统计；保留代码和检查结果。"
+    },
+    "u-sql-select": {
+      "title": "筛选数据并分组统计",
+      "description": "用SQL挑出需要的行，按时段或类别计算数量。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "SQL：SELECT与GROUP BY",
+      "progressId": "u-sql-select",
+      "estimatedMinutes": 120,
+      "exercise": "在本地DuckDB读取小表，写查询筛选行，再按类别计算总量、平均值和行数；与Python统计结果核对。",
+      "done": "查询可以重新运行；每组结果与小表手算或Python结果一致，包括数量为零的情况。"
+    },
+    "u-sql-join": {
+      "title": "把两张表正确拼起来",
+      "description": "按对应的键合并表格，检查重复行和没有匹配的数据。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "SQL：JOIN、主键粒度与重复计数",
+      "progressId": "u-sql-join",
+      "estimatedMinutes": 120,
+      "exercise": "准备数据表与类别表，分别做内连接和左连接；加入没有记录的类别和重复键，观察结果差别。",
+      "done": "能保留没有记录的类别，并说明它的空值如何处理；重复键造成的多行被发现，汇总没有重复计算。"
+    },
+    "u-sql-window": {
+      "title": "比较前后时段的数据",
+      "description": "取上一时段的值和过去一段时间的平均值，避免混入未来数据。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "SQL：窗口、排名和过去窗口",
+      "progressId": "u-sql-window",
+      "estimatedMinutes": 150,
+      "exercise": "按时间排序，查每周数量较高的时段、上一时段值和过去窗口的平均值；加入跨日和缺失时段，用pandas核对。",
+      "done": "两种写法的结果相同；能说明窗口包含哪些行，确认没有把未来的数据算进过去平均值。"
+    },
+    "u-metrics": {
+      "title": "算清楚预测差了多少",
+      "description": "比较平均绝对误差和均方根误差，留意数量为零时的计算问题。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "预测指标：MAE、RMSE与零需求陷阱",
+      "progressId": "u-metrics",
+      "estimatedMinutes": 120,
+      "exercise": "用原预测练习的小数据，手算并编程计算平均绝对误差和均方根误差，再试一次包含零值的数据。迁移到选项助手时，另为费用和时间计算准备已知正确答案。",
+      "done": "手算和程序计算一致；能说明零值时哪些百分比指标会出问题。费用和时间检查另存，不把预测误差当成助手整体正确率。"
+    },
+    "u-uncertainty": {
+      "title": "判断结果差别是否可靠",
+      "description": "比较独立模拟场景的结果变化范围，说明哪些结论不能直接推广。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "不确定性：置信区间与独立性假设",
+      "progressId": "u-uncertainty",
+      "estimatedMinutes": 120,
+      "exercise": "用独立生成的模拟场景比较两种方案，计算平均成本差和变化范围；再说明为什么不能把时间相关的逐行误差当成独立样本。",
+      "done": "保留场景、计算代码和区间结果；说明抽样假设，没有把模拟差异写成真实业务或因果收益。"
+    },
+    "u-leakage": {
+      "title": "别让模型提前看到答案",
+      "description": "先分训练和测试数据，再做处理，防止未来信息混入。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "sklearn：先切分、后拟合，防止数据泄漏",
+      "progressId": "u-leakage",
+      "estimatedMinutes": 150,
+      "exercise": "把原模型练习的数据先分成训练与测试部分；在测试部分放入极端值，检查预处理只使用训练数据；加一条未来时间戳检查。",
+      "done": "测试值不影响训练时的处理参数；未来数据混入时会报错。做AI助手评测时另留一批未用于调提示词的测试问题。"
+    },
+    "u-baselines": {
+      "title": "先做最简单的预测",
+      "description": "先用上一次或上一个周期的数量作预测，作为比较起点。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "先建立朴素基线，再考虑复杂模型",
+      "progressId": "u-baselines",
+      "estimatedMinutes": 120,
+      "exercise": "用同一段历史数据分别做上一次数值、历史平均值和上一周期数值三种预测，并保存结果。",
+      "done": "三种方法使用同一训练段与测试段；预测结果和误差可核对。此项属于预测选学，不是选项助手第一版的完成条件。"
+    },
+    "u-lagged": {
+      "title": "用过去的数据训练预测",
+      "description": "比较简单方法、线性模型和树模型，检查哪些输入在预测时可用。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "从滞后特征到树模型与预测区间",
+      "progressId": "u-lagged",
+      "estimatedMinutes": 180,
+      "exercise": "用过去时段的数值训练线性与树模型，与简单预测比较；做一次随机切分和时间切分的对照。",
+      "done": "写清每个输入在预测时是否已知；正式比较使用时间切分，保留效果较差的结果和原因。"
+    },
+    "u-tscv": {
+      "title": "按时间反复检查预测",
+      "description": "用前面的数据预测后面，换几个时间窗口检查结果。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "滚动验证与真实可用特征",
+      "progressId": "u-tscv",
+      "estimatedMinutes": 180,
+      "exercise": "按时间设置至少三个滚动测试窗口，最后一段连续数据单独留作最终测试；逐项检查一小时和一天后预测需要的输入。",
+      "done": "保存每次切分和对应结果；没有用未来真实天气或尚未发生的数量生成正式预测。"
+    },
+    "u-or-mip": {
+      "title": "把资源限制写进程序",
+      "description": "用变量表示分配数量，写清预算、上限和希望改善的目标。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "OR-Tools：变量、约束、目标与求解状态",
+      "progressId": "u-or-mip",
+      "estimatedMinutes": 180,
+      "exercise": "写一个很小的模拟分配问题：定义每个时段的数量、总预算、时段上限和目标；求解后打印实际状态。",
+      "done": "能逐项解释变量与限制；用手算或穷举核对小例子；无解、可行和已证明最优没有混为一谈。"
+    },
+    "u-or-scheduling": {
+      "title": "安排各时段的有限资源",
+      "description": "把排班例子改成模拟容量分配，检查每个时段的限制。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "OR-Tools：有限资源的排班/容量约束",
+      "progressId": "u-or-scheduling",
+      "estimatedMinutes": 180,
+      "exercise": "把原排班例子改成模拟时段分配，只加入能解释的预算与时段上限；试一次资源充足和一次限制冲突的输入。",
+      "done": "输出满足每条限制，或明确报告无解；模拟设定写清楚，没有写成真实航空排班。"
+    },
+    "u-decision-eval": {
+      "title": "比较哪种安排更合适",
+      "description": "在同样需求和限制下比较不同安排，报告短缺、闲置和模拟成本。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "从预测误差到决策成本：自拟对照实验",
+      "progressId": "u-decision-eval",
+      "estimatedMinutes": 180,
+      "exercise": "在同一组留出需求与限制下比较平均分配、简单贪心规则和优化方案，列出资源用量、短缺、闲置及模拟总成本。",
+      "done": "小实例可穷举核对；每种方案使用同样的需求与限制；即使优化方案没更好，也留下结果与原因。"
+    },
+    "u-pytest": {
+      "title": "给程序加自动检查",
+      "description": "写几个正常和出错的例子，让程序自动检查结果。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "pytest：第一个测试、异常和fixture",
+      "progressId": "u-pytest",
+      "estimatedMinutes": 120,
+      "exercise": "给读表、统计或费用计算函数写自动测试：正常输入、空输入、非法数值各一个；文件测试使用临时目录。",
+      "done": "运行测试能看到通过结果；故意改错计算时测试会失败，修复后恢复通过，且没有改坏原始数据。"
+    },
+    "u-test-param": {
+      "title": "多换几组输入测试",
+      "description": "一次检查多组边界情况，防止改好一处又弄坏另一处。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "pytest：参数化边界与回归测试",
+      "progressId": "u-test-param",
+      "estimatedMinutes": 90,
+      "exercise": "把重复测试整理成一组输入与期望结果，覆盖零值、缺失、重复、错误格式和超时；每修好一个错误就保留对应测试。",
+      "done": "一次命令能跑完这组测试；至少一个旧错误再次出现时会被检查发现。"
+    },
+    "u-api": {
+      "title": "让页面接收和检查输入",
+      "description": "用FastAPI连接页面与程序，输入不合法时返回明确的错误。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "FastAPI：类型化CSV/情景请求与明确错误",
+      "progressId": "u-api",
+      "estimatedMinutes": 120,
+      "exercise": "用FastAPI做一个本地入口：接收表格或条件，检查字段和数值范围，正常时返回结构化结果，错误时返回具体原因。",
+      "done": "正常输入能得到结果；缺少字段、非法数值和错误格式都有明确提示；默认只在本机运行。"
+    },
+    "u-api-testing": {
+      "title": "检查页面调用是否正常",
+      "description": "自动检查正常请求、错误参数和程序没准备好的情况。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "API回归：同样输入应返回可检查的结果",
+      "progressId": "u-api-testing",
+      "estimatedMinutes": 90,
+      "exercise": "用TestClient自动发送正常请求、缺字段请求、非法参数，以及程序尚未准备好的请求；检查返回内容和错误状态。",
+      "done": "每种请求都有预期结果；失败不会伪装成成功；同一有效输入能得到可检查的一致计算结果。"
+    },
+    "u-docker": {
+      "title": "换个环境也能运行",
+      "description": "了解Docker打包方式，写清安装和启动程序需要什么。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "Dockerfile：在新环境重跑同一个演示",
+      "progressId": "u-docker",
+      "estimatedMinutes": 120,
+      "exercise": "为小程序写一份Dockerfile，说明基础环境、依赖和启动命令；构建并运行样例，核对输入文件位置和输出。",
+      "done": "能说明每条打包指令的用途；在新环境按记录复现一次样例。若尚未成功运行，先留未完成并记录报错。"
+    },
+    "u-ci": {
+      "title": "每次改动后自动检查",
+      "description": "配置代码修改后的自动测试，并保留失败时的报错。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "CI：安装、测试和保存失败线索",
+      "progressId": "u-ci",
+      "estimatedMinutes": 90,
+      "exercise": "先在本地用一条命令跑完测试，再在已有授权的代码仓库配置相同的自动检查，故意制造一次失败并查看日志。",
+      "done": "记录一次失败及修复后的通过结果；没有授权仓库时保留本地结果，仓库检查仍注明未完成。"
+    },
+    "u-agent-tools": {
+      "title": "规定AI能用哪些工具",
+      "description": "写清每个工具能做什么、需要哪些输入，以及哪些操作不允许。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "Agent工具：输入输出schema与工具边界",
+      "progressId": "u-agent-tools",
+      "estimatedMinutes": 120,
+      "exercise": "按原资料为工具写用途、输入、输出和允许的操作。新助手另定义查询候选项、计算总费用与总时间、检查条件等工具；不让AI执行任意代码。",
+      "done": "缺字段、错误类型和不允许的操作会被拒绝；每个工具可单独运行，输出能追溯到输入数据。新工具测试单独保存。"
+    },
+    "u-agent-loop": {
+      "title": "让AI完成一次工具调用",
+      "description": "练习解析请求、调用工具、读取结果和及时停止。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "最小Agent循环：保留确定性入口",
+      "progressId": "u-agent-loop",
+      "estimatedMinutes": 150,
+      "exercise": "先用原课程的模拟输出跑通一次“解析请求→调用工具→读结果→停止”。新助手再接候选查询、费用计算和条件检查；具备获准使用的模型后，另测真实AI是否会选对工具。",
+      "done": "保留实际调用记录；工具报错、重复调用或超时会停止并提示。模拟回答和真实模型运行分别标注，没接真实模型就不写已验证AI效果。"
+    },
+    "u-agent-evals": {
+      "title": "测试AI调用会不会出错",
+      "description": "用固定例子检查正常请求、错误参数、越权要求和超时。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "Agent观察与评测：成功率、工具错误和安全失败",
+      "progressId": "u-agent-evals",
+      "estimatedMinutes": 180,
+      "exercise": "准备20条开发问题和30条另外保留的测试问题，覆盖正常、无数据、恶意指令、非法参数、重复请求和超时；比较直接表单与AI调用。",
+      "done": "逐条记录条件是否满足、计算是否正确、错误是否被拦住，以及耗时和失败原因；预留问题没有用于调提示词，真实与模拟结果分开统计。"
+    },
+    "u-algo": {
+      "title": "练习查找、聚合和去重",
+      "description": "做几道小题，解释程序步骤、边界情况和计算量。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "面试基础：数组、哈希与复杂度",
+      "progressId": "u-algo",
+      "estimatedMinutes": 120,
+      "exercise": "各做一道分组去重、查找边界和取前几项的小题，换一份输入再运行；口述用了哪些步骤，并加边界测试。",
+      "done": "结果可核对；能解释数据变多时计算量怎样变化，且不依赖AI直接给出最后的修改。"
+    },
+    "u-interview": {
+      "title": "讲清楚项目和自己的工作",
+      "description": "准备演示和答辩，说明结果、错误、AI帮助和本人修改。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "项目答辩：让他人能复现和判断贡献",
+      "progressId": "u-interview",
+      "estimatedMinutes": 120,
+      "exercise": "为实际做过的程序准备三分钟演示和十分钟问答，说明数据、计算、错误处理、AI帮助与本人修改；请一位真实同学照说明试运行。",
+      "done": "说明和演示反映真实完成情况；保留试运行反馈，并能现场改一个小条件。还没人试用时，该项继续记为待完成。"
+    },
+    "u-torch": {
+      "title": "需要时学训练小模型",
+      "description": "用PyTorch完成训练、保存、重新读取和生成预测。",
+      "kind": "learning",
+      "kindLabel": "学习与练习",
+      "technicalTitle": "岗位需要时补PyTorch训练闭环",
+      "progressId": "u-torch",
+      "estimatedMinutes": 240,
+      "exercise": "只有岗位需要时才做：训练一个小模型，划分训练与测试数据，保存参数，再重新读取并生成预测。",
+      "done": "读取后的模型能重现结果；能说明数据划分、训练步骤与保存位置。此项仍为选学，不因新软件改名而完成。"
+    }
+  },
+  "legacyMaterials": {
+    "label": "需要时补基础",
+    "description": "原有课程和已保存的学习记录仍保留。缺什么再查，不需要把所有课程再学一遍。"
+  },
+  "glossary": {
+    "Git": "保存和找回代码版本的工具",
+    "SQL": "从表格里筛选、合并和统计数据的语言",
+    "pandas": "在Python中整理表格的工具",
+    "API": "页面或程序向另一段程序提交请求、拿回结果的接口",
+    "FastAPI": "用Python编写上述接口的工具",
+    "pytest": "自动检查程序结果的工具",
+    "Docker": "把程序及运行环境打包的工具",
+    "CI": "每次改代码后自动运行检查",
+    "Agent": "能按请求调用指定工具的AI助手",
+    "mock": "预设的模拟回答，用于测试连接和错误处理",
+    "PyTorch": "训练模型时使用的工具",
+    "数据泄漏": "训练或调参时提前用了本不该知道的答案或未来信息"
+  }
+};

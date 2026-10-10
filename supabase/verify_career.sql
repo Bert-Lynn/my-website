@@ -52,7 +52,8 @@ begin
     end;
   end loop;
   select * into r from public.phd_save_career_state(1,'{"selectedRole":"forecasting_ml","milestone:demand-decision-lab:ddl-m0":{"status":"todo","evidenceUrl":"","completedAt":""}}');
-  assert r.applied and r.career_state_version=2 and not r.career_state ? 'skill:ai-code','career reset failed';
+  assert r.applied and r.career_state_version=2 and r.career_state->'skill:ai-code'=sample->'skill:ai-code','partial milestone reset erased omitted skill evidence';
+  assert r.career_state->'milestone:demand-decision-lab:ddl-m0'='{"status":"todo","evidenceUrl":"","completedAt":""}'::jsonb,'explicit milestone reset failed';
   select * into p from public.phd_roadmap_progress where user_id=current_setting('phd.career.test.a')::uuid;
   assert p.progress='{"sep-python":false}' and p.version=2 and p.lessons='{"python-basics":"done"}' and p.lessons_version=2 and p.completion_dates_version=1,'career reset changed legacy data';
   begin

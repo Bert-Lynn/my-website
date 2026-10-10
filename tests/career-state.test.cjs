@@ -44,8 +44,8 @@ function backend() {
       if (hold?.field === field) { hold.received(); await hold.promise; }
       const row = rows.get(user) || blank();
       if (row[version] !== args.expected_version) return { data: [{ applied: false, ...copy(row) }] };
-      // Actual lesson/date RPCs preserve omitted keys; explicit false is the undo tombstone.
-      const merged = ['lessons', 'completion_dates'].includes(field) ? { ...row[field], ...copy(args[arg]) } : copy(args[arg]);
+      // Lesson/date/career RPCs preserve omitted keys. Explicit values express undo/reset.
+      const merged = ['lessons', 'completion_dates', 'career_state'].includes(field) ? { ...row[field], ...copy(args[arg]) } : copy(args[arg]);
       const next = { ...row, [field]: merged, [version]: row[version] + 1 };
       rows.set(user, next); writes.push({ user, field, version: next[version] });
       return { data: [{ applied: true, ...copy(next) }] };
@@ -69,7 +69,7 @@ function backend() {
   const b = backend();
   let sync = createSync({ ids: ['a', 'b'], lessonIds: ['l1', 'l2', 'u-sql-select'], careerApi: api, storage, client: b.client });
   await sync.start();
-  assert.deepEqual(api.read(), { selectedRole: 'decision_optimization', skills: {}, milestones: {} });
+  assert.deepEqual(api.read(), { selectedRole: 'agent_engineering', skills: {}, milestones: {} });
   assert.deepEqual(sync.snapshot(), { a: true, b: false });
   assert.deepEqual(sync.taskCompletedAtSnapshot(), {}, 'legacy true dates stay unknown');
   assert.equal(api.setRole('invalid'), false);
@@ -116,15 +116,46 @@ function backend() {
   assert.equal(api.setMilestone('wrong-project', 'ddl-m0', { status: 'done' }), false);
   assert.equal(api.setMilestone('demand-decision-lab', 'ddl-m7', { status: 'done' }), false);
   assert.equal(api.setMilestone('demand-decision-lab', 'ddl-m0', { evidenceUrl: 'javascript:alert(1)' }), false);
+  assert.equal(state.mainProject, 'ai-choice-assistant');
+  assert.deepEqual(state.projects['demand-decision-lab'], state.milestones, 'legacy registry fields keep their original meaning');
+  assert.deepEqual(state.projects['ai-choice-assistant'], Array.from({ length: 6 }, (_, i) => 'aca-m' + i));
+  assert.equal(api.setMilestone('ai-choice-assistant', 'ddl-m0', { status: 'doing' }), false, 'old IDs cannot be relabelled as new achievements');
+  assert.equal(api.setMilestone('demand-decision-lab', 'aca-m0', { status: 'doing' }), false, 'project namespace is enforced both ways');
+  assert.equal(api.setMilestone('ai-choice-assistant', 'aca-m6', { status: 'doing' }), false);
+  assert.equal(api.setMilestone('ai-choice-assistant', 'aca-m0', { status: 'doing' }), true);
+  assert.equal(api.read().milestones['demand-decision-lab']['ddl-m0'].status, 'todo');
+  assert.equal(api.read().milestones['ai-choice-assistant']['aca-m0'].status, 'doing');
+  assert.equal(api.setMilestone('ai-choice-assistant', 'aca-m0', { status: 'done', evidenceUrl: 'https://example.com/new-assistant-evidence' }), true);
+  const newProjectDate = api.read().milestones['ai-choice-assistant']['aca-m0'].completedAt;
+  assert(newProjectDate);
+  api.setMilestone('demand-decision-lab', 'ddl-m0', { status: 'done', evidenceUrl: 'https://example.com/old-lab-evidence' });
+  const oldProjectDate = api.read().milestones['demand-decision-lab']['ddl-m0'].completedAt;
+  timestamp = '2026-10-12T10:00:00.000Z';
+  api.setMilestone('ai-choice-assistant', 'aca-m0', { status: 'done' });
+  assert.equal(api.read().milestones['ai-choice-assistant']['aca-m0'].completedAt, newProjectDate, 'repeat save preserves the new project actual date');
+  api.setMilestone('ai-choice-assistant', 'aca-m0', { status: 'todo' });
+  assert.equal(api.read().milestones['ai-choice-assistant']['aca-m0'].completedAt, '');
+  assert.equal(api.read().milestones['demand-decision-lab']['ddl-m0'].completedAt, oldProjectDate, 'new-project undo leaves old-project completion intact');
+  api.setMilestone('ai-choice-assistant', 'aca-m0', { status: 'done', evidenceUrl: 'https://example.com/new-assistant-evidence' });
+  assert.notEqual(api.read().milestones['ai-choice-assistant']['aca-m0'].completedAt, newProjectDate, 'redo records its new actual completion time');
+  assert.equal(api.read().skills[id].level, 'untested', 'new project completion never grants skill mastery');
   const guest = copy(api.read());
   await sync.signIn('A', 'test-only'); await delay(); await sync.syncNow();
   assert.deepEqual(api.read().skills, {}, 'login starts with account state, not guest skills');
-  assert.equal(api.read().selectedRole, 'decision_optimization', 'guest selected role does not leak to account');
+  assert.equal(api.read().selectedRole, 'agent_engineering', 'new account uses the Agent default without leaking the guest selected role');
   assert.equal(b.rows.size, 0, 'login does not upload guest progress');
   assert.equal(sync.status().canImport, true);
   assert.equal(sync.importGuest(), true); await delay(); await sync.syncNow();
   assert.deepEqual(api.read(), guest, 'explicit import preserves role, skill and milestone records');
   assert.equal(b.rows.get('A').career_state['skill:' + id].level, 'untested');
+  assert.equal(b.rows.get('A').career_state['milestone:ai-choice-assistant:aca-m0'].status, 'done');
+  assert.equal(b.rows.get('A').career_state['milestone:demand-decision-lab:ddl-m0'].status, 'done');
+  const newRemoteRecord = copy(b.rows.get('A').career_state['milestone:ai-choice-assistant:aca-m0']);
+  const oldClientPayload = Object.fromEntries(Object.entries(b.rows.get('A').career_state).filter(([key]) => !key.startsWith('milestone:ai-choice-assistant:')));
+  const oldClientResponse = await b.client.rpc('phd_save_career_state', { expected_version: b.rows.get('A').career_state_version, next_career_state: oldClientPayload });
+  assert.equal(oldClientResponse.data[0].applied, true);
+  assert.deepEqual(b.rows.get('A').career_state['milestone:ai-choice-assistant:aca-m0'], newRemoteRecord, 'omission by an older client cannot delete new-project evidence');
+  await sync.syncNow();
   assert.equal(b.rows.get('A').progress.a, true);
   assert.equal(b.rows.get('A').lessons['u-sql-select'], 'done', 'new unit progress imports through the existing private lesson stream');
   sync.setLesson('u-sql-select', null); await sync.syncNow();
@@ -133,6 +164,7 @@ function backend() {
   assert.equal(b.rows.get('A').completion_dates['task:a'], undefined, 'guest import does not fabricate historical dates');
   b.failures.add('career_state');
   api.setSkill(id, { level: 'practicing', rubric: rubric(2), evidenceNote: 'offline edit' });
+  api.setMilestone('ai-choice-assistant', 'aca-m1', { status: 'done', evidenceUrl: 'https://example.com/offline-new-project' });
   await sync.syncNow();
   assert.equal(sync.status().mode, 'error', 'successful task/lesson streams cannot hide career failure');
   assert.equal(JSON.parse(storage.getItem(CAREER + ':account:A')).dirty, true);
@@ -141,8 +173,10 @@ function backend() {
   sync = createSync({ ids: ['a', 'b'], lessonIds: ['l1', 'l2', 'u-sql-select'], careerApi: reloadedApi, storage, client: b.client });
   await sync.start(); await delay();
   assert.equal(reloadedApi.read().skills[id].evidenceNote, 'offline edit', 'offline private record survives reload');
+  assert.equal(reloadedApi.read().milestones['ai-choice-assistant']['aca-m1'].status, 'done', 'new-project offline evidence survives reload');
   b.failures.clear(); await sync.syncNow();
   assert.equal(b.rows.get('A').career_state['skill:' + id].evidenceNote, 'offline edit');
+  assert.equal(b.rows.get('A').career_state['milestone:ai-choice-assistant:aca-m1'].status, 'done');
   const originalLessons = copy(b.rows.get('A').lessons);
   const originalCareer = copy(b.rows.get('A').career_state);
   b.rows.get('A').progress = { a: false }; b.rows.get('A').version += 1;
@@ -161,6 +195,7 @@ function backend() {
   assert.deepEqual(reloadedApi.read(), guest, 'logout restores isolated guest career records');
   await sync.signIn('B', 'test-only'); await delay(); await sync.syncNow();
   assert.deepEqual(reloadedApi.read().skills, {}, 'second account does not inherit first account or guest skills');
+  assert.deepEqual(reloadedApi.read().milestones, {}, 'second account never inherits either project from the first account or guest');
   reloadedApi.setSkill(id, { level: 'untested' }); await sync.syncNow();
   sync.importGuest(); await sync.syncNow();
   assert.equal(reloadedApi.read().skills[id].level, 'untested', 'explicit account reset wins over imported guest skill');

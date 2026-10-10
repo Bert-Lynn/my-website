@@ -10,7 +10,8 @@ function app(){
    return [];
  },addEventListener(){}},addEventListener(name,fn){(listeners[name]||=[]).push(fn)},dispatchEvent(event){for(const fn of listeners[event.type]||[])fn(event)},CustomEvent:class{constructor(type,{detail}={}){this.type=type;this.detail=detail}},setInterval(){},confirm:()=>true,clearTimeout,setTimeout,PHD_CLOUD_CONFIG:{enabled:false},location:{hash:''},history:{pushState(){}}};
  ctx.window=ctx;vm.createContext(ctx);
- for(const file of ['course-lessons.js','career-curriculum.js','internship-data.js','career-state.js','goal-ui.js','lesson-ui.js','cloud-sync.js','career-ui.js','app.js'])vm.runInContext(fs.readFileSync(path.join(dir,file),'utf8'),ctx);
+ for(const file of ['course-lessons.js','career-curriculum.js','learning-modules.js','project-outline.js','internship-data.js','career-state.js','goal-ui.js','lesson-ui.js','cloud-sync.js','career-ui.js','app.js'])vm.runInContext(fs.readFileSync(path.join(dir,file),'utf8'),ctx);
+ ctx.AppNavigation.open('learn/data');
  return {ctx,nodes,unit(id){return unitInputs.find(b=>b.dataset.unitCheck===id)},evaluate:s=>vm.runInContext(s,ctx)};
 }
 (async()=>{

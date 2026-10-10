@@ -32,7 +32,7 @@ function setup() {
     LessonUI: { stats: () => ({ done: 0, total: 53 }), render() {}, openLesson() {} }
   };
   ctx.window = ctx; vm.createContext(ctx);
-  for (const file of ['course-lessons.js', 'career-curriculum.js', 'internship-data.js', 'career-state.js', 'cloud-sync.js', 'career-ui.js']) {
+  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'internship-data.js', 'career-state.js', 'cloud-sync.js', 'career-ui.js']) {
     vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), ctx, { filename: file });
   }
   const sync = ctx.PhdCloud.create({ ids: ['task-a'], config: { enabled: false }, storage: ctx.localStorage });
@@ -46,8 +46,8 @@ const submit = form => form.onsubmit({ preventDefault() {}, currentTarget: form 
   const h = setup(), { ctx, get, forms } = h;
   await h.sync.start();
   assert.equal(ctx.CareerUI.stats().skillsPassed, 0);
-  assert.equal(ctx.CareerUI.stats().skillsTotal, 11);
-  assert(get('#careerToday').innerHTML.includes('先验证'));
+  assert.equal(ctx.CareerUI.stats().skillsTotal, 9);
+  assert(get('#careerToday').innerHTML.includes('按这 6 步学'));
   assert(!get('#careerToday').innerHTML.includes('关键能力已有自评证据'));
   for (const unsafe of ['javascript:alert(1)', 'data:text/html,test', 'file:///tmp/test', 'https://user:pass@example.com']) assert.equal(ctx.CareerUI.safeURL(unsafe), '');
   assert.equal(ctx.CareerUI.escape('</textarea><script>alert("x")</script>'), '&lt;/textarea&gt;&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;');
@@ -79,7 +79,8 @@ const submit = form => form.onsubmit({ preventDefault() {}, currentTarget: form 
   assert(html.includes('rel="noopener noreferrer"'), 'external evidence links isolate opener');
   assert(html.includes('实操通过 · 自评') && html.includes('不是招聘通过率'));
   assert.equal(ctx.CareerUI.stats().skillsPassed, 1);
-  assert(get('#careerToday').innerHTML.includes('reproducible-workflow'), 'diagnostic pass advances to the next skill, not redundant foundation lessons');
+  assert(get('#careerToday').innerHTML.includes('data-open-module="data" aria-current="step"'), 'diagnostic pass advances to the next module, not redundant foundation lessons');
+  assert(get('#careerToday').innerHTML.includes('自查通过，可继续'), 'diagnostic bypass is labelled self-check-based continuation, not lessons completed');
   const date = skill.assessedAt;
   submit(form); assert.equal(ctx.phdCareerProgress.read().skills['ai-code'].assessedAt, date, 'repeat submit cannot reset assessment date');
   form.formValues = { criterion: ['ai-code-c1'], evidenceUrl: '', evidenceNote: 'Still practicing and recording the remaining gaps.' };

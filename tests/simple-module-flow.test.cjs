@@ -1,0 +1,178 @@
+const assert = require('node:assert/strict');
+const { app } = require('./helpers/app-harness.cjs');
+const plain = value => JSON.parse(JSON.stringify(value));
+const sameNode = (actual, expected, message = 'same draft DOM node is retained') => assert(actual === expected, message);
+const trace = label => { if (process.env.QA_TRACE) console.log('CHECKPOINT', label, Math.round(process.memoryUsage().heapUsed / 1048576) + ' MiB heap'); };
+const click = node => { assert(node, 'expected clickable control exists'); assert.equal(typeof node.onclick, 'function', 'control has a real handler'); return node.onclick({ preventDefault() {}, currentTarget: node }); };
+const change = (node, checked) => { assert(node); node.checked = checked; assert.equal(typeof node.onchange, 'function'); node.onchange({ currentTarget: node, target: node }); };
+const submit = form => form.onsubmit({ preventDefault() {}, currentTarget: form });
+const chooseRole = (h, id) => { const select = h.query('[data-select-role]'); select.value = id; select.onchange({ currentTarget: select, target: select }); };
+const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.dataset.openModule;
+
+(async () => {
+  trace('start');
+  let h = app(), { ctx } = h;
+  await ctx.AppProgress.sync().start();
+  assert.equal(ctx.phdCareerProgress.read().selectedRole, 'agent_engineering', 'fresh underlying state defaults to the approved Agent route');
+  assert.equal(ctx.CareerUI.role().id, 'agent_engineering'); assert.equal(ctx.CareerUI.stats().lessons.total, 23);
+  assert.equal(ctx.CareerUI.stats().skillsTotal, 9);
+  chooseRole(h, 'decision_optimization');
+  assert.equal(h.evaluate('tasks.length'), 47); assert.equal(ctx.LessonUI.ids.length, 53); assert.equal(ctx.CAREER_CURRICULUM.learningUnits.length, 30);
+  assert.equal(h.all('.module-flow [data-open-module]').length, 6, 'homepage has six whole-module buttons');
+  assert.equal(h.all('.flow-connector').length, 5, 'six modules connected into an ordered flow');
+  assert(h.query('.flow-goal').textContent.includes('AI选项比较助手'));
+  assert(h.query('.flow-goal').textContent.includes('尚未建成'));
+  for (const label of ['软件：', 'Demo：', '论文：']) assert(h.query('.flow-goal').textContent.includes(label), 'end goal distinguishes ' + label);
+  assert(h.query('.proposed-project').textContent.includes('航班怎么选'));
+  assert(h.query('.proposed-project').textContent.includes('不是实时') || h.query('.proposed-project').textContent.includes('不能算真实AI'));
+  assert.equal(h.query('.proposed-project').querySelectorAll('[data-milestone-form]').length, 0, 'new proposal cannot inherit old project completion controls');
+  assert.equal(h.query('.legacy-project-plan').open, false);
+  assert.equal(h.query('.legacy-project-plan').querySelectorAll('[data-milestone-form]').length, 7, 'all prior project records remain available');
+  assert(h.query('.legacy-project-plan').textContent.includes('不算作上方新项目的完成'));
+  for (const source of ctx.PROJECT_OUTLINE.paperSourceLinks) assert(h.query('.proposal-research').querySelector('a[href="' + source.url + '"]'));
+  assert.equal(currentFlowId(h), 'code');
+  assert.equal(ctx.CareerUI.stats().lessons.total, 26);
+  for (const module of ctx.CareerUI.modules()) {
+    click(h.query('.module-flow [data-open-module="' + module.id + '"]'));
+    assert.equal(ctx.AppNavigation.current(), 'resources'); assert.equal(ctx.location.hash, '#learn/' + module.id);
+    assert.equal(ctx.CareerUI.currentModule().id, module.id);
+    assert.deepEqual(h.all('#careerLearning [data-unit-check]').map(node => node.dataset.unitCheck), plain(module.unitIds), module.id + ': exact ordered lesson checkboxes');
+    assert.equal(h.all('.page-panel').filter(node => !node.hidden).length, 1, 'only one page panel visible');
+    for (const id of module.unitIds) {
+      const section = h.query('[data-module-unit="' + id + '"]'), unit = ctx.CAREER_CURRICULUM.learningUnits.find(unit => unit.id === id);
+      assert(section); assert(section.querySelector('a[href="' + unit.url + '"]'), id + ': exact selected source URL');
+      assert(section.textContent.includes('动手做什么') && section.textContent.includes('什么时候勾选'), id + ': practice and completion criteria are inside the lesson');
+      assert.equal(typeof section.querySelector('[data-unit-check]').onchange, 'function');
+    }
+  }
+  trace('all module source links');
+  assert.equal(ctx.AppProgress.sync().lessonSnapshot()['u-sql-select'], undefined, 'opening lessons never marks completion');
+  assert.equal(ctx.CareerUI.stats().skillsPassed, 0);
+  const requiredTotal = ctx.CareerUI.stats().lessons.total;
+  for (const module of ctx.CareerUI.modules()) for (const branch of module.branches || []) {
+    ctx.AppNavigation.open('learn/' + module.id); click(h.query('.module-optional [data-open-module="' + branch.id + '"]'));
+    assert(h.query('.module-breadcrumb').textContent.includes('选修'));
+    assert.deepEqual(h.all('#careerLearning [data-unit-check]').map(node => node.dataset.unitCheck), plain(branch.unitIds));
+    assert.equal(ctx.CareerUI.stats().lessons.total, requiredTotal, 'optional branches excluded from core count');
+  }
+  ctx.AppNavigation.open('learn/data'); change(h.query('[data-unit-check="u-sql-select"]'), true);
+  const timestamp = ctx.AppProgress.sync().lessonCompletedAtSnapshot()['u-sql-select']; assert(timestamp);
+  assert.equal(ctx.CareerUI.moduleStats(ctx.CareerUI.currentModule()).done, 1);
+  assert.equal(ctx.CareerUI.stats().lessons.done, 1);
+  assert.equal(ctx.CareerUI.stats().skillsPassed, 0); assert.equal(ctx.LessonUI.stats().done, 0); assert.equal(h.evaluate('tally(tasks).done'), 0);
+  chooseRole(h, 'agent_engineering');
+  assert.equal(ctx.CareerUI.stats().lessons.total, 23); assert.equal(ctx.CareerUI.stats().lessons.done, 1);
+  assert.deepEqual(plain(ctx.CareerUI.modules().map(module => module.id)), ['code', 'data', 'check-results', 'app', 'ai-tools', 'interview']);
+  assert.equal(h.query('[data-unit-check="u-sql-select"]').checked, true, 'shared unit progress survives role switch');
+  chooseRole(h, 'forecasting_ml'); assert.equal(ctx.CareerUI.stats().lessons.total, 26, 'forecasting role retains the complete decision route');
+  chooseRole(h, 'decision_optimization');
+  const memory = h.memory; h.destroy(); h = app({ memory, hash: '#learn/data' }); ctx = h.ctx; await ctx.AppProgress.sync().start();
+  assert.equal(h.query('[data-unit-check="u-sql-select"]').checked, true, 'deep-link reload restores saved checked state');
+  assert.equal(ctx.AppProgress.sync().lessonCompletedAtSnapshot()['u-sql-select'], timestamp);
+  change(h.query('[data-unit-check="u-sql-select"]'), false);
+  assert.equal(ctx.AppProgress.sync().lessonCompletedAtSnapshot()['u-sql-select'], undefined, 'undo removes completion date');
+  h.destroy(); h = app({ memory, hash: '#learn/data' }); ctx = h.ctx; await ctx.AppProgress.sync().start();
+  assert.equal(h.query('[data-unit-check="u-sql-select"]').checked, false, 'undo survives reload');
+  assert.equal(ctx.AppProgress.sync().lessonSnapshot()['u-sql-select'], false);
+  h.destroy();
+
+  trace('electives and unit progress reload');
+  // A diagnostic may move the recommendation, but cannot invent lesson completion or certification.
+  h = app(); ctx = h.ctx; await ctx.AppProgress.sync().start(); ctx.AppNavigation.open('learn/code');
+  click(h.query('.module-try [data-assess]'));
+  assert.equal(ctx.AppNavigation.current(), 'assessments');
+  let form = h.query('#assessmentForm'); assert.equal(form.dataset.skillId, 'ai-code');
+  for (const criterion of form.querySelectorAll('[name="criterion"]')) criterion.checked = true;
+  submit(form); assert.equal(ctx.CareerUI.stats().skillsPassed, 0, 'checkboxes without evidence never pass');
+  form.querySelector('[name="evidenceNote"]').value = 'Independent QA fixture: changed the rule, ran boundary cases, and recorded observed outputs.';
+  submit(form);
+  assert.equal(ctx.phdCareerProgress.read().skills['ai-code'].verification, 'self_assessed');
+  assert.equal(currentFlowId(h), 'data', 'passing diagnostic moves next action past introductory module');
+  assert.equal(ctx.CareerUI.moduleStats(ctx.CareerUI.modules()[0]).done, 0);
+  assert.equal(ctx.CareerUI.stats().lessons.done, 0); assert.equal(ctx.LessonUI.stats().done, 0); assert.equal(h.evaluate('tally(tasks).done'), 0);
+  assert(h.query('.module-flow').textContent.includes('自查通过，可继续'));
+  form = h.query('#assessmentForm'); form.querySelector('[name="criterion"]').checked = false; submit(form);
+  assert.equal(currentFlowId(h), 'code', 'revoking diagnostic pass restores the honest next action');
+  h.destroy();
+
+  trace('diagnostic pass and revocation');
+  // Dirty assessment navigation must preserve the actual draft, route, and browser-visible hash on Cancel.
+  h = app(); ctx = h.ctx; await ctx.AppProgress.sync().start();
+  chooseRole(h, 'decision_optimization');
+  ctx.AppNavigation.open('learn/data'); ctx.CareerUI.openSkill('sql-data');
+  form = h.query('#assessmentForm'); form.querySelector('[name="evidenceNote"]').value = 'UNSAVED QA DRAFT'; form.oninput();
+  h.setConfirmation(false);
+  click(h.query('[data-learn-skill="sql-data"]'));
+  assert.equal(ctx.AppNavigation.current(), 'assessments'); assert.equal(ctx.location.hash, '#assessments');
+  sameNode(h.query('#assessmentForm'), form); assert.equal(form.querySelector('[name="evidenceNote"]').value, 'UNSAVED QA DRAFT');
+  assert.equal(ctx.CareerUI.openSkill('ai-code'), false); assert.equal(h.query('#assessmentForm').dataset.skillId, 'sql-data');
+  assert.equal(ctx.LessonUI.openLesson('python-basics'), false, 'cancelled legacy jump does not mutate learning archive');
+  ctx.history.back(); assert.equal(ctx.location.hash, '#assessments'); assert.equal(ctx.AppNavigation.current(), 'assessments');
+  sameNode(h.query('#assessmentForm'), form);
+  ctx.CareerUI.render(); sameNode(h.query('#assessmentForm'), form, 'background render keeps dirty form DOM');
+  h.setConfirmation(true); ctx.AppNavigation.open('learn/data');
+  assert.equal(ctx.location.hash, '#learn/data');
+  ctx.AppNavigation.open('learn/app'); ctx.history.back();
+  assert.equal(ctx.location.hash, '#learn/data'); assert.equal(ctx.CareerUI.currentModule().id, 'data');
+  ctx.history.forward(); assert.equal(ctx.location.hash, '#learn/app'); assert.equal(ctx.CareerUI.currentModule().id, 'app');
+  assert.equal(ctx.LessonUI.openLesson('python-basics'), true); assert(h.query('#legacyLearningArchive').open);
+  assert(h.query('[data-course="python"]').open, 'old exact-lesson jump opens its course');
+  for (const legacyPage of ['roles', 'skills', 'projects', 'overview', 'execution', 'timeline', 'outcomes', 'storage', 'resources']) {
+    assert.equal(ctx.AppNavigation.open(legacyPage), true); assert.equal(ctx.AppNavigation.current(), legacyPage);
+  }
+  assert(h.query('[data-page="roles"]') || h.query('[data-open-page="roles"]'), 'original job area remains in navigation');
+  assert(h.query('#careerRoles').textContent.includes('全部 10 家公司'));
+  assert(h.query('#careerSkills').textContent.includes('其他方向能力'));
+  trace('assessment history and legacy navigation');
+  ctx.AppNavigation.open('projects');
+  const projectForm = h.query('[data-project-id="demand-decision-lab"]');
+  projectForm.querySelector('[name="milestoneEvidence"]').value = 'https://example.com/unsaved-qa-draft'; projectForm.oninput();
+  h.setConfirmation(false); chooseRole(h, 'agent_engineering');
+  assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'cancelled role change keeps the actual route');
+  sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'cancelled role change retains unsaved project form');
+  click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
+  assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'proposed-route button also honors Cancel with an unsaved project draft');
+  sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm);
+  const originalSetRole = ctx.phdCareerProgress.setRole;
+  ctx.phdCareerProgress.setRole = () => false; h.setConfirmation(true);
+  click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
+  assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'failed direction save keeps the existing route');
+  sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'failed direction save retains unsaved input');
+  ctx.phdCareerProgress.setRole = originalSetRole; h.setConfirmation(false);
+  const realSetRole = ctx.phdCareerProgress.setRole;
+  ctx.phdCareerProgress.setRole = () => false; h.setConfirmation(true);
+  click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
+  assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'failed proposed-route save preserves actual role');
+  sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'failed proposed-route save preserves draft DOM');
+  assert(h.query('#announcer').textContent.includes('未成功保存'));
+  ctx.CareerUI.render(); sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'failed route save leaves draft dirty');
+  ctx.phdCareerProgress.setRole = realSetRole; h.setConfirmation(false);
+  assert.equal(ctx.AppNavigation.open('today'), false); assert.equal(ctx.location.hash, '#projects');
+  assert.equal(ctx.CareerUI.openSkill('ai-code'), false, 'project draft also guards cross-page self-check links');
+  assert.equal(projectForm.querySelector('[name="milestoneEvidence"]').value, 'https://example.com/unsaved-qa-draft');
+  h.setConfirmation(true); click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
+  assert.equal(ctx.CareerUI.role().id, 'agent_engineering', 'explicitly accepted route switch succeeds');
+  assert.equal(ctx.CareerUI.stats().lessons.total, 23);
+  assert.equal(ctx.CareerUI.stats().milestonesDone, 0);
+  h.destroy();
+
+  trace('project cancel and failed/successful role saves');
+  const catalog = require('../data/career-curriculum.json');
+  const completedLessons = Object.fromEntries(catalog.tracks.find(track => track.id === 'decision_optimization').requiredLearningUnitIds.map(id => [id, 'done']));
+  h = app({ memory: { 'lin-ai-phd-roadmap-lessons-v1': JSON.stringify(completedLessons), 'lin-ai-phd-roadmap-career-v1': JSON.stringify({ selectedRole: 'decision_optimization' }) } }); ctx = h.ctx; await ctx.AppProgress.sync().start();
+  assert.equal(ctx.phdCareerProgress.read().selectedRole, 'decision_optimization', 'saved prior direction is not overwritten by the new default');
+  assert.equal(ctx.CareerUI.stats().lessons.done, 26);
+  assert(ctx.CareerUI.modules().every(module => ctx.CareerUI.moduleStats(module).complete), 'all core checkboxes complete the study route');
+  assert.equal(ctx.CareerUI.stats().skillsPassed, 0); assert.equal(ctx.CareerUI.stats().milestonesDone, 0);
+  assert.equal(ctx.LessonUI.stats().done, 0); assert.equal(h.evaluate('tally(tasks).done'), 0);
+  assert.equal(Object.keys(ctx.AppProgress.sync().lessonCompletedAtSnapshot()).length, 0, 'legacy completed values without dates do not invent dates on reload');
+  assert(h.query('.flow-continue').textContent.includes('回看'), 'fully studied route offers review rather than a false unfinished prerequisite');
+  h.destroy();
+
+  trace('all units complete without mastery');
+  h = app({ now: '2031-01-01T00:00:00Z', hash: '#resources' }); ctx = h.ctx; await ctx.AppProgress.sync().start();
+  assert.equal(ctx.CareerUI.stats().lessons.done, 0); assert.equal(ctx.CareerUI.stats().skillsPassed, 0);
+  assert.equal(h.evaluate('tally(tasks).done'), 0); assert.equal(currentFlowId(h), 'code', 'calendar passage alone cannot complete modules or advance the route');
+  h.destroy();
+  console.log('PASS simple-module full-app handlers: six clickable modules, exact lessons/practice/source links, electives, 26/23 role counts, independent progress, undo/reload, honest diagnostic skip/revocation, dirty-form cancel/history, legacy navigation, and no calendar-derived completion. Browser layout is a separate check.');
+})().catch(error => { console.error(error); process.exitCode = 1; });

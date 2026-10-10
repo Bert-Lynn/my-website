@@ -635,9 +635,21 @@ function toggle(id){
   const input=document.querySelector('#check-'+id);if(source?.dataset?.id===id){if(input)input.focus({preventScroll:true});else document.querySelector('#pendingOnly').focus({preventScroll:true})}
   document.querySelector('#announcer').textContent=(progress[id]?'已完成：':'已恢复待办：')+tasks.find(t=>t.id===id).title+(saved?'，进度已记录。':'，未能保存。');
 }
-const pageNames={today:['今天，先迈出一步。','连接目标岗位、能力缺口与下一次交付。','YOUR NEXT STEP'],roles:['先看清，要去哪里。','真实岗位要求与薪资证据，决定哪些能力值得投入。','TARGET OPPORTUNITIES'],skills:['能力，需要拿出证据。','先诊断，再补齐短板；学习记录与验收结果分开。','SKILL MAP'],resources:['按缺口学，按小节走。','已有基础先诊断通过，新知识直接连接项目实践。','LEARNING PATH'],assessments:['做一次，证明自己会。','对照量表完成独立任务，留下可复查的结果。','ASSESSMENT & EVIDENCE'],projects:['一个作品，串起整条能力链。','从需求预测到优化决策，完成能演示、能复现的端到端产品。','BUILD IN PUBLIC · KEEP DATA PRIVATE'],overview:['博士研究，持续向前。','原有论文、研究任务与期限完整保留。','DOCTORAL ROADMAP'],timeline:['重要交付，一目了然。','计划月份与实际完成日期分开记录。','MILESTONES'],outcomes:['论文与成果。','跟随原有研究线推进，不用课程完成数替代研究产出。','RESEARCH OUTPUTS'],storage:['让进度，安心留下。','本机记录与账号记录相互隔离；登录不会自动上传本机内容。','PROGRESS & PRIVACY']};
-function setPage(next,historyMode=true){if(next!==page&&window.CareerUI?.canNavigate&&!window.CareerUI.canNavigate())return;if(!['execution',...Object.keys(pageNames)].includes(next))next='today';page=next;if(historyMode&&window.history?.pushState&&window.location?.hash!=='#'+next)window.history.pushState({page:next},'','#'+next);render();document.querySelector('#pageTitle').scrollIntoView({behavior:'smooth',block:'start'})}
-window.AppNavigation={open:setPage,current:()=>page};
+const pageNames={today:['我的学习路线','先看最后要做什么，再点一个模块开始学。','学习首页'],roles:['实习岗位参考','查看岗位要求和薪资资料。具体机会以投递时为准。','更多内容'],skills:['详细自查记录','这页保留全部技能记录。日常学习从首页的大模块进入。','详细记录'],resources:['这一模块，按顺序学','每次展开一小节，看资料、做练习，再记录完成。','正在学习'],assessments:['检查自己会不会','照着题目做一次，再按实际结果保存记录。','练习自查'],projects:['我的项目','把各模块的练习，接成一个能操作的小工具。','更多内容'],overview:['博士计划','原来的论文、研究任务和时间安排都在这里。','更多内容'],timeline:['研究时间表','计划时间和实际完成时间分开记录。','博士计划'],outcomes:['论文与作品','查看原来的论文和项目任务。','博士计划'],storage:['进度与账号','不登录也能在本机保存。登录后可以同步到自己的账号。','保存进度']};
+let activeRoute='today';
+function setPage(next,historyMode=true){
+  const requested=String(next||'today'),moduleId=requested.startsWith('learn/')?requested.slice(6):null;
+  const target=moduleId?'resources':['execution',...Object.keys(pageNames)].includes(requested)?requested:'today';
+  if((target!==page||requested!==activeRoute)&&window.CareerUI?.canNavigate&&!window.CareerUI.canNavigate()){
+    if(!historyMode&&window.history?.pushState&&window.location?.hash!=='#'+activeRoute)window.history.pushState({page:activeRoute},'','#'+activeRoute);
+    return false;
+  }
+  page=target;activeRoute=moduleId?'learn/'+moduleId:target;const more=document.getElementById('moreNavigation');if(more)more.open=false;
+  if(target==='resources')window.CareerUI?.selectModule(moduleId);
+  if(historyMode&&window.history?.pushState&&window.location?.hash!=='#'+activeRoute)window.history.pushState({page:activeRoute},'','#'+activeRoute);
+  render();document.querySelector('#pageTitle').scrollIntoView({behavior:'auto',block:'start'});document.querySelector('#pageTitle').focus?.({preventScroll:true});return true;
+}
+window.AppNavigation={open:setPage,current:()=>page,route:()=>activeRoute};
 window.addEventListener('popstate',()=>setPage((window.location?.hash||'#today').slice(1),false));
 function setMonth(month){activeMonth=month;view='month';page='execution';render()}
 function navigateMonth(direction){const [y,m]=activeMonth.split('.').map(Number),d=new Date(y,m-1+direction,1);setMonth(d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0'))}
@@ -648,7 +660,7 @@ function render(){
   window.CareerUI?.render();
   const phdPages=['overview','execution','timeline','outcomes'],skillPages=['skills','resources','assessments'];
   document.body?.setAttribute('data-current-page',page);
-  document.querySelector('#skillTabs').hidden=!skillPages.includes(page);
+  document.querySelector('#skillTabs').hidden=!['skills','assessments'].includes(page);
   document.querySelector('#researchTabs').hidden=!phdPages.includes(page);
   document.querySelector('.journey').hidden=!['execution','timeline'].includes(page);
   document.querySelector('.progress-sidebar').hidden=page!=='execution';
@@ -657,11 +669,11 @@ function render(){
   document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.setAttribute('aria-current',b.dataset.openPage===page?'page':'false'));
   const all=tally(tasks),now=currentMonth(),backlog=carriedTasks(view==='stage'?stages[selectedStage].start:activeMonth),mt=monthTasks(activeMonth),ms=tally(mt);
   document.querySelector('#todayLabel').textContent=now.replace('.','年')+'月 · 上海时间';
-  document.querySelector('#pageTitle').textContent=page==='execution'?(view==='stage'?stages[selectedStage].title+' · 阶段任务':activeMonth===now?'本月执行计划':activeMonth.replace('.','年')+'月执行计划'):(pageNames[page]?.[0]||'成长工作台');
+  document.querySelector('#pageTitle').textContent=page==='resources'?(window.CareerUI?.currentModule()?.title||'模块学习'):page==='execution'?(view==='stage'?stages[selectedStage].title+' · 阶段任务':activeMonth===now?'本月执行计划':activeMonth.replace('.','年')+'月执行计划'):(pageNames[page]?.[0]||'成长工作台');
   document.querySelector('#pageSubtitle').textContent=page==='execution'?'先补齐未完成的任务，再推进本月安排。':pageNames[page]?.[1]||'';
   document.querySelector('#pageEyebrow').textContent=pageNames[page]?.[2]||'RESEARCH EXECUTION';
   document.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==page);
-  const primaryPage=skillPages.includes(page)?'skills':phdPages.includes(page)?'overview':page;
+  const primaryPage=page==='resources'?'resources':['skills','assessments'].includes(page)?'skills':phdPages.includes(page)?'overview':page;
   document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===primaryPage)));
   document.querySelector('#overallPct').innerHTML=all.pct+'<span>%</span>';
   document.querySelector('#overallCount').textContent=all.done+' / '+tasks.length+' 项已完成';
@@ -714,10 +726,10 @@ document.querySelector('#cloudEntry').onclick=()=>setPage('storage');
 document.querySelector('#pendingOnly').onchange=e=>{pendingOnly=e.target.checked;render()};
 document.querySelector('#resetBtn').onclick=()=>{if(confirm('确定清空全部 '+tasks.length+' 项任务的勾选进度吗？此操作无法撤销。')){if(cloudSync){cloudSync.resetAll();progress=cloudSync.snapshot()}else{progress={};save()}render();document.querySelector('#announcer').textContent='任务进度已重置，课程记录保持不变。'}};
 window.GoalUI?.init({tasks,progress:()=>progress,sync:()=>cloudSync,toggle,openPage:setPage,openArea:area=>{view=area;setPage("execution")},taskMarkup});
-window.LessonUI?.init({openCourses:()=>setPage('resources'),sync:()=>cloudSync});
+window.LessonUI?.init({openCourses:()=>{if(setPage('resources')===false)return false;const archive=document.getElementById('legacyLearningArchive');if(archive)archive.open=true;return true},sync:()=>cloudSync});
 window.CareerUI?.init({openPage:setPage});
 document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.openPage));
-if(window.location?.hash&&['execution',...Object.keys(pageNames)].includes(window.location.hash.slice(1)))page=window.location.hash.slice(1);
+if(window.location?.hash){const route=window.location.hash.slice(1);if(route.startsWith('learn/')){page='resources';activeRoute=route;window.CareerUI?.selectModule(route.slice(6));}else if(['execution',...Object.keys(pageNames)].includes(route)){page=route;activeRoute=route;}}
 render();
 window.addEventListener('focus',refreshMonth);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshMonth()});
