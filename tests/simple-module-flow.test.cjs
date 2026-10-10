@@ -167,7 +167,7 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
   assert.equal(ctx.CareerUI.stats().skillsPassed, 0); assert.equal(ctx.CareerUI.stats().milestonesDone, 0);
   assert.equal(ctx.LessonUI.stats().done, 0); assert.equal(h.evaluate('tally(tasks).done'), 0);
   assert.equal(Object.keys(ctx.AppProgress.sync().lessonCompletedAtSnapshot()).length, 0, 'legacy completed values without dates do not invent dates on reload');
-  assert(h.query('.flow-continue').textContent.includes('回看'), 'fully studied route offers review rather than a false unfinished prerequisite');
+  assert(h.query('.next-action-panel').textContent.includes('回看'), 'fully studied route offers review rather than a false unfinished prerequisite');
   h.destroy();
 
   trace('all units complete without mastery');
