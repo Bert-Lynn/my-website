@@ -606,7 +606,8 @@ function refreshMonth(){
   const now=currentMonth();
   if(now!==observedMonth){if(view!=="stage" && activeMonth===observedMonth) activeMonth=now;observedMonth=now;render()}
 }
-let pendingOnly=false,page='overview',selectedStage=0,cloudSync=null;
+let pendingOnly=false,page='today',selectedStage=0,cloudSync=null;
+window.AppProgress={sync:()=>cloudSync};
 const stages=[
   {start:'2026.10',end:'2027.01',title:'基础与实验',desc:'编程基础、数据管线与可信基线'},
   {start:'2027.02',end:'2027.03',title:'首篇投稿',desc:'完成论文 A 与第一个成熟项目'},
@@ -620,7 +621,7 @@ function taskMarkup(t){
   const carried=t.month<activeMonth&&!progress[t.id];
   const lesson=(window.COURSE_LESSONS?.courses||[]).flatMap(c=>c.lessons).find(l=>l.taskId===t.id);
   const timing=(t.originalMonth!==t.month?'原计划 '+t.originalMonth+' → ':'')+'计划 '+t.month;
-  return '<article id="task-'+t.id+'" class="task-item category-'+t.category+' '+(progress[t.id]?'done':'')+'"><label class="task-check"><input id="check-'+t.id+'" type="checkbox" data-id="'+t.id+'" aria-label="完成：'+t.title+'" '+(progress[t.id]?'checked':'')+'></label><div class="task-copy"><label class="task-title" for="check-'+t.id+'">'+t.title+'</label><p class="task-outcome"><span>交付：</span>'+t.outcome+'</p><div class="task-meta"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+(t.optional?'<i class="optional-tag">方向选修</i>':'')+(carried?'<i class="carry-tag">顺延自 '+t.month+'</i>':'<span>计划 '+t.month+'</span>')+'</div><details class="task-detail"><summary>任务说明</summary><p>'+t.detail+'</p><small>'+timing+(progress[t.id]?' · 完成：'+(window.GoalUI?.date(cloudSync?.taskCompletedAtSnapshot?.()[t.id])||'历史完成日期未记录'):'')+'</small></details>'+(lesson?'<button class="task-lessons-button" data-task-lessons="'+lesson.id+'">查看对应的逐节课程 →</button>':'')+'</div>'+(t.url?'<a class="task-link" href="'+t.url+'" target="_blank" rel="noreferrer" aria-label="打开'+t.title+'学习资料">资料 →</a>':'')+'</article>';
+  return '<article id="task-'+t.id+'" class="task-item category-'+t.category+' '+(progress[t.id]?'done':'')+'"><label class="task-check"><input id="check-'+t.id+'" type="checkbox" data-id="'+t.id+'" aria-label="完成：'+t.title+'" '+(progress[t.id]?'checked':'')+'></label><div class="task-copy"><label class="task-title" for="check-'+t.id+'">'+t.title+'</label><p class="task-outcome"><span>交付：</span>'+t.outcome+'</p><div class="task-meta"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+((t.optional||window.CAREER_CURRICULUM?.taskOverrides?.[t.id]?.optional)?'<i class="optional-tag">当前主线选修</i>':'')+(carried?'<i class="carry-tag">顺延自 '+t.month+'</i>':'<span>计划 '+t.month+'</span>')+'</div><details class="task-detail"><summary>任务说明</summary><p>'+t.detail+'</p><small>'+timing+(progress[t.id]?' · 完成：'+(window.GoalUI?.date(cloudSync?.taskCompletedAtSnapshot?.()[t.id])||'历史完成日期未记录'):'')+'</small></details>'+(lesson?'<button class="task-lessons-button" data-task-lessons="'+lesson.id+'">查看对应的逐节课程 →</button>':'')+'</div>'+(t.url?'<a class="task-link" href="'+t.url+'" target="_blank" rel="noreferrer" aria-label="打开'+t.title+'学习资料">资料 →</a>':'')+'</article>';
 }
 function taskGroup(title,a,isBacklog=false){const s=tally(a),shown=pendingOnly?a.filter(t=>!progress[t.id]):a;if(!shown.length)return '';return '<section class="task-month '+(isBacklog?'is-backlog':'')+'"><div class="task-month-head"><strong>'+title+'</strong><span>'+s.done+' / '+s.total+' 已完成</span></div>'+shown.map(taskMarkup).join('')+'</section>'}
 function pct(stream){return tally(tasks.filter(t=>t.stream===stream)).pct}
@@ -634,19 +635,34 @@ function toggle(id){
   const input=document.querySelector('#check-'+id);if(source?.dataset?.id===id){if(input)input.focus({preventScroll:true});else document.querySelector('#pendingOnly').focus({preventScroll:true})}
   document.querySelector('#announcer').textContent=(progress[id]?'已完成：':'已恢复待办：')+tasks.find(t=>t.id===id).title+(saved?'，进度已记录。':'，未能保存。');
 }
-function setPage(next){page=next;render();document.querySelector('#pageTitle').scrollIntoView({behavior:'smooth',block:'start'})}
+const pageNames={today:['今天，先迈出一步。','连接目标岗位、能力缺口与下一次交付。','YOUR NEXT STEP'],roles:['先看清，要去哪里。','真实岗位要求与薪资证据，决定哪些能力值得投入。','TARGET OPPORTUNITIES'],skills:['能力，需要拿出证据。','先诊断，再补齐短板；学习记录与验收结果分开。','SKILL MAP'],resources:['按缺口学，按小节走。','已有基础先诊断通过，新知识直接连接项目实践。','LEARNING PATH'],assessments:['做一次，证明自己会。','对照量表完成独立任务，留下可复查的结果。','ASSESSMENT & EVIDENCE'],projects:['一个作品，串起整条能力链。','从需求预测到优化决策，完成能演示、能复现的端到端产品。','BUILD IN PUBLIC · KEEP DATA PRIVATE'],overview:['博士研究，持续向前。','原有论文、研究任务与期限完整保留。','DOCTORAL ROADMAP'],timeline:['重要交付，一目了然。','计划月份与实际完成日期分开记录。','MILESTONES'],outcomes:['论文与成果。','跟随原有研究线推进，不用课程完成数替代研究产出。','RESEARCH OUTPUTS'],storage:['让进度，安心留下。','本机记录与账号记录相互隔离；登录不会自动上传本机内容。','PROGRESS & PRIVACY']};
+function setPage(next,historyMode=true){if(next!==page&&window.CareerUI?.canNavigate&&!window.CareerUI.canNavigate())return;if(!['execution',...Object.keys(pageNames)].includes(next))next='today';page=next;if(historyMode&&window.history?.pushState&&window.location?.hash!=='#'+next)window.history.pushState({page:next},'','#'+next);render();document.querySelector('#pageTitle').scrollIntoView({behavior:'smooth',block:'start'})}
+window.AppNavigation={open:setPage,current:()=>page};
+window.addEventListener('popstate',()=>setPage((window.location?.hash||'#today').slice(1),false));
 function setMonth(month){activeMonth=month;view='month';page='execution';render()}
 function navigateMonth(direction){const [y,m]=activeMonth.split('.').map(Number),d=new Date(y,m-1+direction,1);setMonth(d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0'))}
 function render(){
   if(window.LessonUI) window.LessonUI.render();
   window.GoalUI?.render();
-  document.querySelector('#nextLessonHero').hidden=['outcomes','timeline'].includes(page);
+  document.querySelector('#nextLessonHero').hidden=true;
+  window.CareerUI?.render();
+  const phdPages=['overview','execution','timeline','outcomes'],skillPages=['skills','resources','assessments'];
+  document.body?.setAttribute('data-current-page',page);
+  document.querySelector('#skillTabs').hidden=!skillPages.includes(page);
+  document.querySelector('#researchTabs').hidden=!phdPages.includes(page);
+  document.querySelector('.journey').hidden=!['execution','timeline'].includes(page);
+  document.querySelector('.progress-sidebar').hidden=page!=='execution';
+  document.querySelector('.workspace-layout').classList.toggle('with-sidebar',page==='execution');
+  document.querySelector('#resetBtn').hidden=page!=='storage';
+  document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.setAttribute('aria-current',b.dataset.openPage===page?'page':'false'));
   const all=tally(tasks),now=currentMonth(),backlog=carriedTasks(view==='stage'?stages[selectedStage].start:activeMonth),mt=monthTasks(activeMonth),ms=tally(mt);
   document.querySelector('#todayLabel').textContent=now.replace('.','年')+'月 · 上海时间';
-  document.querySelector('#pageTitle').textContent=page==='execution'?(view==='stage'?stages[selectedStage].title+' · 阶段任务':activeMonth===now?'本月执行计划':activeMonth.replace('.','年')+'月执行计划'):page==='outcomes'?'成果路线':page==='overview'?'我的博士与 AI 成长路线':page==='timeline'?'里程碑时间线':'课程学习';
-  document.querySelector('#pageSubtitle').textContent=page==='execution'?'先补齐未完成的任务，再推进本月安排。':page==='outcomes'?'每条成果线，都有明确的下一步和完成标准。':page==='overview'?'看清目标、期限，以及每个部分真正完成了多少。':page==='timeline'?'计划时间与实际完成分开记录，未完成的节点持续保留。':'从下一节开始：看指定内容、做练习、达标后勾选。';
+  document.querySelector('#pageTitle').textContent=page==='execution'?(view==='stage'?stages[selectedStage].title+' · 阶段任务':activeMonth===now?'本月执行计划':activeMonth.replace('.','年')+'月执行计划'):(pageNames[page]?.[0]||'成长工作台');
+  document.querySelector('#pageSubtitle').textContent=page==='execution'?'先补齐未完成的任务，再推进本月安排。':pageNames[page]?.[1]||'';
+  document.querySelector('#pageEyebrow').textContent=pageNames[page]?.[2]||'RESEARCH EXECUTION';
   document.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==page);
-  document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===page)));
+  const primaryPage=skillPages.includes(page)?'skills':phdPages.includes(page)?'overview':page;
+  document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===primaryPage)));
   document.querySelector('#overallPct').innerHTML=all.pct+'<span>%</span>';
   document.querySelector('#overallCount').textContent=all.done+' / '+tasks.length+' 项已完成';
   document.querySelector('#progressRing').style.setProperty('--progress',all.pct);
@@ -686,7 +702,7 @@ function render(){
 }
 document.querySelectorAll('#viewTabs button').forEach(b=>b.onclick=()=>{view=b.dataset.view;render()});
 document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.page));
-document.querySelector('#homeBtn').onclick=e=>{e.preventDefault();setPage('overview');document.querySelector('#pageTitle').scrollIntoView({behavior:'smooth',block:'start'})};
+document.querySelector('#homeBtn').onclick=e=>{e.preventDefault();setPage('today');document.querySelector('#pageTitle').scrollIntoView({behavior:'smooth',block:'start'})};
 document.querySelector('#monthPicker').onchange=e=>setMonth(e.target.value);
 document.querySelector('#prevMonth').onclick=()=>navigateMonth(-1);
 document.querySelector('#nextMonth').onclick=()=>navigateMonth(1);
@@ -694,11 +710,14 @@ document.querySelector('#todayBtn').onclick=()=>setMonth(currentMonth());
 document.querySelector('#showAllBtn').onclick=()=>{page='execution';view='year';pendingOnly=false;document.querySelector('#pendingOnly').checked=false;render();document.querySelector('#workspace').scrollIntoView({behavior:'smooth',block:'start'})};
 document.querySelector('#showOutcomesBtn').onclick=()=>setPage('outcomes');
 document.querySelector('#backlogJump').onclick=()=>{view='month';render();(document.querySelector('.is-backlog')||document.querySelector('#taskGroups')).scrollIntoView({behavior:'smooth',block:'center'})};
-document.querySelector('#cloudEntry').onclick=()=>document.querySelector('#cloudPanel').scrollIntoView({behavior:'smooth',block:'center'});
+document.querySelector('#cloudEntry').onclick=()=>setPage('storage');
 document.querySelector('#pendingOnly').onchange=e=>{pendingOnly=e.target.checked;render()};
 document.querySelector('#resetBtn').onclick=()=>{if(confirm('确定清空全部 '+tasks.length+' 项任务的勾选进度吗？此操作无法撤销。')){if(cloudSync){cloudSync.resetAll();progress=cloudSync.snapshot()}else{progress={};save()}render();document.querySelector('#announcer').textContent='任务进度已重置，课程记录保持不变。'}};
 window.GoalUI?.init({tasks,progress:()=>progress,sync:()=>cloudSync,toggle,openPage:setPage,openArea:area=>{view=area;setPage("execution")},taskMarkup});
 window.LessonUI?.init({openCourses:()=>setPage('resources'),sync:()=>cloudSync});
+window.CareerUI?.init({openPage:setPage});
+document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.openPage));
+if(window.location?.hash&&['execution',...Object.keys(pageNames)].includes(window.location.hash.slice(1)))page=window.location.hash.slice(1);
 render();
 window.addEventListener('focus',refreshMonth);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshMonth()});
@@ -720,7 +739,7 @@ function renderCloud(state){
   if(!state.configured){controls.innerHTML='<p class="cloud-help">云端同步待启用。本机勾选仍会保存，不影响执行计划。</p>';return}
   if(!state.userId){
     const registering=authMode==='signup';
-    controls.innerHTML='<div class="auth-switch"><button type="button" id="authSignIn" aria-pressed="'+!registering+'">已有账号</button><button type="button" id="authSignUp" aria-pressed="'+registering+'">注册同步账号</button></div><form id="cloudLogin"><label for="cloudEmail">账号邮箱</label><input id="cloudEmail" type="email" autocomplete="username" required placeholder="你的邮箱"><label for="cloudPassword">密码</label><input id="cloudPassword" type="password" autocomplete="'+(registering?'new-password':'current-password')+'" '+(registering?'minlength="8"':'')+' required placeholder="'+(registering?'设置至少 8 位密码':'同步账号密码')+'">'+(registering?'<label for="cloudPasswordConfirm">再次确认密码</label><input id="cloudPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required placeholder="再次输入密码">':'')+'<button type="submit" class="cloud-primary">'+(registering?'创建我的同步账号':'登录并同步')+'</button><p class="cloud-help">'+(registering?'请在你自己的浏览器中注册。若收到确认邮件，验证后回到这里登录。本机任务与课程进度不会自动上传。':'使用本网站的同步账号，不是 Supabase 管理后台账号。已有该项目 Auth 账号也可登录。首次登录后可手动合并本机任务与课程进度。')+'</p><p id="loginError" role="alert"></p></form>';
+    controls.innerHTML='<div class="auth-switch"><button type="button" id="authSignIn" aria-pressed="'+!registering+'">已有账号</button><button type="button" id="authSignUp" aria-pressed="'+registering+'">注册同步账号</button></div><form id="cloudLogin"><label for="cloudEmail">账号邮箱</label><input id="cloudEmail" type="email" autocomplete="username" required placeholder="你的邮箱"><label for="cloudPassword">密码</label><input id="cloudPassword" type="password" autocomplete="'+(registering?'new-password':'current-password')+'" '+(registering?'minlength="8"':'')+' required placeholder="'+(registering?'设置至少 8 位密码':'同步账号密码')+'">'+(registering?'<label for="cloudPasswordConfirm">再次确认密码</label><input id="cloudPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required placeholder="再次输入密码">':'')+'<button type="submit" class="cloud-primary">'+(registering?'创建我的同步账号':'登录并同步')+'</button><p class="cloud-help">'+(registering?'请在你自己的浏览器中注册。若收到确认邮件，验证后回到这里登录。本机任务、课程、实操自评与项目证据不会自动上传。':'使用本网站的同步账号，不是 Supabase 管理后台账号。已有该项目 Auth 账号也可登录。首次登录后可手动合并本机任务、课程、实操自评与项目证据。')+'</p><p id="loginError" role="alert"></p></form>';
     document.querySelector('#authSignIn').onclick=()=>{authMode='signin';cloudUIKey='';renderCloud(cloudSync.status())};
     document.querySelector('#authSignUp').onclick=()=>{authMode='signup';cloudUIKey='';renderCloud(cloudSync.status())};
     document.querySelector('#cloudLogin').onsubmit=async e=>{
@@ -728,18 +747,18 @@ function renderCloud(state){
       const out=document.querySelector('#loginError');out.textContent='';
       if(registering&&password!==document.querySelector('#cloudPasswordConfirm').value){out.textContent='两次密码不一致，请重新确认。';return}
       button.disabled=true;
-      try{if(registering){const result=await cloudSync.signUp(email,password);const currentOut=document.querySelector('#loginError');if(currentOut)currentOut.textContent=result?.needsEmailConfirmation?'请查看邮箱并完成确认，然后回到本网站选择“已有账号”登录。':'账号已创建。可选择是否合并本机任务与课程进度。'}else await cloudSync.signIn(email,password)}catch(error){const currentOut=document.querySelector('#loginError');if(currentOut)currentOut.textContent=error.message}finally{for(const id of ['#cloudPassword','#cloudPasswordConfirm']){const input=document.querySelector(id);if(input)input.value=''}if(button.isConnected)button.disabled=false}
+      try{if(registering){const result=await cloudSync.signUp(email,password);const currentOut=document.querySelector('#loginError');if(currentOut)currentOut.textContent=result?.needsEmailConfirmation?'请查看邮箱并完成确认，然后回到本网站选择“已有账号”登录。':'账号已创建。可选择是否合并本机任务、课程、实操自评与项目证据。'}else await cloudSync.signIn(email,password)}catch(error){const currentOut=document.querySelector('#loginError');if(currentOut)currentOut.textContent=error.message}finally{for(const id of ['#cloudPassword','#cloudPasswordConfirm']){const input=document.querySelector(id);if(input)input.value=''}if(button.isConnected)button.disabled=false}
     };
   }else{
     controls.innerHTML=(state.conflict?'<p class="cloud-help">两台设备的进度不同，请选择保留的版本。</p><button id="useCloud">采用云端版本</button><button id="useLocal">保留本机版本</button>':'<button id="syncNow">立即同步</button>')+(state.canImport&&!state.conflict?'<button id="importGuest">合并本机已有进度</button>':'')+'<button id="signOut">退出登录</button>';
     if(state.conflict){document.querySelector('#useCloud').onclick=()=>{if(confirm('采用云端进度？本机尚未同步的修改将被替换。'))cloudSync.resolveConflict('cloud')};document.querySelector('#useLocal').onclick=()=>{if(confirm('以本机版本更新云端？另一台设备的新修改可能被覆盖。'))cloudSync.resolveConflict('local')}}
     else document.querySelector('#syncNow').onclick=()=>cloudSync.syncNow();
-    if(state.canImport&&!state.conflict)document.querySelector('#importGuest').onclick=()=>{if(confirm('把本机任务与课程进度合并到当前账号？云端已有记录会保留，未记录的任务和课程才会导入。'))cloudSync.importGuest()};
+    if(state.canImport&&!state.conflict)document.querySelector('#importGuest').onclick=()=>{if(confirm('把本机任务、课程、实操自评与项目证据合并到当前账号？云端已有记录会保留，只导入本机未同步的记录。'))cloudSync.importGuest()};
     document.querySelector('#signOut').onclick=async()=>{if(cloudSync.status().dirty&&!confirm('仍有修改尚未同步。退出后会保存在此设备，是否继续？'))return;try{await cloudSync.signOut()}catch(e){document.querySelector('#cloudStatus').textContent=e.message}};
   }
 }
 if(window.PhdCloud){
-  cloudSync=window.PhdCloud.create({ids:tasks.map(t=>t.id),lessonIds:window.LessonUI?.ids||[],onCompletionDates:value=>{window.GoalUI?.dates(value);window.LessonUI?.dates?.(value.lessons);render()},onLessons:value=>{window.LessonUI?.update(value);window.GoalUI?.render()},onProgress:value=>{const changed=tasks.some(t=>!!progress[t.id]!==!!value[t.id]);progress=value;if(changed)render()},onStatus:renderCloud});
+  cloudSync=window.PhdCloud.create({ids:tasks.map(t=>t.id),lessonIds:window.LessonUI?.ids||[],onCompletionDates:value=>{window.GoalUI?.dates(value);window.LessonUI?.dates?.(value.lessons);render()},onLessons:value=>{window.LessonUI?.update(value);window.GoalUI?.render();window.CareerUI?.render()},onProgress:value=>{const changed=tasks.some(t=>!!progress[t.id]!==!!value[t.id]);progress=value;if(changed)render()},onStatus:renderCloud});
   progress=cloudSync.snapshot();window.LessonUI?.update(cloudSync.lessonSnapshot?.()||{});render();cloudSync.start();
 }
 

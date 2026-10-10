@@ -1,0 +1,516 @@
+{
+  "productionCommit": "7d6e10998678f2f0641d7b074a1182660de4189b",
+  "capturedAt": "2026-10-10",
+  "tasks": [
+    {
+      "id": "sep-python",
+      "month": "2026.10",
+      "stream": "courses"
+    },
+    {
+      "id": "sep-git",
+      "month": "2026.10",
+      "stream": "foundation"
+    },
+    {
+      "id": "sep-paper0",
+      "month": "2026.10",
+      "stream": "paper0"
+    },
+    {
+      "id": "sep-a-data",
+      "month": "2026.10",
+      "stream": "paperA"
+    },
+    {
+      "id": "oct-a-base",
+      "month": "2026.11",
+      "stream": "paperA"
+    },
+    {
+      "id": "oct-algo",
+      "month": "2026.11",
+      "stream": "courses"
+    },
+    {
+      "id": "oct-repo",
+      "month": "2026.11",
+      "stream": "foundation"
+    },
+    {
+      "id": "nov-agent-api",
+      "month": "2026.11",
+      "stream": "agentdemo"
+    },
+    {
+      "id": "nov-d2l",
+      "month": "2026.12",
+      "stream": "courses"
+    },
+    {
+      "id": "nov-a-models",
+      "month": "2026.12",
+      "stream": "paperA"
+    },
+    {
+      "id": "nov-a-horizon",
+      "month": "2026.12",
+      "stream": "paperA"
+    },
+    {
+      "id": "dec-a-shift",
+      "month": "2027.01",
+      "stream": "paperA"
+    },
+    {
+      "id": "dec-air-v01",
+      "month": "2027.01",
+      "stream": "airdemo",
+      "milestone": true
+    },
+    {
+      "id": "dec-vision-mini",
+      "month": "2027.01",
+      "stream": "visiondemo"
+    },
+    {
+      "id": "jan-agent-workflow",
+      "month": "2027.01",
+      "stream": "agentdemo"
+    },
+    {
+      "id": "jan-seq",
+      "month": "2027.02",
+      "stream": "courses"
+    },
+    {
+      "id": "jan-a-write",
+      "month": "2027.02",
+      "stream": "paperA"
+    },
+    {
+      "id": "jan-b-base",
+      "month": "2027.02",
+      "stream": "paperB"
+    },
+    {
+      "id": "feb-agent-rag",
+      "month": "2027.02",
+      "stream": "agentdemo"
+    },
+    {
+      "id": "feb-a-submit",
+      "month": "2027.03",
+      "stream": "paperA",
+      "milestone": true
+    },
+    {
+      "id": "feb-air-v1",
+      "month": "2027.03",
+      "stream": "airdemo",
+      "milestone": true
+    },
+    {
+      "id": "feb-b-metric",
+      "month": "2027.03",
+      "stream": "paperB"
+    },
+    {
+      "id": "mar-cs231n",
+      "month": "2027.04",
+      "stream": "courses"
+    },
+    {
+      "id": "mar-b-dfl",
+      "month": "2027.04",
+      "stream": "paperB"
+    },
+    {
+      "id": "mar-vision-repro",
+      "month": "2027.04",
+      "stream": "visiondemo"
+    },
+    {
+      "id": "apr-agent-service",
+      "month": "2027.04",
+      "stream": "agentdemo"
+    },
+    {
+      "id": "apr-b-robust",
+      "month": "2027.05",
+      "stream": "paperB"
+    },
+    {
+      "id": "apr-c-scope",
+      "month": "2027.05",
+      "stream": "paperC"
+    },
+    {
+      "id": "apr-vision-v01",
+      "month": "2027.05",
+      "stream": "visiondemo"
+    },
+    {
+      "id": "may-multimodal",
+      "month": "2027.06",
+      "stream": "courses"
+    },
+    {
+      "id": "may-b-write",
+      "month": "2027.06",
+      "stream": "paperB"
+    },
+    {
+      "id": "may-c-pilot",
+      "month": "2027.06",
+      "stream": "paperC"
+    },
+    {
+      "id": "jun-agent-evals",
+      "month": "2027.06",
+      "stream": "agentdemo"
+    },
+    {
+      "id": "jun-b-submit",
+      "month": "2027.07",
+      "stream": "paperB",
+      "milestone": true
+    },
+    {
+      "id": "jun-vision-v05",
+      "month": "2027.07",
+      "stream": "visiondemo"
+    },
+    {
+      "id": "jun-c-rq",
+      "month": "2027.07",
+      "stream": "paperC"
+    },
+    {
+      "id": "jul-special",
+      "month": "2027.08",
+      "stream": "courses"
+    },
+    {
+      "id": "jul-c-main",
+      "month": "2027.08",
+      "stream": "paperC"
+    },
+    {
+      "id": "jul-c-ablation",
+      "month": "2027.08",
+      "stream": "paperC"
+    },
+    {
+      "id": "aug-agent-v1",
+      "month": "2027.08",
+      "stream": "agentdemo",
+      "milestone": true
+    },
+    {
+      "id": "aug-c-full",
+      "month": "2027.09",
+      "stream": "paperC"
+    },
+    {
+      "id": "aug-vision-v1",
+      "month": "2027.09",
+      "stream": "visiondemo",
+      "milestone": true
+    },
+    {
+      "id": "aug-c-draft",
+      "month": "2027.09",
+      "stream": "paperC"
+    },
+    {
+      "id": "sep-interview",
+      "month": "2027.09",
+      "stream": "courses"
+    },
+    {
+      "id": "sep-revision",
+      "month": "2027.09",
+      "stream": "paper0"
+    },
+    {
+      "id": "sep-apply",
+      "month": "2027.09",
+      "stream": "foundation",
+      "milestone": true
+    },
+    {
+      "id": "sep-c-submit",
+      "month": "2027.10",
+      "stream": "paperC",
+      "milestone": true
+    }
+  ],
+  "lessons": [
+    {
+      "id": "python-basics",
+      "url": "https://docs.python.org/zh-cn/3/tutorial/introduction.html",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "python-control",
+      "url": "https://docs.python.org/zh-cn/3/tutorial/controlflow.html",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "python-containers",
+      "url": "https://docs.python.org/zh-cn/3/tutorial/datastructures.html",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "python-modules",
+      "url": "https://docs.python.org/zh-cn/3/tutorial/modules.html",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "python-files",
+      "url": "https://docs.python.org/zh-cn/3/tutorial/inputoutput.html",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "python-exceptions",
+      "url": "https://docs.python.org/zh-cn/3/tutorial/errors.html",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "python-classes",
+      "url": "https://docs.python.org/zh-cn/3/tutorial/classes.html",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "python-venv",
+      "url": "https://docs.python.org/zh-cn/3/tutorial/venv.html",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "missing-shell",
+      "url": "https://missing.csail.mit.edu/2020/course-shell/",
+      "taskId": "sep-git"
+    },
+    {
+      "id": "missing-git",
+      "url": "https://missing.csail.mit.edu/2020/version-control/",
+      "taskId": "sep-git"
+    },
+    {
+      "id": "missing-debug",
+      "url": "https://missing.csail.mit.edu/2020/debugging-profiling/",
+      "taskId": "oct-repo"
+    },
+    {
+      "id": "algo-complexity",
+      "url": "https://www.hello-algo.com/chapter_computational_complexity/time_complexity/",
+      "taskId": "oct-algo"
+    },
+    {
+      "id": "algo-array",
+      "url": "https://www.hello-algo.com/chapter_array_and_linkedlist/array/",
+      "taskId": "oct-algo"
+    },
+    {
+      "id": "algo-hash",
+      "url": "https://www.hello-algo.com/chapter_hashing/hash_map/",
+      "taskId": "oct-algo"
+    },
+    {
+      "id": "d2l-tensor",
+      "url": "https://www.bilibili.com/video/BV1CV411Y7i4",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-pandas",
+      "url": "https://www.bilibili.com/video/BV1CV411Y7i4?p=3",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-autograd",
+      "url": "https://www.bilibili.com/video/BV1KA411N7Px",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-linear",
+      "url": "https://www.bilibili.com/video/BV1PX4y1g7KC",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-train-loop",
+      "url": "https://www.bilibili.com/video/BV1PX4y1g7KC?p=3",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-torch",
+      "url": "https://www.bilibili.com/video/BV1PX4y1g7KC?p=4",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-mlp",
+      "url": "https://www.bilibili.com/video/BV1hh411U7gn?p=3",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-overfit",
+      "url": "https://www.bilibili.com/video/BV1kX4y1g7jp?p=2",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-save",
+      "url": "https://www.bilibili.com/video/BV1AK4y1P7vs?p=4",
+      "taskId": "nov-d2l"
+    },
+    {
+      "id": "d2l-lenet",
+      "url": "https://www.bilibili.com/video/BV1t44y1r7ct/",
+      "taskId": "dec-vision-mini"
+    },
+    {
+      "id": "d2l-sequence",
+      "url": "https://www.bilibili.com/video/BV1L44y1m768/",
+      "taskId": "jan-seq"
+    },
+    {
+      "id": "d2l-lstm",
+      "url": "https://www.bilibili.com/video/BV1JU4y1H7PC/",
+      "taskId": "jan-seq"
+    },
+    {
+      "id": "d2l-attention",
+      "url": "https://www.bilibili.com/video/BV1Tb4y167rb/",
+      "taskId": "jan-seq"
+    },
+    {
+      "id": "d2l-position",
+      "url": "https://www.bilibili.com/video/BV19o4y1m7mo/",
+      "taskId": "jan-seq"
+    },
+    {
+      "id": "d2l-transformer",
+      "url": "https://www.bilibili.com/video/BV1Kq4y1H7FL/",
+      "taskId": "jan-seq"
+    },
+    {
+      "id": "genai-prompt",
+      "url": "https://github.com/microsoft/generative-ai-for-beginners/blob/main/translations/zh-CN/04-prompt-engineering-fundamentals/README.md",
+      "taskId": "nov-agent-api"
+    },
+    {
+      "id": "genai-api",
+      "url": "https://github.com/microsoft/generative-ai-for-beginners/blob/main/translations/zh-CN/06-text-generation-apps/README.md",
+      "taskId": "nov-agent-api"
+    },
+    {
+      "id": "genai-tools",
+      "url": "https://github.com/microsoft/generative-ai-for-beginners/blob/main/translations/zh-CN/11-integrating-with-function-calling/README.md",
+      "taskId": "nov-agent-api"
+    },
+    {
+      "id": "genai-responsible",
+      "url": "https://github.com/microsoft/generative-ai-for-beginners/blob/main/translations/zh-CN/03-using-generative-ai-responsibly/README.md",
+      "taskId": "nov-agent-api"
+    },
+    {
+      "id": "genai-rag",
+      "url": "https://github.com/microsoft/generative-ai-for-beginners/blob/main/translations/zh-CN/15-rag-and-vector-databases/README.md",
+      "taskId": "feb-agent-rag"
+    },
+    {
+      "id": "genai-security",
+      "url": "https://github.com/microsoft/generative-ai-for-beginners/blob/main/translations/zh-CN/13-securing-ai-applications/README.md",
+      "taskId": "apr-agent-service"
+    },
+    {
+      "id": "hf-agents-concept",
+      "url": "https://huggingface.co/learn/agents-course/en/unit1/what-are-agents",
+      "taskId": "jan-agent-workflow"
+    },
+    {
+      "id": "hf-agents-tools",
+      "url": "https://huggingface.co/learn/agents-course/en/unit1/tools",
+      "taskId": "jan-agent-workflow"
+    },
+    {
+      "id": "hf-agents-cycle",
+      "url": "https://huggingface.co/learn/agents-course/en/unit1/agent-steps-and-structure",
+      "taskId": "jan-agent-workflow"
+    },
+    {
+      "id": "hf-agents-dummy",
+      "url": "https://huggingface.co/learn/agents-course/en/unit1/dummy-agent-library",
+      "taskId": "jan-agent-workflow"
+    },
+    {
+      "id": "hf-agents-blocks",
+      "url": "https://huggingface.co/learn/agents-course/en/unit2/langgraph/building_blocks",
+      "taskId": "jan-agent-workflow"
+    },
+    {
+      "id": "hf-agents-graph",
+      "url": "https://huggingface.co/learn/agents-course/en/unit2/langgraph/first_graph",
+      "taskId": "jan-agent-workflow"
+    },
+    {
+      "id": "fastapi-first",
+      "url": "https://fastapi.tiangolo.com/zh/tutorial/first-steps/",
+      "taskId": "apr-agent-service"
+    },
+    {
+      "id": "fastapi-body",
+      "url": "https://fastapi.tiangolo.com/zh/tutorial/body/",
+      "taskId": "apr-agent-service"
+    },
+    {
+      "id": "fastapi-errors",
+      "url": "https://fastapi.tiangolo.com/zh/tutorial/handling-errors/",
+      "taskId": "apr-agent-service"
+    },
+    {
+      "id": "fastapi-security",
+      "url": "https://fastapi.tiangolo.com/zh/tutorial/security/oauth2-jwt/",
+      "taskId": "apr-agent-service"
+    },
+    {
+      "id": "fastapi-testing",
+      "url": "https://fastapi.tiangolo.com/zh/tutorial/testing/",
+      "taskId": "apr-agent-service"
+    },
+    {
+      "id": "docker-dockerfile",
+      "url": "https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/",
+      "taskId": "apr-agent-service"
+    },
+    {
+      "id": "docker-compose",
+      "url": "https://docs.docker.com/get-started/docker-concepts/running-containers/multi-container-applications/",
+      "taskId": "apr-agent-service"
+    },
+    {
+      "id": "evals-observe",
+      "url": "https://huggingface.co/learn/agents-course/en/bonus-unit2/introduction",
+      "taskId": "jun-agent-evals"
+    },
+    {
+      "id": "evals-regression",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "taskId": "jun-agent-evals"
+    },
+    {
+      "id": "cs50p-functions",
+      "url": "https://cs50.harvard.edu/python/weeks/0/",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "cs50p-conditionals",
+      "url": "https://cs50.harvard.edu/python/weeks/1/",
+      "taskId": "sep-python"
+    },
+    {
+      "id": "cs50p-loops",
+      "url": "https://cs50.harvard.edu/python/weeks/2/",
+      "taskId": "sep-python"
+    }
+  ]
+}

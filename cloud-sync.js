@@ -11,7 +11,7 @@
     const ids = new Set(options.ids);
     const storage = options.storage || root.localStorage;
     const config = options.config || root.PHD_CLOUD_CONFIG || {};
-    const clean = value => Object.fromEntries(Object.entries(value || {}).filter(([id, v]) => ids.has(id) && valid(v)));
+    const clean = options.clean || (value => Object.fromEntries(Object.entries(value || {}).filter(([id, v]) => ids.has(id) && valid(v, id))));
     const read = (key, fallback) => { try { return JSON.parse(storage.getItem(key)) || fallback; } catch { return fallback; } };
     const write = (key, value) => storage.setItem(key, JSON.stringify(value));
     let user = null, client = null, makeClient = null, dataClient = null, generation = 0, timer = null, working = false, stopped = false, failure = 0;
@@ -73,7 +73,7 @@
       return true;
     }
     function set(id, value) {
-      if (!ids.has(id) || !valid(value)) return false;
+      if (!ids.has(id) || !valid(value, id)) return false;
       return setMany({ [id]: value });
     }
     function resetAll() { return setMany(Object.fromEntries([...ids].map(id => [id, false]))); }
@@ -111,9 +111,12 @@
             state.conflict = { values: clean(row?.[field]), version: Number(row?.[versionField] || 0) };
           } else {
             const latest = loadAccount(account);
-            state.values = !memoryOnly && latest.version >= state.version ? latest.values : state.values;
-            state.base = clean(row[field]); state.version = Number(row[versionField]);
-            state.dirty = !equal(state.values, sent); state.conflict = null;
+            const latestValues = !memoryOnly && latest.version >= state.version ? latest.values : state.values;
+            // The server may retain newer lesson keys omitted by a cached older client.
+            // Show those returned keys immediately, retaining edits made during this request.
+            state.base = clean(row[field]); state.values = { ...state.base, ...latestValues };
+            state.version = Number(row[versionField]);
+            state.dirty = !equal(state.values, state.base); state.conflict = null;
           }
         }
         persist(); show(); failure = 0;
@@ -218,13 +221,17 @@
         auth: { storageKey: 'phd-roadmap-auth-v1', persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
       }) };
     })();
-    const lessonIds = options.lessonIds || (root.COURSE_LESSONS?.courses || []).flatMap(c => c.lessons.map(l => l.id));
-    if (!lessonIds.length) return createStore(options);
+    // Reused source units point to one canonical legacy lesson; new exercises get their own IDs.
+    const learningUnits = options.learningUnits || root.CAREER_CURRICULUM?.learningUnits || [];
+    const lessonIds = [...new Set([...(options.lessonIds || (root.COURSE_LESSONS?.courses || []).flatMap(c => c.lessons.map(l => l.id))),
+      ...learningUnits.map(u => u.canonicalProgressId || u.progressId || u.id).filter(id => typeof id === 'string' && /^[a-z0-9-]+$/.test(id))])];
+    const careerApi = options.careerApi || root.phdCareerProgress;
+    if (!lessonIds.length && !careerApi) return createStore(options);
     let statuses = [{}, {}, {}], main, lessons, dates;
     const ranks = { error: 8, conflict: 7, pending: 6, syncing: 5, loading: 4, signin: 3, local: 2, ready: 1 };
     const status = () => {
       const highest = statuses.reduce((a, b) => (ranks[b.mode] || 0) > (ranks[a.mode] || 0) ? b : a, {});
-      return { ...highest, canImport: statuses.slice(0,2).some(s => s.canImport), dirty: statuses.some(s => s.dirty), conflict: statuses.some(s => s.conflict) };
+      return { ...highest, canImport: statuses.some((s,i) => i !== 2 && s.canImport), dirty: statuses.some(s => s.dirty), conflict: statuses.some(s => s.conflict) };
     };
     const onStatus = index => value => { statuses[index] = value; options.onStatus?.(status()); };
     const datePart = (values, kind) => Object.fromEntries(Object.entries(values).filter(([k,v]) => k.startsWith(kind + ':') && v !== false).map(([k,v]) => [k.slice(kind.length + 1),v]));
@@ -242,6 +249,14 @@
       onProgress: onDates, onStatus: onStatus(2),
       canSync: () => statuses.slice(0,2).every(s => s.mode === 'ready' && !s.dirty && !s.conflict) });
     const stores = [main, lessons, dates];
+    let career;
+    if (careerApi) {
+      career = createStore({ ...options, acquireClient, ids: careerApi.ids,
+        namespace: 'lin-ai-phd-roadmap-career-v1', field: 'career_state', versionField: 'career_state_version',
+        rpc: 'phd_save_career_state', argument: 'next_career_state', clean: careerApi.clean, valid: careerApi.valid,
+        onProgress: () => { careerApi.notify(); options.onCareer?.(careerApi.read()); }, onStatus: onStatus(3) });
+      careerApi.attach(career); stores.push(career);
+    }
     const refreshSession = async () => {
       const { client } = await acquireClient();
       const { data, error } = await client.auth.getSession();
@@ -267,7 +282,7 @@
       return lessons.set(id, value === null ? false : value) && savedDate;
     }
     return { ...main,
-      start: () => Promise.all(stores.map(s => s.start())),
+      start: () => { onDates(dates.snapshot()); return Promise.all(stores.map(s => s.start())); },
       signIn: wrapAuth('signIn'), signUp: wrapAuth('signUp'), signOut: wrapAuth('signOut'),
       set: setTask,
       setMany: patch => Object.entries(patch || {}).map(([id,value]) => setTask(id,value)).every(Boolean),
@@ -275,7 +290,8 @@
       lessonSnapshot: lessons.snapshot, setLesson,
       taskCompletedAtSnapshot: () => datePart(dates.snapshot(),'task'),
       lessonCompletedAtSnapshot: () => datePart(dates.snapshot(),'lesson'),
-      syncNow: async () => { await Promise.all([main.syncNow(), lessons.syncNow()]); await dates.syncNow(); },
+      syncNow: async () => { await Promise.all([main.syncNow(), lessons.syncNow(), ...(career ? [career.syncNow()] : [])]); await dates.syncNow(); },
+      careerSnapshot: () => careerApi?.read() || null,
       importGuest: () => {
         if (status().conflict || !status().canImport || statuses.some(s => ['loading','syncing','error'].includes(s.mode))) return false;
         const taskValues = main.snapshot(), lessonValues = lessons.snapshot();
@@ -283,7 +299,8 @@
           ...lessonIds.filter(id => !(id in lessonValues)).map(id => 'lesson:' + id)]);
         // Never attach a guest date to an existing cloud completion whose date is unknown.
         const a = main.importGuest(), b = lessons.importGuest(), c = dates.importGuest(allowedDates);
-        return a && b && c;
+        const d = career ? career.importGuest() : true;
+        return a && b && c && d;
       },
       resolveConflict: choice => {
         const changed = [];

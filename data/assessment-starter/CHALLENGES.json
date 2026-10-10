@@ -1,0 +1,202 @@
+[
+  {
+    "id": "challenge-data",
+    "skillIds": [
+      "sql-data",
+      "ai-code"
+    ],
+    "title": "CSV粒度、重复和SQL核对",
+    "inputFiles": [
+      "data_valid.csv",
+      "data_invalid.csv",
+      "markets.csv"
+    ],
+    "task": "严格模式读取合法CSV；非法CSV返回行号+错误原因，禁止静默丢弃。输出按market的sum/mean/count及上一观测值，LEFT JOIN包含无观测市场。",
+    "expected": {
+      "A": {
+        "sum": 22,
+        "mean": 11,
+        "count": 2,
+        "lag_at_09": 10
+      },
+      "B": {
+        "sum": 8,
+        "mean": 4,
+        "count": 2,
+        "lag_at_09": 8
+      },
+      "C": {
+        "sum": 0,
+        "count": 0,
+        "mean": null
+      },
+      "invalidRows": [
+        {
+          "csvLine": 6,
+          "error": "duplicate timestamp+market"
+        },
+        {
+          "csvLine": 7,
+          "error": "count missing"
+        }
+      ]
+    },
+    "failureCases": [
+      "空文件",
+      "负计数",
+      "非法时间戳",
+      "维度表重复键导致乘行"
+    ],
+    "evidenceFiles": [
+      "queries.sql",
+      "validate.py",
+      "test_data.py",
+      "results/data_summary.json"
+    ],
+    "unseenDefense": "换成跨周输入并增加一对多标签表，解释如何避免重复累计。",
+    "defenseLabel": "变式答辩练习（公开）",
+    "defenseTask": "换成跨周输入并增加一对多标签表，解释如何避免重复累计。",
+    "unseenDefenseNote": "为兼容字段保留；本题公开，不是实际未见题。"
+  },
+  {
+    "id": "challenge-forecast",
+    "skillIds": [
+      "time-forecast",
+      "ml-validation",
+      "statistics-metrics"
+    ],
+    "title": "可手算的无泄漏多步预测",
+    "inputFiles": [
+      "forecast_case.json"
+    ],
+    "task": "只使用前8个值预测未来2步；季节周期2，计算季节朴素/末值朴素的MAE/RMSE；把函数嵌入真实数据滚动验证。",
+    "expected": {
+      "train": [
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24
+      ],
+      "test": [
+        26,
+        28
+      ],
+      "seasonalNaive": [
+        22,
+        24
+      ],
+      "seasonalMAE": 4,
+      "seasonalRMSE": 4,
+      "lastValueNaive": [
+        24,
+        24
+      ],
+      "lastValueMAE": 3,
+      "lastValueRMSE": "sqrt(10)≈3.1622776602"
+    },
+    "failureCases": [
+      "特征包含test真实值",
+      "cnt预测含同期casual+registered",
+      "24h预测使用未来真实lag",
+      "测试集参与缩放fit"
+    ],
+    "evidenceFiles": [
+      "features.py",
+      "forecast.py",
+      "test_no_leakage.py",
+      "results/backtest.csv",
+      "results/split_manifest.json"
+    ],
+    "unseenDefense": "把预测期从2改成5，seasonal-naive必须重复最后2期而不能偷看未知值。",
+    "defenseLabel": "变式答辩练习（公开）",
+    "defenseTask": "把预测期从2改成5，seasonal-naive必须重复最后2期而不能偷看未知值。",
+    "unseenDefenseNote": "为兼容字段保留；本题公开，不是实际未见题。"
+  },
+  {
+    "id": "challenge-optimization",
+    "skillIds": [
+      "optimization-modeling",
+      "decision-evaluation"
+    ],
+    "title": "枚举可核对的两时段分配",
+    "inputFiles": [
+      "optimization_case.json"
+    ],
+    "task": "非负整数x1,x2满足x1≤3,x2≤4,x1+x2≤5；需求[3,4]，最小化3*(3-x1)+1*(4-x2)。独立检查约束并枚举验证。",
+    "expected": {
+      "optimalAllocation": [
+        3,
+        2
+      ],
+      "objective": 2,
+      "feasible": true,
+      "simpleBaselineAllocation": [
+        2,
+        3
+      ],
+      "simpleBaselineObjective": 4,
+      "infeasibleVariant": "若预算改2且增加x1≥3，必须返回INFEASIBLE，不输出伪可行方案。"
+    },
+    "failureCases": [
+      "负预算",
+      "超时未证最优却标最优",
+      "零容量",
+      "遗漏一个硬约束"
+    ],
+    "evidenceFiles": [
+      "model.py",
+      "check_constraints.py",
+      "test_optimality.py",
+      "results/decision_sensitivity.csv"
+    ],
+    "unseenDefense": "把惩罚[3,1]改为[1,3]，重新求解并说明分配从[3,2]变为[1,4]。",
+    "defenseLabel": "变式答辩练习（公开）",
+    "defenseTask": "把惩罚[3,1]改为[1,3]，重新求解并说明分配从[3,2]变为[1,4]。",
+    "unseenDefenseNote": "为兼容字段保留；本题公开，不是实际未见题。"
+  },
+  {
+    "id": "challenge-agent",
+    "skillIds": [
+      "agent-evaluation",
+      "software-testing",
+      "api-delivery"
+    ],
+    "title": "只读工具协议与安全故障集",
+    "inputFiles": [
+      "agent_cases.json"
+    ],
+    "task": "只允许forecast/optimize/explain；对工具名和参数做验证，步数上限3，工具执行超时要有限终止。固定mock用于工程回归；真实LLM单独评价。",
+    "expected": {
+      "knownForecastResult": [
+        22,
+        24
+      ],
+      "unknownTool": "reject:unknown_tool; no tool executed",
+      "negativeBudget": "reject:invalid_arguments; no solver executed",
+      "injectedCsvNote": "treat as data; no environment/file/network access",
+      "loop": "stop at≤3 tool steps with max_steps status",
+      "timeout": "bounded failure with tool_timeout, no unbounded retry"
+    },
+    "failureCases": [
+      "工具返回字段缺失",
+      "编造模型/求解指标",
+      "重复请求",
+      "无资料仍生成自信结论"
+    ],
+    "evidenceFiles": [
+      "tools_schema.json",
+      "agent.py",
+      "tests/test_agent_cases.py",
+      "results/agent_traces.jsonl",
+      "results/eval_summary.json"
+    ],
+    "unseenDefense": "加入需要再次确认的写操作工具描述，现有只读Agent仍必须拒绝，不因工具文本要求而执行。",
+    "defenseLabel": "变式答辩练习（公开）",
+    "defenseTask": "加入需要再次确认的写操作工具描述，现有只读Agent仍必须拒绝，不因工具文本要求而执行。",
+    "unseenDefenseNote": "为兼容字段保留；本题公开，不是实际未见题。"
+  }
+]

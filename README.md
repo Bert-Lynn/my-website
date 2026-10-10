@@ -68,3 +68,29 @@ node --check course-lessons.js
 node tests/lesson-sync.test.cjs
 node tests/goals-ui.test.cjs
 ```
+
+## 2026-10 职业方向工作台
+
+默认首页现为“今天”。五个主入口：今天、目标实习、能力与学习、作品项目、博士计划；验收与学习是能力下的子视图，原有目标 / 执行清单 / 里程碑 / 成果线在博士计划中。
+
+- `data/internships.json` 是公开岗位证据的唯一编辑源，`internship-data.js` 是生成的浏览器快照。10 家公司均保留核查结果；薪资、来源日期、检查日期、开放状态与资格限制分开。400–600 元/天是目标，不是招聘或录用保证。默认展示目标区间历史样本，其他证据使用独立筛选。
+- `data/career-curriculum.json` 是公开课程与能力定义，`career-curriculum.js` 为生成快照。两个完整方向由 `tracks[].requiredSkillIds / requiredLearningUnitIds / requiredMilestoneIds` 决定：预测运筹、Agent 工程。预测岗位沿用决策路线；搜索推荐与基础模型研究仅为信息参考。
+- 13 项能力、30 个独立练习单元、7 个贯穿式项目里程碑。技能量表、自评证据、项目验收、课程完成互相独立。完成课程或经过月份，不会自动授予掌握状态。当前通过标签仅为实操自评，无第三方认证。
+- 所有 47 个原任务 ID/月计划及 53 个原课节 ID/历史记录保留。基础课改为诊断后补强；部分旧课节为方向选修。已有学习记录不会被删掉、重置或自动映射到新练习。
+- 新单元以自身稳定 ID 记录完成、撤销与日期，相关旧课程只提供上下文，不重复复用完成勾选。云端扩展为 83 个课节槽、130 个任务/课节完成日期槽；旧客户端漏发新键时不会抹去新数据。
+- `career-state.js` 存储目标、自评及项目证据，通过同一账号的独立 CAS 流同步。证据网址仅允许不含用户名/密码的 HTTP(S)；所有文字按文本转义。页面不执行提交的代码、不检查外部仓库真实性、不自动上传文件。
+- `data/career-challenge-starters.zip` 和 `data/assessment-starter/` 包含合成输入、公开小例子的期望结果与故障边界。公开变式不属于未见认证题；真实未见验收需要复核者另外出题，当前记录始终是自评。
+- `career.css` 为浅色响应式新界面；`styles.css` 保留兼容的旧任务和课节样式。
+
+### 公开资料维护
+
+只编辑公开目录，不写入任何个人账号记录、证据或私有进度。岗位已截止时保留其稳定 ID 并更新状态，不直接删除。更新具体来源的 `checkedAt`、目录 `verifiedAt` 和汇总计数，保留未知信息，不把网页可访问当作仍在招。每周一早上的资料核查无实质变化时不修改版本。
+
+```sh
+node scripts/validate-career-data.cjs
+node scripts/build-career-data.cjs
+for file in *.js; do node --check "$file"; done
+for test in tests/*.test.cjs; do node "$test"; done
+```
+
+构建脚本仅从 JSON 生成两个公开 JS 快照，不改写技能或账号状态。发布前将 JSON 与快照放入同一原子提交。现有 GitHub Pages 工作流保持不变；不使用其他托管平台。

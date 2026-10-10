@@ -1,0 +1,23 @@
+{
+  "demand": [
+    3,
+    4
+  ],
+  "capacityUpperBounds": [
+    3,
+    4
+  ],
+  "budget": 5,
+  "shortagePenalty": [
+    3,
+    1
+  ],
+  "integerAllocations": true,
+  "infeasibleVariant": {
+    "budget": 2,
+    "minimumAllocation": [
+      3,
+      0
+    ]
+  }
+}
