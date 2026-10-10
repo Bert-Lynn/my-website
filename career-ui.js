@@ -4,7 +4,7 @@
 const curriculum=root.CAREER_CURRICULUM||{skills:[],projects:[],learningUnits:[]};
 const jobs=root.INTERNSHIP_DATA||{companies:[]};
 const skills=curriculum.skills||[],projects=curriculum.projects||[],units=curriculum.learningUnits||[];
-const roleDefs=[{id:'decision_optimization',name:'运筹优化 / 决策算法',tag:'主攻方向',description:'把现有研究积累变成预测、优化与实验能力。'},{id:'forecasting_ml',name:'预测 / 机器学习应用',tag:'主攻方向',description:'用可信基线、时间切分和部署能力证明业务价值。'},{id:'agent_engineering',name:'AI 应用 / Agent 工程',tag:'拓展方向',description:'先做可评测、可运行的工程，再增加复杂 Agent。'},{id:'search_recommendation',name:'搜索 / 推荐算法',tag:'进阶尝试',description:'补齐排序、推荐与大规模实验，再评估匹配度。'},{id:'foundation_model_research',name:'大模型训练研究',tag:'暂不主攻',description:'训练研究门槛和算力投入较高，不作为当前主线。'}];
+const roleDefs=[{id:'decision_optimization',name:'运筹优化 / 决策算法',tag:'原有方向',description:'把现有研究积累变成预测、优化与实验能力。'},{id:'forecasting_ml',name:'预测 / 机器学习应用',tag:'可选方向',description:'用可信基线、时间切分和部署能力证明业务价值。'},{id:'agent_engineering',name:'AI 应用 / Agent 开发',tag:'当前主线',description:'先做可评测、可运行的工程，再增加复杂 Agent。'},{id:'search_recommendation',name:'搜索 / 推荐算法',tag:'进阶尝试',description:'补齐排序、推荐与大规模实验，再评估匹配度。'},{id:'foundation_model_research',name:'大模型训练研究',tag:'暂不主攻',description:'训练研究门槛和算力投入较高，不作为当前主线。'}];
 const levelLabels={untested:'还没自查',learning:'正在学习',practicing:'继续练习',passed:'实操通过 · 自评'};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const text=v=>typeof v==='string'?v:Array.isArray(v)?v.map(text).join('；'):v&&typeof v==='object'?(v.text||v.label||v.description||v.title||JSON.stringify(v)):String(v??'');
