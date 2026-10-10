@@ -221,3 +221,12 @@ button,input{font:inherit}
   .split-board{padding:0 16px 24px}.demo-board,.course-board{padding:24px}
   .dash-footer{grid-template-columns:1fr;padding-inline:16px}
 }
+
+/* Keep carried work and its original schedule discoverable. */
+.rollover-note{font-size:13px;line-height:1.7;color:var(--muted);margin:0 0 18px;max-width:900px}
+.task-tags{flex-wrap:wrap}
+.task-tags .carry-tag{background:var(--amber-soft);color:var(--amber)}
+.task-copy .task-timing{color:var(--muted);font-size:11px}
+.completed-history summary{cursor:pointer;color:var(--muted);font-size:13px;padding:14px 0}
+.task-month-head>div:first-child{gap:6px;flex-wrap:wrap}
+.task-item:focus-within{outline:2px solid var(--blue);outline-offset:-2px}

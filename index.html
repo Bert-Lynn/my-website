@@ -8,7 +8,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="keywords" content="北航博士, AI学习路线, 人工智能科研, 机器学习, 计算机视觉, 运筹优化, 复杂系统, 博士科研规划" />
   <meta name="theme-color" content="#f7f9fc" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=20261010-rollover" />
 </head>
 <body>
   <main class="dash">
@@ -18,7 +18,7 @@
         <h1>AI 研究与成长控制台</h1>
       </div>
       <div class="topbar-right">
-        <span>2026.09 至 2027.09</span>
+        <span>2026.10 至 2027.10</span>
         <button id="resetBtn">重置</button>
       </div>
     </header>
@@ -39,15 +39,15 @@
       <div class="month-focus-head">
         <div>
           <span class="eyebrow">当前执行窗口</span>
-          <h2 id="activeMonthTitle">2026.09</h2>
-          <p>先做本月，再看全年。</p>
+          <h2 id="activeMonthTitle">2026.10</h2>
+          <p>先补未完成，再做本月计划。</p>
         </div>
         <div class="month-score"><strong id="monthPct">0%</strong><span id="monthCount">0/0 完成</span></div>
       </div>
       <div class="next-actions-panel">
         <div class="next-actions-title">
           <span>本月下一步</span>
-          <small>自动显示前 3 个未完成任务</small>
+          <small>优先顺延任务 · 显示前 3 项</small>
         </div>
         <div id="nextActions" class="next-actions-list"></div>
       </div>
@@ -62,11 +62,12 @@
         <button data-view="learning">课程</button>
         <button data-view="demo">Demo</button>
       </nav>
+      <p class="rollover-note">未完成任务自动进入之后月份的顺延待办，直到手动勾选完成；全年保留原计划记录。2027.09 面试与实习投递目标保留，不必等论文 C 投稿。</p>
       <div class="task-groups" id="taskGroups"></div>
     </section>
 
     <section class="research-board">
-      <div class="section-title"><span class="eyebrow">科研成果线</span><h2>一年内三篇新增投稿</h2></div>
+      <div class="section-title"><span class="eyebrow">科研成果线</span><h2>三篇新增投稿目标</h2></div>
       <div class="paper-grid" id="paperGrid"></div>
     </section>
 
@@ -86,6 +87,6 @@
       <p>每个月必须留下可检查的代码、实验、论文内容或 Demo 版本。课程不是成果，跑通代码也不是成果。</p>
     </footer>
   </main>
-  <script src="./app.js"></script>
+  <script src="./app.js?v=20261010-rollover"></script>
 </body>
 </html>
