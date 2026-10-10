@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>博士研究工作台</title><meta name="description" content="博士科研计划、实际完成进度、持续顺延任务与成果路线。"><meta name="theme-color" content="#f4f7fc"><link rel="stylesheet" href="./styles.css?v=20261010-workbench"></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>博士研究工作台</title><meta name="description" content="博士科研计划、实际完成进度、持续顺延任务与成果路线。"><meta name="theme-color" content="#f4f7fc"><link rel="stylesheet" href="./styles.css?v=20261010-workbench2"></head>
 <body><a class="skip-link" href="#workspace">跳到任务清单</a>
 <div class="site-shell">
 <header class="app-header"><a href="#" id="homeBtn" class="brand" aria-label="博士研究工作台首页"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 25V7h8a6 6 0 0 1 0 12H7m8 0 9 6M21 4v7m-3-3h7"/></svg></span><span>博士研究工作台<small>AI × 优化决策</small></span></a><nav class="main-tabs" id="mainTabs" aria-label="工作台视图"><button data-page="execution" aria-pressed="true">执行计划</button><button data-page="outcomes" aria-pressed="false">成果路线</button><button data-page="resources" aria-pressed="false">学习资源</button></nav><button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span></button></header>
@@ -14,7 +14,7 @@
 <div class="task-panel"><div class="task-toolbar"><div class="month-controls"><button id="prevMonth" aria-label="上一个月">‹</button><label class="sr-only" for="monthPicker">选择月份</label><select id="monthPicker"></select><button id="nextMonth" aria-label="下一个月">›</button></div><button id="todayBtn" class="text-button">回到本月</button></div>
 <nav class="view-tabs" id="viewTabs" aria-label="任务视图"><button data-view="stage" id="stageViewTab" hidden>阶段任务</button><button data-view="month">所选月</button><button data-view="year">全部任务</button><button data-view="research">科研</button><button data-view="learning">课程与基础</button><button data-view="demo">项目</button></nav>
 <div class="list-caption"><span id="viewCaption"></span><label class="pending-filter"><input type="checkbox" id="pendingOnly">仅未完成</label></div><div id="taskGroups" class="task-groups"></div>
-<p class="rollover-note"><span aria-hidden="true">↳</span> 没做完的任务会一直留在顺延待办中，不会随月份消失。</p></div>
+<p class="rollover-note">没做完的任务会一直留在顺延待办中，不会随月份消失。</p></div>
 </section>
 <section id="outcomes" class="page-panel" data-panel="outcomes" hidden><div class="panel-heading"><h2>论文与项目进度</h2><span id="outcomeCount"></span></div><div id="paperGrid" class="paper-grid"></div><div class="panel-heading"><h2>可展示的技术作品</h2></div><div id="demoList" class="demo-grid"></div><div class="internship-note"><strong>2027.09 · AI 算法实习</strong><p>面试准备与投递按原目标推进，不必等论文 C 投稿。</p></div></section>
 <section id="resources" class="page-panel" data-panel="resources" hidden><div class="panel-heading"><h2>学习资源</h2><span>围绕当前任务，按需回看</span></div><div id="courseList" class="course-list"></div></section>
@@ -25,4 +25,4 @@
 <article class="upcoming-card"><div class="card-heading"><h2>下一个里程碑</h2></div><div id="nextMilestone"></div><button id="showOutcomesBtn" class="text-button">查看全部成果路线 →</button></article>
 </aside></div>
 <footer><span>按实际完成记录进度，日期不会自动替你完成任务。</span><button id="resetBtn">重置进度</button></footer><div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
-</main></div><script src="./cloud-config.js?v=20261010-workbench"></script><script src="./cloud-sync.js?v=20261010-workbench"></script><script src="./app.js?v=20261010-workbench"></script></body></html>
+</main></div><script src="./cloud-config.js?v=20261010-workbench2"></script><script src="./cloud-sync.js?v=20261010-workbench2"></script><script src="./app.js?v=20261010-workbench2"></script></body></html>

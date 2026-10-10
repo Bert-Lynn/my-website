@@ -140,7 +140,7 @@
         const { data, error } = await client.auth.getSession();
         if (error) throw error;
         await useSession(data.session);
-        if (!data.session) emit('signin', '登录现有 Supabase 账号后同步；本机旧进度需手动合并。');
+        if (!data.session) emit('signin', '登录本站同步账号后可同步；本机旧进度需手动合并。');
       } catch { emit('error', '云端连接未完成，本机进度仍可使用。'); }
     }
     async function signIn(email, password) {
