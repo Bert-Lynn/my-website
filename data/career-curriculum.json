@@ -3,14 +3,14 @@
   "verifiedAt": "2026-10-10",
   "title": "从博士研究优势到可展示的智能决策产品",
   "route": {
-    "primary": "需求预测 + 运筹优化 / 智能决策",
-    "secondary": "可测试、可解释的 Agent 应用工程",
+    "primary": "AI应用 / Agent开发",
+    "secondary": "保留研究优势：预测与运筹优化，按需拓展",
     "notMainline": [
       "基础大模型预训练",
       "全套计算机视觉",
       "同时精通所有推荐/搜索/强化学习岗位"
     ],
-    "positioning": "保留管理科学、运筹与航空需求研究的优势，用软件交付与可信评测补短板。岗位匹配按当前具体 JD 判断，课程、学历和项目均不保证录用或日薪。",
+    "positioning": "以AI应用开发准备为主，保留管理科学、运筹与航空需求研究的优势。先把条件检查、工具调用、软件交付与评测做出来，再按具体岗位补算法或模型。课程、学历和项目均不保证录用或日薪。",
     "salaryTarget": "人民币400–600元/天是求职筛选目标，不是本路线承诺。",
     "roleFamilies": [
       "decision_optimization",
@@ -18,7 +18,7 @@
       "agent_engineering"
     ],
     "startMonth": "2026.10",
-    "defaultTrackId": "decision_optimization"
+    "defaultTrackId": "agent_engineering"
   },
   "timeBudget": {
     "weeklyCapHours": 8,
@@ -26,8 +26,8 @@
     "bufferWeeklyHours": 2,
     "revisionWeekHours": 3,
     "coreEstimatedHours": 124,
-    "includes": "完整组合路线150小时；智能决策主线124小时、Agent主线100小时，任选其一优先。已含课程、练习、实现、验收和面试准备；同一产出不重复计时。全部是估计，不是求职达标承诺。",
-    "estimateNote": "全部为规划者估算的专注工作量，非官方课时或视频片长；诊断、基础和返工会改变实际时间。",
+    "includes": "每周通常6小时，最多8小时。当前Agent路线20个课节合计约2340分钟，含原课练习，是学习量估计，不是当前软件的总工期。124/100/150小时与下方DDL阶段工期均属原项目历史规划。",
+    "estimateNote": "当前AI选项比较助手按实际阶段结果推进，尚未重新估总工期。原项目时间与当前课节估计不得当作招聘达标或交付日期承诺。",
     "busyWeekRule": "论文返修/投稿周只做维护、复现或一道变式，最多3小时；不补偿式熬夜堆积课程。",
     "optionalRule": "选修必须替换同周主线时间；默认不增加第二个大型项目。",
     "gates": [
@@ -65,7 +65,8 @@
       }
     ],
     "fullProductEstimatedHours": 150,
-    "trackSelectionRule": "只选一条主线推进；共用基础一次学习。另一条作为后续扩展，不能把两条任务同时塞进每周8小时。"
+    "trackSelectionRule": "只选一条主线推进；共用基础一次学习。另一条作为后续扩展，不能把两条任务同时塞进每周8小时。",
+    "estimateScope": "legacy_demand_decision_lab_except_weekly_budget"
   },
   "levels": [
     {
@@ -452,8 +453,7 @@
       "relatedLessonIds": [],
       "progressIdentity": "independent_unit",
       "requiredByTrack": [
-        "decision_optimization",
-        "agent_engineering"
+        "decision_optimization"
       ],
       "sourceType": "author_textbook"
     },
@@ -481,8 +481,7 @@
       "relatedLessonIds": [],
       "progressIdentity": "independent_unit",
       "requiredByTrack": [
-        "decision_optimization",
-        "agent_engineering"
+        "decision_optimization"
       ],
       "sourceType": "official_documentation_or_course"
     },
@@ -510,8 +509,7 @@
       "relatedLessonIds": [],
       "progressIdentity": "independent_unit",
       "requiredByTrack": [
-        "decision_optimization",
-        "agent_engineering"
+        "decision_optimization"
       ],
       "sourceType": "official_documentation_or_course"
     },
@@ -1518,8 +1516,7 @@
         "transferTaskLabel": "变式答辩练习（公开示例）"
       },
       "requiredByTrack": [
-        "decision_optimization",
-        "agent_engineering"
+        "decision_optimization"
       ],
       "assessedCompetencyLevels": [
         {
@@ -1616,8 +1613,7 @@
         "agent_engineering": "重点u-leakage中开发/测试分离原则与u-agent-evals；时序高级内容可选。"
       },
       "requiredByTrack": [
-        "decision_optimization",
-        "agent_engineering"
+        "decision_optimization"
       ],
       "assessedCompetencyLevels": [
         {
@@ -2086,8 +2082,7 @@
       "targetLevel": "passed",
       "prerequisites": [
         "api-delivery",
-        "software-testing",
-        "ml-validation"
+        "software-testing"
       ],
       "learningUnitIds": [
         "u-agent-tools",
@@ -3069,7 +3064,7 @@
   "roleCoverage": [
     {
       "roleFamily": "decision_optimization",
-      "fit": "主线",
+      "fit": "保留的研究拓展分支",
       "skillIds": [
         "ai-code",
         "reproducible-workflow",
@@ -3102,7 +3097,7 @@
     },
     {
       "roleFamily": "forecasting_ml",
-      "fit": "主线",
+      "fit": "按需拓展",
       "skillIds": [
         "ai-code",
         "reproducible-workflow",
@@ -3131,34 +3126,34 @@
     },
     {
       "roleFamily": "agent_engineering",
-      "fit": "次主线",
+      "fit": "当前主线",
       "skillIds": [
         "ai-code",
         "reproducible-workflow",
         "sql-data",
-        "statistics-metrics",
-        "ml-validation",
         "software-testing",
         "api-delivery",
         "agent-evaluation",
         "technical-interview"
       ],
-      "remainingGaps": "岗位若要求检索/重排/微调，另做单一专项；只有mock不能证明真实LLM表现。",
+      "remainingGaps": "统计推断、ML验证、检索/重排/微调按具体岗位补充；当前路线的开发/留出样例与失败分析在Agent评测中练习。只有mock不能证明真实LLM表现。",
       "directSkillIds": [
         "ai-code",
         "sql-data",
-        "ml-validation",
         "software-testing",
         "api-delivery",
         "agent-evaluation",
         "technical-interview"
       ],
       "prerequisiteSkillIds": [
-        "reproducible-workflow",
-        "statistics-metrics"
+        "reproducible-workflow"
       ],
       "readinessScoreEnabled": true,
-      "notHiringGuarantee": true
+      "notHiringGuarantee": true,
+      "optionalSkillIds": [
+        "statistics-metrics",
+        "ml-validation"
+      ]
     },
     {
       "roleFamily": "search_recommendation",
@@ -3213,19 +3208,20 @@
     "skills": 13,
     "coreSkills": 12,
     "learningUnits": 30,
-    "requiredLearningUnits": 26,
+    "requiredLearningUnits": 20,
     "legacyLessonsPreserved": 53,
     "coreLegacyLessons": 10,
-    "requiredLearningEstimatedMinutes": 3300,
+    "requiredLearningEstimatedMinutes": 2340,
     "milestones": 7,
     "requiredUnitCountByTrack": {
       "decision_optimization": 26,
-      "agent_engineering": 23
+      "agent_engineering": 20
     },
     "requiredSkillCountByTrack": {
       "decision_optimization": 11,
-      "agent_engineering": 9
-    }
+      "agent_engineering": 7
+    },
+    "defaultTrackId": "agent_engineering"
   },
   "tracks": [
     {
@@ -3314,13 +3310,11 @@
     {
       "id": "agent_engineering",
       "title": "AI Agent应用工程",
-      "summary": "先数据/接口/测试，再做工具调用和可复现评测；预测优化模块允许使用透明的固定基线。",
+      "summary": "先围绕航班选项做输入检查、自动测试和可操作接口，再接真实AI与工具调用；预测、区间估计与模型训练按需要选学。",
       "commonSkillIds": [
         "ai-code",
         "reproducible-workflow",
         "sql-data",
-        "statistics-metrics",
-        "ml-validation",
         "software-testing",
         "api-delivery",
         "technical-interview"
@@ -3329,14 +3323,14 @@
         "ai-code",
         "reproducible-workflow",
         "sql-data",
-        "statistics-metrics",
-        "ml-validation",
         "software-testing",
         "api-delivery",
         "technical-interview",
         "agent-evaluation"
       ],
       "optionalSkillIds": [
+        "statistics-metrics",
+        "ml-validation",
         "time-forecast",
         "optimization-modeling",
         "decision-evaluation",
@@ -3357,7 +3351,7 @@
       "mvpEstimatedHours": 50,
       "mvpMilestoneId": "ddl-m4",
       "v1MilestoneId": "ddl-m5",
-      "note": "未做预测/优化专项时，工具必须标为固定基线或规则情景模拟，不能宣称学会优化算法。先做确定性表单与协议mock，真实LLM评测另记。",
+      "note": "当前作品是AI选项比较助手，按aca-m0至aca-m5独立验收。原DDL项目、技能量表和课节练习保留作参考，不必先完成全部旧预测题才开始新作品；原题完成记录不能替代新阶段成果。",
       "milestoneNotes": {
         "ddl-m1": "优先数据检查/报告预览，为Agent准备稳定只读工具；可先用手写SQL+固定规则。",
         "ddl-m4": "最早MVP：输入→schema校验→调用确定性工具→报告。不要等待预测/OR分支。",
@@ -3377,27 +3371,40 @@
         "u-docker",
         "u-git",
         "u-interview",
-        "u-leakage",
-        "u-metrics",
         "u-pandas",
         "u-pytest",
         "u-python-diagnostic",
         "u-sql-join",
         "u-sql-select",
         "u-sql-window",
-        "u-test-param",
-        "u-uncertainty"
+        "u-test-param"
       ],
       "optionalLearningUnitIds": [
         "u-baselines",
         "u-decision-eval",
         "u-lagged",
+        "u-leakage",
+        "u-metrics",
         "u-or-mip",
         "u-or-scheduling",
         "u-torch",
-        "u-tscv"
+        "u-tscv",
+        "u-uncertainty"
       ],
-      "learningEstimatedMinutes": 2730
+      "learningEstimatedMinutes": 2340,
+      "estimatedHoursScope": "legacy_demand_decision_lab_only",
+      "estimateNote": "100小时完整路线、50小时首Demo是原DemandDecisionLab组合的历史估计，不适用于当前AI选项比较助手。2340分钟仅为本路线20个课节的学习练习估计，不是新作品总工期。",
+      "milestoneMappingScope": "legacy_demand_decision_lab_only",
+      "currentProjectId": "ai-choice-assistant",
+      "currentProjectMilestoneIds": [
+        "aca-m0",
+        "aca-m1",
+        "aca-m2",
+        "aca-m3",
+        "aca-m4",
+        "aca-m5"
+      ],
+      "progressionPolicy": "当前作品阶段仅由ai-choice-assistant的aca阶段记录推进；旧课程、旧技能自查和DDL里程碑不会自动完成或跳过新阶段。"
     }
   ],
   "challenges": [

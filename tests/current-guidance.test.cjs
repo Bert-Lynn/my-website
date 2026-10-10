@@ -1,0 +1,33 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const { makeDocument } = require('./helpers/app-harness.cjs');
+const root = path.join(__dirname, '..');
+const catalog = require('../data/learning-modules.json');
+const agent = catalog.tracks.find(track => track.id === 'agent_engineering');
+const source = fs.readFileSync(path.join(root, 'guide.html'), 'utf8');
+const current = source.split('<details class="guide-legacy"')[0];
+const guide = makeDocument(source);
+const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
+const first = agent.firstSession;
+assert(/20\s*(节|个)/.test(current), 'current guide states the actual 20 reference lessons');
+assert(/7\s*(项|个)/.test(current), 'current guide states seven separate skill self-checks');
+assert(/30\s*分钟/.test(current), 'current guide explains the bounded first session');
+assert(current.includes('#learn/code'), 'guide can start the exact first module');
+assert(current.includes('我的作品') && current.includes('学习路线') && current.includes('今日总览'), 'guide uses current visible navigation names');
+assert(!current.includes('继续学习') && !current.includes('我的项目'), 'current instructions do not point to renamed controls');
+assert(!/23\s*(节|个)|9\s*项能力|50\s*小时|100\s*小时/.test(current), 'current guide does not carry the old Agent scope or delivery estimates');
+assert(/作品/.test(current) && /不会自动/.test(current), 'guide explains independent project acceptance');
+assert(/90\s*分钟/.test(current), 'guide distinguishes first session from the full unchanged diagnostic');
+assert(guide.querySelector('#legacy-manual') && !guide.querySelector('#legacy-manual').open, 'historical instructions remain explicitly collapsed');
+assert(guide.querySelector('.guide-legacy-banner').textContent.includes('不是现在的主项目说明'));
+assert(source.includes('career.css?v=20261010-journey1'), 'guide receives the current visual system');
+assert(!/AI工具路线23|AI 工具路线23|主线：9项能力、23个单元/.test(readme), 'README does not describe the old Agent main route as current');
+assert(readme.includes('20') && readme.includes('7') && readme.includes('aca-m0'), 'README records current Agent count and independent stage identities');
+for (const text of [...catalog.homeIntro.firstUse, first.saveInstruction, first.resumeNote, first.nextAction]) {
+  assert(!text.includes('「继续学习」') && !text.includes('「我的项目」'), 'public on-ramp names actual visible controls');
+}
+assert(first.saveInstruction.includes('我的作品'));
+assert(first.resumeNote.includes('学习路线') || first.resumeNote.includes('今日总览'));
+console.log('PASS current guidance: new navigation, 30-minute start versus 90-minute diagnostic, 20 reference lessons/seven checks, independent six-stage acceptance, current stylesheet, and historical estimates contained in the archive.');

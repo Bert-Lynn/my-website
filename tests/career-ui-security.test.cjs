@@ -40,14 +40,15 @@ function setup() {
   ctx.CareerUI.init({ openPage: page => pages.push(page) });
   return { ctx, nodes, groups, forms, sync, pages, get, confirm: value => { confirmation = value; } };
 }
+const agentTrack = require('../data/career-curriculum.json').tracks.find(track => track.id === 'agent_engineering');
 const submit = form => form.onsubmit({ preventDefault() {}, currentTarget: form });
 
 (async () => {
   const h = setup(), { ctx, get, forms } = h;
   await h.sync.start();
   assert.equal(ctx.CareerUI.stats().skillsPassed, 0);
-  assert.equal(ctx.CareerUI.stats().skillsTotal, 9);
-  assert(get('#careerToday').innerHTML.includes('按这 6 步学'));
+  assert.equal(ctx.CareerUI.stats().skillsTotal, agentTrack.requiredSkillIds.length);
+  assert(get('#careerToday').innerHTML.includes('class="module-flow"'));
   assert(!get('#careerToday').innerHTML.includes('关键能力已有自评证据'));
   for (const unsafe of ['javascript:alert(1)', 'data:text/html,test', 'file:///tmp/test', 'https://user:pass@example.com']) assert.equal(ctx.CareerUI.safeURL(unsafe), '');
   assert.equal(ctx.CareerUI.escape('</textarea><script>alert("x")</script>'), '&lt;/textarea&gt;&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;');
@@ -55,7 +56,7 @@ const submit = form => form.onsubmit({ preventDefault() {}, currentTarget: form 
   assert(ctx.CareerUI.stats().skillsTotal > 0, 'persisted advanced role never renders empty fully passed route');
   assert(!get('#careerToday').innerHTML.includes('关键能力已有自评证据'));
   ctx.phdCareerProgress.setRole('agent_engineering');
-  assert.equal(ctx.CareerUI.stats().skillsTotal, 9);
+  assert.equal(ctx.CareerUI.stats().skillsTotal, agentTrack.requiredSkillIds.length);
   ctx.phdCareerProgress.setRole('decision_optimization');
   const form = get('#assessmentForm'); form.dataset.skillId = 'ai-code';
   const criteria = [1, 2, 3, 4].map(n => 'ai-code-c' + n);

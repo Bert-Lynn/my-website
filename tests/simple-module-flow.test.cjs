@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const { app } = require('./helpers/app-harness.cjs');
+const agentTrack = require('../data/career-curriculum.json').tracks.find(track => track.id === 'agent_engineering');
 const plain = value => JSON.parse(JSON.stringify(value));
 const sameNode = (actual, expected, message = 'same draft DOM node is retained') => assert(actual === expected, message);
 const trace = label => { if (process.env.QA_TRACE) console.log('CHECKPOINT', label, Math.round(process.memoryUsage().heapUsed / 1048576) + ' MiB heap'); };
@@ -14,13 +15,13 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
   let h = app(), { ctx } = h;
   await ctx.AppProgress.sync().start();
   assert.equal(ctx.phdCareerProgress.read().selectedRole, 'agent_engineering', 'fresh underlying state defaults to the approved Agent route');
-  assert.equal(ctx.CareerUI.role().id, 'agent_engineering'); assert.equal(ctx.CareerUI.stats().lessons.total, 23);
-  assert.equal(ctx.CareerUI.stats().skillsTotal, 9);
+  assert.equal(ctx.CareerUI.role().id, 'agent_engineering'); assert.equal(ctx.CareerUI.stats().lessons.total, agentTrack.requiredLearningUnitIds.length);
+  assert.equal(ctx.CareerUI.stats().skillsTotal, agentTrack.requiredSkillIds.length);
   chooseRole(h, 'decision_optimization');
   assert.equal(h.evaluate('tasks.length'), 47); assert.equal(ctx.LessonUI.ids.length, 53); assert.equal(ctx.CAREER_CURRICULUM.learningUnits.length, 30);
   assert.equal(h.all('.module-flow [data-open-module]').length, 6, 'homepage has six whole-module buttons');
   assert.equal(h.all('.flow-connector').length, 5, 'six modules connected into an ordered flow');
-  assert(h.query('.flow-goal').textContent.includes('AI选项比较助手'));
+  assert(h.query('.flow-goal').textContent.includes(ctx.CAREER_CURRICULUM.projects[0].title), 'saved original route names its own project');
   assert(h.query('.flow-goal').textContent.includes('尚未建成'));
   for (const label of ['软件：', 'Demo：', '论文：']) assert(h.query('.flow-goal').textContent.includes(label), 'end goal distinguishes ' + label);
   assert(h.query('.proposed-project').textContent.includes('航班怎么选'));
@@ -61,7 +62,7 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
   assert.equal(ctx.CareerUI.stats().lessons.done, 1);
   assert.equal(ctx.CareerUI.stats().skillsPassed, 0); assert.equal(ctx.LessonUI.stats().done, 0); assert.equal(h.evaluate('tally(tasks).done'), 0);
   chooseRole(h, 'agent_engineering');
-  assert.equal(ctx.CareerUI.stats().lessons.total, 23); assert.equal(ctx.CareerUI.stats().lessons.done, 1);
+  assert.equal(ctx.CareerUI.stats().lessons.total, agentTrack.requiredLearningUnitIds.length); assert.equal(ctx.CareerUI.stats().lessons.done, 1);
   assert.deepEqual(plain(ctx.CareerUI.modules().map(module => module.id)), ['code', 'data', 'check-results', 'app', 'ai-tools', 'interview']);
   assert.equal(h.query('[data-unit-check="u-sql-select"]').checked, true, 'shared unit progress survives role switch');
   chooseRole(h, 'forecasting_ml'); assert.equal(ctx.CareerUI.stats().lessons.total, 26, 'forecasting role retains the complete decision route');
@@ -78,7 +79,7 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
 
   trace('electives and unit progress reload');
   // A diagnostic may move the recommendation, but cannot invent lesson completion or certification.
-  h = app(); ctx = h.ctx; await ctx.AppProgress.sync().start(); ctx.AppNavigation.open('learn/code');
+  h = app(); ctx = h.ctx; await ctx.AppProgress.sync().start(); chooseRole(h, 'decision_optimization'); ctx.AppNavigation.open('learn/code');
   click(h.query('.module-try [data-assess]'));
   assert.equal(ctx.AppNavigation.current(), 'assessments');
   let form = h.query('#assessmentForm'); assert.equal(form.dataset.skillId, 'ai-code');
@@ -152,7 +153,7 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
   assert.equal(projectForm.querySelector('[name="milestoneEvidence"]').value, 'https://example.com/unsaved-qa-draft');
   h.setConfirmation(true); click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
   assert.equal(ctx.CareerUI.role().id, 'agent_engineering', 'explicitly accepted route switch succeeds');
-  assert.equal(ctx.CareerUI.stats().lessons.total, 23);
+  assert.equal(ctx.CareerUI.stats().lessons.total, agentTrack.requiredLearningUnitIds.length);
   assert.equal(ctx.CareerUI.stats().milestonesDone, 0);
   h.destroy();
 
@@ -174,5 +175,5 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
   assert.equal(ctx.CareerUI.stats().lessons.done, 0); assert.equal(ctx.CareerUI.stats().skillsPassed, 0);
   assert.equal(h.evaluate('tally(tasks).done'), 0); assert.equal(currentFlowId(h), 'code', 'calendar passage alone cannot complete modules or advance the route');
   h.destroy();
-  console.log('PASS simple-module full-app handlers: six clickable modules, exact lessons/practice/source links, electives, 26/23 role counts, independent progress, undo/reload, honest diagnostic skip/revocation, dirty-form cancel/history, legacy navigation, and no calendar-derived completion. Browser layout is a separate check.');
+  console.log('PASS simple-module full-app handlers: six clickable modules, exact lessons/practice/source links, electives, source-derived role counts, independent progress, undo/reload, honest diagnostic skip/revocation, dirty-form cancel/history, legacy navigation, and no calendar-derived completion. Browser layout is a separate check.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

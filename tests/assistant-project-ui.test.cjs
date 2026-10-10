@@ -9,6 +9,7 @@ const setForm = (form, status, evidence, checked = false) => {
   form.querySelector('[name="milestoneAttest"]').checked = checked;
 };
 const newRecord = (ctx, id) => ctx.phdCareerProgress.read().milestones['ai-choice-assistant']?.[id];
+const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.dataset.openModule;
 const moduleForm = h => h.query('.module-project-output [data-project-id="ai-choice-assistant"]');
 
 (async () => {
@@ -19,6 +20,7 @@ const moduleForm = h => h.query('.module-project-output [data-project-id="ai-cho
   assert.equal(ctx.phdCareerProgress.read().selectedRole, 'agent_engineering');
   assert.equal(ctx.CareerUI.mainProject().id, 'ai-choice-assistant');
   assert.deepEqual(plain(ctx.CareerUI.mainProjectStats()), { done: 0, total: 6 }, 'old project progress cannot become new project progress');
+  assert.equal(currentFlowId(h), 'code', 'old project progress cannot skip the first new output stage');
   assert.deepEqual(plain(ctx.phdCareerProgress.read().milestones['demand-decision-lab']['ddl-m0']), oldRecord);
   const stages = ctx.CareerUI.mainProject().milestones;
   assert.deepEqual(plain(stages.map(stage => stage.moduleId)), plain(ctx.CareerUI.modules().map(module => module.id)), 'one new output stage per Agent learning module in order');
@@ -42,6 +44,7 @@ const moduleForm = h => h.query('.module-project-output [data-project-id="ai-cho
   setForm(form, 'done', 'https://example.com/assistant-code', true); submit(form);
   const completedAt = newRecord(ctx, 'aca-m0').completedAt; assert(completedAt);
   assert.deepEqual(plain(ctx.CareerUI.mainProjectStats()), { done: 1, total: 6 });
+  assert.equal(currentFlowId(h), 'data', 'only explicit first-stage acceptance advances the new project recommendation');
   assert.deepEqual(plain(ctx.phdCareerProgress.read().milestones['demand-decision-lab']['ddl-m0']), oldRecord);
   assert.equal(ctx.CareerUI.stats().lessons.done, 0); assert.equal(ctx.CareerUI.stats().skillsPassed, 0);
   assert.equal(ctx.LessonUI.stats().done, 0); assert.equal(h.evaluate('tally(tasks).done'), 0);
@@ -49,9 +52,11 @@ const moduleForm = h => h.query('.module-project-output [data-project-id="ai-cho
   form = moduleForm(h); submit(form); assert.equal(newRecord(ctx, 'aca-m0').completedAt, completedAt, 'repeat save keeps actual date');
   const memory = h.memory; h.destroy(); h = app({ memory, hash: '#learn/code' }); ctx = h.ctx; await ctx.AppProgress.sync().start();
   assert.equal(newRecord(ctx, 'aca-m0').completedAt, completedAt, 'new-project completion survives deep-link reload');
+  assert.equal(currentFlowId(h), 'data', 'saved new-project recommendation survives reload');
   form = moduleForm(h); assert.equal(form.querySelector('[name="milestoneStatus"]').value, 'done');
   setForm(form, 'todo', 'https://example.com/assistant-code', false); submit(form);
   assert.equal(newRecord(ctx, 'aca-m0').completedAt, ''); assert.equal(ctx.CareerUI.mainProjectStats().done, 0);
+  assert.equal(currentFlowId(h), 'code', 'undo restores the uncompleted first project recommendation');
   assert.equal(ctx.phdCareerProgress.read().milestones['demand-decision-lab']['ddl-m0'].completedAt, oldDate);
   h.destroy(); h = app({ memory, hash: '#learn/code' }); ctx = h.ctx; await ctx.AppProgress.sync().start();
   assert.equal(newRecord(ctx, 'aca-m0').status, 'todo', 'new-project undo survives reload');

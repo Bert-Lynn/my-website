@@ -635,7 +635,7 @@ function toggle(id){
   const input=document.querySelector('#check-'+id);if(source?.dataset?.id===id){if(input)input.focus({preventScroll:true});else document.querySelector('#pendingOnly').focus({preventScroll:true})}
   document.querySelector('#announcer').textContent=(progress[id]?'已完成：':'已恢复待办：')+tasks.find(t=>t.id===id).title+(saved?'，进度已记录。':'，未能保存。');
 }
-const pageNames={today:['我的学习路线','先看最后要做什么，再点一个模块开始学。','学习首页'],roles:['实习岗位参考','查看岗位要求和薪资资料。具体机会以投递时为准。','更多内容'],skills:['详细自查记录','这页保留全部技能记录。日常学习从首页的大模块进入。','详细记录'],resources:['这一模块，按顺序学','每次展开一小节，看资料、做练习，再记录完成。','正在学习'],assessments:['检查自己会不会','照着题目做一次，再按实际结果保存记录。','练习自查'],projects:['我的项目','把各模块的练习，接成一个能操作的小工具。','更多内容'],overview:['博士计划','原来的论文、研究任务和时间安排都在这里。','更多内容'],timeline:['研究时间表','计划时间和实际完成时间分开记录。','博士计划'],outcomes:['论文与作品','查看原来的论文和项目任务。','博士计划'],storage:['进度与账号','不登录也能在本机保存。登录后可以同步到自己的账号。','保存进度']};
+const pageNames={today:['从研究，到第一件 AI 作品','面向 AI 应用 / Agent 开发实习。今天先做一件看得见结果的小事。','我的职业路线'],roles:['实习岗位参考','查看岗位要求和薪资资料。具体机会以投递时为准。','更多内容'],skills:['详细自查记录','这页保留全部技能记录。日常学习从首页的大模块进入。','详细记录'],resources:['这一模块，按顺序学','每次展开一小节，看资料、做练习，再记录完成。','正在学习'],assessments:['检查自己会不会','照着题目做一次，再按实际结果保存记录。','练习自查'],projects:['我的作品','把每一步的代码、测试和结果，接成一个能演示的工具。','作品与证据'],overview:['博士计划','原来的论文、研究任务和时间安排都在这里。','更多内容'],timeline:['研究时间表','计划时间和实际完成时间分开记录。','博士计划'],outcomes:['论文与作品','查看原来的论文和项目任务。','博士计划'],storage:['进度与账号','不登录也能在本机保存。登录后可以同步到自己的账号。','保存进度']};
 let activeRoute='today';
 function setPage(next,historyMode=true){
   const requested=String(next||'today'),moduleId=requested.startsWith('learn/')?requested.slice(6):null;
@@ -669,8 +669,8 @@ function render(){
   document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.setAttribute('aria-current',b.dataset.openPage===page?'page':'false'));
   const all=tally(tasks),now=currentMonth(),backlog=carriedTasks(view==='stage'?stages[selectedStage].start:activeMonth),mt=monthTasks(activeMonth),ms=tally(mt);
   document.querySelector('#todayLabel').textContent=now.replace('.','年')+'月 · 上海时间';
-  document.querySelector('#pageTitle').textContent=page==='resources'?(window.CareerUI?.currentModule()?.title||'模块学习'):page==='execution'?(view==='stage'?stages[selectedStage].title+' · 阶段任务':activeMonth===now?'本月执行计划':activeMonth.replace('.','年')+'月执行计划'):(pageNames[page]?.[0]||'成长工作台');
-  document.querySelector('#pageSubtitle').textContent=page==='execution'?'先补齐未完成的任务，再推进本月安排。':pageNames[page]?.[1]||'';
+  document.querySelector('#pageTitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[0]||pageNames.today[0]):page==='resources'?(window.CareerUI?.currentModule()?.title||'模块学习'):page==='execution'?(view==='stage'?stages[selectedStage].title+' · 阶段任务':activeMonth===now?'本月执行计划':activeMonth.replace('.','年')+'月执行计划'):(pageNames[page]?.[0]||'成长工作台');
+  document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?'先补齐未完成的任务，再推进本月安排。':pageNames[page]?.[1]||'';
   document.querySelector('#pageEyebrow').textContent=pageNames[page]?.[2]||'RESEARCH EXECUTION';
   document.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==page);
   const primaryPage=page==='resources'?'resources':['skills','assessments'].includes(page)?'skills':phdPages.includes(page)?'overview':page;

@@ -30,7 +30,6 @@ const expectedOrders = {
   decision_optimization: ['code', 'data', 'forecast', 'allocation', 'app', 'interview'],
   agent_engineering: ['code', 'data', 'check-results', 'app', 'ai-tools', 'interview']
 };
-const counts = { decision_optimization: [26, 11, 3300], agent_engineering: [23, 9, 2730] };
 const exactOnce = (actual, expected, label) => {
   assert.equal(new Set(actual).size, actual.length, label + ': each identity occurs once');
   assert.deepEqual([...actual].sort(), [...expected].sort(), label + ': exact canonical coverage');
@@ -47,11 +46,11 @@ for (const track of catalog.tracks) {
   exactOnce(track.modules.flatMap(module => module.skillIds), source.requiredSkillIds, track.id + ' required checks');
   exactOnce(branches.flatMap(branch => branch.skillIds), source.optionalSkillIds, track.id + ' optional checks');
   assert(required.every(id => !optional.includes(id)), 'electives never inflate the core denominator');
-  assert.equal(required.length, counts[track.id][0]);
+  assert.equal(required.length, source.requiredLearningUnitIds.length);
   assert.equal(track.requiredUnitCount, required.length);
-  assert.equal(track.requiredSkillCount, counts[track.id][1]);
+  assert.equal(track.requiredSkillCount, source.requiredSkillIds.length);
   const minutes = required.reduce((total, id) => total + unitMap.get(id).estimatedMinutes, 0);
-  assert.equal(minutes, counts[track.id][2]);
+  assert.equal(minutes, source.requiredLearningUnitIds.reduce((total, id) => total + unitMap.get(id).estimatedMinutes, 0));
   assert.equal(track.learningEstimatedMinutes, minutes);
   assert.equal(track.estimatedHours, source.estimatedHours, 'module presentation does not invent extra course hours');
   assert.equal(track.firstDemoEstimatedHours, source.mvpEstimatedHours);
@@ -74,6 +73,18 @@ for (const track of catalog.tracks) {
   assert.deepEqual(track.modules[0].diagnosticUnitIds, ['u-python-diagnostic']);
   assert(/如实|记录/.test(track.modules[0].diagnosticNote), 'diagnostic does not silently mark study complete');
 }
+// Approved Agent correction keeps forecasting optional and moves testing into the checking stage.
+const agentRoute = catalog.tracks.find(track => track.id === 'agent_engineering');
+const agentCanonical = curriculum.tracks.find(track => track.id === 'agent_engineering');
+assert.deepEqual(agentRoute.modules.map(module => module.unitIds.length), [4, 6, 2, 3, 3, 2]);
+assert.deepEqual(agentRoute.modules.find(module => module.id === 'check-results').unitIds, ['u-pytest', 'u-test-param']);
+for (const id of ['u-metrics', 'u-uncertainty', 'u-leakage']) {
+  assert(!agentCanonical.requiredLearningUnitIds.includes(id), id + ': forecasting material does not gate the Agent project');
+  assert(agentCanonical.optionalLearningUnitIds.includes(id), id + ': elective identity and past records remain usable');
+}
+assert(!curriculum.skills.find(skill => skill.id === 'agent-evaluation').prerequisites.includes('ml-validation'));
+assert.equal(agentRoute.requiredSkillCount, 7);
+assert.equal(agentRoute.learningEstimatedMinutes, 2340, 'reference lesson estimate is not a software delivery promise');
 assert.equal(catalog.budget.weeklyCapHours, 8);
 assert.equal(catalog.budget.revisionWeekHours, 3);
 assert(catalog.budget.plannedWeeklyHours + catalog.budget.bufferWeeklyHours <= catalog.budget.weeklyCapHours);
@@ -100,4 +111,4 @@ for (const anchor of guide.querySelectorAll('a')) {
   const href = anchor.getAttribute('href');
   if (href?.startsWith('#')) assert(guide.querySelector(href), 'guide anchor exists: ' + href);
 }
-console.log('PASS module catalog: two six-step ordered routes, exact-once 26/23 core sections, 11/9 checks, every elective separate, source-derived counts/timing, and unchanged state identities.');
+console.log('PASS module catalog: two six-step ordered routes, exact-once source-derived core sections and checks, every elective separate, source-derived counts/timing, and unchanged state identities.');
