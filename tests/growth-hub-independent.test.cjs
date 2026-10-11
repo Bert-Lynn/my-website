@@ -58,14 +58,22 @@ function verify(h, expected) {
   assert(hub.children.indexOf(h.query('.hub-plan-progress'))<hub.children.indexOf(h.query('.hub-module-section')),'actual progress is above module choices');
   assert.equal(hub.querySelectorAll('form,input,textarea,select').length,0,'the chooser does not create pretend completion controls');
   assert.equal(h.all('[data-hub-route]').length,5);
-  assert.deepEqual(h.all('[data-hub-route]').map(node=>node.dataset.hubRoute),['execution/month','resources','projects','execution/research','roles']);
+  assert.deepEqual(h.all('[data-hub-route]').map(node=>node.dataset.hubRoute),['execution','resources','projects','execution/research','roles']);
   const original=records(h), saved=plain(memory);
-  for (const [route,page] of [['execution/month','execution'],['resources','resources'],['projects','projects'],['execution/research','execution'],['roles','roles']]) {
+  for (const [route,page] of [['execution','execution'],['resources','resources'],['projects','projects'],['execution/research','execution'],['roles','roles']]) {
     click(h.query('[data-hub-route="'+route+'"]'));
     assert.equal(ctx.AppNavigation.route(),route);
     assert.equal(ctx.AppNavigation.current(),page);
     assert.equal(h.query('#modules').hidden,true);
     assert.equal(h.query('#cover').hidden,true,'selecting a module never loops back through the cover');
+    if(route==='execution') {
+      assert.equal(h.query('#pageTitle').textContent,'当前任务');
+      assert.equal(h.evaluate('view'),'current');
+      assert.equal(h.query('#currentTaskList').hidden,false);
+      assert.equal(h.query('#originalTaskPlan').hidden,true);
+      assert.deepEqual(h.all('#currentTaskList [data-milestone-form]').map(node=>node.dataset.milestoneForm),['wa-m0','wa-m1','wa-m2','wa-m3']);
+      assert.equal(h.all('#currentTaskList [data-id]').length,0,'current project outcomes do not reuse original task checkboxes');
+    }
     if(route==='execution/research') {
       assert.equal(h.query('#pageTitle').textContent,'科研与论文');
       assert.equal(h.all('#taskGroups [data-id]').length,23);
@@ -74,8 +82,10 @@ function verify(h, expected) {
     }
     click(h.query('#returnToModules')); assert.equal(ctx.AppNavigation.current(),'modules');
   }
-  click(h.query('[data-hub-route="execution/month"]'));
-  assert.equal(h.evaluate('view'),'month','the task card resets a previous research-only filter');
+  click(h.query('[data-hub-route="execution"]'));
+  assert.equal(h.evaluate('view'),'current','the task card returns to current outcomes after a research-only filter');
+  assert.equal(h.query('#currentTaskList').hidden,false);
+  assert.equal(h.query('#originalTaskPlan').hidden,true);
   click(h.query('#homeBtn')); assert.equal(ctx.AppNavigation.current(),'modules');
   const historyLength=ctx.history.entries.length; click(h.query('#homeBtn'));
   assert.equal(ctx.history.entries.length,historyLength,'repeated return does not duplicate history');
@@ -83,18 +93,18 @@ function verify(h, expected) {
   assert.deepEqual(plain(memory),saved,'hub navigation introduces no progress writes');
 
   // New hub return links share the existing unsaved-form guard and history restoration.
-  ctx.AppNavigation.open('learn/code');
-  const draft=h.query('.module-project-output [data-milestone-form="wa-m0"]');assert(draft);
+  ctx.AppNavigation.open('execution');
+  const draft=h.query('#currentTaskList [data-milestone-form="wa-m0"]');assert(draft);
   draft.querySelector('[name="milestoneEvidence"]').value='https://example.com/synthetic-unsaved-hub-draft';draft.oninput();
   h.setConfirmation(false);
   for(const selector of ['#returnToModules','#homeBtn']) {
     click(h.query(selector));
-    assert.equal(ctx.location.hash,'#learn/code');
-    assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'),draft,'cancel keeps exact unsaved form');
+    assert.equal(ctx.location.hash,'#execution');
+    assert.equal(h.query('#currentTaskList [data-milestone-form="wa-m0"]'),draft,'cancel keeps exact unsaved form');
   }
   ctx.location.hash='#modules';ctx.dispatchEvent({type:'hashchange'});
-  assert.equal(ctx.location.hash,'#learn/code');
-  ctx.history.back();assert.equal(ctx.location.hash,'#learn/code');
+  assert.equal(ctx.location.hash,'#execution');
+  ctx.history.back();assert.equal(ctx.location.hash,'#execution');
   const asks=h.confirmations.length;ctx.dispatchEvent({type:'hashchange'});assert.equal(h.confirmations.length,asks,'restored history hash does not prompt twice');
   h.setConfirmation(true);click(h.query('#returnToModules'));
   assert.equal(ctx.AppNavigation.current(),'modules');

@@ -595,7 +595,7 @@ try {
 const plannedMonths=[...new Set(tasks.map(t=>t.month))].sort();
 let observedMonth=currentMonth();
 let activeMonth=observedMonth;
-let view="month";
+let view="current";
 function currentMonth(){
   const parts=new Intl.DateTimeFormat("en",{timeZone:"Asia/Shanghai",year:"numeric",month:"2-digit"}).formatToParts(new Date());
   return parts.find(p=>p.type==="year").value+"."+parts.find(p=>p.type==="month").value;
@@ -638,7 +638,7 @@ function toggle(id){
 }
 const pageNames={modules:['我的成长工作台','先看进展，再选择今天要推进的模块。','PERSONAL GROWTH'],today:['从研究，到第一件 AI 作品','面向 AI 应用 / Agent 开发实习。今天先做一件看得见结果的小事。','发展路线'],roles:['实习岗位参考','查看岗位要求和薪资资料。具体机会以投递时为准。','更多内容'],skills:['详细自查记录','这页保留全部技能记录。需要资料时，从课程学习进入对应模块。','详细记录'],resources:['这一模块，按顺序学','每次展开一小节，看资料、做练习，再记录完成。','正在学习'],assessments:['检查自己会不会','照着题目做一次，再按实际结果保存记录。','练习自查'],projects:['我的作品','把每一步的代码、测试和结果，接成一个能演示的工具。','作品与证据'],overview:['博士计划','原来的论文、研究任务和时间安排都在这里。','更多内容'],timeline:['研究时间表','计划时间和实际完成时间分开记录。','博士计划'],outcomes:['论文与作品','查看原来的论文和项目任务。','博士计划'],storage:['进度与账号','不登录也能在本机保存。登录后可以同步到自己的账号。','保存进度']};
 let activeRoute='cover';
-const taskViewRoute=route=>/^execution\/(month|year|research|learning|demo)$/.exec(route)?.[1];
+const taskViewRoute=route=>/^execution\/(current|month|year|research|learning|demo|stage)$/.exec(route)?.[1];
 const isWorkspaceRoute=route=>taskViewRoute(route)||['cover','execution',...Object.keys(pageNames)].includes(route)||route.startsWith('learn/');
 function setPage(next,historyMode=true){
   const requested=String(next||'cover'),taskView=taskViewRoute(requested),moduleId=requested.startsWith('learn/')?requested.slice(6):null;
@@ -647,7 +647,7 @@ function setPage(next,historyMode=true){
     if(!historyMode&&window.history?.pushState&&window.location?.hash!=='#'+activeRoute)window.history.pushState({page:activeRoute},'','#'+activeRoute);
     return false;
   }
-  page=target;activeRoute=moduleId?'learn/'+moduleId:taskView?requested:target;if(taskView)view=taskView;const more=document.getElementById('moreNavigation');if(more)more.open=false;
+  page=target;activeRoute=moduleId?'learn/'+moduleId:taskView?requested:target;if(taskView)view=taskView;else if(target==='execution')view='current';const more=document.getElementById('moreNavigation');if(more)more.open=false;
   if(target==='resources')window.CareerUI?.selectModule(moduleId);
   if(historyMode&&window.history?.pushState&&window.location?.hash!=='#'+activeRoute)window.history.pushState({page:activeRoute},'','#'+activeRoute);
   render();const heading=document.querySelector(page==='cover'?'#coverTitle':'#pageTitle'),scrollTarget=page==='cover'?document.querySelector('#cover'):heading;scrollTarget?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true});return true;
@@ -674,17 +674,21 @@ function render(){
   document.querySelector('#skillTabs').hidden=!['skills','assessments'].includes(page);
   document.querySelector('#researchTabs').hidden=!['overview','timeline','outcomes'].includes(page);
   document.querySelector('.journey').hidden=page!=='timeline';
-  document.querySelector('.progress-sidebar').hidden=page!=='execution';
-  document.querySelector('.workspace-layout').classList.toggle('with-sidebar',page==='execution');
+  document.querySelector('.progress-sidebar').hidden=page!=='execution'||view==='current';
+  document.querySelector('.workspace-layout').classList.toggle('with-sidebar',page==='execution'&&view!=='current');
   document.querySelector('#resetBtn').hidden=page!=='storage';
-  const researchView=page==='execution'&&view==='research';
+  const researchView=page==='execution'&&view==='research',currentView=page==='execution'&&view==='current';
+  document.getElementById('currentTaskList').hidden=!currentView;
+  document.getElementById('originalTaskPlan').hidden=currentView;
+  const carriedCount=carriedTasks(currentMonth()).length,oldPlanTab=document.querySelector('[data-task-section="execution/month"]');if(oldPlanTab)oldPlanTab.textContent='原月计划'+(carriedCount?' · '+carriedCount+' 项顺延':'');
+  document.querySelectorAll('[data-task-section]').forEach(b=>b.setAttribute('aria-current',(currentView?b.dataset.taskSection==='execution':researchView?b.dataset.taskSection==='execution/research':b.dataset.taskSection==='execution/month')?'page':'false'));
   const researchLinks=document.getElementById('researchTaskLinks');if(researchLinks)researchLinks.hidden=!researchView;
   const executionStats=document.querySelector('.execution-stats');if(executionStats)executionStats.hidden=researchView;
   document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.setAttribute('aria-current',b.dataset.openPage===page?'page':'false'));
   const all=tally(tasks),now=currentMonth(),backlog=carriedTasks(view==='stage'?stages[selectedStage].start:activeMonth),mt=monthTasks(activeMonth),ms=tally(mt);
   document.querySelector('#todayLabel').textContent=now.replace('.','年')+'月 · 上海时间';
-  document.querySelector('#pageTitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[0]||pageNames.today[0]):page==='resources'?(window.CareerUI?.currentModule()?.title||'模块学习'):page==='execution'?(researchView?'科研与论文':'我的任务'):(pageNames[page]?.[0]||'成长工作台');
-  document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?(researchView?'研究任务按原计划月份排列，完成一项，就记录一项。':'当月计划和此前未完成任务都在这里；完成一项，就勾一项。'):pageNames[page]?.[1]||'';
+  document.querySelector('#pageTitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[0]||pageNames.today[0]):page==='resources'?(window.CareerUI?.currentModule()?.title||'模块学习'):page==='execution'?(researchView?'科研与论文':currentView?'当前任务':'原月计划'):(pageNames[page]?.[0]||'成长工作台');
+  document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?(researchView?'实验、写作与投稿，按原计划推进。':currentView?'用户反馈分析 Agent · 按顺序做下面四项。':'原47项任务，未完成的会继续顺延。'):pageNames[page]?.[1]||'';
   document.querySelector('#pageEyebrow').textContent=page==='execution'?'任务列表':pageNames[page]?.[2]||'研究工作台';
   document.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==page);
   const primaryPage=page==='execution'?'execution':page==='resources'?'resources':['skills','assessments'].includes(page)?'skills':phdPages.includes(page)?'overview':page;
@@ -699,7 +703,7 @@ function render(){
   const si=stages.findIndex((s,i)=>stageTasks(i).some(t=>!progress[t.id]));
   document.querySelector('#stageExplanation').textContent=si<0?'四个阶段已全部完成':'当前推进：'+stages[si].title+' · 依据实际勾选';
   document.querySelector('#stageTrack').innerHTML=stages.map((s,i)=>{const ss=tally(stageTasks(i)),complete=ss.done===ss.total;return '<button class="stage-step '+(complete?'complete':i===si?'current':'')+'" data-stage="'+i+'" aria-label="查看'+s.title+'阶段，'+s.start+'至'+s.end+'，'+ss.done+'/'+ss.total+'项完成"><span class="stage-number">'+(complete?'✓':i+1)+'</span><strong>'+s.title+'</strong><small>'+s.start.slice(2)+'–'+s.end.slice(2)+' · '+ss.done+'/'+ss.total+'</small>'+(i===si?'<span class="stage-state">当前</span>':'')+'</button>'}).join('');
-  document.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{selectedStage=Number(b.dataset.stage);activeMonth=stages[selectedStage].start;view='stage';setPage('execution');document.querySelector('#workspace').scrollIntoView({behavior:'smooth',block:'start'})});
+  document.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{selectedStage=Number(b.dataset.stage);activeMonth=stages[selectedStage].start;view='stage';setPage('execution/stage');document.querySelector('#workspace').scrollIntoView({behavior:'smooth',block:'start'})});
   const months=[...new Set([...plannedMonths,now,activeMonth])].sort();
   document.querySelector('#monthPicker').innerHTML=months.map(m=>'<option value="'+m+'" '+(m===activeMonth?'selected':'')+'>'+m.replace('.','年')+'月</option>').join('');
   const scope=view==='stage'?stageTasks(selectedStage):mt,scopeStats=tally(scope);
@@ -716,7 +720,7 @@ function render(){
   let markup='';
   if(view==='month'){const history=tasks.filter(t=>t.month<activeMonth&&progress[t.id]);markup=(backlog.length?taskGroup('优先补齐 · 顺延待办',backlog,true):'')+taskGroup(activeMonth+' · 本月推进',mt)+(history.length&&!pendingOnly?'<details class="completed-history"><summary>已完成历史任务（'+history.length+'）· 可取消勾选</summary>'+taskGroup('已完成历史',history)+'</details>':'')}
   else markup=(view==='stage'&&backlog.length?taskGroup('阶段前尚未完成 · 优先补齐',backlog,true):'')+plannedMonths.filter(m=>list.some(t=>t.month===m)).map(m=>taskGroup(m,list.filter(t=>t.month===m))).join('');
-  const projectNotice=view==='research'?'':'<aside class="execution-project-note"><div><strong>当前作品方向：用户反馈分析 Agent</strong><p>面向 AI Agent 应用研发实习，按四件成果制作。下方47项仍是原月计划；历史项目勾选保留，不把多个旧 Demo 当作当前必做主线。</p></div><button class="text-action" data-current-project>查看当前四件成果 →</button></aside>';
+  const projectNotice='';
   document.querySelector('#taskGroups').innerHTML=projectNotice+(markup||'<div class="next-empty">'+(pendingOnly?'当前视图没有未完成任务 ✓':'此月没有新安排，未完成任务会持续显示在这里。')+'</div>');
   document.querySelectorAll('[data-current-project]').forEach(b=>b.onclick=()=>setPage('projects'));
   document.querySelectorAll('[data-task-lessons]').forEach(b=>b.onclick=()=>window.LessonUI?.openLesson(b.dataset.taskLessons));
@@ -730,6 +734,7 @@ function render(){
 }
 document.querySelectorAll('#viewTabs button').forEach(b=>b.onclick=()=>{if(b.dataset.view==='stage'){view='stage';render()}else setPage('execution/'+b.dataset.view)});
 document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.page));
+document.querySelectorAll('[data-task-section]').forEach(b=>b.onclick=()=>setPage(b.dataset.taskSection));
 document.querySelector('#homeBtn').onclick=e=>{e.preventDefault();setPage('modules')};
 document.querySelector('#returnToModules').onclick=e=>{e.preventDefault();setPage('modules')};
 document.querySelectorAll('[data-research-route]').forEach(link=>link.onclick=e=>{e.preventDefault();setPage(link.dataset.researchRoute)});
@@ -760,6 +765,7 @@ setInterval(refreshMonth,60000);
 // Cloud adapter is optional: local tasks remain usable if configuration or the SDK is unavailable.
 let cloudUIKey='',authMode='signin';
 function renderCloud(state){
+  window.CareerUI?.accountChanged?.();
   window.ModuleHub?.render();
   const badge={local:'本地保存',loading:'正在连接',signin:'未登录',ready:'云端已同步',pending:'待同步',syncing:'正在同步',conflict:'需要处理',error:'同步未完成'};
   document.querySelector('#cloudBadge').textContent=badge[state.mode]||'本地保存';

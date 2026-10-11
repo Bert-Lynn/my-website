@@ -15,7 +15,9 @@ const plain=x=>JSON.parse(JSON.stringify(x));
  const root=h.query('#careerProjects .growth-ladder');assert(root);
  const cards=root.querySelectorAll('.growth-level');assert.equal(cards.length,3);assert(cards.every(x=>!x.open),'all three explanation layers are collapsed initially');
  assert.equal(root.querySelectorAll('form,input,select,textarea,progress,[role="progressbar"]').length,0,'future plans contain no editable completion or progress widgets');
- assert.equal(h.all('.current-project-progress [data-project-id="work-assistant"]').length,4,'only current four outcomes expose product progress');
+ assert.equal(h.all('#currentTaskList [data-project-id="work-assistant"]').length,4,'only the four canonical current tasks expose product progress');
+ assert.equal(h.all('#careerProjects [data-project-id="work-assistant"]').length,0,'project overview does not duplicate current save forms');
+ assert.equal(h.query('.project-growth-plan').open,false,'all future planning is behind one closed overview entrance');
  for(const [i,level] of p.growthLevels.entries()) {
   const card=cards[i],verified=expected.levels[i];assert.equal(level.id,verified.id);assert(card.querySelector('summary').textContent.includes(level.title));assert(card.textContent.includes(level.goal));
   for(const field of ['boundary','costGate','estimateNote']) assert(card.textContent.includes(verified[field]),level.id+': full verified '+field+' is rendered');

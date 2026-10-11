@@ -1,0 +1,89 @@
+/* Task-first presentation. All progress continues to use the existing record IDs. */
+.task-section-tabs{display:flex;gap:6px;padding:5px;margin:0 0 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.task-section-tabs button{padding:10px 18px;border:0;border-radius:6px;color:var(--muted);background:transparent;font-size:14px;cursor:pointer}
+.task-section-tabs button[aria-current="page"]{background:var(--selected);color:var(--cinnabar);font-weight:700}
+#currentTaskList{max-width:1050px;margin-inline:auto}
+#currentTaskList[hidden],#originalTaskPlan[hidden]{display:none!important}
+.current-task-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px}
+.current-task-heading>div{display:flex;align-items:baseline;gap:14px}
+.current-task-heading span{font-size:13px;color:var(--muted)}
+.current-task-heading strong{font-size:22px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--ink)}
+.current-task-next{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 18px;margin-bottom:18px;border-left:3px solid var(--cinnabar);background:var(--selected);color:var(--ink)}
+.current-task-next>span{font-size:12px;color:var(--cinnabar)}
+.current-task-next>strong{font-size:15px;font-weight:650;flex:1}
+.current-task-next .text-action{margin:0;white-space:nowrap}
+.current-tasks-done{padding:18px;background:var(--selected);border:1px solid var(--line);border-radius:8px}
+.focus-task{border:1px solid var(--line);background:var(--paper-raised);margin:0 0 16px;border-radius:10px;overflow:hidden;scroll-margin-top:90px}
+.focus-task.is-next{border-color:var(--cinnabar)}
+.focus-task>header{display:flex;gap:15px;padding:22px 24px 13px;align-items:center}
+.focus-task-number{font:500 25px Georgia,serif;color:var(--muted);min-width:36px}
+.focus-task.is-next .focus-task-number{color:var(--cinnabar)}
+.focus-task h3{font-size:19px;line-height:1.5;margin:3px 0;color:var(--ink);letter-spacing:0}
+.focus-task-state{display:flex;gap:12px;align-items:center;font-size:12px;color:var(--muted)}
+.focus-task-state strong{color:var(--cinnabar);font-weight:650}
+.task-brief{padding:0 24px 16px 75px;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:14px 28px}
+.task-brief>div{min-width:0}
+.task-brief dt{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
+.task-brief dd{font-size:14px;line-height:1.7;color:var(--ink);margin:0;overflow-wrap:anywhere}
+.task-reading>div+div{margin-top:8px}
+.task-reading a{color:var(--cinnabar);text-underline-offset:3px}
+.task-reading small{display:block;color:var(--muted);font-size:12px;line-height:1.6;margin-top:2px}
+.task-work-detail{border-top:1px solid var(--line)}
+.task-work-detail>summary{padding:13px 24px 13px 75px;font-size:13px;color:var(--cinnabar);cursor:pointer;list-style:inside}
+.task-work-detail[open]>summary{border-bottom:1px solid var(--line)}
+.task-work-detail .current-project-stage-body{padding:20px 24px;background:var(--paper)}
+.task-work-detail h4{font-size:14px;margin:18px 0 8px}
+.task-work-detail p,.task-work-detail li{font-size:14px;line-height:1.85;overflow-wrap:anywhere}
+.task-work-detail form{padding-top:18px;border-top:1px solid var(--line);display:grid;gap:13px}
+.task-work-detail form>label:not(.milestone-attest){display:grid;gap:6px;font-size:13px}
+.task-work-detail form input[type="url"],.task-work-detail form select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:5px;background:var(--paper-raised);color:var(--ink);font-size:14px;box-sizing:border-box}
+.task-work-detail form button{justify-self:start}
+.task-work-detail form small{font-size:12px;color:var(--muted)}
+.task-file-list{padding:13px 0;border-block:1px solid var(--line)}
+.task-file-list>summary{font-size:13px;cursor:pointer}
+.compact-project-intro{padding:24px!important}
+.compact-project-intro h2{font-size:28px!important;margin:8px 0!important}
+.compact-project-intro .proposal-lead{max-width:760px;font-size:15px;line-height:1.8}
+.project-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0 10px}
+.project-preview>div{padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:7px}
+.project-preview strong{display:block;font-size:16px;color:var(--ink);margin-bottom:8px}
+.project-preview span{display:block;font-size:13px;line-height:1.7;color:var(--muted)}
+.project-preview-note{font-size:12px!important;color:var(--muted)}
+.project-task-return{display:flex;gap:20px;align-items:center;margin:18px 0 26px}
+.project-task-return>span{font-size:14px;color:var(--ink)}
+.project-growth-plan{margin:12px 0;border:1px solid var(--line);border-radius:7px;background:var(--paper)}
+.project-growth-plan>summary{padding:15px 18px;font-size:14px;cursor:pointer}
+.module-task-link{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 18px!important;margin:0 0 20px!important;background:var(--selected)!important}
+.module-task-link>span{font-size:12px;color:var(--muted)}
+.module-task-link>strong{font-size:14px;font-weight:600;flex:1;color:var(--ink)}
+.module-task-link .text-action{font-size:13px;margin:0}
+.module-intro{margin-top:0!important}
+.module-intro .module-make{padding:0!important;background:none!important;border:0!important}
+.module-intro .module-make button{margin:0}
+.original-course-practice,.first-session-guide{border:1px solid var(--line);border-radius:6px;margin:16px 0;background:var(--paper)}
+.original-course-practice>summary,.first-session-guide>summary{cursor:pointer;padding:14px 16px;color:var(--muted);font-size:13px}
+.original-course-practice>.lesson-instructions,.original-course-practice>.module-complete-check,.original-course-practice>.module-reference-note{margin:0 16px 16px}
+.module-finish>summary{font-size:14px;cursor:pointer;color:var(--muted)}
+.module-finish:not([open]){padding:16px!important}
+.first-session-guide>.first-session{margin:0;border:0}
+.module-lesson{scroll-margin-top:85px}
+.focus-task :focus-visible,.task-section-tabs button:focus-visible{outline:2px solid var(--cinnabar);outline-offset:4px}
+@media(max-width:700px){
+ .task-section-tabs{gap:2px;padding:3px;margin-bottom:16px}.task-section-tabs button{padding:10px 13px;font-size:13px}
+ .current-task-heading{align-items:flex-start}.current-task-heading>div{display:grid;gap:4px}.current-task-heading strong{font-size:20px}.current-task-heading .text-action{font-size:12px}
+ .current-task-next{gap:7px 10px;padding:12px}.current-task-next>span{flex-basis:100%}.current-task-next>strong{font-size:14px}
+ .focus-task>header{padding:17px 16px 12px;gap:10px}.focus-task-number{min-width:28px;font-size:22px}.focus-task h3{font-size:17px}
+ .task-brief{grid-template-columns:1fr;padding:0 16px 16px;gap:12px}.task-brief>div{display:grid;grid-template-columns:76px minmax(0,1fr);gap:8px}.task-brief dt{line-height:1.8}.task-brief dd{font-size:13px}.task-reading small{font-size:12px}
+ .task-work-detail>summary{padding:13px 16px}.task-work-detail .current-project-stage-body{padding:16px}.task-work-detail .new-project-checks{grid-template-columns:1fr}
+ .compact-project-intro{padding:18px!important}.compact-project-intro h2{font-size:24px!important}.project-preview{grid-template-columns:1fr;gap:8px;margin-top:16px}.project-preview>div{padding:13px 15px;display:grid;grid-template-columns:98px 1fr;gap:10px;align-items:start}.project-preview strong{font-size:14px;margin:0}.project-preview span{font-size:12px}
+ .module-task-link{display:grid;gap:6px;padding:14px!important}.module-task-link>strong{font-size:14px}.project-task-return{gap:14px;flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){.focus-task,.module-lesson{scroll-behavior:auto}}
+#currentTaskList>.current-project-progress{margin-top:0}
+.task-start{display:flex;align-items:center;gap:14px;padding:0 24px 18px 75px;flex-wrap:wrap}
+.task-start>span{font-size:12px;line-height:1.7;color:var(--muted)}
+.task-start .outline-button{font-size:12px;padding:8px 12px}
+@media(max-width:700px){.task-start{padding:0 16px 16px;gap:8px}.task-start>span{flex-basis:100%}}
+.task-reading a{display:inline}
+.task-reading-detail{padding:0 0 14px;border-bottom:1px solid var(--line)}
+.task-reading-detail>summary{cursor:pointer;font-size:13px;color:var(--muted)}

@@ -47,7 +47,8 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
     for (const id of module.unitIds) {
       const section = h.query('[data-module-unit="' + id + '"]'), unit = ctx.CAREER_CURRICULUM.learningUnits.find(unit => unit.id === id);
       assert(section); assert(section.querySelector('a[href="' + unit.url + '"]'), id + ': exact selected source URL');
-      assert(section.textContent.includes('原课练习') && section.textContent.includes('什么时候勾选'), id + ': practice and completion criteria are inside the lesson');
+      assert(section.textContent.includes('原课程练习') && section.textContent.includes('原练习完成标准'), id + ': original practice and completion criteria remain nested inside the lesson');
+      assert.equal(section.querySelector('.original-course-practice').open,false,'long original exercise begins collapsed');
       assert.equal(typeof section.querySelector('[data-unit-check]').onchange, 'function');
     }
   }
@@ -136,27 +137,27 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
   h.setConfirmation(false); chooseRole(h, 'agent_engineering');
   assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'cancelled role change keeps the actual route');
   sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'cancelled role change retains unsaved project form');
-  click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
-  assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'proposed-route button also honors Cancel with an unsaved project draft');
+  chooseRole(h, 'agent_engineering');
+  assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'remaining role selector honors Cancel with an unsaved project draft');
   sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm);
   const originalSetRole = ctx.phdCareerProgress.setRole;
   ctx.phdCareerProgress.setRole = () => false; h.setConfirmation(true);
-  click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
+  chooseRole(h, 'agent_engineering');
   assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'failed direction save keeps the existing route');
   sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'failed direction save retains unsaved input');
   ctx.phdCareerProgress.setRole = originalSetRole; h.setConfirmation(false);
   const realSetRole = ctx.phdCareerProgress.setRole;
   ctx.phdCareerProgress.setRole = () => false; h.setConfirmation(true);
-  click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
-  assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'failed proposed-route save preserves actual role');
-  sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'failed proposed-route save preserves draft DOM');
-  assert(h.query('#announcer').textContent.includes('未成功保存'));
+  chooseRole(h, 'agent_engineering');
+  assert.equal(ctx.CareerUI.role().id, 'decision_optimization', 'failed selector save preserves actual role');
+  sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'failed selector save preserves draft DOM');
+  assert.equal(h.query('[data-select-role]').value,'decision_optimization','failed selector write restores actual saved choice');
   ctx.CareerUI.render(); sameNode(h.query('[data-project-id="demand-decision-lab"]'), projectForm, 'failed route save leaves draft dirty');
   ctx.phdCareerProgress.setRole = realSetRole; h.setConfirmation(false);
   assert.equal(ctx.AppNavigation.open('today'), false); assert.equal(ctx.location.hash, '#projects');
   assert.equal(ctx.CareerUI.openSkill('ai-code'), false, 'project draft also guards cross-page self-check links');
   assert.equal(projectForm.querySelector('[name="milestoneEvidence"]').value, 'https://example.com/unsaved-qa-draft');
-  h.setConfirmation(true); click(h.query('.proposal-route-choice [data-role="agent_engineering"]'));
+  h.setConfirmation(true); chooseRole(h, 'agent_engineering');
   assert.equal(ctx.CareerUI.role().id, 'agent_engineering', 'explicitly accepted route switch succeeds');
   assert.equal(ctx.CareerUI.stats().lessons.total, agentTrack.requiredLearningUnitIds.length);
   assert.equal(ctx.CareerUI.stats().milestonesDone, 0);

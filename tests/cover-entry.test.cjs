@@ -92,8 +92,6 @@ const assertWorkspace = (h, page = 'execution') => {
   assert.equal(h.document.activeElement, h.query('#pageTitle'));
   assert.equal(ctx.location.hash, '#modules', 'workspace skip link preserves the hub route');
   assert.equal(h.query('#mainTabs').querySelectorAll('[data-page]')[0].dataset.page, 'execution');
-  assert(h.query('#taskGroups').textContent.includes('2026.11'));
-  assert(h.query('#taskGroups').textContent.includes('顺延'));
   const firstEntryCount = ctx.history.entries.length;
   click(h.query('#enterWorkspace'));
   assert.equal(ctx.history.entries.length, firstEntryCount, 'repeat entry does not duplicate history');
@@ -102,8 +100,17 @@ const assertWorkspace = (h, page = 'execution') => {
   assert.equal(h.document.lastScrolled, h.query('#cover'), 'returning to cover keeps its brand and introduction visible');
   ctx.history.forward(); assertWorkspace(h, 'modules');
   assert.equal(ctx.location.hash, '#modules');
-  click(h.query('[data-hub-route="execution/month"]')); assertWorkspace(h);
+  click(h.query('[data-hub-route="execution"]')); assertWorkspace(h);
+  assert.equal(ctx.location.hash, '#execution');
+  assert.equal(h.query('#currentTaskList').hidden, false);
+  assert.equal(h.query('#originalTaskPlan').hidden, true, 'current tasks do not expose the old monthly plan');
+  assert.equal(h.all('#currentTaskList [data-milestone-form]').length, 4);
+  click(h.query('[data-task-section="execution/month"]'));
   assert.equal(ctx.location.hash, '#execution/month');
+  assert.equal(h.query('#originalTaskPlan').hidden, false);
+  assert.equal(h.query('#currentTaskList').hidden, true);
+  assert(h.query('#taskGroups').textContent.includes('2026.11'));
+  assert(h.query('#taskGroups').textContent.includes('顺延'));
   click(h.query('#mainTabs [data-page="resources"]')); assertWorkspace(h, 'resources');
   click(h.query('#homeBtn')); assertWorkspace(h, 'modules');
   click(h.query('#moreNavigation [data-page="cover"]')); assertCover(h);
@@ -116,31 +123,31 @@ const assertWorkspace = (h, page = 'execution') => {
   assert.deepEqual(plain(memory), persisted, 'cover introduces no local preference, progress, or completion-date writes');
 
   // Cover links and browser navigation reuse the existing unsaved-project guard.
-  ctx.AppNavigation.open('learn/code');
-  const form = h.query('.module-project-output [data-milestone-form="wa-m0"]'); assert(form);
+  ctx.AppNavigation.open('execution');
+  const form = h.query('#currentTaskList [data-milestone-form="wa-m0"]'); assert(form);
   form.querySelector('[name="milestoneEvidence"]').value = 'https://example.com/synthetic-unsaved-cover-draft'; form.oninput();
   h.setConfirmation(false);
   click(h.query('#moreNavigation [data-page="cover"]'));
-  assertWorkspace(h, 'resources');
-  assert.equal(ctx.location.hash, '#learn/code');
-  assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'), form, 'cancel keeps the exact dirty form');
+  assertWorkspace(h, 'execution');
+  assert.equal(ctx.location.hash, '#execution');
+  assert.equal(h.query('#currentTaskList [data-milestone-form="wa-m0"]'), form, 'cancel keeps the exact dirty form');
   ctx.history.back();
-  assert.equal(ctx.location.hash, '#learn/code', 'cancelled history restores the displayed route');
-  assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'), form);
+  assert.equal(ctx.location.hash, '#execution', 'cancelled history restores the displayed route');
+  assert.equal(h.query('#currentTaskList [data-milestone-form="wa-m0"]'), form);
   const confirmations = h.confirmations.length;
   ctx.dispatchEvent({ type: 'hashchange' });
   assert.equal(h.confirmations.length, confirmations, 'the matching hashchange does not ask twice after popstate');
-  assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'), form);
+  assert.equal(h.query('#currentTaskList [data-milestone-form="wa-m0"]'), form);
   ctx.location.hash = '#cover'; ctx.dispatchEvent({ type: 'hashchange' });
-  assert.equal(ctx.location.hash, '#learn/code', 'direct hash changes also respect the unsaved guard');
-  assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'), form);
+  assert.equal(ctx.location.hash, '#execution', 'direct hash changes also respect the unsaved guard');
+  assert.equal(h.query('#currentTaskList [data-milestone-form="wa-m0"]'), form);
   h.setConfirmation(true); click(h.query('#moreNavigation [data-page="cover"]')); assertCover(h);
   assert.deepEqual(snapshots(h), before, 'discarding the draft to return to cover never saves it');
   assert.deepEqual(plain(memory), persisted);
   h.destroy();
 
   // Direct task/module/account links bypass the cover, including on reload.
-  for (const [hash, page] of [['#modules', 'modules'], ['#execution/research', 'execution'], ['#execution', 'execution'], ['#learn/code', 'resources'], ['#storage', 'storage'], ['#today', 'today']]) {
+  for (const [hash, page] of [['#modules', 'modules'], ['#execution/month', 'execution'], ['#execution/year', 'execution'], ['#execution/research', 'execution'], ['#execution', 'execution'], ['#learn/code', 'resources'], ['#storage', 'storage'], ['#today', 'today']]) {
     h = app({ memory, hash, now }); ctx = h.ctx; await ctx.AppProgress.sync().start();
     assertWorkspace(h, page); assert.equal(ctx.location.hash, hash);
     assert.deepEqual(snapshots(h), before);

@@ -6,7 +6,9 @@ const root = path.join(__dirname, '..');
 
 function setup() {
   const nodes = {}, groups = {}, listeners = {}, memory = {}, pages = [];
-  const node = () => ({ innerHTML: '', textContent: '', dataset: {}, value: '', checked: false, open: false,
+  // This focused fake DOM keeps its fixtures connected. Detached/account-bound
+  // form rejection is exercised with the full app harness in task-focus-behavior.
+  const node = () => ({ innerHTML: '', textContent: '', dataset: {}, value: '', checked: false, open: false, isConnected: true,
     style: { setProperty() {} }, classList: { toggle() {}, add() {}, remove() {} },
     setAttribute() {}, focus() {}, scrollIntoView() {}, querySelector() { return this.error ||= node(); } });
   const get = key => nodes[key] ||= node();

@@ -11,9 +11,12 @@ const current = source.split('<details class="guide-legacy"')[0];
 const guide = makeDocument(source);
 const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-assert(index.includes('./guide.html?v=20261011-ink1'), 'guide entry bypasses the earlier task-first landing instructions');
-assert(current.includes('五个模块') && current.includes('整体进度') && current.includes('47') && current.includes('23') && current.includes('12'), 'guide explains real task and independent-stream totals');
-assert(current.includes('封面') && current.includes('进入成长工作台'), 'guide explains the cover-to-module-chooser entry');
+assert(index.includes('./guide.html?v=20261011-tasks1'), 'guide entry bypasses the earlier task-first landing instructions');
+assert(current.includes('4项') && current.includes('47') && current.includes('分别'), 'guide distinguishes current four tasks from the original47 independent plan');
+assert(guide.querySelector('a[href="./index.html#execution"]'), 'current task entry uses the default current-task route');
+assert(guide.querySelector('a[href="./index.html#execution/month"]').textContent.includes('旧月计划'), 'month route is labeled as the historical plan');
+assert(guide.querySelector('#saving').textContent.includes('任务列表') && guide.querySelector('#saving').textContent.includes('操作步骤与完成记录'), 'save directions name the canonical task form entrance');
+assert(current.includes('封面') && current.includes('当前任务'), 'guide explains cover-to-current-task entry');
 assert(!current.includes('网站默认首页是原有任务列表'), 'guide no longer claims the bare URL skips the cover');
 const first = agent.firstSession;
 assert(/20\s*(节|个)/.test(current), 'current guide states the actual 20 reference lessons');
@@ -21,12 +24,12 @@ assert(/7\s*(项|个)/.test(current), 'current guide states seven separate skill
 assert(/30\s*分钟/.test(current), 'current guide explains the bounded first session');
 assert(current.includes('#learn/code'), 'guide can start the exact first module');
 assert(current.includes('#execution'), 'guide returns directly to the default task list');
-assert(/辅助|可选|不替代/.test(current), 'career starter is scoped as supporting work rather than replacing real tasks');
+assert(current.includes('任务1的第一步') && current.includes('读出反馈不代表任务1已完成'), 'starter is a partial first step rather than automatic whole-task completion');
 assert(current.includes('我的作品') && current.includes('课程学习') && current.includes('任务列表') && current.includes('发展路线'), 'guide uses current visible navigation names');
 assert(!current.includes('继续学习') && !current.includes('我的项目') && !current.includes('今日总览'), 'current instructions do not point to renamed controls');
 assert(!/23\s*(节|个)|9\s*项能力|50\s*小时|100\s*小时/.test(current), 'current guide does not carry the old Agent scope or delivery estimates');
 assert(/作品/.test(current) && /不会自动/.test(current), 'guide explains independent project acceptance');
-assert(/90\s*分钟/.test(current), 'guide distinguishes first session from the full unchanged diagnostic');
+assert(current.includes('原课程练习按原题勾选，与任务分别记进度'), 'short guide keeps original course completion separate; exact90-minute diagnostic remains in original data and detailed runtime guidance');
 assert(guide.querySelector('#legacy-manual') && !guide.querySelector('#legacy-manual').open, 'historical instructions remain explicitly collapsed');
 assert(guide.querySelector('.guide-legacy-banner').textContent.includes('不是现在的主项目说明'));
 assert(source.includes('career.css?v=20261011-workassistant1'), 'guide receives the current visual system');
@@ -35,6 +38,10 @@ assert(readme.includes('20') && readme.includes('7') && readme.includes('wa-m0')
 for (const text of [...catalog.homeIntro.firstUse, first.saveInstruction, first.resumeNote, first.nextAction]) {
   assert(!text.includes('「继续学习」') && !text.includes('「我的项目」') && !text.includes('「今日总览」'), 'public on-ramp names actual visible controls');
 }
+// Immutable catalog directions are preserved as historical source data. The
+// current UI overrides them; task-focus-behavior verifies the visible save copy.
 assert(first.saveInstruction.includes('我的作品'));
+const crypto=require('node:crypto'),baseline=require('./fixtures/task-focus-preserved-baseline.json');
+assert.equal(crypto.createHash('sha256').update(source.slice(source.indexOf('<details class="guide-legacy"'))).digest('hex'),baseline.guideLegacySha256,'the entire historical guide archive stays byte-preserved');
 assert(first.resumeNote.includes('课程学习') || first.resumeNote.includes('发展路线'));
-console.log('PASS current guidance: cover-to-module navigation with auxiliary development route, 30-minute start versus 90-minute diagnostic, 20 reference lessons/seven checks, independent four-outcome acceptance, current stylesheet, and historical estimates contained in the archive.');
+console.log('PASS current guidance: current4 versus original47 routes, canonical task-only save instructions, bounded partial start, 20 lessons/seven checks, separate original course completion, refreshed guide cache and unchanged historical archive.');

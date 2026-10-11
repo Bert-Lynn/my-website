@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./cover.css?v=20261011-cover1">
   <link rel="stylesheet" href="./module-hub.css?v=20261011-modules1">
   <link rel="stylesheet" href="./ink-theme.css?v=20261011-ink1">
+<link rel="stylesheet" href="./task-focus.css?v=20261011-tasks1">
 </head>
 <body data-current-page="cover">
 <script>if(window.location.hash&&window.location.hash!=='#cover')document.body.setAttribute('data-current-page',window.location.hash==='#modules'?'modules':'execution');</script>
@@ -89,12 +90,12 @@
       <button type="button" aria-label="实习岗位参考" data-page="roles" aria-pressed="false">实习岗位参考</button>
       <button type="button" aria-label="详细自查记录" data-page="skills" aria-pressed="false">详细自查记录</button>
     </nav></details>
-    <a class="guide-entry" href="./guide.html?v=20261011-ink1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
+    <a class="guide-entry" href="./guide.html?v=20261011-tasks1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
     <button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span><span aria-hidden="true">↗</span></button>
   </header>
   <main>
     <a class="module-return" href="#modules" id="returnToModules"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4m5-5-5 5 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>返回模块选择</a>
-    <div class="workspace-heading"><div><div class="period-label" id="pageEyebrow">任务列表</div><h1 id="pageTitle" tabindex="-1">我的任务</h1><p id="pageSubtitle">当月计划和此前未完成任务都在这里；完成一项，就勾一项。</p></div><span class="today-label" id="todayLabel"></span></div>
+    <div class="workspace-heading"><div><div class="period-label" id="pageEyebrow">任务列表</div><h1 id="pageTitle" tabindex="-1">我的任务</h1><p id="pageSubtitle">用户反馈分析 Agent · 按顺序做下面四项。</p></div><span class="today-label" id="todayLabel"></span></div>
     <nav class="section-tabs" id="skillTabs" aria-label="详细记录分区" hidden><button data-open-page="skills">全部自查</button><button data-open-page="resources">回到学习</button><button data-open-page="assessments">练习与记录</button></nav>
     <nav class="section-tabs" id="researchTabs" aria-label="博士计划分区" hidden><button data-open-page="overview">研究目标</button><button data-open-page="execution">执行清单</button><button data-open-page="timeline">里程碑</button><button data-open-page="outcomes">论文与成果</button></nav>
     <section id="nextLessonHero" class="next-lesson-hero" aria-label="建议学习内容" hidden></section>
@@ -111,18 +112,21 @@
         <section id="overview" class="page-panel" data-panel="overview" hidden><div id="goalOverview"></div></section>
         <section id="timeline" class="page-panel" data-panel="timeline" hidden><div id="goalTimeline"></div></section>
         <section id="workspace" class="page-panel" data-panel="execution">
+          <nav class="task-section-tabs" aria-label="任务分区"><button data-task-section="execution">当前任务</button><button data-task-section="execution/research">科研任务</button><button data-task-section="execution/month">原月计划</button></nav>
+          <div id="currentTaskList"></div>
+          <div id="originalTaskPlan" hidden>
           <nav class="research-task-links" id="researchTaskLinks" aria-label="科研相关页面" hidden><a href="#timeline" data-research-route="timeline">研究时间表</a><a href="#outcomes" data-research-route="outcomes">原有论文与成果</a></nav>
           <div class="execution-stats"><div><span id="scopeCountLabel">本月计划完成</span><strong id="monthCount">0 / 4<small>项</small></strong></div><div><span id="pendingScopeLabel">所选月待办</span><strong id="pendingCount">4<small>项</small></strong></div><button id="backlogJump"><span>其中顺延</span><strong id="backlogCount">0<small>项</small></strong></button></div>
           <div class="task-panel"><div class="task-toolbar"><div class="month-controls"><button id="prevMonth" aria-label="上一个月">‹</button><label class="sr-only" for="monthPicker">选择月份</label><select id="monthPicker"></select><button id="nextMonth" aria-label="下一个月">›</button></div><button id="todayBtn" class="text-button">回到本月</button></div>
           <nav class="view-tabs" id="viewTabs" aria-label="任务视图"><button data-view="stage" id="stageViewTab" hidden>阶段任务</button><button data-view="month">所选月</button><button data-view="year">全部任务</button><button data-view="research">科研</button><button data-view="learning">课程与基础</button><button data-view="demo">项目</button></nav>
-          <div class="list-caption"><span id="viewCaption"></span><label class="pending-filter"><input type="checkbox" id="pendingOnly">仅未完成</label></div><div id="taskGroups" class="task-groups"></div><p class="rollover-note">没做完的任务会一直留在顺延待办中，不会随月份消失。</p></div>
+          <div class="list-caption"><span id="viewCaption"></span><label class="pending-filter"><input type="checkbox" id="pendingOnly">仅未完成</label></div><div id="taskGroups" class="task-groups"></div><p class="rollover-note">没做完的任务会一直留在顺延待办中，不会随月份消失。</p></div></div>
         </section>
         <section id="outcomes" class="page-panel" data-panel="outcomes" hidden><div class="panel-heading"><h2>论文与项目进度</h2><span id="outcomeCount"></span></div><div id="paperGrid" class="paper-grid"></div><div class="panel-heading"><h2>原有技术作品路线</h2></div><div id="demoList" class="demo-grid"></div><div class="internship-note"><strong>2027.09 · 面试与集中投递目标</strong><p>原计划完整保留。实际投递时间以届时有效岗位、到岗要求与个人准备为准。</p></div></section>
         <section id="resources" class="page-panel" data-panel="resources" hidden><div id="careerLearning"></div><details class="legacy-learning-archive" id="legacyLearningArchive"><summary>以前的课程记录（53 节，完整保留）</summary><p>这是以前的学习记录，不需要重新全部学一遍。</p><div id="courseList" class="course-list"></div></details></section>
         <section class="page-panel" data-panel="storage" id="storage" hidden><div class="storage-layout"><article class="cloud-card" id="cloudPanel"><div class="card-heading"><h2>进度与账号</h2><span id="cloudMode">此浏览器</span></div><p id="cloudStatus">当前进度保存在这个浏览器中。</p><div id="cloudControls"></div><p id="saveStatus" role="status" class="save-status">本地保存 · 尚未连接云端</p></article><aside class="privacy-note"><span class="tiny-label">PRIVATE BY DESIGN</span><h2>公开的是路线，<br>私有的是你的记录。</h2><p>任务、课程、验收与作品证据保存在本机，或登录后的个人账号中。它们不会被写入这个公开网站的源码。</p><p>证据建议使用不含个人隐私的仓库、脱敏报告或演示链接。登录后可手动合并本机记录。</p></aside></div></section>
       </div>
       <aside class="progress-sidebar" hidden>
-        <article class="progress-card"><div class="card-heading"><h2>全部任务进度</h2><span>实际完成</span></div><div class="progress-ring" id="progressRing" role="img" aria-label="总体完成进度"><div><strong id="overallPct">0<span>%</span></strong><span id="overallCount">正在读取任务</span></div></div><div class="progress-caption" id="overallNote">完成第一项，点亮你的进度。</div><div id="dimensionProgress" class="dimension-list"></div><div class="progress-foot"><span id="remainingCount"></span><button id="showAllBtn">查看全部 →</button></div></article>
+        <article class="progress-card"><div class="card-heading"><h2>原计划任务进度</h2><span>实际完成</span></div><div class="progress-ring" id="progressRing" role="img" aria-label="总体完成进度"><div><strong id="overallPct">0<span>%</span></strong><span id="overallCount">正在读取任务</span></div></div><div class="progress-caption" id="overallNote">完成第一项，点亮你的进度。</div><div id="dimensionProgress" class="dimension-list"></div><div class="progress-foot"><span id="remainingCount"></span><button id="showAllBtn">查看全部 →</button></div></article>
         <article class="lesson-progress-card" id="lessonProgressCard"></article><article class="upcoming-card"><div class="card-heading"><h2>下一个研究里程碑</h2></div><div id="nextMilestone"></div><button id="showOutcomesBtn" class="text-button">查看成果路线 →</button></article>
       </aside>
     </div>
@@ -140,7 +144,7 @@
 <script src="./cloud-sync.js?v=20261010-journey1"></script>
 <script src="./learning-modules.js?v=20261011-workassistant1"></script>
 <script src="./project-outline.js?v=20261011-workassistant1"></script>
-<script src="./career-ui.js?v=20261011-workassistant1"></script>
-<script src="./module-hub.js?v=20261011-workassistant1"></script>
-<script src="./app.js?v=20261011-workassistant1"></script>
+<script src="./career-ui.js?v=20261011-tasks1"></script>
+<script src="./module-hub.js?v=20261011-tasks1"></script>
+<script src="./app.js?v=20261011-tasks1"></script>
 </body></html>

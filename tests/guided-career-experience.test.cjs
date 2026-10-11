@@ -67,11 +67,13 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
   assert.equal(ctx.CareerUI.currentModule().id, 'code');
   const session = h.query('#firstSession');
   assert(session);
+  assert.equal(h.query('.first-session-guide').open, true, 'the optional first-session CTA opens its collapsed guide');
   includes(session, first.output, 'module preserves the promised first-session output');
-  includes(session, first.saveInstruction, 'module says where work and website records are saved');
-  includes(session, first.completionNote, 'short activity cannot masquerade as full-unit completion');
+  includes(session.querySelector('.session-save'), '代码与结果留在电脑', 'module says actual work remains on the user computer');
+  includes(session.querySelector('.session-save'), '回任务列表保存进度', 'module directs saved status to the canonical task list');
+  includes(session, first.completionNote.replace('下方完整90分钟原诊断', '完整90分钟原诊断'), 'short activity preserves the full 90-minute diagnostic, self-assessment and independent-project completion boundaries');
   includes(session, first.environmentNote, 'setup prerequisite and estimate boundary are explicit');
-  for (const step of first.steps) includes(session, step.text, 'concrete step instructions are rendered');
+  for (const step of first.steps) includes(session, step.text.replaceAll('feedback_check.py', 'analyze.py'), 'complete original step instructions are rendered with the current task filename');
   for (const source of first.materials) {
     const anchor = session.querySelector('a[href="' + source.url + '"]');
     assert(anchor, 'first-session source keeps exact URL: ' + source.title);
@@ -80,7 +82,15 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
   }
   assert.equal(h.all('#firstSession [data-unit-check]').length, 0, 'on-ramp introduces no competing completion checkbox');
   assert.equal(h.all('#careerLearning [data-unit-check]').length, 4);
-  assert(h.query('#careerLearning').innerHTML.indexOf('firstSession') < h.query('#careerLearning').innerHTML.indexOf('module-lessons'));
+  assert(h.query('#careerLearning').innerHTML.indexOf('module-lessons') < h.query('#careerLearning').innerHTML.indexOf('firstSession'), 'normal module view prioritizes the original lessons before the optional on-ramp');
+  assert.equal(h.all('#careerLearning [data-milestone-form]').length, 0, 'modules link to the canonical task record instead of duplicating its save form');
+  assert.deepEqual(h.all('#careerLearning [data-unit-check]').map(node => node.dataset.unitCheck), agent.modules.find(module => module.id === 'code').unitIds, 'the module keeps its exact original lesson identities');
+  const continueLesson = h.query('#careerLearning [data-open-course-unit]');
+  assert.equal(continueLesson.dataset.openCourseUnit, 'u-python-diagnostic', 'course continuation targets the first incomplete original lesson');
+  click(continueLesson);
+  assert.equal(h.query('[data-module-unit="u-python-diagnostic"]').open, true);
+  assert.equal(h.document.lastScrolled, h.query('[data-module-unit="u-python-diagnostic"]'));
+  assert.equal(ctx.location.hash, '#learn/code', 'continuing a lesson stays on its module route');
   click(h.query('[data-session-next]'));
   assert.equal(ctx.location.hash, '#learn/code', 'next instructional action stays in the module');
   assert.equal(h.document.lastScrolled, h.query('.module-lessons'), 'next instructional action reaches complete lesson work');
@@ -126,7 +136,23 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
   includes(h.query('.next-action-panel'),first.title,'completed old study still points to an actual new feedback task');
   click(h.query('.next-action-panel .primary-button'));
   assert.equal(ctx.CareerUI.currentModule().id, 'code', 'portfolio action opens the exact outstanding stage module');
-  assert(h.query('.module-project-output [data-milestone-form="wa-m0"]'), 'current stage save form is reachable');
+  const taskLink = h.query('.module-project-output [data-open-task="wa-m0"]');
+  assert(taskLink, 'the module links to the corresponding current task');
+  assert.equal(h.all('#careerLearning [data-milestone-form]').length, 0);
+  assert.equal(h.all('#careerProjects [data-milestone-form][data-project-id="work-assistant"]').length, 0, 'the project overview has no competing current-task forms');
+  const beforeTaskLink = plain(ctx.phdCareerProgress.read());
+  click(taskLink);
+  assert.equal(ctx.location.hash, '#execution');
+  assert.equal(h.document.lastScrolled, h.query('#currentTaskList [data-current-task="wa-m0"]'), 'task link scrolls to the exact corresponding task');
+  assert(h.query('#currentTaskList [data-milestone-form="wa-m0"]'), 'current stage save form is reachable from its course module');
+  assert.deepEqual(h.all('[data-milestone-form][data-project-id="work-assistant"]').map(node => node.dataset.milestoneForm), project.milestones.map(stage => stage.id), 'current outcomes have exactly one canonical form per stable ID');
+  assert.deepEqual(plain(ctx.phdCareerProgress.read()), beforeTaskLink, 'following a course-to-task link never creates progress');
+  ctx.history.back();
+  assert.equal(ctx.location.hash, '#learn/code');
+  assert.equal(ctx.CareerUI.currentModule().id, 'code');
+  ctx.history.forward();
+  assert.equal(ctx.location.hash, '#execution');
+  assert.deepEqual(plain(ctx.phdCareerProgress.read()), beforeTaskLink, 'task-link history leaves all old and new records intact');
   h.destroy();
 
   // A genuinely completed portfolio has its own terminal action, without granting any course credit.
@@ -154,6 +180,6 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
     h.destroy();
   }
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-  assert.match(html, /career-ui\.js\?v=20261011-workassistant1/, 'new interactive entry bypasses stale old UI');
-  console.log('PASS guided career experience: career purpose, one precise first action, output/save/source guidance, 30-minute on-ramp without new state, truthful independent progress, guarded CTA, resume and terminal-state paths, and saved original directions.');
+  assert.match(html, /career-ui\.js\?v=20261011-tasks1/, 'new interactive entry bypasses stale old UI');
+  console.log('PASS guided career experience: career purpose, one precise first action, output/save/source guidance, 30-minute on-ramp without new state, truthful independent progress, exact original lesson controls, canonical task links without duplicate WA forms, guarded CTA, task-link history, resume and terminal-state paths, and saved original directions.');
 })().catch(error => { console.error(error); process.exitCode = 1; });
