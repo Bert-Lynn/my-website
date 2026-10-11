@@ -180,6 +180,6 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
     h.destroy();
   }
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-  assert.match(html, /career-ui\.js\?v=20261011-tasks1/, 'new interactive entry bypasses stale old UI');
+  assert.match(html, /career-ui\.js\?v=20261011-tasks2/, 'new interactive entry bypasses stale old UI');
   console.log('PASS guided career experience: career purpose, one precise first action, output/save/source guidance, 30-minute on-ramp without new state, truthful independent progress, exact original lesson controls, canonical task links without duplicate WA forms, guarded CTA, task-link history, resume and terminal-state paths, and saved original directions.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

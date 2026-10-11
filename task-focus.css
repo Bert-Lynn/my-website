@@ -87,3 +87,16 @@
 .task-reading a{display:inline}
 .task-reading-detail{padding:0 0 14px;border-bottom:1px solid var(--line)}
 .task-reading-detail>summary{cursor:pointer;font-size:13px;color:var(--muted)}
+/* Compact current-task entry only; legacy month/research headers retain their layout. */
+body[data-current-page="execution"][data-task-view="current"] main{padding-top:16px}
+body[data-current-page="execution"][data-task-view="current"] .module-return{min-height:28px;padding:0;margin-bottom:8px}
+body[data-current-page="execution"][data-task-view="current"] .workspace-heading{margin-bottom:12px;align-items:center}
+body[data-current-page="execution"][data-task-view="current"] .workspace-heading h1{font-size:28px;margin:0;line-height:1.35}
+body[data-current-page="execution"][data-task-view="current"] .today-label{display:none}
+body[data-current-page="execution"][data-task-view="current"] .task-section-tabs{margin-bottom:12px;padding:3px}
+body[data-current-page="execution"][data-task-view="current"] .task-section-tabs button{padding-block:8px}
+#currentTaskList .current-task-heading{margin-bottom:10px}
+#currentTaskList .current-task-heading strong{font-size:18px}
+#currentTaskList .focus-task{max-width:none;width:100%;font-weight:400;box-sizing:border-box}
+#currentTaskList .focus-task>header{padding-top:17px;padding-bottom:10px}
+@media(max-width:700px){body[data-current-page="execution"][data-task-view="current"] .workspace-heading h1{font-size:25px}}

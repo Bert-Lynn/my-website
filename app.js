@@ -667,6 +667,7 @@ function render(){
   window.ModuleHub?.render();
   const phdPages=['overview','execution','timeline','outcomes'],skillPages=['skills','resources','assessments'];
   document.body?.setAttribute('data-current-page',page);
+  document.body?.setAttribute('data-task-view',view);
   const cover=document.getElementById('cover'),shell=document.getElementById('workspaceShell'),skip=document.getElementById('skipLink');
   if(cover)cover.hidden=page!=='cover';
   if(shell)shell.hidden=page==='cover';
@@ -680,6 +681,8 @@ function render(){
   const researchView=page==='execution'&&view==='research',currentView=page==='execution'&&view==='current';
   document.getElementById('currentTaskList').hidden=!currentView;
   document.getElementById('originalTaskPlan').hidden=currentView;
+  document.getElementById('pageEyebrow').hidden=currentView;
+  document.getElementById('pageSubtitle').hidden=currentView;
   const carriedCount=carriedTasks(currentMonth()).length,oldPlanTab=document.querySelector('[data-task-section="execution/month"]');if(oldPlanTab)oldPlanTab.textContent='原月计划'+(carriedCount?' · '+carriedCount+' 项顺延':'');
   document.querySelectorAll('[data-task-section]').forEach(b=>b.setAttribute('aria-current',(currentView?b.dataset.taskSection==='execution':researchView?b.dataset.taskSection==='execution/research':b.dataset.taskSection==='execution/month')?'page':'false'));
   const researchLinks=document.getElementById('researchTaskLinks');if(researchLinks)researchLinks.hidden=!researchView;
