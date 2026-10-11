@@ -3,14 +3,73 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>我的任务 · 博士研究工作台</title>
-  <meta name="description" content="按月查看科研、课程和项目任务，记录实际完成与顺延待办。">
+  <meta name="description" content="我的研究与学习空间。按月查看科研、课程和项目任务，记录实际完成与顺延待办。">
   <meta name="theme-color" content="#f5f6f8">
   <link rel="stylesheet" href="./styles.css?v=20261010-journey1">
   <link rel="stylesheet" href="./career.css?v=20261010-taskfirst1">
+  <link rel="stylesheet" href="./cover.css?v=20261011-cover1">
 </head>
-<body data-current-page="execution">
-<a class="skip-link" href="#pageTitle">跳到主要内容</a>
-<div class="site-shell">
+<body data-current-page="cover">
+<script>if(window.location.hash&&window.location.hash!=='#cover')document.body.setAttribute('data-current-page','execution');</script>
+<a class="skip-link" id="skipLink" href="#coverTitle">跳到主要内容</a>
+<section class="site-cover" id="cover" aria-labelledby="coverTitle">
+  <header class="cover-header">
+    <div class="cover-brand"><span class="cover-brand-mark" aria-hidden="true">研</span><span>研究 · 作品<small>PERSONAL WORKSPACE</small></span></div>
+    <span class="cover-header-note">一个专注研究与学习的地方</span>
+  </header>
+  <main class="cover-main">
+    <div class="cover-copy">
+      <p class="cover-eyebrow"><span aria-hidden="true"></span>我的研究与学习空间</p>
+      <h1 id="coverTitle" tabindex="-1">让每一步，<br>都有<span>进展。</span></h1>
+      <p class="cover-description">整理研究的思路，积累学习的收获。<br>从今天的任务开始，把计划一点点做成。</p>
+      <a class="cover-enter" id="enterWorkspace" href="#execution"><span>进入任务列表</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <p class="cover-entry-note">科研、课程与项目，都从这里继续。</p>
+    </div>
+    <div class="cover-visual" aria-hidden="true">
+      <div class="cover-visual-kicker"><span>IDEAS INTO PRACTICE</span><span>↗</span></div>
+      <svg class="cover-art" viewBox="0 0 620 570" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+        <defs>
+          <linearGradient id="coverPaper" x1="179" y1="108" x2="450" y2="465" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#f1f3f7"/></linearGradient>
+          <linearGradient id="coverEdge" x1="121" y1="75" x2="478" y2="491" gradientUnits="userSpaceOnUse"><stop stop-color="#e9edf4"/><stop offset="1" stop-color="#cbd3e0"/></linearGradient>
+          <linearGradient id="coverBlue" x1="409" y1="91" x2="429" y2="188" gradientUnits="userSpaceOnUse"><stop stop-color="#3f67c6"/><stop offset="1" stop-color="#224da9"/></linearGradient>
+          <filter id="coverShadow" x="-35%" y="-30%" width="170%" height="175%"><feDropShadow dx="0" dy="23" stdDeviation="18" flood-color="#65738f" flood-opacity=".14"/></filter>
+        </defs>
+        <g stroke="#e2e7ef" stroke-width="1">
+          <path d="m41 418 249 124 287-143M70 390l249 124 287-143M99 362l249 124 257-129M128 334l249 124 229-114"/>
+          <path d="m73 431 267-134M126 458l267-134M179 484l267-134M232 511l267-134M285 537l267-134"/>
+        </g>
+        <ellipse cx="323" cy="365" rx="226" ry="113" transform="rotate(-26 323 365)" stroke="#d7deea" stroke-dasharray="3 7"/>
+        <g class="cover-paper-stack" filter="url(#coverShadow)">
+          <g transform="rotate(-18 304 290)"><rect x="153" y="109" width="285" height="359" rx="4" fill="#e8edf5" stroke="#d5dce8"/><path d="M173 134h240M173 143h240" stroke="#d2dae7"/></g>
+          <g transform="rotate(6 320 288)"><rect x="171" y="91" width="285" height="378" rx="4" fill="#f5f7fa" stroke="#d5dce8"/><path d="M436 115v330M443 115v330" stroke="#e0e5ee"/></g>
+          <g transform="rotate(-7 305 285)">
+            <rect x="155" y="83" width="285" height="391" rx="4" fill="url(#coverPaper)" stroke="url(#coverEdge)"/>
+            <path d="M174 84v389" stroke="#e5e9f0"/>
+            <path d="M397 83h22v85l-11-8-11 8V83Z" fill="url(#coverBlue)"/>
+            <path d="M397 83h22" stroke="#254b98"/>
+            <text x="197" y="130" fill="#7b8595" font-size="9" font-family="Arial,sans-serif" letter-spacing="2.3">RESEARCH NOTES</text>
+            <path d="M196 147h185" stroke="#dce2ec"/>
+            <text x="191" y="226" fill="#303b50" font-size="51" font-weight="300" font-family="'PingFang SC','Microsoft YaHei',sans-serif">积 累</text>
+            <path d="M198 252h119" stroke="#9ba8bd" stroke-width="2"/>
+            <path d="M198 265h162" stroke="#d1d8e4"/>
+            <g stroke="#b9c5d8"><rect x="198" y="305" width="11" height="11" rx="2"/><path d="M222 311h112"/><rect x="198" y="335" width="11" height="11" rx="2"/><path d="M222 341h143"/><rect x="198" y="365" width="11" height="11" rx="2"/><path d="M222 371h96"/></g>
+            <path d="M197 419h185" stroke="#dce2ec"/>
+            <text x="198" y="443" fill="#8590a3" font-size="8" font-family="Arial,sans-serif" letter-spacing="1.4">THINK / LEARN / MAKE</text>
+            <path d="M369 442h13m-5-5 5 5-5 5" stroke="#4268bd" stroke-width="1.3"/>
+          </g>
+        </g>
+        <path d="M97 336c-30 23-37 45-22 58 29 25 143 3 255-50 116-56 194-123 174-151-7-10-24-14-47-12" stroke="#9aadd0" stroke-width="1.3"/>
+        <circle cx="96" cy="336" r="4" fill="#345bb8"/><circle cx="96" cy="336" r="9" stroke="#d4def0"/>
+        <g transform="translate(457 427)" stroke="#6885bc" stroke-width="1"><circle r="37" fill="#f4f6fb"/><ellipse rx="16" ry="37"/><path d="M-37 0h74M-31-19c17 9 45 9 62 0M-31 19c17-9 45-9 62 0"/><path d="M0-37v74"/></g>
+        <g stroke="#a3afc2"><path d="M99 120h12m-6-6v12M510 325h12m-6-6v12"/></g>
+        <circle cx="503" cy="105" r="3" fill="#cad3e2"/>
+      </svg>
+      <div class="cover-visual-caption"><span class="cover-caption-line"></span><span>留住思考，也留下行动。</span></div>
+    </div>
+  </main>
+  <div class="cover-footer"><span>研究 · 学习 · 创造</span><span>一步一步，成为自己的作品。</span></div>
+</section>
+<div class="site-shell" id="workspaceShell">
   <header class="app-header">
     <a href="#execution" id="homeBtn" class="brand" aria-label="任务列表首页"><span class="brand-symbol" aria-hidden="true">研</span><span>研究 · 作品<small>CAREER WORKSPACE</small></span></a>
     
@@ -20,12 +79,13 @@
       <button type="button" aria-label="我的作品" data-page="projects" aria-pressed="false"><span class="nav-icon" aria-hidden="true">◫</span>我的作品</button>
     </nav>
     <details class="more-navigation" id="moreNavigation"><summary>更多</summary><nav aria-label="其他内容">
+      <button type="button" aria-label="返回封面" data-page="cover" aria-pressed="false">返回封面</button>
       <button type="button" aria-label="发展路线" data-page="today" aria-pressed="false">发展路线</button>
       <button type="button" aria-label="博士计划" data-page="overview" aria-pressed="false">博士计划</button>
       <button type="button" aria-label="实习岗位参考" data-page="roles" aria-pressed="false">实习岗位参考</button>
       <button type="button" aria-label="详细自查记录" data-page="skills" aria-pressed="false">详细自查记录</button>
     </nav></details>
-    <a class="guide-entry" href="./guide.html?v=taskfirst1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
+    <a class="guide-entry" href="./guide.html?v=cover1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
     <button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span><span aria-hidden="true">↗</span></button>
   </header>
   <main>
@@ -74,5 +134,5 @@
 <script src="./learning-modules.js?v=20261010-journey1"></script>
 <script src="./project-outline.js?v=20261010-journey1"></script>
 <script src="./career-ui.js?v=20261010-taskfirst1"></script>
-<script src="./app.js?v=20261010-taskfirst1"></script>
+<script src="./app.js?v=20261011-cover1"></script>
 </body></html>

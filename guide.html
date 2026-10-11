@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>怎么使用 · 成长工作台</title>
-<meta name="description" content="首页先看真实月计划和顺延任务；需要资料时进课程学习，需要整体方向时查看发展路线。作品例子与任务独立记录。">
+<meta name="description" content="从封面进入任务列表，先看真实月计划和顺延任务；需要资料时进课程学习，需要整体方向时查看发展路线。">
 <meta name="theme-color" content="#f5f6f8">
 <link rel="stylesheet" href="./styles.css?v=20261010-taskfirst1">
 <link rel="stylesheet" href="./career.css?v=20261010-taskfirst1">
@@ -15,7 +15,7 @@
 <a class="skip-link" href="#guide-content">跳到使用说明</a>
 <header class="guide-header"><a href="./index.html#execution">← 返回任务列表</a><span>怎么使用</span><a href="./index.html#resources">课程学习 →</a></header>
 <main class="guide-main" id="guide-content">
-<section class="guide-hero" id="first-use"><span class="guide-kicker">先看任务，再按需学习</span><h1>打开首页，<br>先看你的任务列表。</h1><p class="guide-lead">网站默认首页是原有任务列表，展示真实月计划和此前未完成的顺延任务。课程、作品和发展路线在各自入口查看。</p>
+<section class="guide-hero" id="first-use"><span class="guide-kicker">先看任务，再按需学习</span><h1>从任务开始，<br>按自己的节奏推进。</h1><p class="guide-lead">打开网站后，在封面点击“进入任务列表”，查看真实月计划和此前未完成的顺延任务。课程、作品和发展路线在各自入口查看；原有任务与课程直达链接会跳过封面。</p>
 <ol class="guide-steps"><li><h3>先看任务列表</h3><p>按月份查看科研、课程与项目任务，以及此前未完成项。先决定要推进哪一项；任务不会随月份消失或自动完成。</p></li><li><h3>需要资料时进课程学习</h3><p>“课程学习”提供对应小节、资料和练习。“我的作品”查看作品阶段；需要看职业方向和整体路径时，再到更多内容里的“发展路线”。</p></li><li><h3>分别保存实际完成情况</h3><p>原任务按实际完成勾选，课节和作品阶段单独记录。发展路线中的30分钟航班比较只是可选作品起步例子，不是全站今天唯一的任务。</p></li></ol>
 <div class="guide-actions"><a href="./index.html#execution">打开任务列表 →</a><a href="./index.html#resources">打开课程学习 →</a><a href="./index.html#today">查看发展路线 →</a></div>
 </section>
@@ -29,7 +29,7 @@
 </div><aside class="guide-callout"><h3>你将展示的一次完整操作</h3><p>读入候选表 → 明确预算与偏好 → 调用查询和计算工具 → 检查限制 → 解释依据 → 导出报告与调用记录。</p><p>先把固定计算跑对，再接真实AI调用。预设回答只用来调试，不算验证了真实AI效果。模型费用、账号和公开部署另行确认。</p></aside>
 <details class="guide-details"><summary>和论文怎么连接？</summary><p>原有旅客选择研究继续。是否把现有模型接进演示，要另外讨论和验证。</p><p>论文候选：AI调用计算和检查工具后，能否更少算错、漏条件，并在偏好变化时保持解释一致？先做对照实验，再定题。</p><p>这只是候选问题，需要先导实验、文献核对和导师讨论。简单的预算筛选不等于旅客选择模型。做出软件也不等于自动有论文或获得录用。</p></details>
 </section>
-<section class="guide-section" id="first-exercise"><h2>可选的30分钟作品起步例子</h2><p>这是“发展路线”中的航班作品练习，可按自己的任务安排选择，不替代首页月计划。使用两条虚构航班：A总费用980元、总时间5.5小时；B总费用880元、总时间7.5小时。规则只有两条：先满足预算，再选总时间更短的。</p>
+<section class="guide-section" id="first-exercise"><h2>可选的30分钟作品起步例子</h2><p>这是“发展路线”中的航班作品练习，可按自己的任务安排选择，不替代任务列表中的月计划。使用两条虚构航班：A总费用980元、总时间5.5小时；B总费用880元、总时间7.5小时。规则只有两条：先满足预算，再选总时间更短的。</p>
 <ol class="guide-first-session"><li><strong>0–5分钟：</strong>先手算预期结果。预算1000元选A，900元选B，800元应提示没有符合条件的选项。</li><li><strong>5–15分钟：</strong>在已有Python环境中写一个接收预算的函数，使用这两条数据返回结果。可以让AI起草，但要亲自运行；今天不用接模型或先做网页。</li><li><strong>15–25分钟：</strong>由你把预算改为1000、900和800，核对三次输出、费用、时间与理由，解释为什么结果变化。</li><li><strong>25–30分钟：</strong>保存代码、运行命令、三次输出，以及自己改了什么和仍卡在哪里。之后按作品第1阶段补齐读表、启动说明和一次修错记录。</li></ol>
 <p>需要参考时，只读下面资料中Use cases的Implementing new features、Fixing errors两段，以及What to watch out for；今天不用先看完整视频。</p><div class="guide-actions"><a href="https://missing.csail.mit.edu/2026/agentic-coding/" target="_blank" rel="noopener noreferrer">查看指定的AI编码资料 →</a><a href="./index.html#learn/code">打开第1步与完整要求 →</a></div>
 <p class="guide-note">30分钟是已有可用环境时的练习安排，不是完成保证。若Python还不能运行，环境准备另算，先保存输入规格和报错。不能把聊天里AI返回的数字算成自己运行成功。这次起步不等于原90分钟课节、技能自查或作品阶段已完成。</p></section>

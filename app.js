@@ -606,7 +606,7 @@ function refreshMonth(){
   const now=currentMonth();
   if(now!==observedMonth){if(view!=="stage" && activeMonth===observedMonth) activeMonth=now;observedMonth=now;render()}
 }
-let pendingOnly=false,page='execution',selectedStage=0,cloudSync=null;
+let pendingOnly=false,page='cover',selectedStage=0,cloudSync=null;
 window.AppProgress={sync:()=>cloudSync};
 const stages=[
   {start:'2026.10',end:'2027.01',title:'基础与实验',desc:'编程基础、数据管线与可信基线'},
@@ -636,10 +636,11 @@ function toggle(id){
   document.querySelector('#announcer').textContent=(progress[id]?'已完成：':'已恢复待办：')+tasks.find(t=>t.id===id).title+(saved?'，进度已记录。':'，未能保存。');
 }
 const pageNames={today:['从研究，到第一件 AI 作品','面向 AI 应用 / Agent 开发实习。今天先做一件看得见结果的小事。','发展路线'],roles:['实习岗位参考','查看岗位要求和薪资资料。具体机会以投递时为准。','更多内容'],skills:['详细自查记录','这页保留全部技能记录。需要资料时，从课程学习进入对应模块。','详细记录'],resources:['这一模块，按顺序学','每次展开一小节，看资料、做练习，再记录完成。','正在学习'],assessments:['检查自己会不会','照着题目做一次，再按实际结果保存记录。','练习自查'],projects:['我的作品','把每一步的代码、测试和结果，接成一个能演示的工具。','作品与证据'],overview:['博士计划','原来的论文、研究任务和时间安排都在这里。','更多内容'],timeline:['研究时间表','计划时间和实际完成时间分开记录。','博士计划'],outcomes:['论文与作品','查看原来的论文和项目任务。','博士计划'],storage:['进度与账号','不登录也能在本机保存。登录后可以同步到自己的账号。','保存进度']};
-let activeRoute='execution';
+let activeRoute='cover';
+const isWorkspaceRoute=route=>['cover','execution',...Object.keys(pageNames)].includes(route)||route.startsWith('learn/');
 function setPage(next,historyMode=true){
-  const requested=String(next||'execution'),moduleId=requested.startsWith('learn/')?requested.slice(6):null;
-  const target=moduleId?'resources':['execution',...Object.keys(pageNames)].includes(requested)?requested:'execution';
+  const requested=String(next||'cover'),moduleId=requested.startsWith('learn/')?requested.slice(6):null;
+  const target=moduleId?'resources':['cover','execution',...Object.keys(pageNames)].includes(requested)?requested:'execution';
   if((target!==page||requested!==activeRoute)&&window.CareerUI?.canNavigate&&!window.CareerUI.canNavigate()){
     if(!historyMode&&window.history?.pushState&&window.location?.hash!=='#'+activeRoute)window.history.pushState({page:activeRoute},'','#'+activeRoute);
     return false;
@@ -647,10 +648,13 @@ function setPage(next,historyMode=true){
   page=target;activeRoute=moduleId?'learn/'+moduleId:target;const more=document.getElementById('moreNavigation');if(more)more.open=false;
   if(target==='resources')window.CareerUI?.selectModule(moduleId);
   if(historyMode&&window.history?.pushState&&window.location?.hash!=='#'+activeRoute)window.history.pushState({page:activeRoute},'','#'+activeRoute);
-  render();document.querySelector('#pageTitle').scrollIntoView({behavior:'auto',block:'start'});document.querySelector('#pageTitle').focus?.({preventScroll:true});return true;
+  render();const heading=document.querySelector(page==='cover'?'#coverTitle':'#pageTitle'),scrollTarget=page==='cover'?document.querySelector('#cover'):heading;scrollTarget?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true});return true;
 }
 window.AppNavigation={open:setPage,current:()=>page,route:()=>activeRoute};
-window.addEventListener('popstate',()=>setPage((window.location?.hash||'#execution').slice(1),false));
+// Route only app destinations. In-page anchors and auth fragments remain untouched.
+function restoreLocationRoute(){const route=(window.location?.hash||'#cover').slice(1);if(isWorkspaceRoute(route)&&route!==activeRoute)setPage(route,false)}
+window.addEventListener('popstate',restoreLocationRoute);
+window.addEventListener('hashchange',restoreLocationRoute);
 function setMonth(month){activeMonth=month;view='month';page='execution';render()}
 function navigateMonth(direction){const [y,m]=activeMonth.split('.').map(Number),d=new Date(y,m-1+direction,1);setMonth(d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0'))}
 function render(){
@@ -660,6 +664,10 @@ function render(){
   window.CareerUI?.render();
   const phdPages=['overview','execution','timeline','outcomes'],skillPages=['skills','resources','assessments'];
   document.body?.setAttribute('data-current-page',page);
+  const cover=document.getElementById('cover'),shell=document.getElementById('workspaceShell'),skip=document.getElementById('skipLink');
+  if(cover)cover.hidden=page!=='cover';
+  if(shell)shell.hidden=page==='cover';
+  if(skip)skip.setAttribute('href',page==='cover'?'#coverTitle':'#pageTitle');
   document.querySelector('#skillTabs').hidden=!['skills','assessments'].includes(page);
   document.querySelector('#researchTabs').hidden=!['overview','timeline','outcomes'].includes(page);
   document.querySelector('.journey').hidden=page!=='timeline';
@@ -714,7 +722,9 @@ function render(){
 }
 document.querySelectorAll('#viewTabs button').forEach(b=>b.onclick=()=>{view=b.dataset.view;render()});
 document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.page));
-document.querySelector('#homeBtn').onclick=e=>{e.preventDefault();setPage('execution');document.querySelector('#pageTitle').scrollIntoView({behavior:'smooth',block:'start'})};
+document.querySelector('#homeBtn').onclick=e=>{e.preventDefault();setPage('execution')};
+document.querySelector('#enterWorkspace').onclick=e=>{e.preventDefault();setPage('execution')};
+document.querySelector('#skipLink').onclick=e=>{e.preventDefault();const heading=document.querySelector(page==='cover'?'#coverTitle':'#pageTitle');heading?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true})};
 document.querySelector('#monthPicker').onchange=e=>setMonth(e.target.value);
 document.querySelector('#prevMonth').onclick=()=>navigateMonth(-1);
 document.querySelector('#nextMonth').onclick=()=>navigateMonth(1);
@@ -729,7 +739,7 @@ window.GoalUI?.init({tasks,progress:()=>progress,sync:()=>cloudSync,toggle,openP
 window.LessonUI?.init({openCourses:()=>{if(setPage('resources')===false)return false;const archive=document.getElementById('legacyLearningArchive');if(archive)archive.open=true;return true},sync:()=>cloudSync});
 window.CareerUI?.init({openPage:setPage});
 document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.openPage));
-if(window.location?.hash){const route=window.location.hash.slice(1);if(route.startsWith('learn/')){page='resources';activeRoute=route;window.CareerUI?.selectModule(route.slice(6));}else if(['execution',...Object.keys(pageNames)].includes(route)){page=route;activeRoute=route;}}
+{const route=(window.location?.hash||'#cover').slice(1);if(route.startsWith('learn/')){page='resources';activeRoute=route;window.CareerUI?.selectModule(route.slice(6));}else if(['cover','execution',...Object.keys(pageNames)].includes(route)){page=route;activeRoute=route;}else{page='execution';activeRoute='execution';}}
 render();
 window.addEventListener('focus',refreshMonth);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshMonth()});
