@@ -2,15 +2,16 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的任务 · 博士研究工作台</title>
+  <title>个人成长 · 研究与学习工作台</title>
   <meta name="description" content="我的研究与学习空间。按月查看科研、课程和项目任务，记录实际完成与顺延待办。">
   <meta name="theme-color" content="#f5f6f8">
   <link rel="stylesheet" href="./styles.css?v=20261010-journey1">
   <link rel="stylesheet" href="./career.css?v=20261010-taskfirst1">
   <link rel="stylesheet" href="./cover.css?v=20261011-cover1">
+  <link rel="stylesheet" href="./module-hub.css?v=20261011-modules1">
 </head>
 <body data-current-page="cover">
-<script>if(window.location.hash&&window.location.hash!=='#cover')document.body.setAttribute('data-current-page','execution');</script>
+<script>if(window.location.hash&&window.location.hash!=='#cover')document.body.setAttribute('data-current-page',window.location.hash==='#modules'?'modules':'execution');</script>
 <a class="skip-link" id="skipLink" href="#coverTitle">跳到主要内容</a>
 <section class="site-cover" id="cover" aria-labelledby="coverTitle">
   <header class="cover-header">
@@ -22,7 +23,7 @@
       <p class="cover-eyebrow"><span aria-hidden="true"></span>我的研究与学习空间</p>
       <h1 id="coverTitle" tabindex="-1">让每一步，<br>都有<span>进展。</span></h1>
       <p class="cover-description">整理研究的思路，积累学习的收获。<br>从今天的任务开始，把计划一点点做成。</p>
-      <a class="cover-enter" id="enterWorkspace" href="#execution"><span>进入任务列表</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="cover-enter" id="enterWorkspace" href="#modules"><span>进入成长工作台</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       <p class="cover-entry-note">科研、课程与项目，都从这里继续。</p>
     </div>
     <div class="cover-visual" aria-hidden="true">
@@ -71,7 +72,7 @@
 </section>
 <div class="site-shell" id="workspaceShell">
   <header class="app-header">
-    <a href="#execution" id="homeBtn" class="brand" aria-label="任务列表首页"><span class="brand-symbol" aria-hidden="true">研</span><span>研究 · 作品<small>CAREER WORKSPACE</small></span></a>
+    <a href="#modules" id="homeBtn" class="brand" aria-label="返回模块选择"><span class="brand-symbol" aria-hidden="true">研</span><span>研究 · 作品<small>CAREER WORKSPACE</small></span></a>
     
     <nav class="main-tabs" id="mainTabs" aria-label="工作台导航">
       <button type="button" aria-label="任务列表" data-page="execution" aria-pressed="true"><span class="nav-icon" aria-hidden="true">↗</span>任务列表</button>
@@ -85,10 +86,11 @@
       <button type="button" aria-label="实习岗位参考" data-page="roles" aria-pressed="false">实习岗位参考</button>
       <button type="button" aria-label="详细自查记录" data-page="skills" aria-pressed="false">详细自查记录</button>
     </nav></details>
-    <a class="guide-entry" href="./guide.html?v=cover1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
+    <a class="guide-entry" href="./guide.html?v=modules1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
     <button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span><span aria-hidden="true">↗</span></button>
   </header>
   <main>
+    <a class="module-return" href="#modules" id="returnToModules"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4m5-5-5 5 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>返回模块选择</a>
     <div class="workspace-heading"><div><div class="period-label" id="pageEyebrow">任务列表</div><h1 id="pageTitle" tabindex="-1">我的任务</h1><p id="pageSubtitle">当月计划和此前未完成任务都在这里；完成一项，就勾一项。</p></div><span class="today-label" id="todayLabel"></span></div>
     <nav class="section-tabs" id="skillTabs" aria-label="详细记录分区" hidden><button data-open-page="skills">全部自查</button><button data-open-page="resources">回到学习</button><button data-open-page="assessments">练习与记录</button></nav>
     <nav class="section-tabs" id="researchTabs" aria-label="博士计划分区" hidden><button data-open-page="overview">研究目标</button><button data-open-page="execution">执行清单</button><button data-open-page="timeline">里程碑</button><button data-open-page="outcomes">论文与成果</button></nav>
@@ -97,6 +99,7 @@
     <p id="careerSaveNotice" class="form-error save-notice" role="alert" hidden></p>
     <div class="workspace-layout">
       <div class="main-column">
+        <section class="page-panel" data-panel="modules" id="modules" hidden><div id="moduleHub"></div></section>
         <section class="page-panel" data-panel="today" id="today" hidden><div id="careerToday"></div></section>
         <section class="page-panel" data-panel="roles" id="roles" hidden><div id="careerRoles"></div></section>
         <section class="page-panel" data-panel="skills" id="skills" hidden><div id="careerSkills"></div></section>
@@ -105,6 +108,7 @@
         <section id="overview" class="page-panel" data-panel="overview" hidden><div id="goalOverview"></div></section>
         <section id="timeline" class="page-panel" data-panel="timeline" hidden><div id="goalTimeline"></div></section>
         <section id="workspace" class="page-panel" data-panel="execution">
+          <nav class="research-task-links" id="researchTaskLinks" aria-label="科研相关页面" hidden><a href="#timeline" data-research-route="timeline">研究时间表</a><a href="#outcomes" data-research-route="outcomes">原有论文与成果</a></nav>
           <div class="execution-stats"><div><span id="scopeCountLabel">本月计划完成</span><strong id="monthCount">0 / 4<small>项</small></strong></div><div><span id="pendingScopeLabel">所选月待办</span><strong id="pendingCount">4<small>项</small></strong></div><button id="backlogJump"><span>其中顺延</span><strong id="backlogCount">0<small>项</small></strong></button></div>
           <div class="task-panel"><div class="task-toolbar"><div class="month-controls"><button id="prevMonth" aria-label="上一个月">‹</button><label class="sr-only" for="monthPicker">选择月份</label><select id="monthPicker"></select><button id="nextMonth" aria-label="下一个月">›</button></div><button id="todayBtn" class="text-button">回到本月</button></div>
           <nav class="view-tabs" id="viewTabs" aria-label="任务视图"><button data-view="stage" id="stageViewTab" hidden>阶段任务</button><button data-view="month">所选月</button><button data-view="year">全部任务</button><button data-view="research">科研</button><button data-view="learning">课程与基础</button><button data-view="demo">项目</button></nav>
@@ -134,5 +138,6 @@
 <script src="./learning-modules.js?v=20261010-journey1"></script>
 <script src="./project-outline.js?v=20261010-journey1"></script>
 <script src="./career-ui.js?v=20261010-taskfirst1"></script>
-<script src="./app.js?v=20261011-cover1"></script>
+<script src="./module-hub.js?v=20261011-modules1"></script>
+<script src="./app.js?v=20261011-modules1"></script>
 </body></html>

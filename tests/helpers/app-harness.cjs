@@ -90,7 +90,7 @@ function makeDocument(html) {
   return doc;
 }
 
-function app({ memory = {}, hash = '', now = null } = {}) {
+function app({ memory = {}, hash = '', now = null, cloudClient = null } = {}) {
   const listeners = {}, confirmations = [], doc = makeDocument(fs.readFileSync(path.join(root, 'index.html'), 'utf8'));
   let allowNavigation = true;
   const location = { hash };
@@ -122,8 +122,12 @@ function app({ memory = {}, hash = '', now = null } = {}) {
     setInterval() {}, setTimeout, clearTimeout, confirm: message => { confirmations.push(message); return allowNavigation; }, PHD_CLOUD_CONFIG: { enabled: false }
   };
   ctx.window = ctx; vm.createContext(ctx);
-  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'internship-data.js', 'career-state.js', 'goal-ui.js', 'lesson-ui.js', 'cloud-sync.js', 'career-ui.js', 'app.js']) {
+  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'internship-data.js', 'career-state.js', 'goal-ui.js', 'lesson-ui.js', 'cloud-sync.js', 'career-ui.js', 'module-hub.js', 'app.js']) {
     if (fs.existsSync(path.join(root, file))) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), ctx, { filename: file });
+    if (file === 'cloud-sync.js' && cloudClient) {
+      const create = ctx.PhdCloud.create;
+      ctx.PhdCloud.create = options => create({ ...options, client: cloudClient });
+    }
   }
   return { ctx, document: doc, memory, confirmations, setConfirmation: value => { allowNavigation = value; }, query: selector => doc.querySelector(selector), all: selector => doc.querySelectorAll(selector), evaluate: source => vm.runInContext(source, ctx), destroy: () => ctx.AppProgress.sync().destroy() };
 }

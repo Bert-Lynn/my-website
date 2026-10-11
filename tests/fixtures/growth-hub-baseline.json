@@ -1,0 +1,30 @@
+{
+  "files": {
+    "career-curriculum.js": "dd4c37484e8be29fd18f6e8461e95da946b236845754bbd4ccb8d5b510115f16",
+    "career-state.js": "a7a0c268c06419a63d6be1360bff7e31112d9673cd0f83d71a3d7d9e4efcf9e7",
+    "cloud-sync.js": "2d9e05cf8fbf2963052dafdc3357c0a5d65283b489d6474d03ad9437969e276d",
+    "course-lessons.js": "36e73c05b8fc44a371861523ab19f764dc5e179a769c58b7198af894556ffcb7",
+    "internship-data.js": "860fa7ca7f4b71c2737c183df4f55d87d52c3eb9d8383e5003c32de4fa28b7e1",
+    "learning-modules.js": "9771fa570bf93292f22f72a00ad5c037e22a1afeded09a4f23e5cd2049f5b6b0",
+    "project-outline.js": "58a74acb0f8e13745cac58b036be70e01de5319fcf956e14d04f7010a43ddb9a",
+    "data/career-curriculum.json": "06bd7a673c62c21230f602d98a389ee33635cca1a9c17e7ed4cd3a892eaf4a85",
+    "data/internships.json": "c87e73750cf12110ffc3cefc82d2533de815da54896e160a9bfe9ac1bbfdf8ff",
+    "data/learning-modules.json": "3b2e2059a4757203c6cfd4368cec6c310147ec9ca848b2c14589ada4652e0e01",
+    "data/project-outline.json": "3b47bf37b0feb5d214262eb84d56b5650027f78cdca3578ac688271f71664268",
+    "supabase/20261010104000_phd_private_lessons_and_completion_dates.sql": "df016f10807df951f6735161d0b3707316e4bb912b00a978d3f9357ceb0525aa",
+    "supabase/20261010111351_phd_private_career_assessments.sql": "840cefb2241a8ce4b7b518235c3db1ca8418096c2a7da005186c7274c69161df",
+    "supabase/20261010111945_phd_career_learning_units.sql": "95d2ba019cdbd6d49374afbc4f559f39a9c707c6a53d0f7f2b91e86db2611cfc",
+    "supabase/20261010113029_phd_preserve_all_progress_keys.sql": "6d5b714d138c0c159cdc7be469622e6469ce467c66dcc8807cae2b1c3e024699",
+    "supabase/20261010130036_phd_independent_ai_choice_progress.sql": "64a8f41f11ee623428d4de9f22233a958655953f431c2f39b2cbf64a42b6f60b",
+    "supabase/CAREER_SYNC.md": "61ae70b85ac54615216543f080908055c85a28a4dc324f64cf38f88ba42824ef",
+    "supabase/LESSON_SYNC.md": "da3bc4161d86a953e00197b60f61df4865735693b4bac1a9352a20ad6ca12f48",
+    "supabase/verify_ai_choice_progress.sql": "98ab8da1805c3322811fca3300deb72d1e201071861916716b793752aac51e8d",
+    "supabase/verify_career.sql": "01bd2c2f47cf5c62a2b6253c9d0e4df5898c454a8560d58fdb6f84f3a769bbbe",
+    "supabase/verify_career_units.sql": "13fdec5e08031690b2bb2cafa2b05062cd088e6b9584f272d0f59b43811b85b4",
+    "supabase/verify_lessons.sql": "4c3850c0b72a3ebf2c98662fd4f745e34be3236f2e02d85163ce057b3d06af1b",
+    "supabase/verify_merge_preservation.sql": "4ce837fc989cc4fa2f99c93beae0207aebcd5db873ab6546f467f66f7b0ff735"
+  },
+  "tasks_sha256": "6c55ed9ece4de6edd88de62197842e456a43b9dc7c14dcd61abe28aeab745a1a",
+  "baseline_ref": "b32bd7a3023392423fa1aa2844f836386a1ba8b9",
+  "cloud_config_trimmed_sha256": "a406c87f2314a7ea3f17dafd0db3c7a58209eede9588b82909f22ca0622ae363"
+}

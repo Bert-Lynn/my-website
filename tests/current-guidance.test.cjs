@@ -11,8 +11,9 @@ const current = source.split('<details class="guide-legacy"')[0];
 const guide = makeDocument(source);
 const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-assert(index.includes('./guide.html?v=cover1'), 'guide entry bypasses the earlier task-first landing instructions');
-assert(current.includes('封面') && current.includes('进入任务列表'), 'guide explains the cover-to-task-list entry');
+assert(index.includes('./guide.html?v=modules1'), 'guide entry bypasses the earlier task-first landing instructions');
+assert(current.includes('五个模块') && current.includes('整体进度') && current.includes('47') && current.includes('23') && current.includes('12'), 'guide explains real task and independent-stream totals');
+assert(current.includes('封面') && current.includes('进入成长工作台'), 'guide explains the cover-to-module-chooser entry');
 assert(!current.includes('网站默认首页是原有任务列表'), 'guide no longer claims the bare URL skips the cover');
 const first = agent.firstSession;
 assert(/20\s*(节|个)/.test(current), 'current guide states the actual 20 reference lessons');
@@ -36,4 +37,4 @@ for (const text of [...catalog.homeIntro.firstUse, first.saveInstruction, first.
 }
 assert(first.saveInstruction.includes('我的作品'));
 assert(first.resumeNote.includes('课程学习') || first.resumeNote.includes('发展路线'));
-console.log('PASS current guidance: task-first navigation with auxiliary development route, 30-minute start versus 90-minute diagnostic, 20 reference lessons/seven checks, independent six-stage acceptance, current stylesheet, and historical estimates contained in the archive.');
+console.log('PASS current guidance: cover-to-module navigation with auxiliary development route, 30-minute start versus 90-minute diagnostic, 20 reference lessons/seven checks, independent six-stage acceptance, current stylesheet, and historical estimates contained in the archive.');

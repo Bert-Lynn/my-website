@@ -9,7 +9,7 @@ function app({cloud=false,saved='{}'}={}){
  function node(s){if(!nodes.has(s)){const n={innerHTML:'',textContent:'',dataset:{},style:{setProperty(k,v){this[k]=v}},attrs:{},classList:{toggle(){},add(){},remove(){}},setAttribute(k,v){this.attrs[k]=v},focus(){document.activeElement=this},scrollIntoView(){},open:false};nodes.set(s,n)}return nodes.get(s)}
  const tabs=['month','year','research','learning','demo'].map(view=>Object.assign(node('tab-'+view),{dataset:{view}})),pages=['execution','outcomes','resources'].map(page=>Object.assign(node('page-'+page),{dataset:{page}})),panels=['execution','outcomes','resources'].map(panel=>Object.assign(node('panel-'+panel),{dataset:{panel}}));
  const stages=[0,1,2,3].map(stage=>Object.assign(node('stage-'+stage),{dataset:{stage}}));
- const document={hidden:false,querySelector(s){if(s.startsWith('#check-')){const id=s.slice(7);if(!node('#taskGroups').innerHTML.includes('data-id="'+id+'"'))return null;node(s).dataset.id=id;}if(s==='.completed-history'&&!node('#taskGroups').innerHTML.includes('completed-history'))return null;return node(s)},querySelectorAll(s){return s==='#viewTabs button'?tabs:s==='[data-page]'?pages:s==='[data-panel]'?panels:s==='[data-stage]'?stages:[]},addEventListener(n,fn){callbacks[n]=fn}};
+ const document={hidden:false,getElementById(id){return this.querySelector('#'+id)},querySelector(s){if(s.startsWith('#check-')){const id=s.slice(7);if(!node('#taskGroups').innerHTML.includes('data-id="'+id+'"'))return null;node(s).dataset.id=id;}if(s==='.completed-history'&&!node('#taskGroups').innerHTML.includes('completed-history'))return null;return node(s)},querySelectorAll(s){return s==='#viewTabs button'?tabs:s==='[data-page]'?pages:s==='[data-panel]'?panels:s==='[data-stage]'?stages:[]},addEventListener(n,fn){callbacks[n]=fn}};
  class MockDate extends Date{constructor(...a){super(...(a.length?a:[now]))}static now(){return new Date(now).valueOf()}}
  const localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)};
  const window={localStorage,addEventListener(n,fn){(callbacks[n]??=[]).push(fn)},PHD_CLOUD_CONFIG:{enabled:false,url:'',key:''}};
@@ -45,3 +45,4 @@ test('newly clean signOut does not ask using stale dirty state',()=>{assert.equa
 x.node('#importGuest').onclick();test('declined explicit import does not import',()=>assert.equal(calls.import,0));x.context.confirm=()=>true;x.node('#importGuest').onclick();test('approved explicit import calls import once',()=>assert.equal(calls.import,1));
 console.log('TOTAL AUTH UI '+count+' PASSED');
 })().catch(e=>{console.error(e);process.exitCode=1});
+

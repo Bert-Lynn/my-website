@@ -36,8 +36,8 @@ const assertWorkspace = (h, page = 'execution') => {
   assert.equal(heading.getAttribute('tabindex'), '-1', 'route focus has a heading target');
   const entry = initial.querySelector('#enterWorkspace');
   assert.equal(entry.tagName, 'A', 'the entry is keyboard-operable without a custom key handler');
-  assert.equal(entry.getAttribute('href'), '#execution');
-  assert(entry.textContent.includes('进入任务列表'), 'entry destination is explicit');
+  assert.equal(entry.getAttribute('href'), '#modules');
+  assert(entry.textContent.includes('进入成长工作台'), 'entry destination is explicit');
   assert(!entry.hasAttribute('target'), 'entry stays in the current tab');
   assert.equal(initial.querySelector('#cover').querySelectorAll('input,select,textarea,form').length, 0, 'decorative cover has no pretend progress controls');
   assert(!/\d+\s*%|\d+\s*\/\s*\d+\s*(?:已完成|项已完成)/.test(initial.querySelector('#cover').textContent), 'cover does not advertise fabricated completion');
@@ -83,13 +83,14 @@ const assertWorkspace = (h, page = 'execution') => {
   assert.equal(before.lessons['u-sql-select'], 'done');
   assert.equal(before.career.milestones['demand-decision-lab']['ddl-m0'].completedAt, oldDate);
   click(h.query('#enterWorkspace'));
-  assertWorkspace(h);
-  assert.equal(ctx.location.hash, '#execution');
-  assert.equal(h.document.activeElement, h.query('#pageTitle'), 'entry moves keyboard focus to task-list heading');
+  assertWorkspace(h, 'modules');
+  assert.equal(ctx.location.hash, '#modules');
+  assert.equal(h.query('#modules').hidden, false);
+  assert.equal(h.query('#workspace').hidden, true, 'the chooser does not expose the task list');
+  assert.equal(h.document.activeElement, h.query('#pageTitle'), 'entry moves keyboard focus to module chooser heading');
   click(h.query('#skipLink'));
   assert.equal(h.document.activeElement, h.query('#pageTitle'));
-  assert.equal(ctx.location.hash, '#execution', 'workspace skip link preserves the task route');
-  assert.equal(h.query('#workspace').hidden, false);
+  assert.equal(ctx.location.hash, '#modules', 'workspace skip link preserves the hub route');
   assert.equal(h.query('#mainTabs').querySelectorAll('[data-page]')[0].dataset.page, 'execution');
   assert(h.query('#taskGroups').textContent.includes('2026.11'));
   assert(h.query('#taskGroups').textContent.includes('顺延'));
@@ -99,13 +100,15 @@ const assertWorkspace = (h, page = 'execution') => {
   ctx.history.back(); assertCover(h);
   assert.equal(h.document.activeElement, h.query('#coverTitle'));
   assert.equal(h.document.lastScrolled, h.query('#cover'), 'returning to cover keeps its brand and introduction visible');
-  ctx.history.forward(); assertWorkspace(h);
-  assert.equal(ctx.location.hash, '#execution');
+  ctx.history.forward(); assertWorkspace(h, 'modules');
+  assert.equal(ctx.location.hash, '#modules');
+  click(h.query('[data-hub-route="execution/month"]')); assertWorkspace(h);
+  assert.equal(ctx.location.hash, '#execution/month');
   click(h.query('#mainTabs [data-page="resources"]')); assertWorkspace(h, 'resources');
-  click(h.query('#homeBtn')); assertWorkspace(h);
+  click(h.query('#homeBtn')); assertWorkspace(h, 'modules');
   click(h.query('#moreNavigation [data-page="cover"]')); assertCover(h);
-  click(h.query('#enterWorkspace')); assertWorkspace(h);
-  for (const page of ['today', 'overview', 'timeline', 'outcomes', 'projects', 'roles', 'skills', 'assessments', 'storage', 'resources', 'execution']) {
+  click(h.query('#enterWorkspace')); assertWorkspace(h, 'modules');
+  for (const page of ['modules', 'today', 'overview', 'timeline', 'outcomes', 'projects', 'roles', 'skills', 'assessments', 'storage', 'resources', 'execution']) {
     assert.equal(ctx.AppNavigation.open(page), true);
     assertWorkspace(h, page);
   }
@@ -137,7 +140,7 @@ const assertWorkspace = (h, page = 'execution') => {
   h.destroy();
 
   // Direct task/module/account links bypass the cover, including on reload.
-  for (const [hash, page] of [['#execution', 'execution'], ['#learn/code', 'resources'], ['#storage', 'storage'], ['#today', 'today']]) {
+  for (const [hash, page] of [['#modules', 'modules'], ['#execution/research', 'execution'], ['#execution', 'execution'], ['#learn/code', 'resources'], ['#storage', 'storage'], ['#today', 'today']]) {
     h = app({ memory, hash, now }); ctx = h.ctx; await ctx.AppProgress.sync().start();
     assertWorkspace(h, page); assert.equal(ctx.location.hash, hash);
     assert.deepEqual(snapshots(h), before);
@@ -157,5 +160,5 @@ const assertWorkspace = (h, page = 'execution') => {
     assertWorkspace(h); assert.equal(h.ctx.location.hash, hash, 'unrecognized nonempty callback hashes are never rewritten by the cover');
     assert.deepEqual(snapshots(h), before); h.destroy();
   }
-  console.log('PASS cover entry: semantic accessible landing, one-click tasks, direct/reload route bypass, focus, history, repeat clicks, dirty-form guards, callback-hash preservation, reachable account/reset controls, and unchanged independent saved records. CSS checks are structural; desktop/narrow pixel and real-auth verification remain separate.');
+  console.log('PASS cover entry: semantic accessible landing, cover-to-hub entry and selected tasks, direct/reload route bypass, focus, history, repeat clicks, dirty-form guards, callback-hash preservation, reachable account/reset controls, and unchanged independent saved records. CSS checks are structural; desktop/narrow pixel and real-auth verification remain separate.');
 })().catch(error => { console.error(error); process.exitCode = 1; });
