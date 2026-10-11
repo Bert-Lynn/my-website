@@ -4,8 +4,8 @@
   const SKILLS = ['ai-code','reproducible-workflow','sql-data','statistics-metrics','ml-validation','time-forecast','optimization-modeling','decision-evaluation','software-testing','api-delivery','agent-evaluation','technical-interview','pytorch-training'];
   const ROLES = ['decision_optimization','forecasting_ml','agent_engineering','search_recommendation','foundation_model_research'];
   const PROJECT = 'demand-decision-lab', MILESTONES = Array.from({length:7},(_,i)=>'ddl-m'+i);
-  const MAIN_PROJECT = 'ai-choice-assistant';
-  const PROJECTS = { [PROJECT]: MILESTONES, [MAIN_PROJECT]: Array.from({length:6},(_,i)=>'aca-m'+i) };
+  const MAIN_PROJECT = 'work-assistant';
+  const PROJECTS = { [PROJECT]: MILESTONES, 'ai-choice-assistant': Array.from({length:6},(_,i)=>'aca-m'+i), [MAIN_PROJECT]: Array.from({length:4},(_,i)=>'wa-m'+i) };
   const milestoneKeys = Object.entries(PROJECTS).flatMap(([project,milestones])=>milestones.map(id=>'milestone:'+project+':'+id));
   const LEVELS = ['untested','learning','practicing','passed'];
   const copy = v => JSON.parse(JSON.stringify(v));

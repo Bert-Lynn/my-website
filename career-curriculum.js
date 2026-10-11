@@ -3352,7 +3352,7 @@ window.CAREER_CURRICULUM = {
       "mvpEstimatedHours": 50,
       "mvpMilestoneId": "ddl-m4",
       "v1MilestoneId": "ddl-m5",
-      "note": "当前作品是AI选项比较助手，按aca-m0至aca-m5独立验收。原DDL项目、技能量表和课节练习保留作参考，不必先完成全部旧预测题才开始新作品；原题完成记录不能替代新阶段成果。",
+      "note": "当前作品是AI工作助理，按wa-m0至wa-m3四件成果独立验收。原ACA航班比较、DDL项目、技能量表和课节记录完整保留，不复制为新作品成果。",
       "milestoneNotes": {
         "ddl-m1": "优先数据检查/报告预览，为Agent准备稳定只读工具；可先用手写SQL+固定规则。",
         "ddl-m4": "最早MVP：输入→schema校验→调用确定性工具→报告。不要等待预测/OR分支。",
@@ -3394,18 +3394,16 @@ window.CAREER_CURRICULUM = {
       ],
       "learningEstimatedMinutes": 2340,
       "estimatedHoursScope": "legacy_demand_decision_lab_only",
-      "estimateNote": "100小时完整路线、50小时首Demo是原DemandDecisionLab组合的历史估计，不适用于当前AI选项比较助手。2340分钟仅为本路线20个课节的学习练习估计，不是新作品总工期。",
+      "estimateNote": "100小时完整路线、50小时首Demo是原DemandDecisionLab组合的历史估计，不适用于AI工作助理。2340分钟仅为20个课节的学习练习估计，不是新作品总工期。",
       "milestoneMappingScope": "legacy_demand_decision_lab_only",
-      "currentProjectId": "ai-choice-assistant",
+      "currentProjectId": "work-assistant",
       "currentProjectMilestoneIds": [
-        "aca-m0",
-        "aca-m1",
-        "aca-m2",
-        "aca-m3",
-        "aca-m4",
-        "aca-m5"
+        "wa-m0",
+        "wa-m1",
+        "wa-m2",
+        "wa-m3"
       ],
-      "progressionPolicy": "当前作品阶段仅由ai-choice-assistant的aca阶段记录推进；旧课程、旧技能自查和DDL里程碑不会自动完成或跳过新阶段。"
+      "progressionPolicy": "当前推荐只按 work-assistant 的四个成果记录推进；原 ACA、DDL、课程与技能自查不会替代新作品验收。"
     }
   ],
   "challenges": [

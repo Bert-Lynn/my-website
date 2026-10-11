@@ -1,0 +1,22 @@
+'use strict';
+// Structural-only SQL QA. This test never connects to a database.
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const original=read('supabase/20261010130036_phd_independent_ai_choice_progress.sql');
+const migration=read('supabase/20261011044137_phd_work_assistant_progress.sql');
+const oldBody=original.match(/CREATE OR REPLACE FUNCTION public\.phd_career_state_valid\(value jsonb\)[\s\S]*?\$function\$;/)?.[0];
+assert(oldBody,'prior validator is available');
+const additions=Array.from({length:4},(_,i)=>",'milestone:work-assistant:wa-m"+i+"'").join('');
+assert(migration.includes(additions),'migration appends all four exact new keys as one bounded list');
+assert.equal(migration.replace(additions,'').trim(),oldBody.trim(),'entire validator is byte-equivalent after removing only the four new keys');
+const ids=[...migration.matchAll(/'milestone:([^']+)'/g)].map(m=>m[1]);
+assert.deepEqual(ids,[...Array.from({length:7},(_,i)=>'demand-decision-lab:ddl-m'+i),...Array.from({length:6},(_,i)=>'ai-choice-assistant:aca-m'+i),...Array.from({length:4},(_,i)=>'work-assistant:wa-m'+i)]);
+assert.equal(new Set(ids).size,17);
+assert(!/\b(?:GRANT|REVOKE|ALTER\s+TABLE|CREATE\s+POLICY|DROP|UPDATE|INSERT|DELETE)\b/i.test(migration),'migration does not mutate records, policies, grants or schemas');
+assert(!migration.includes('phd_save_career_state'),'CAS and merge RPC is untouched');
+const check=read('supabase/verify_work_assistant_progress.sql');
+assert(/\bbegin;/.test(check)&&/rollback;\s*$/.test(check),'synthetic integration checks are entirely rolled back');
+assert(!/\bcommit;/.test(check));
+for(const expected of ['old client erased new milestones','stale write bypassed CAS','cross-user read allowed','cross-user update allowed','anonymous write allowed','task/lesson/date writes inferred new project completion','ACA undo erased work-assistant or DDL data']) assert(check.includes(expected),'rollback tests cover '+expected);
+assert(check.includes('gen_random_uuid()'),'test identities are newly generated synthetic UUIDs');
+console.log('PASS independent SQL structure: only four exact WA keys added; DDL7/ACA6 and whole validator otherwise unchanged; no RPC, schema, grant, RLS or real-record edits; rollback suite covers CAS/merge/undo/isolation. Live execution is verified separately.');

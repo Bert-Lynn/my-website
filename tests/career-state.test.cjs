@@ -116,7 +116,7 @@ function backend() {
   assert.equal(api.setMilestone('wrong-project', 'ddl-m0', { status: 'done' }), false);
   assert.equal(api.setMilestone('demand-decision-lab', 'ddl-m7', { status: 'done' }), false);
   assert.equal(api.setMilestone('demand-decision-lab', 'ddl-m0', { evidenceUrl: 'javascript:alert(1)' }), false);
-  assert.equal(state.mainProject, 'ai-choice-assistant');
+  assert.equal(state.mainProject, 'work-assistant');
   assert.deepEqual(state.projects['demand-decision-lab'], state.milestones, 'legacy registry fields keep their original meaning');
   assert.deepEqual(state.projects['ai-choice-assistant'], Array.from({ length: 6 }, (_, i) => 'aca-m' + i));
   assert.equal(api.setMilestone('ai-choice-assistant', 'ddl-m0', { status: 'doing' }), false, 'old IDs cannot be relabelled as new achievements');

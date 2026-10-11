@@ -26,10 +26,13 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
   assert(h.query('.flow-goal').textContent.includes(ctx.CAREER_CURRICULUM.projects[0].title), 'saved original route names its own project');
   assert(h.query('.flow-goal').textContent.includes('尚未建成'));
   for (const label of ['软件：', 'Demo：', '论文：']) assert(h.query('.flow-goal').textContent.includes(label), 'end goal distinguishes ' + label);
-  assert(h.query('.proposed-project').textContent.includes('航班怎么选'));
-  assert(h.query('.proposed-project').textContent.includes('不是实时') || h.query('.proposed-project').textContent.includes('不能算真实AI'));
+  assert(h.query('.proposed-project').textContent.includes('反馈'));
+  assert(!h.query('.proposed-project').textContent.includes('航班怎么选'));
+  assert(h.query('.proposed-project').textContent.includes('固定回放不能算真实Agent完成'));
   assert.equal(h.query('.proposed-project').querySelectorAll('[data-milestone-form]').length, 0, 'new proposal cannot inherit old project completion controls');
   assert.equal(h.query('.legacy-project-plan').open, false);
+  assert.equal(h.query('.archived-assistant-plan').open,false);
+  assert.equal(h.query('.archived-assistant-plan').querySelectorAll('[data-milestone-form]').length,6);
   assert.equal(h.query('.legacy-project-plan').querySelectorAll('[data-milestone-form]').length, 7, 'all prior project records remain available');
   assert(h.query('.legacy-project-plan').textContent.includes('不算作上方新项目的完成'));
   for (const source of ctx.PROJECT_OUTLINE.paperSourceLinks) assert(h.query('.proposal-research').querySelector('a[href="' + source.url + '"]'));
@@ -44,7 +47,7 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
     for (const id of module.unitIds) {
       const section = h.query('[data-module-unit="' + id + '"]'), unit = ctx.CAREER_CURRICULUM.learningUnits.find(unit => unit.id === id);
       assert(section); assert(section.querySelector('a[href="' + unit.url + '"]'), id + ': exact selected source URL');
-      assert(section.textContent.includes('动手做什么') && section.textContent.includes('什么时候勾选'), id + ': practice and completion criteria are inside the lesson');
+      assert(section.textContent.includes('原课练习') && section.textContent.includes('什么时候勾选'), id + ': practice and completion criteria are inside the lesson');
       assert.equal(typeof section.querySelector('[data-unit-check]').onchange, 'function');
     }
   }
@@ -65,7 +68,7 @@ const currentFlowId = h => h.query('.module-flow [aria-current="step"]')?.datase
   assert.equal(ctx.CareerUI.stats().skillsPassed, 0); assert.equal(ctx.LessonUI.stats().done, 0); assert.equal(h.evaluate('tally(tasks).done'), 0);
   chooseRole(h, 'agent_engineering');
   assert.equal(ctx.CareerUI.stats().lessons.total, agentTrack.requiredLearningUnitIds.length); assert.equal(ctx.CareerUI.stats().lessons.done, 1);
-  assert.deepEqual(plain(ctx.CareerUI.modules().map(module => module.id)), ['code', 'data', 'check-results', 'app', 'ai-tools', 'interview']);
+  assert.deepEqual(plain(ctx.CareerUI.modules().map(module => module.id)), ['code', 'data', 'ai-tools', 'app', 'check-results', 'interview']);
   assert.equal(h.query('[data-unit-check="u-sql-select"]').checked, true, 'shared unit progress survives role switch');
   chooseRole(h, 'forecasting_ml'); assert.equal(ctx.CareerUI.stats().lessons.total, 26, 'forecasting role retains the complete decision route');
   chooseRole(h, 'decision_optimization');

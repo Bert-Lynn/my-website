@@ -1,134 +1,1063 @@
 // Generated public data. Edit data/project-outline.json and run node scripts/build-career-data.cjs.
 window.PROJECT_OUTLINE = {
   "status": "当前项目计划 · 尚未建成",
-  "mainTitle": "AI选项比较助手",
-  "oneLine": "给它一张候选表和你的条件，让AI查数据、调用工具计算、检查限制，再解释依据。",
-  "demo": "第一款Demo：航班怎么选。用虚构航班演示读表、算费用和时间、改偏好、看工具记录、导出报告。",
-  "research": "论文候选：AI调用计算和检查工具后，能否更少算错、漏条件，并在偏好变化时保持解释一致？先做对照实验，再定题。",
+  "projectId": "work-assistant",
+  "mainTitle": "用户反馈分析 Agent",
+  "oneLine": "给它一份产品反馈表和产品说明，用一句话让它找问题、查依据、做统计，生成Excel和报告。",
+  "demo": "第一版：产品反馈分析Agent。选择公开或虚构的反馈CSV与产品说明，提出“找出最常见的5个问题”，得到问题统计、原文证据、Excel和一页报告。",
+  "research": "这个项目先用于实习作品和工程能力展示，不新增论文目标。原有航空与旅客选择研究独立推进，未来确有需要时再讨论结合。",
+  "paperCurrent": "原有旅客选择研究继续独立推进；这个实习作品不要求迁移原论文，也不把做出软件等同于完成新论文。",
+  "software": "一个在自己电脑运行的Agent应用：选择输入文件、输入一句话、查看执行过程，再打开生成的表格和报告。真实模型会选择受限工具、读取返回结果并继续或停止。第一版不需要企业连接器、向量数据库或多Agent。",
   "mainFeatures": [
-    "读表并检查缺失",
-    "把要求变成明确条件",
-    "调用查询和计算工具",
-    "检查限制与解释依据",
-    "出错时报告并恢复",
-    "保存报告与重跑记录"
+    "读取反馈CSV和产品说明",
+    "按要求筛选、归类和去重统计",
+    "搜索原文并保留证据位置",
+    "真实AI选择并调用工具",
+    "检查结果并处理失败",
+    "生成Excel、报告和运行记录"
   ],
   "jobSkills": [
-    "Python与数据处理",
-    "工具调用与结构化输出",
-    "自动测试、评测和失败分析",
-    "接口交付、日志与可复现"
+    "Python与SQL数据处理",
+    "结构化输出与真实工具调用",
+    "错误处理、权限边界与日志",
+    "自动测试、评测与失败分析",
+    "可运行交付与个人贡献说明"
   ],
-  "careerLine": "主线：准备Agent应用开发实习。航班只是第一个演示场景。",
-  "software": "一个小而完整的AI应用：网页/API、有限工具调用、条件检查、解释和固定评测。先维护一个场景，不造通用大平台。",
+  "careerLine": "当前作品对应Agent应用研发与评测能力。算法、强化学习岗位还需要另外的模型实验，不能仅靠本项目证明。",
   "demoStages": [
-    "先让计算与条件检查跑对",
-    "再接真实AI调用工具",
-    "最后做评测、演示与可复现交付"
+    "先把读取、计数和证据工具做对",
+    "再让真实AI用一句话调用整套工具",
+    "补齐失败处理与边界检查",
+    "最后评测、演示并整理作品"
   ],
-  "novelty": "TravelPlanner、COMPASS、TravelBench已研究旅行约束与偏好。具体新贡献仍需文献查重、先导结果和导师确认。",
-  "paperSourceLinks": [
-    {
-      "title": "TravelPlanner",
-      "url": "https://arxiv.org/abs/2402.01622"
-    },
-    {
-      "title": "COMPASS",
-      "url": "https://arxiv.org/abs/2510.07043"
-    },
-    {
-      "title": "TravelBench",
-      "url": "https://arxiv.org/abs/2512.22673"
-    }
+  "boundaries": "第一版只读指定文件夹中的CSV与TXT/Markdown，并向本地结果目录写文件。只使用公开、合成或明确获准的非敏感资料。不会自动发邮件、建工单、公开上传或投递；不保证论文发表、薪资或录用。",
+  "executionBoundary": "先核对确定性的工具输出，再接获准的真实模型。模型账号、费用和公开部署另行确认；固定回放不能算真实Agent完成。",
+  "novelty": "当前目标是完成可展示的Agent工程作品；尚未确认论文创新性。",
+  "paperSourceLinks": [],
+  "visibleExample": {
+    "input": "随站提供的8条虚构反馈 feedback.csv 与 product_guide.md；熟悉后再增加合成样例。",
+    "request": "找出反馈最多的5个问题，统计各有多少条，给出原话和相关产品说明，生成Excel和一页报告。",
+    "output": "issues.xlsx列出问题、反馈条数、反馈编号和原文证据；report.md说明结论、统计范围和不足；run.json记录工具调用与失败。",
+    "change": "再说“只看2.1版本”，它重新筛选、统计和生成结果；数字与证据一起更新。",
+    "countNote": "“有12条反馈提到导出失败”不等于“有12个人遇到故障”。按去重后的反馈编号计数，没有可靠且获准使用的用户标识就不统计人数。"
+  },
+  "countingRules": [
+    "每条反馈必须有feedback_id；重复编号不重复计数，冲突记录须报告。",
+    "第一版统计去重后的反馈条数，不推断用户人数、受影响客户数或市场发生率。",
+    "一条反馈可涉及多个问题；每个问题内部按反馈编号去重，因此各类条数相加可能超过总反馈条数。报告必须说明这一点。",
+    "归类不确定、文本不足或无法判断的反馈单独列为待复核，不强行塞进某一类。",
+    "出现最多只是本批资料中的频率，不自动代表业务优先级、严重程度或最值得修的问题。",
+    "产品说明只能证明文档写了什么；不能仅凭一条用户反馈断言已经确认软件缺陷。"
   ],
-  "boundaries": "软件按下面六个阶段逐步实现；新论文题目仍需实验与导师确认。原有论文和旧计划保留，公开内容不包含未发表方法或私有数据。不保证GitHub关注度、论文发表或实习录用。",
-  "paperCurrent": "原有旅客选择研究继续。是否把现有模型接进演示，要另外讨论和验证。",
-  "executionBoundary": "先把固定样例的计算和条件检查跑对，再接真实AI。固定回放只是演示，不能算真实AI表现；费用和部署另行确认。",
-  "projectId": "ai-choice-assistant",
+  "inputContract": {
+    "feedbackFile": "input/feedback.csv",
+    "requiredColumns": {
+      "feedback_id": "不含个人身份信息的唯一反馈编号",
+      "created_at": "反馈日期或时间，格式在说明中写清",
+      "product_version": "所述产品版本；未知明确写未知",
+      "feedback_text": "公开、合成或获准使用的反馈正文"
+    },
+    "documentFiles": [
+      "input/product_guide.md"
+    ],
+    "formats": "第一版仅CSV和UTF-8 TXT/Markdown；PDF、扫描件、网页抓取和企业连接器留待有明确需要时再加。",
+    "privacy": "不放真实姓名、邮箱、电话、客户账号或未公开公司资料。"
+  },
+  "artifactNote": "程序与结果文件是待制作的建议产出，不是完成的Agent或报告；虚构输入资料已单独提供下载。文件名可调整，验收以真实运行结果为准。",
+  "saveInstruction": "代码、输入和结果保存在自己电脑的 work-assistant 文件夹。本站只保存阶段状态和已有的代码、报告或演示链接，不运行代码，也没有文件上传入口。只有本地文件时可先保存“正在做”；要保存“已完成”，仍按页面要求填写有效证据链接并逐项确认。分享前检查文件内容和访问权限；不会自动公开或投递。",
   "milestones": [
     {
-      "id": "aca-m0",
+      "id": "wa-m0",
       "moduleId": "code",
-      "title": "先把小程序跑起来",
+      "moduleIds": [
+        "code",
+        "data"
+      ],
+      "title": "得到一份有依据的问题清单",
+      "summary": "先把文件读对、数量算对：每个问题有反馈条数，也能找到对应原文。",
+      "input": "先用下方可下载的8条虚构反馈、一份产品说明和人工核对分类表。再逐步补充有已知答案的样例。",
+      "software": [
+        "自己的电脑和已有Python编辑器；没有时可用VS Code + Python 3",
+        "Excel、WPS或其他可打开.xlsx的软件",
+        "可让AI起草代码；Python工具负责实际读文件和统计"
+      ],
       "deliverables": [
-        "建一个独立项目，读入一份虚构航班表，打印出候选项。",
-        "保存启动说明、一次Git提交和一个修错示例。"
+        "同一项目内的反馈读取、检查、去重、统计和原文检索工具。",
+        "一份实际生成的问题表，列出分类、去重反馈条数、反馈编号、原话和产品说明位置。",
+        "一份可手算核对的小样例，以及实际运行命令与结果。"
+      ],
+      "steps": [
+        "打开已有代码编辑器，新建并打开 work-assistant 文件夹。下载下方虚构练习资料包，解压后将 input 和 notes 两个文件夹放进去；input/feedback.csv 与 input/product_guide.md 是输入，notes/manual_labels.csv 是人工核对答案。",
+        "在编辑器中新建 analyze.py 和 README.md。可展开“让AI协助写工具的要求”，请AI按输入和预期结果起草；逐项检查读取、去重、统计与证据关联。人工分类只用来核对底层工具，不能让后续模型读取评测答案。",
+        "按 README 准备项目的独立 Python 环境与实际依赖。打开“终端 → 新建终端”，在 work-assistant 目录运行自己已实现的命令；Mac 示例：python3 analyze.py --input input/feedback.csv --labels notes/manual_labels.csv --docs input/product_guide.md --out results/check-001。网站没有替你生成或运行 analyze.py。",
+        "打开实际生成的 issues.xlsx，核对反馈编号与数量：验证码3条、导出空白2条，其余3类各1条；只看2.1版本有6条。保留运行命令与实际输出，不用AI聊天中的答案代替。",
+        "复制F001再运行，确认去重数量不变；删去必需列，确认明确报错。结果按新运行编号保存，不能覆盖旧成果。需要练SQL时用同一份数据在本地SQLite重做查询，不另开项目。"
+      ],
+      "files": [
+        "input/feedback.csv：虚构反馈",
+        "input/product_guide.md：产品说明",
+        "notes/manual_labels.csv：人工核对样例",
+        "analyze.py：读取、校验与统计工具",
+        "requirements.txt：实际需要的依赖",
+        "results/check-001/issues.xlsx：实际问题表",
+        "README.md：安装、运行命令与检查方法"
       ],
       "acceptance": [
-        "按说明能在新目录启动并读出样例。",
-        "能自己修改一项输入，解释结果为什么变了。",
-        "样例明确标为虚构；仓库里没有密码、密钥或私有数据。"
-      ]
-    },
-    {
-      "id": "aca-m1",
-      "moduleId": "data",
-      "title": "读表并检查输入",
-      "deliverables": [
-        "定义价格、出发/到达时间和附加费用等字段。",
-        "完成读表、缺失提示、重复检查和一份输入检查报告。"
+        "正常CSV能读；缺少必需列、空反馈和重复/冲突编号有明确处理结果。",
+        "表内每个问题的反馈条数能由列出的去重feedback_id重算；不把条数写成人数。",
+        "原话及文档引用能在输入资料中找到；缺少依据时说明不足，不补造内容。",
+        "人工核对样例与工具结果一致；代码、输入、命令和实际结果均已保存，样例明确标为虚构。"
       ],
-      "acceptance": [
-        "正确表格能读入，重复项不会被重复计算。",
-        "缺少关键数据时明确提示，不编造价格或时间。",
-        "保留正常、缺字段、重复三类输入与对应测试结果。"
-      ]
+      "save": "代码、输入和结果保存在自己电脑的 work-assistant 文件夹。本站只保存阶段状态和已有的代码、报告或演示链接，不运行代码，也没有文件上传入口。只有本地文件时可先保存“正在做”；要保存“已完成”，仍按页面要求填写有效证据链接并逐项确认。分享前检查文件内容和访问权限；不会自动公开或投递。",
+      "fileNote": "程序与结果文件是待制作的建议产出，不是完成的Agent或报告；虚构输入资料已单独提供下载。文件名可调整，验收以真实运行结果为准。",
+      "environmentHelp": "本示例命令中的python应替换为你已验证能用的Python命令：Windows常用py，macOS/Linux常用python3。若没有Python或命令报错，先保存完整错误并解决环境问题；不把AI聊天中的结果记作实际运行。 先按生成的README在独立环境中安装requirements.txt依赖，再执行analyze.py；仅保存代码但未安装所需依赖，通常还不能运行。",
+      "sqlNote": "SQL是同一作品的可选实现方式：SELECT/WHERE/GROUP BY先覆盖实际筛选计数；JOIN或窗口函数等有需要再加。新练习不自动完成原课程题目。"
     },
     {
-      "id": "aca-m2",
-      "moduleId": "check-results",
-      "title": "算对费用、时间和条件",
-      "deliverables": [
-        "写好总费用、总时间、条件筛选和方案比较工具。",
-        "保存手算对照表，以及改变时间偏好后的结果。"
-      ],
-      "acceptance": [
-        "虚构样例A=980元/5.5小时，B=880元/7.5小时；额外100元节省2小时的边界为50元/小时。",
-        "边界、空结果和缺失输入有测试；不把未知信息补成零。",
-        "比较依据能解释清楚，不把简单加权分数称作真实旅客选择模型。"
-      ]
-    },
-    {
-      "id": "aca-m3",
-      "moduleId": "app",
-      "title": "做成可操作的网页或接口",
-      "deliverables": [
-        "提供输入候选项和条件、查看结果、导出报告的入口。",
-        "加输入错误提示、运行日志、启动说明和自动测试。"
-      ],
-      "acceptance": [
-        "从导入样例到导出报告能完整走通。",
-        "换一个干净环境仍能按说明启动。",
-        "网页不保存或暴露私钥；固定计算与AI调用状态分开显示。"
-      ]
-    },
-    {
-      "id": "aca-m4",
+      "id": "wa-m1",
       "moduleId": "ai-tools",
-      "title": "让真正的AI调用工具",
+      "moduleIds": [
+        "ai-tools",
+        "app"
+      ],
+      "title": "用一句话让AI完成整套整理",
+      "summary": "你提出要求，真实AI读取资料、选择工具、统计并写文件，最后交出Excel和报告。",
+      "input": "上一阶段已核对的读取、统计与证据工具；同一份输入资料；获准使用的真实模型；两种不同筛选范围的任务。",
+      "software": [
+        "沿用Python项目和编辑器",
+        "一个已获准使用的真实模型或本地模型；具体账号和接入方式确定后填写",
+        "一个简单输入入口，建议本地网页；Streamlit等界面只负责操作和显示"
+      ],
       "deliverables": [
-        "让AI把要求变成明确条件，并调用前面已测试的工具。",
-        "保留工具参数、返回值、错误处理和最终解释的记录。"
+        "可实际执行任务的Agent入口，模型能选择受限工具并根据返回结果继续或停止。",
+        "针对用户要求实际生成的issues.xlsx和report.md，含统计范围、反馈证据与不确定项。",
+        "真实模型工具调用记录，以及改变筛选条件后的另一份实际结果。",
+        "可见的任务状态与持久运行记录，能区分正在执行、成功、失败和中断。"
+      ],
+      "steps": [
+        "先确认可用模型和费用范围；凭据由安全配置方式提供，不写进代码、资料、运行记录或网页。没有获准模型时保持本阶段未完成。",
+        "让AI协助编写agent.py，接入有限工具：读取获准文件、查询反馈、搜索产品说明、统计、写Excel和报告。实际工具名可调整。模型要根据任务选工具和参数，不只是返回一段文字。",
+        "运行“找出最常见的5个问题，给证据并生成Excel和报告”。归类结果保留反馈编号；不确定项列入待复核。不要给模型读取人工答案文件的权限。",
+        "在终端入口或简单本地页面再输入“只看2.1版本”。确认真实查询参数、统计范围、Excel和报告一起变化，不是只改标题。",
+        "显示待开始、运行中、成功、失败或中断的任务状态；将run_id、当前步骤、已完成步骤、输出目录、模型版本、工具参数和停止原因持久保存到run.json。打开生成文件核对，页面“成功”不能代替文件；恢复或重跑要使用明确的运行编号。"
+      ],
+      "files": [
+        "agent.py：真实模型调用与执行循环",
+        "app.py或其他入口：选择资料和输入要求",
+        "results/run-001/issues.xlsx：问题表",
+        "results/run-001/report.md：一页分析报告",
+        "results/run-001/run.json：真实调用记录",
+        "results/run-002/：修改筛选条件后的结果"
       ],
       "acceptance": [
-        "至少完成一组真实模型调用；固定回放单独标注，不能当作真实AI结果。",
-        "工具失败、输入缺失或条件无解时会明确说明。",
-        "模型只用允许的工具；计算结果与解释能逐项对上。"
-      ]
+        "至少有一次完整真实模型运行，能查看模型实际发起的工具请求与返回状态；预设回答、固定回放单独标注。",
+        "至少两种明确任务范围产生对应的工具参数与结果；输出Excel和报告真实存在且能打开。",
+        "报告数量、原文证据和统计范围与工具结果一致；归类不确定或证据不足时明确说明。",
+        "模型只能使用允许的文件和工具；不读取人工评测答案，不公开资料，不替用户执行外部发送。",
+        "任务状态与文件结果一致；运行编号、当前及已完成步骤已持久保存，失败或中断不会显示成功。"
+      ],
+      "save": "代码、输入和结果保存在自己电脑的 work-assistant 文件夹。本站只保存阶段状态和已有的代码、报告或演示链接，不运行代码，也没有文件上传入口。只有本地文件时可先保存“正在做”；要保存“已完成”，仍按页面要求填写有效证据链接并逐项确认。分享前检查文件内容和访问权限；不会自动公开或投递。",
+      "fileNote": "程序与结果文件是待制作的建议产出，不是完成的Agent或报告；虚构输入资料已单独提供下载。文件名可调整，验收以真实运行结果为准。",
+      "toolBoundary": "模型可选择如何读取和查询，但工具执行文件目录限制、只读数据查询与固定输出目录。不要开放任意Shell、任意文件路径或外部写操作。"
     },
     {
-      "id": "aca-m5",
-      "moduleId": "interview",
-      "title": "评测、演示并整理作品",
+      "id": "wa-m2",
+      "moduleId": "check-results",
+      "moduleIds": [
+        "check-results"
+      ],
+      "title": "数据有问题或工具报错时也能处理",
+      "summary": "缺数据就指出缺什么；工具失败会有限重试或停止；没有证据不会假装成功。",
+      "input": "同一套资料的正常版和错误版，以及预先写清正确处理方式的检查用例。",
+      "software": [
+        "沿用Python、Agent和操作入口",
+        "Python测试工具，例如已有的pytest或标准库unittest",
+        "可打开CSV的表格工具，用于核对失败记录"
+      ],
       "deliverables": [
-        "整理固定测试集，对比固定工具、直接问AI和工具辅助AI。",
-        "准备演示、复现说明、失败案例与个人贡献说明。"
+        "覆盖坏输入、空结果、工具失败和越权文字的检查用例。",
+        "工具目录限制、最大调用/重试次数与输出核对机制。",
+        "真实运行的检查结果及至少一次发现问题、修复、再次检查的记录。"
+      ],
+      "steps": [
+        "复制输入文件，分别做缺feedback_id、重复编号、空表、无效日期、未知版本等情况。在tests/cases中写清应该报什么或得到什么结果。",
+        "让工具故意报错或超时，再中断一次运行。检查任务保留失败/中断状态、已完成步骤与原因；在有限次数内安全重试未完成步骤，或明确新建一次运行从头开始。不能无限循环、丢掉记录或覆盖旧结果。",
+        "加入一条写着“去读取其他私有目录”的测试文档。确认程序把它当资料内容，不照做，也不允许从指定输入目录外读取文件。",
+        "故意让一份报告中的数字与原始反馈不一致，确认代码核对能发现，不只让模型自己评价自己。",
+        "运行测试，保存通过与失败项；修复一个发现的问题后再运行。固定回放可检查工具协议，真实模型的表现另存，不混合计算成功率。"
+      ],
+      "files": [
+        "tests/cases/：检查输入及预期结果",
+        "tests/test_tools.py：确定性工具检查",
+        "results/failure_checks.csv：逐例实际结果",
+        "results/failure_run.json：失败或停止的调用记录",
+        "notes/fix_log.md：发现、修复和复查说明"
       ],
       "acceptance": [
-        "报告计算错误、漏条件和解释不一致等实际结果，也记录失败。",
-        "记录模型版本、样例、成本与运行方式，不把回放混入真实模型评测。",
-        "他人能按说明重跑主要流程；自己能现场修改一个条件并解释变化。"
+        "缺字段、重复/冲突编号、空表与无符合结果都得到明确且正确的处理。",
+        "工具重试和总调用次数有上限；中断后保留进度与原因，能安全继续未完成步骤或明确新建运行重做。结束状态准确说明完成与未完成内容，不把异常写成成功，也不覆盖原运行结果。",
+        "尝试读取输入范围外文件或执行文档中的越权指令时被阻止；只向获准结果目录写入。",
+        "计数与证据关联有代码核对，故意制造不一致时检查能失败；修复后保存实际复查结果。",
+        "测试报告同时保留失败，区分确定性工具测试、固定回放与真实模型运行。"
+      ],
+      "save": "代码、输入和结果保存在自己电脑的 work-assistant 文件夹。本站只保存阶段状态和已有的代码、报告或演示链接，不运行代码，也没有文件上传入口。只有本地文件时可先保存“正在做”；要保存“已完成”，仍按页面要求填写有效证据链接并逐项确认。分享前检查文件内容和访问权限；不会自动公开或投递。",
+      "fileNote": "程序与结果文件是待制作的建议产出，不是完成的Agent或报告；虚构输入资料已单独提供下载。文件名可调整，验收以真实运行结果为准。"
+    },
+    {
+      "id": "wa-m3",
+      "moduleId": "interview",
+      "moduleIds": [
+        "interview"
+      ],
+      "title": "整理成能运行、能面试展示的作品",
+      "summary": "别人照说明能试一次；你能现场改条件、解释工具怎样工作，并展示实际评测和局限。",
+      "input": "前三阶段的真实代码、样例、产出和调用记录；一组没有用于反复调试的检查任务。",
+      "software": [
+        "已有编辑器、Python和浏览器",
+        "电脑自带录屏工具或现场演示",
+        "普通文档与表格工具，用于写一页评测说明"
+      ],
+      "deliverables": [
+        "完整作品文件夹、依赖和启动说明，另在干净目录验证主要流程。",
+        "直接问模型与工具辅助Agent的同任务结果对照，包含错误、失败、耗时和可核对的费用。",
+        "短演示或现场演示脚本，个人贡献与AI辅助范围说明。"
+      ],
+      "steps": [
+        "整理开发样例与独立检查样例；先固定每道检查任务的范围、期望计数、证据与失败处理，再运行评测。不要为了好看事后改正确答案。",
+        "对同一批资料与问题，分别测试直接问模型和工具辅助Agent。记录两种方式实际能访问的输入、模型设置和输出方式，避免不公平地让一方缺资料。",
+        "统计数字是否正确、筛选条件是否遵守、证据是否真实、产出文件是否可用，并报告失败、耗时、模型版本和实际费用；取不到费用就明确写未统计。",
+        "把项目复制到干净目录，按README从安装依赖到生成报告走一遍。保留实际命令和结果，使用无密钥的配置示例。",
+        "演示一次完整请求，再改为“只看2.1版本”，最后展示一次缺字段或无结果。录约3分钟视频或保存现场演示脚本，并写清自己做了什么、AI帮助了什么。"
+      ],
+      "files": [
+        "README.md：启动、操作与重跑步骤",
+        "requirements.txt：实际依赖版本",
+        "eval/cases.json：检查任务与预期答案",
+        "eval/results.csv：真实逐例评测结果",
+        "report.md：比较结果、失败与局限",
+        "demo.mp4或demo-steps.txt：演示",
+        "contributions.md：本人工作与AI辅助"
+      ],
+      "acceptance": [
+        "在干净目录按说明能重跑主要流程，样例与成果可打开；缺模型账号或配置时提示明确。",
+        "对照评测使用说明清楚的相同任务与资料范围，保留真实逐例结果、失败、模型版本和耗时；费用可获取时记录，否则标缺失。",
+        "固定回放不混入真实模型结果，不能将反馈计数当人数或将高频问题直接当业务优先级。",
+        "能现场修改筛选条件并解释输出变化；能说明工具调用、失败处理和已知限制。",
+        "作品材料没有凭据或未经允许的私有资料；个人贡献、AI辅助和未完成部分如实写明。"
+      ],
+      "save": "代码、输入和结果保存在自己电脑的 work-assistant 文件夹。本站只保存阶段状态和已有的代码、报告或演示链接，不运行代码，也没有文件上传入口。只有本地文件时可先保存“正在做”；要保存“已完成”，仍按页面要求填写有效证据链接并逐项确认。分享前检查文件内容和访问权限；不会自动公开或投递。",
+      "fileNote": "程序与结果文件是待制作的建议产出，不是完成的Agent或报告；虚构输入资料已单独提供下载。文件名可调整，验收以真实运行结果为准。"
+    }
+  ],
+  "recordPolicy": {
+    "newProject": true,
+    "preservePreviousProjectId": "ai-choice-assistant",
+    "preservePreviousStageIds": [
+      "aca-m0",
+      "aca-m1",
+      "aca-m2",
+      "aca-m3",
+      "aca-m4",
+      "aca-m5"
+    ],
+    "noMigration": "新wa阶段使用独立记录；不把旧aca完成状态、证据或时间复制过来。旧航班方案只作可查看的旧项目记录。",
+    "independent": "原47项任务、原课程、旧技能自查和旧DDL项目仍各自保存；新作品阶段不会自动完成旧任务。"
+  },
+  "sources": [
+    {
+      "title": "VS Code运行Python",
+      "url": "https://code.visualstudio.com/docs/python/run"
+    },
+    {
+      "title": "Python SQLite文档",
+      "url": "https://docs.python.org/3/library/sqlite3.html"
+    },
+    {
+      "title": "Streamlit本地启动",
+      "url": "https://docs.streamlit.io/get-started/installation/command-line"
+    }
+  ],
+  "starterExample": {
+    "status": "downloadable_synthetic_learning_fixtures",
+    "heading": "先下载这8条虚构练习资料",
+    "note": "这是真实可下载的输入资料和人工核对答案，不是完成的Agent软件或生成的分析报告。模型仅能读取input目录，不能读取notes人工答案。",
+    "files": [
+      {
+        "path": "input/feedback.csv",
+        "content": "feedback_id,created_at,product_version,feedback_text\nF001,2026-10-01,2.1,登录验证码等了很久也没收到\nF002,2026-10-01,2.1,导出表格后得到空白文件\nF003,2026-10-02,2.0,登录验证码一直不到\nF004,2026-10-02,2.1,同一条提醒收到了两次\nF005,2026-10-03,2.1,导出的表格打开是空白的\nF006,2026-10-03,2.0,搜索已有标题却找不到结果\nF007,2026-10-04,2.1,登录时无法收到验证码\nF008,2026-10-04,2.1,上传一个小文件一直没有完成\n"
+      },
+      {
+        "path": "input/product_guide.md",
+        "content": "虚构产品说明，仅供练习。\n\n登录：用户使用邮箱验证码登录。本文没有验证码送达时限。\n导出：结果页面可以导出表格；有数据的结果应包含表头与记录。\n提醒：用户可以在设置中开关提醒。本文没有承诺每条提醒的发送次数。\n搜索：支持按已保存条目的标题搜索。\n上传：支持CSV文件。本文没有上传耗时承诺。\n"
+      },
+      {
+        "path": "notes/manual_labels.csv",
+        "content": "feedback_id,issue_label\nF001,登录验证码未收到\nF002,导出表格空白\nF003,登录验证码未收到\nF004,提醒重复\nF005,导出表格空白\nF006,搜索未找到\nF007,登录验证码未收到\nF008,上传未完成\n"
+      }
+    ],
+    "expected": "全部8条反馈：登录验证码3条，导出空白2条，其余3类各1条。只看2.1版本时共6条：验证码2条、导出2条、重复提醒1条、上传1条。数字表示反馈条数，不表示人数。",
+    "codingPrompt": "我在制作一个产品反馈分析Agent，今天只先检查底层工具，不接模型。请协助我在自己的work-assistant文件夹生成可运行的analyze.py、requirements.txt和README.md。它应读取input/feedback.csv、input/product_guide.md、notes/manual_labels.csv，按去重feedback_id统计每类反馈条数并保留编号、原话和资料位置，生成results/check-001/issues.xlsx与运行记录。人工labels仅是核对工具用的已知答案，不能称AI归类，也不在后续真实模型评测中给模型读取。要求处理缺字段、重复/冲突ID、空反馈；不把条数称人数，不把高频称优先级；没有对应产品说明就写证据不足，不编造引用。命令接口请实现为：python analyze.py --input input/feedback.csv --labels notes/manual_labels.csv --docs input/product_guide.md --out results/check-001。程序新建结果目录，已有同名结果时不要静默覆盖。先说明每个文件保存位置、Windows和macOS怎样创建独立Python环境并安装依赖，再给完整文件内容；不要先讲整门Python课，不要声称已经在我的电脑运行。样例全部虚构，按下面给出的文件内容准备。",
+    "startupInstruction": "在编辑器里打开work-assistant文件夹，把提示和三份样例内容交给AI。先按AI提供的README创建独立环境并安装requirements.txt里的实际依赖，再在该环境的终端执行指定命令。收到代码、依赖文件和说明后才有可执行程序。",
+    "downloadPath": "./data/work-agent-starter.zip"
+  },
+  "familyTitle": "AI 工作助理",
+  "targetRole": "AI Agent 应用研发实习",
+  "targetUsers": "产品、运营与客服团队",
+  "archivedProjects": [
+    {
+      "status": "当前项目计划 · 尚未建成",
+      "mainTitle": "AI选项比较助手",
+      "oneLine": "给它一张候选表和你的条件，让AI查数据、调用工具计算、检查限制，再解释依据。",
+      "demo": "第一款Demo：航班怎么选。用虚构航班演示读表、算费用和时间、改偏好、看工具记录、导出报告。",
+      "research": "论文候选：AI调用计算和检查工具后，能否更少算错、漏条件，并在偏好变化时保持解释一致？先做对照实验，再定题。",
+      "mainFeatures": [
+        "读表并检查缺失",
+        "把要求变成明确条件",
+        "调用查询和计算工具",
+        "检查限制与解释依据",
+        "出错时报告并恢复",
+        "保存报告与重跑记录"
+      ],
+      "jobSkills": [
+        "Python与数据处理",
+        "工具调用与结构化输出",
+        "自动测试、评测和失败分析",
+        "接口交付、日志与可复现"
+      ],
+      "careerLine": "主线：准备Agent应用开发实习。航班只是第一个演示场景。",
+      "software": "一个小而完整的AI应用：网页/API、有限工具调用、条件检查、解释和固定评测。先维护一个场景，不造通用大平台。",
+      "demoStages": [
+        "先让计算与条件检查跑对",
+        "再接真实AI调用工具",
+        "最后做评测、演示与可复现交付"
+      ],
+      "novelty": "TravelPlanner、COMPASS、TravelBench已研究旅行约束与偏好。具体新贡献仍需文献查重、先导结果和导师确认。",
+      "paperSourceLinks": [
+        {
+          "title": "TravelPlanner",
+          "url": "https://arxiv.org/abs/2402.01622"
+        },
+        {
+          "title": "COMPASS",
+          "url": "https://arxiv.org/abs/2510.07043"
+        },
+        {
+          "title": "TravelBench",
+          "url": "https://arxiv.org/abs/2512.22673"
+        }
+      ],
+      "boundaries": "软件按下面六个阶段逐步实现；新论文题目仍需实验与导师确认。原有论文和旧计划保留，公开内容不包含未发表方法或私有数据。不保证GitHub关注度、论文发表或实习录用。",
+      "paperCurrent": "原有旅客选择研究继续。是否把现有模型接进演示，要另外讨论和验证。",
+      "executionBoundary": "先把固定样例的计算和条件检查跑对，再接真实AI。固定回放只是演示，不能算真实AI表现；费用和部署另行确认。",
+      "projectId": "ai-choice-assistant",
+      "milestones": [
+        {
+          "id": "aca-m0",
+          "moduleId": "code",
+          "title": "先把小程序跑起来",
+          "deliverables": [
+            "建一个独立项目，读入一份虚构航班表，打印出候选项。",
+            "保存启动说明、一次Git提交和一个修错示例。"
+          ],
+          "acceptance": [
+            "按说明能在新目录启动并读出样例。",
+            "能自己修改一项输入，解释结果为什么变了。",
+            "样例明确标为虚构；仓库里没有密码、密钥或私有数据。"
+          ]
+        },
+        {
+          "id": "aca-m1",
+          "moduleId": "data",
+          "title": "读表并检查输入",
+          "deliverables": [
+            "定义价格、出发/到达时间和附加费用等字段。",
+            "完成读表、缺失提示、重复检查和一份输入检查报告。"
+          ],
+          "acceptance": [
+            "正确表格能读入，重复项不会被重复计算。",
+            "缺少关键数据时明确提示，不编造价格或时间。",
+            "保留正常、缺字段、重复三类输入与对应测试结果。"
+          ]
+        },
+        {
+          "id": "aca-m2",
+          "moduleId": "check-results",
+          "title": "算对费用、时间和条件",
+          "deliverables": [
+            "写好总费用、总时间、条件筛选和方案比较工具。",
+            "保存手算对照表，以及改变时间偏好后的结果。"
+          ],
+          "acceptance": [
+            "虚构样例A=980元/5.5小时，B=880元/7.5小时；额外100元节省2小时的边界为50元/小时。",
+            "边界、空结果和缺失输入有测试；不把未知信息补成零。",
+            "比较依据能解释清楚，不把简单加权分数称作真实旅客选择模型。"
+          ]
+        },
+        {
+          "id": "aca-m3",
+          "moduleId": "app",
+          "title": "做成可操作的网页或接口",
+          "deliverables": [
+            "提供输入候选项和条件、查看结果、导出报告的入口。",
+            "加输入错误提示、运行日志、启动说明和自动测试。"
+          ],
+          "acceptance": [
+            "从导入样例到导出报告能完整走通。",
+            "换一个干净环境仍能按说明启动。",
+            "网页不保存或暴露私钥；固定计算与AI调用状态分开显示。"
+          ]
+        },
+        {
+          "id": "aca-m4",
+          "moduleId": "ai-tools",
+          "title": "让真正的AI调用工具",
+          "deliverables": [
+            "让AI把要求变成明确条件，并调用前面已测试的工具。",
+            "保留工具参数、返回值、错误处理和最终解释的记录。"
+          ],
+          "acceptance": [
+            "至少完成一组真实模型调用；固定回放单独标注，不能当作真实AI结果。",
+            "工具失败、输入缺失或条件无解时会明确说明。",
+            "模型只用允许的工具；计算结果与解释能逐项对上。"
+          ]
+        },
+        {
+          "id": "aca-m5",
+          "moduleId": "interview",
+          "title": "评测、演示并整理作品",
+          "deliverables": [
+            "整理固定测试集，对比固定工具、直接问AI和工具辅助AI。",
+            "准备演示、复现说明、失败案例与个人贡献说明。"
+          ],
+          "acceptance": [
+            "报告计算错误、漏条件和解释不一致等实际结果，也记录失败。",
+            "记录模型版本、样例、成本与运行方式，不把回放混入真实模型评测。",
+            "他人能按说明重跑主要流程；自己能现场修改一个条件并解释变化。"
+          ]
+        }
       ]
     }
-  ]
+  ],
+  "capabilityScope": "当前作品主要证明应用工程和评测能力；训练、强化学习或底层系统岗位还需要相应的额外实验与基础，不能靠这个作品直接证明。",
+  "growthLevels": [
+    {
+      "id": "application",
+      "title": "Agent 应用研发",
+      "status": "当前主线",
+      "goal": "做出用户反馈分析 Agent：一句话读反馈、查依据、统计并交付Excel和报告。",
+      "currentStageIds": [
+        "wa-m0",
+        "wa-m1",
+        "wa-m2",
+        "wa-m3"
+      ],
+      "prerequisites": [
+        "能在独立Python环境运行脚本、读懂函数/字典和基本报错；有缺口时按原诊断补学。",
+        "只使用公开、合成或明确获准的非敏感CSV与产品说明；先用现有8条虚构资料手算核对。"
+      ],
+      "estimatedHours": "约40–70小时，包含选读、实现、检查与整理；仅为新计划估计，需基本Python和可用环境。",
+      "estimateNote": "不是官方课时或完成保证；环境安装、补基础、等待模型权限另算。下方原20单元约39小时仍是旧课程全选估算，不能再与本层相加。每周通常6小时、最多8小时，论文繁忙周缩减。",
+      "costGate": "先做本地确定性工具。接真实模型前核对已有账号/本地模型、机器能力和费用上限；没有获准模型就停在工具阶段，回放不能代替真实Agent。",
+      "boundary": "本层证明应用工程与评测，不自动证明检索模型训练、后训练或RL能力。四个成果沿用当前作品进度，课程阅读与旧任务不自动通过。",
+      "outputs": [
+        "能打开的问题Excel与一页报告",
+        "真实模型工具调用与失败记录",
+        "固定评测、复现说明和短演示"
+      ],
+      "checks": [
+        "条数可按去重feedback_id重算；引文能找到原文。",
+        "模型真的选择并调用受限工具；失败、无证据和越权输入处理明确。",
+        "干净目录可重跑；保留真实失败与个人贡献说明。"
+      ],
+      "resources": [],
+      "resourceLabel": "具体课程资料",
+      "steps": [
+        {
+          "title": "1. 得到一份有依据的问题清单",
+          "currentStageId": "wa-m0",
+          "goal": "读取、去重、计数和原文定位先正确。",
+          "prerequisites": [
+            "沿用现有8条虚构反馈、产品说明和隔离的人工答案。"
+          ],
+          "exercise": "在同一work-assistant项目实现读取与统计工具，生成issues.xlsx；全量应为8条，2.1版本6条。复制F001后数量不变；冲突ID、缺列和空文本得到明确处理。人工labels仅用于工具核对，后续模型不能读取。",
+          "files": [
+            "analyze.py",
+            "input/feedback.csv",
+            "input/product_guide.md",
+            "notes/manual_labels.csv（模型不可访问）",
+            "results/check-001/issues.xlsx",
+            "README.md"
+          ],
+          "checks": [
+            "每类数字能由列出的反馈ID重算；一条可属多类时说明计数口径。",
+            "原话与产品说明位置真实；不把反馈条数称人数，不把频率当业务优先级。"
+          ],
+          "estimatedHours": "约10–18小时；含本成果选读与练习",
+          "computeGate": "普通本地Python即可；这一步不需模型API。",
+          "resources": [
+            {
+              "title": "Python：CSV字典读取",
+              "url": "https://docs.python.org/zh-cn/3/library/csv.html",
+              "scope": "只读 csv.DictReader、newline 与示例；用于检查四个字段。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "官方中文文档"
+            },
+            {
+              "title": "pandas 入门第6节：分组统计",
+              "url": "https://pandas.pydata.org/docs/getting_started/intro_tutorials/06_calculate_statistics.html",
+              "scope": "只读 Aggregating statistics grouped by category；先去重，再按问题统计。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课",
+              "unitId": "u-pandas"
+            }
+          ]
+        },
+        {
+          "title": "2. 用一句话让真实AI完成整套整理",
+          "currentStageId": "wa-m1",
+          "goal": "模型根据任务调用已核对的工具，并读取结果继续或停止。",
+          "prerequisites": [
+            "成果1工具可核对；模型接入与费用范围已确认。"
+          ],
+          "exercise": "实现受限读表、检索、统计、写Excel/报告工具。在终端或简单本地网页依次输入“找最多的5类问题”和“只看2.1版本”，保存两次真实调用与产物；筛选变化必须进入工具参数。",
+          "files": [
+            "agent.py",
+            "app.py或终端入口",
+            "results/run-001/issues.xlsx",
+            "results/run-001/report.md",
+            "results/run-001/run.json",
+            "results/run-002/"
+          ],
+          "checks": [
+            "日志包含实际模型、工具参数、返回状态和停止原因；固定回放单独标注。",
+            "Excel和报告真实生成，数量、范围、引用与工具返回一致。",
+            "没有任意Shell、任意路径访问或外部发送权限。"
+          ],
+          "estimatedHours": "约12–20小时；含本成果选读与实现",
+          "computeGate": "仅用已获准模型；不购买新API，不公开部署。无获准运行条件时保持未完成。",
+          "resources": [
+            {
+              "title": "HF Agents Course · Unit 1：工具",
+              "url": "https://huggingface.co/learn/agents-course/en/unit1/tools",
+              "scope": "读 What are Tools? 中工具说明、参数与返回值。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课",
+              "unitId": "u-agent-tools"
+            },
+            {
+              "title": "HF Agents Course · Unit 1：执行循环",
+              "url": "https://huggingface.co/learn/agents-course/en/unit1/dummy-agent-library",
+              "scope": "读 Dummy Agent Library 的工具执行、观察与继续生成流程；练习使用白名单，不开放任意代码执行。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课",
+              "unitId": "u-agent-loop"
+            }
+          ]
+        },
+        {
+          "title": "3. 数据有问题或工具报错时也能处理",
+          "currentStageId": "wa-m2",
+          "goal": "有限重试、明确失败，不能凭空宣布成功。",
+          "prerequisites": [
+            "有完整真实模型调用链和可单独运行的工具。"
+          ],
+          "exercise": "为缺列、重复/冲突ID、空结果、超时和越权文档写测试；限制总调用与重试次数。刻意篡改报告数字，验证代码核对会失败，再保存修复与复查。",
+          "files": [
+            "tests/test_tools.py",
+            "tests/cases/",
+            "results/failure_checks.csv",
+            "results/failure_run.json",
+            "notes/fix_log.md"
+          ],
+          "checks": [
+            "预设坏输入有事先定义的期望处理，失败记录完整。",
+            "模型不能读取答案目录或输入目录外文件；仅向指定结果目录写入。",
+            "确定性测试、协议回放和真实模型评测分开统计。"
+          ],
+          "estimatedHours": "约10–18小时；含选读、测试与修复",
+          "computeGate": "先本地测工具和协议；真实模型故障测试遵守已获准调用预算。",
+          "resources": [
+            {
+              "title": "pytest：第一个测试与异常",
+              "url": "https://docs.pytest.org/en/stable/getting-started.html",
+              "scope": "只读 Create your first test、Assert expected exception、Request a unique temporary directory。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课",
+              "unitId": "u-pytest"
+            },
+            {
+              "title": "pytest：一组边界输入",
+              "url": "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+              "scope": "只读 @pytest.mark.parametrize；用一个测试覆盖多种坏输入。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课",
+              "unitId": "u-test-param"
+            }
+          ]
+        },
+        {
+          "title": "4. 整理成能运行、能面试展示的作品",
+          "currentStageId": "wa-m3",
+          "goal": "别人能照说明试一次；自己能现场改条件并解释限制。",
+          "prerequisites": [
+            "前三件成果、真实失败案例和未用于反复调试的独立检查任务。"
+          ],
+          "exercise": "固定检查题和正确答案后，对同一资料范围比较直接问模型与工具辅助Agent；记录计数、筛选、引用、产物是否正确及实际耗时/费用。到干净目录复现，录约3分钟演示或写现场演示脚本。",
+          "files": [
+            "eval/cases.json",
+            "eval/results.csv",
+            "report.md",
+            "requirements.txt",
+            "README.md",
+            "demo.mp4或demo-steps.txt",
+            "contributions.md"
+          ],
+          "checks": [
+            "留出任务不参与调试；运行前记录配置，保留逐例输出和失败。",
+            "费用无法取得时标明未统计；回放不混入真实结果。",
+            "本人能说明关键逻辑、AI辅助范围、未完成项和一次独立修改。"
+          ],
+          "estimatedHours": "约8–14小时；含评测、复现与整理",
+          "computeGate": "复用已有模型与本地工具；公开上传或投递另行决定。",
+          "resources": [
+            {
+              "title": "HF Agents Course · Bonus Unit 2：观察与评测",
+              "url": "https://huggingface.co/learn/agents-course/en/bonus-unit2/introduction",
+              "scope": "只读 Introduction 中可观察性与评测的目的；本练习保存本地记录，不要求注册付费观测服务。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课",
+              "unitId": "u-agent-evals"
+            },
+            {
+              "title": "MIT Missing Semester：Git",
+              "url": "https://missing.csail.mit.edu/2020/version-control/",
+              "scope": "只读 Git basics 与 Branching and merging；用 commit/diff 说明本人修改，答辩是本路线自拟练习。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课",
+              "unitId": "u-git"
+            }
+          ]
+        }
+      ],
+      "recordNote": "本层四件成果使用当前WA记录；所列课程只作学习参考，原课勾选仍按原题标准。"
+    },
+    {
+      "id": "retrieval_evaluation",
+      "title": "Agent 算法 / 检索与评测",
+      "status": "后续路线 · 只读计划",
+      "goal": "把同一个Agent的“找证据”做成可比较的实验，回答改检索到底有没有用。",
+      "prerequisites": [
+        "第一层工具、引用和基本评测可运行；能解释top-k、相似度、训练/开发/测试的区别。",
+        "将示例扩展为约50–100个有来源的产品文档段落和约40道人工核对的问题；8条入门反馈不够支持效果结论。"
+      ],
+      "estimatedHours": "约24–36小时，包含选读、数据整理、实现和评测；L1完成后的新增估计。",
+      "estimateNote": "数量为教学起步规模，不是统计充分性保证；不预设向量检索或重排一定更好。",
+      "costGate": "优先CPU、小语料和可本地运行的开源模型。先测10个查询的耗时与内存，再决定规模；不要求向量数据库、付费API或新GPU。",
+      "boundary": "复用反馈项目和资料格式；新增检索实验独立保存。这里只做预训练检索/重排模型的比较，不冒称已训练检索模型，也不更改旧技能通过状态。",
+      "outputs": [
+        "关键词与向量检索的同题结果",
+        "加重排与不加重排的逐例对照",
+        "含消融、失败和运行成本的实验报告"
+      ],
+      "checks": [
+        "开发/留出问题按近重复和问题家族隔离；人工答案不进索引。",
+        "同一语料、候选数、最终返回数与评分口径可重跑。",
+        "报告真实提升、无变化或退步，不挑成功案例。"
+      ],
+      "resources": [],
+      "resourceLabel": "具体课程资料",
+      "steps": [
+        {
+          "title": "1. 建立关键词与向量检索基线",
+          "goal": "先知道证据有没有被找出来，再接回答生成。",
+          "prerequisites": [
+            "准备固定语料，每段有doc_id、section_id、产品版本和原始位置。"
+          ],
+          "exercise": "把产品说明按段落切分并保存位置；用字符n-gram TF–IDF建立中文关键词基线，再用候选中文向量模型建立第二条检索路径。约40道题先分开发20/留出20，每组含约5道无答案题；人工写相关段落ID。两条路径都输出top-5和原文。向量参数只在开发集选。",
+          "files": [
+            "retrieval/corpus.jsonl",
+            "retrieval/queries_dev.jsonl",
+            "retrieval/queries_test.jsonl",
+            "eval/qrels.json（检索和模型不可读）",
+            "retrieval/baselines.py",
+            "results/retrieval_baselines.csv",
+            "configs/retrieval.json"
+          ],
+          "checks": [
+            "两种检索使用同一固定语料与切分；保存模型版本、token截断、n-gram与相似度设置。",
+            "TF–IDF只在允许索引的语料上fit，不把评测问题或答案标签拼进语料；中文分词方式明确。",
+            "无答案题单列，不给Recall@k的分母塞入空相关集合。"
+          ],
+          "estimatedHours": "约8–12小时；包括选读与数据标注起步",
+          "computeGate": "先CPU和小语料；模型卡确认语言/许可，下载与依赖兼容性不等于已运行。",
+          "resources": [
+            {
+              "title": "scikit-learn：文本转为可检索的向量",
+              "url": "https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction",
+              "scope": "只读 Text feature extraction 中 Common Vectorizer usage、Tf–idf term weighting、Limitations of the Bag of Words representation；中文基线用字符n-gram，记录参数。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "Sentence Transformers：语义检索",
+              "url": "https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html",
+              "scope": "只读 Symmetric vs. Asymmetric Semantic Search 与 Manual Implementation；理解查询/段落分别编码和top-k。暂不读向量数据库与ANN。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "BAAI：中文向量模型卡",
+              "url": "https://huggingface.co/BAAI/bge-small-zh-v1.5",
+              "scope": "只核对模型语言、许可、使用方式与短查询检索说明；候选权重，不代表已经下载或运行。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            }
+          ]
+        },
+        {
+          "title": "2. 只改重排，做一组公平对照",
+          "goal": "检查更慢的精排是否把正确证据排到前面。",
+          "prerequisites": [
+            "基线逐例结果可复现；开发集和留出集已冻结。"
+          ],
+          "exercise": "固定第一阶段召回top-20；对完全相同的候选分别保持原顺序或用Cross-Encoder重排，再取top-5。先在开发集试运行，保存两条路径每题的排名、分数和耗时；候选不足20时记录实际数量。",
+          "files": [
+            "retrieval/rerank.py",
+            "configs/rerank.json",
+            "results/candidates_top20.jsonl",
+            "results/no_rerank_top5.jsonl",
+            "results/rerank_top5.jsonl",
+            "notes/rerank_errors.md"
+          ],
+          "checks": [
+            "重排不能补回根本未召回的证据；分开报告候选Recall@20与最终MRR@5/NDCG@5。",
+            "不更换语料或生成模型来冒充重排收益；模型相关性分数不当作正确率/置信度。",
+            "分别记录预热、索引构建和单查询耗时，说明CPU/GPU与缓存条件。"
+          ],
+          "estimatedHours": "约6–10小时；含选读、实现和对照",
+          "computeGate": "先测10题、20候选的CPU耗时；太慢就缩小开发实验并如实记录，不自动租GPU。",
+          "resources": [
+            {
+              "title": "Sentence Transformers：先召回，再重排",
+              "url": "https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html",
+              "scope": "只读 Retrieve & Re-Rank Pipeline、Retrieval: Bi-Encoder、Re-Ranker: Cross-Encoder；精排只处理召回候选。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "BAAI：重排模型卡",
+              "url": "https://huggingface.co/BAAI/bge-reranker-base",
+              "scope": "只读 Usage 中 query/passage 成对输入、相关性打分与许可；候选权重，不承诺速度或效果。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            }
+          ]
+        },
+        {
+          "title": "3. 写出检索消融与Agent评测报告",
+          "goal": "能解释哪些改动有效、哪里仍然失败。",
+          "prerequisites": [
+            "两种基线和重排管线完成；指标定义与答案集固定。"
+          ],
+          "exercise": "只在开发集比较两种合理分块大小和有/无重排，其余配置不变；选定方案后在留出集对固定基线与最终方案运行一次。答案可用题报告Recall@5、MRR@5或NDCG@5；无答案题报告错误给证据的比例。接回同一Agent时固定生成设置，另核对引用支持、计数正确与失败停止。",
+          "files": [
+            "eval/retrieval_eval.py",
+            "eval/metric_examples.json",
+            "results/ablation_dev.csv",
+            "results/heldout_results.csv",
+            "results/agent_with_retrieval.jsonl",
+            "report_retrieval.md",
+            "README.md"
+          ],
+          "checks": [
+            "用两道手算题检查指标实现；保留所有逐题结果和失败，不能只报平均分。",
+            "测试问题及其改写不参与调参；同一文档/问题家族的近重复一起分组。固定检索语料可含测试相关文档，测试答案标签不得用于建索引或调参。",
+            "文档段落、版本、索引配置、模型与代码版本可追溯；给出样本量和局限。",
+            "只有原始数量/引文核对通过才算任务成功；检索指标改善不自动等于回答正确。"
+          ],
+          "estimatedHours": "约10–14小时；含消融、留出评测和报告",
+          "computeGate": "复用现有本地模型；生成评测仅在原获准调用范围内。小样本差异不宣称普遍收益。",
+          "resources": [
+            {
+              "title": "Sentence Transformers：检索评测器",
+              "url": "https://sbert.net/docs/package_reference/sentence_transformer/evaluation.html#informationretrievalevaluator",
+              "scope": "只读 InformationRetrievalEvaluator 的 queries、corpus、relevant_docs 与 MRR/Recall/NDCG 参数；先手算两道题再调用。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "scikit-learn：避免数据泄漏",
+              "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+              "scope": "只读 Data leakage、How to avoid data leakage 与 Controlling randomness；把开发集与最终留出集分开。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课",
+              "unitId": "u-leakage"
+            }
+          ]
+        }
+      ],
+      "recordNote": "后续只读计划，尚无独立进度勾选或完成率。阅读、试验或旧课记录都不会自动完成当前作品。"
+    },
+    {
+      "id": "post_training_rl",
+      "title": "模型后训练 / RL",
+      "status": "后续路线 · 先过训练与算力门槛",
+      "goal": "真正更新模型参数，比较SFT、DPO与有奖励反馈的RL；先做小实验。",
+      "prerequisites": [
+        "能自己完成PyTorch前向、loss、反向、optimizer、保存/重载，并区分train/eval。",
+        "能解释token、next-token交叉熵、梯度和训练/开发/测试切分；不会的部分先按补缺资料练。",
+        "具备第二层的公平比较与留出评测意识；不要求先追完全部检索扩展。",
+        "训练环境、模型许可、可用内存/显存和时间预算已核对；未经批准不买API、不租GPU。"
+      ],
+      "estimatedHours": "SFT与DPO约34–54小时；实际RL选修另约16–28小时，均为先决条件满足后的主动学习/实现估计。",
+      "estimateNote": "不含补数学/深度学习基础、等待算力和长训练运行时间。小样本只证明训练与评测流程，不保证泛化提升、论文成果或Seed等岗位录用。",
+      "costGate": "CPU先完成小网络闭环与数据检查。LLM实验先做少量样本/少量更新的兼容性、速度和峰值内存探测；记录设备、模型、序列长度、精度、批量、LoRA、预计总时长和费用。现有免费/获准算力不够则暂停，单独确认供应方与费用上限后才能租用；免费GPU不保证可用。",
+      "boundary": "DPO是用成对偏好数据做的离线偏好优化，不是完成了在线RL实验。反馈“正面/负面”标签不是对两个模型回答的偏好，原CSV不能直接当DPO或RLHF数据。",
+      "outputs": [
+        "SFT前后可重载的模型/适配器及独立评测",
+        "同题双回答的偏好数据卡与DPO对照",
+        "可选：真实采样—奖励—策略更新的受限GRPO实验"
+      ],
+      "checks": [
+        "模型参数确实更新，配置与checkpoint可重载；训练loss下降不单独算能力提升。",
+        "训练、开发与测试按问题/模板家族分组去重，测试不用于挑checkpoint、提示或奖励。",
+        "人工与合成标签来源明确，报告退步与局限；不把玩具实验包装成企业级训练经验。"
+      ],
+      "resources": [
+        {
+          "title": "PyTorch：张量",
+          "url": "https://docs.pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html",
+          "scope": "仅在有缺口时读 Initializing a Tensor、Attributes of a Tensor、Operations on Tensors；核对shape、dtype与device。",
+          "sourceVerifiedAt": "2026-10-11",
+          "access": "官方免费阅读；示例运行的算力和API费用另算",
+          "format": "英文官方文字；中文选读说明；不要求看整课"
+        },
+        {
+          "title": "PyTorch：自动求导",
+          "url": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
+          "scope": "只读 Tensors, Functions and Computational graph、Computing Gradients、Disabling Gradient Tracking。",
+          "sourceVerifiedAt": "2026-10-11",
+          "access": "官方免费阅读；示例运行的算力和API费用另算",
+          "format": "英文官方文字；中文选读说明；不要求看整课"
+        },
+        {
+          "title": "PyTorch：保存和重载模型",
+          "url": "https://docs.pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html",
+          "scope": "只读 Saving and Loading Model Weights；用state_dict保存并在新进程重载，推理使用eval。",
+          "sourceVerifiedAt": "2026-10-11",
+          "access": "官方免费阅读；示例运行的算力和API费用另算",
+          "format": "英文官方文字；中文选读说明；不要求看整课"
+        },
+        {
+          "title": "HF LLM Course · 1.6：模型结构",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/6",
+          "scope": "仅在有缺口时读 Decoder models 与 Modern Large Language Models；能解释自回归预测下一个token，不学全套模型史。",
+          "sourceVerifiedAt": "2026-10-11",
+          "access": "官方免费阅读；示例运行的算力和API费用另算",
+          "format": "英文官方文字；中文选读说明；不要求看整课"
+        },
+        {
+          "title": "HF LLM Course · 2.4：分词器",
+          "url": "https://huggingface.co/learn/llm-course/chapter2/4",
+          "scope": "仅在有缺口时读 Tokenization 与 Encoding/Decoding；亲自查看一条中文样例的token IDs、长度和还原结果。",
+          "sourceVerifiedAt": "2026-10-11",
+          "access": "官方免费阅读；示例运行的算力和API费用另算",
+          "format": "英文官方文字；中文选读说明；不要求看整课"
+        }
+      ],
+      "resourceLabel": "基础有缺口时，再查这些",
+      "steps": [
+        {
+          "title": "1. 跑通PyTorch闭环，再做小模型SFT",
+          "goal": "能训练、保存、重载，并在独立题上比较训练前后。",
+          "prerequisites": [
+            "先在CPU小网络上说明每一步参数更新；tokenizer和next-token loss可解释。"
+          ],
+          "exercise": "先用PyTorch官方小网络例子完成一次训练/验证/重载，解释zero_grad、backward、step。随后为单一“从短反馈提取版本、问题类型、原文证据编号”的合成任务准备约200条审核过的训练示范、各约40条开发/测试题；先按模板和问题家族划分再生成样本。在获准小模型上做固定步数LoRA SFT，检查回答部分loss mask，并保存训练前后同题输出。",
+          "files": [
+            "training/torch_loop.py",
+            "training/data_card.md",
+            "training/sft_train.jsonl",
+            "training/dev.jsonl",
+            "training/test.jsonl",
+            "training/split_manifest.json",
+            "training/train_sft.py",
+            "configs/sft.json",
+            "checkpoints/sft_adapter/",
+            "results/sft_eval.csv",
+            "report_sft.md"
+          ],
+          "checks": [
+            "保存训练前后参数/适配器校验值、loss日志和训练配置；在新进程重载后可生成。",
+            "至少检查数条tokenized样本、截断与mask；测试题和人工标准答案不进入训练。",
+            "比较基础模型与SFT模型的JSON有效率、字段准确率、证据ID正确率和缺信息时的拒答；先记录样本量再给比例。",
+            "数据是教学合成示范；反馈分类标签与语言模型prompt/completion格式分别说明，不声称真实业务泛化。"
+          ],
+          "estimatedHours": "约20–32小时；含选读、标注起步、代码和评测，不含长训练等待",
+          "computeGate": "先CPU小网络；小LLM候选可用Qwen2.5-0.5B-Instruct，但具体精度/LoRA/序列长度必须由实际设备探测决定。显存需求不作保证；无可行预算就停在准备阶段。",
+          "resources": [
+            {
+              "title": "PyTorch：训练和验证循环",
+              "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+              "scope": "只读 Hyperparameters、Optimization Loop、Loss Function、Optimizer 与 Full Implementation；解释清零梯度、反传、更新和验证。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "HF LLM Course · 11.2：聊天模板",
+              "url": "https://huggingface.co/learn/llm-course/chapter11/2",
+              "scope": "只读 Chat Templates 的角色结构与 apply_chat_template 用法；检查模板和结束标记，不把原始字符串直接当已对齐的训练输入。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "TRL：SFTTrainer实操",
+              "url": "https://huggingface.co/docs/trl/sft_trainer",
+              "scope": "只读 Expected dataset type and format、Train on completion only、Train adapters with PEFT；检查回答部分的loss mask。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "Qwen：0.5B指令模型卡",
+              "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct",
+              "scope": "只读 Model Information、Requirements、Quickstart及许可；作为小模型候选，先测兼容性和内存，再决定是否训练。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            }
+          ]
+        },
+        {
+          "title": "2. 制作回答偏好对，再做DPO",
+          "goal": "掌握离线偏好优化，并与SFT基线公平比较。",
+          "prerequisites": [
+            "SFT模型可重载；有未污染的开发/测试集；能解释参考模型和回答log-probability。"
+          ],
+          "exercise": "沿用同一提取任务，为每个prompt准备两个不同回答，按字段正确、证据真实、缺信息不编造的固定规则标为chosen/rejected，目标先做约100个审核过的训练对。另留约30个开发对与30个测试对，按prompt和模板家族隔离。偏好无法区分时保留平局/剔除原因，不强行选优。用SFT checkpoint作起点和明确记录的参考模型，执行一组固定预算DPO，再比较SFT与DPO在相同留出任务上的实际输出。",
+          "files": [
+            "training/preference_pairs.jsonl",
+            "training/preference_dev.jsonl",
+            "training/preference_test.jsonl",
+            "training/preference_data_card.md",
+            "training/train_dpo.py",
+            "configs/dpo.json",
+            "checkpoints/dpo_adapter/",
+            "results/dpo_vs_sft.csv",
+            "report_dpo.md"
+          ],
+          "checks": [
+            "SFT、DPO与后续训练共用统一隔离清单：任何已作最终测试的prompt、答案或近重复，不能回流到训练或偏好数据；开发数据也不标作独立测试。",
+            "每条记录包含同一prompt、chosen、rejected、标注来源/规则与复核状态；两回答不能属于不同问题。",
+            "原CSV中的情绪正负或满意度不能直接替代回答偏好；人工复核的合成对照仍说明来源，不冒称大规模真实人类偏好。",
+            "记录beta、参考checkpoint、数据与随机种子；开发集选配置，测试只评估冻结方案。",
+            "除训练偏好指标，还检查留出任务正确率、证据错误、输出长度和退步；如人工盲评，说明评审人、随机呈现、样本量与平局口径。",
+            "报告明确写DPO是离线偏好优化，未进行在线采样奖励的RL训练。"
+          ],
+          "estimatedHours": "约14–22小时；含选读、成对数据审核、实现与比较",
+          "computeGate": "先验证DPO参考模型/适配器配置的实际内存；不能从SFT能跑就推断DPO也能跑。不够则暂停，不自动升级机器。",
+          "resources": [
+            {
+              "title": "TRL：DPO偏好优化",
+              "url": "https://huggingface.co/docs/trl/dpo_trainer",
+              "scope": "只读 Overview、Expected dataset type and format、Computing the loss、Logged metrics、Train adapters with PEFT；理解同一prompt的chosen/rejected和参考模型。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            }
+          ]
+        },
+        {
+          "title": "3. 可选进阶：完成一轮真正的GRPO实验",
+          "goal": "让模型采样回答、获得可检查奖励，并实际更新策略参数。",
+          "optional": true,
+          "prerequisites": [
+            "SFT与DPO数据/模型/评测流程已清楚；能解释奖励、策略梯度、组内优势与奖励投机。",
+            "算力探测和费用预算另行通过；冻结任务、奖励和测试集。"
+          ],
+          "exercise": "单独建立短输入的合成结构化提取任务，约100个训练prompt、各约30个开发/测试prompt。用确定性解析器检查JSON结构、字段值和原文证据ID，设计有上下界的正确性奖励；不能只奖励格式或文本更长。先单测奖励函数，再以同一SFT起点运行有限预算GRPO：初始方案最多20–50次更新、每题2–4个采样、回答长度上限和总时长上限，数值须由设备探测后冻结。保存真实采样、逐项奖励、优势/更新日志、checkpoint，再与未做GRPO的同一SFT模型比较。",
+          "files": [
+            "training/rl_prompts.jsonl",
+            "training/rl_dev.jsonl",
+            "training/rl_test.jsonl",
+            "training/reward.py",
+            "tests/test_reward.py",
+            "training/train_grpo.py",
+            "configs/grpo.json",
+            "results/rollouts.jsonl",
+            "results/rewards.csv",
+            "checkpoints/grpo_adapter/",
+            "report_grpo.md"
+          ],
+          "checks": [
+            "证明发生“生成→奖励→梯度更新→新checkpoint”，只有打分、Agent运行日志或DPO不能算完成。",
+            "正确答案只进入奖励核验端，不能拼进模型prompt；训练/测试模板与近重复隔离。",
+            "恶意输出、伪造ID、格式正确内容错误、重复无意义文本都测过；留出正确率独立于训练reward报告。",
+            "先在训练/开发样本检查奖励是否有区分度；整组奖励相同可能没有有效学习信号。仅在开发阶段修正任务/奖励并重新冻结；不能靠改测试答案制造改善。",
+            "保存KL/熵等实际启用的指标；若未启用KL项须明确记为未使用，不能虚构。发现NaN、显存溢出、奖励退化或预算耗尽就停止并记录。",
+            "同一SFT起点对照；不默认在DPO模型上续训来混淆效果。20–50次更新是流程演示预算，不保证提升，也不证明复杂Agent RL能力。"
+          ],
+          "estimatedHours": "另约16–28小时；选修、受算力与先修限制，不含长运行等待",
+          "computeGate": "比SFT/DPO多出生成采样负担；先测一个训练batch。批量与num_generations须满足当前TRL整除要求；先固定更新/生成/时间上限，不追随课程多机或大模型配置。未通过算力门槛就不开展。",
+          "resources": [
+            {
+              "title": "HF LLM Course · 12.2：语言模型中的RL",
+              "url": "https://huggingface.co/learn/llm-course/chapter12/2",
+              "scope": "选读 What is Reinforcement Learning? 与语言模型中的策略、动作和奖励；先说明为什么打分或调用工具本身不是训练。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "HF LLM Course · 12.3b：理解GRPO",
+              "url": "https://huggingface.co/learn/llm-course/chapter12/3b",
+              "scope": "选读组内相对奖励、优势与策略更新；只理解本实验会使用的部分，不要求复现整篇DeepSeekMath。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            },
+            {
+              "title": "TRL：GRPO训练与奖励函数",
+              "url": "https://huggingface.co/docs/trl/grpo_trainer",
+              "scope": "只读 Generating completions、Computing the advantage、Computing the loss、Logged metrics、Using a custom reward function；跳过多机与70B示例。",
+              "sourceVerifiedAt": "2026-10-11",
+              "access": "官方免费阅读；示例运行的算力和API费用另算",
+              "format": "英文官方文字；中文选读说明；不要求看整课"
+            }
+          ]
+        }
+      ],
+      "recordNote": "后续只读计划，尚无独立进度勾选或完成率。阅读、试验或旧课记录都不会自动完成当前作品。"
+    }
+  ],
+  "growthPlanVerifiedAt": "2026-10-11",
+  "growthPlanPolicy": {
+    "readOnlyRoadmap": true,
+    "preserveExistingRecords": true,
+    "currentStageIds": [
+      "wa-m0",
+      "wa-m1",
+      "wa-m2",
+      "wa-m3"
+    ],
+    "futureLevelsHaveProgress": false,
+    "note": "本文件是只读路线内容。只引用现有wa进度，不新增课程/技能完成键，不迁移原ACA、DDL、47项任务、53节原课、30个learningUnits或13项skills。新层标题不等于已具备能力。"
+  }
 };

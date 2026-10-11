@@ -117,23 +117,23 @@ const assertWorkspace = (h, page = 'execution') => {
 
   // Cover links and browser navigation reuse the existing unsaved-project guard.
   ctx.AppNavigation.open('learn/code');
-  const form = h.query('.module-project-output [data-milestone-form="aca-m0"]'); assert(form);
+  const form = h.query('.module-project-output [data-milestone-form="wa-m0"]'); assert(form);
   form.querySelector('[name="milestoneEvidence"]').value = 'https://example.com/synthetic-unsaved-cover-draft'; form.oninput();
   h.setConfirmation(false);
   click(h.query('#moreNavigation [data-page="cover"]'));
   assertWorkspace(h, 'resources');
   assert.equal(ctx.location.hash, '#learn/code');
-  assert.equal(h.query('.module-project-output [data-milestone-form="aca-m0"]'), form, 'cancel keeps the exact dirty form');
+  assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'), form, 'cancel keeps the exact dirty form');
   ctx.history.back();
   assert.equal(ctx.location.hash, '#learn/code', 'cancelled history restores the displayed route');
-  assert.equal(h.query('.module-project-output [data-milestone-form="aca-m0"]'), form);
+  assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'), form);
   const confirmations = h.confirmations.length;
   ctx.dispatchEvent({ type: 'hashchange' });
   assert.equal(h.confirmations.length, confirmations, 'the matching hashchange does not ask twice after popstate');
-  assert.equal(h.query('.module-project-output [data-milestone-form="aca-m0"]'), form);
+  assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'), form);
   ctx.location.hash = '#cover'; ctx.dispatchEvent({ type: 'hashchange' });
   assert.equal(ctx.location.hash, '#learn/code', 'direct hash changes also respect the unsaved guard');
-  assert.equal(h.query('.module-project-output [data-milestone-form="aca-m0"]'), form);
+  assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'), form);
   h.setConfirmation(true); click(h.query('#moreNavigation [data-page="cover"]')); assertCover(h);
   assert.deepEqual(snapshots(h), before, 'discarding the draft to return to cover never saves it');
   assert.deepEqual(plain(memory), persisted);

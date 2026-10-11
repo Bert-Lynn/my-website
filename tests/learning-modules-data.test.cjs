@@ -15,10 +15,10 @@ const project = require('../data/project-outline.json');
 vm.runInNewContext(fs.readFileSync(path.join(root, 'project-outline.js'), 'utf8'), context);
 assert.deepEqual(clone(context.window.PROJECT_OUTLINE), project, 'public project snapshot matches its source');
 assert(/计划/.test(project.status) && /尚未建成/.test(project.status), 'approved software plan cannot be represented as a finished application');
-assert(/虚构/.test(project.demo), 'example flights are explicitly fictional');
-assert(/候选/.test(project.research) && /再定题/.test(project.research), 'research direction remains a candidate');
+assert(/合成|虚构/.test(project.demo), 'feedback examples are explicitly synthetic or fictional');
+assert(/不新增论文目标/.test(project.research) && /独立推进/.test(project.research), 'internship product does not silently become a new paper commitment');
 assert(/不保证/.test(project.boundaries), 'no publication, hiring, or GitHub popularity guarantee');
-assert(/回放/.test(project.executionBoundary) && /不能算真实AI/.test(project.executionBoundary), 'replay cannot masquerade as a live AI evaluation');
+assert(/回放/.test(project.executionBoundary) && /真实/.test(project.executionBoundary), 'replay cannot masquerade as a live AI evaluation');
 const unitMap = new Map(curriculum.learningUnits.map(unit => [unit.id, unit]));
 assert.deepEqual(Object.keys(catalog.unitLabels).sort(), [...unitMap.keys()].sort(), 'all 30 units have an explicit plain-language wrapper');
 for (const [id, label] of Object.entries(catalog.unitLabels)) {
@@ -28,7 +28,7 @@ for (const [id, label] of Object.entries(catalog.unitLabels)) {
 }
 const expectedOrders = {
   decision_optimization: ['code', 'data', 'forecast', 'allocation', 'app', 'interview'],
-  agent_engineering: ['code', 'data', 'check-results', 'app', 'ai-tools', 'interview']
+  agent_engineering: ['code', 'data', 'ai-tools', 'app', 'check-results', 'interview']
 };
 const exactOnce = (actual, expected, label) => {
   assert.equal(new Set(actual).size, actual.length, label + ': each identity occurs once');
@@ -76,7 +76,7 @@ for (const track of catalog.tracks) {
 // Approved Agent correction keeps forecasting optional and moves testing into the checking stage.
 const agentRoute = catalog.tracks.find(track => track.id === 'agent_engineering');
 const agentCanonical = curriculum.tracks.find(track => track.id === 'agent_engineering');
-assert.deepEqual(agentRoute.modules.map(module => module.unitIds.length), [4, 6, 2, 3, 3, 2]);
+assert.deepEqual(agentRoute.modules.map(module => module.unitIds.length), [4, 6, 3, 3, 2, 2]);
 assert.deepEqual(agentRoute.modules.find(module => module.id === 'check-results').unitIds, ['u-pytest', 'u-test-param']);
 for (const id of ['u-metrics', 'u-uncertainty', 'u-leakage']) {
   assert(!agentCanonical.requiredLearningUnitIds.includes(id), id + ': forecasting material does not gate the Agent project');
@@ -91,7 +91,8 @@ assert(catalog.budget.plannedWeeklyHours + catalog.budget.bufferWeeklyHours <= c
 assert.equal(curriculum.learningUnits.length, 30, 'module grouping preserves 30 existing identities');
 assert.equal(project.projectId, registry.mainProject);
 assert.deepEqual(project.milestones.map(stage => stage.id), registry.projects[project.projectId]);
-assert.deepEqual(project.milestones.map(stage => stage.moduleId), expectedOrders.agent_engineering, 'new stages actually connect to the six Agent modules');
+assert.deepEqual(project.milestones.map(stage => stage.moduleId), ['code','ai-tools','check-results','interview'], 'new outcomes advance through their actual primary reference modules');
+assert.deepEqual(project.milestones.flatMap(stage => stage.moduleIds).sort(), [...expectedOrders.agent_engineering].sort(), 'six learning modules map exactly once to the four new outcomes');
 for (const stage of project.milestones) {
   assert(stage.deliverables.length >= 2 && stage.deliverables.every(value => value.trim()));
   assert(stage.acceptance.length >= 2 && stage.acceptance.every(value => value.trim()));
@@ -100,12 +101,13 @@ for (const stage of project.milestones) {
 const guideSource = fs.readFileSync(path.join(root, 'guide.html'), 'utf8');
 const guide = makeDocument(guideSource), ids = guide.querySelectorAll('[id]').map(node => node.id);
 assert.equal(new Set(ids).size, ids.length, 'guide anchors remain unique after archiving the old manual');
-assert.equal(guide.querySelectorAll('.guide-plain-flow li').length, 6);
+assert.equal(guide.querySelectorAll('.guide-plain-flow li').length,6,'six reference-module groups remain');
+assert.equal(guide.querySelectorAll('#plan .guide-card').length,4,'only four independent product outcomes are required');
 assert.equal(guide.querySelector('#first-use').querySelectorAll('.guide-steps li').length, 3);
 assert.equal(guide.querySelector('#legacy-manual').open, false, 'old navigation/product instructions are closed by default');
 assert(guide.querySelector('.guide-legacy-banner').textContent.includes('不是现在的主项目说明'));
 const currentGuide = guideSource.split('<details class="guide-legacy"')[0];
-assert(currentGuide.includes('AI选项比较助手') && currentGuide.includes('尚未建成') && currentGuide.includes('候选'));
+assert(currentGuide.includes('用户反馈分析 Agent') && currentGuide.includes('尚未建成') && /候选|导师|独立推进/.test(currentGuide));
 assert(!currentGuide.includes('DemandDecisionLab'), 'old lab cannot remain the current how-to product');
 for (const anchor of guide.querySelectorAll('a')) {
   const href = anchor.getAttribute('href');

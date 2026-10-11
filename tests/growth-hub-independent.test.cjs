@@ -50,7 +50,7 @@ function verify(h, expected) {
   assert.equal(h.query('#modules').hidden,false);
   assert.equal(h.query('#workspace').hidden,true);
   assert.equal(h.query('#cover').hidden,true);
-  const initial=verify(h,{total:[3,47],lessons:[2,20],project:[0,6],skills:[0,7],source:'此浏览器的本机记录'});
+  const initial=verify(h,{total:[3,47],lessons:[2,20],project:[0,4],skills:[0,7],source:'此浏览器的本机记录'});
   assert.deepEqual(initial.buckets.map(b=>[b.id,b.done,b.total]),[['research',1,23],['learning',1,12],['demo',1,12]]);
   assert(h.query('.hub-progress-note').textContent.includes('自查通过不代表已投递或已录用'));
   assert(h.query('.hub-data-note').textContent.includes('不会自动发布或向外投递'));
@@ -84,13 +84,13 @@ function verify(h, expected) {
 
   // New hub return links share the existing unsaved-form guard and history restoration.
   ctx.AppNavigation.open('learn/code');
-  const draft=h.query('.module-project-output [data-milestone-form="aca-m0"]');assert(draft);
+  const draft=h.query('.module-project-output [data-milestone-form="wa-m0"]');assert(draft);
   draft.querySelector('[name="milestoneEvidence"]').value='https://example.com/synthetic-unsaved-hub-draft';draft.oninput();
   h.setConfirmation(false);
   for(const selector of ['#returnToModules','#homeBtn']) {
     click(h.query(selector));
     assert.equal(ctx.location.hash,'#learn/code');
-    assert.equal(h.query('.module-project-output [data-milestone-form="aca-m0"]'),draft,'cancel keeps exact unsaved form');
+    assert.equal(h.query('.module-project-output [data-milestone-form="wa-m0"]'),draft,'cancel keeps exact unsaved form');
   }
   ctx.location.hash='#modules';ctx.dispatchEvent({type:'hashchange'});
   assert.equal(ctx.location.hash,'#learn/code');
@@ -115,65 +115,65 @@ function verify(h, expected) {
 
   // Real handlers and callbacks, synthetic data only: each independent stream updates the visible hub.
   ctx.AppProgress.sync().setLesson('u-agent-evals','done');
-  verify(h,{total:[3,47],lessons:[3,20],project:[0,6],skills:[0,7]});
+  verify(h,{total:[3,47],lessons:[3,20],project:[0,4],skills:[0,7]});
   const lessonDate=ctx.AppProgress.sync().lessonCompletedAtSnapshot()['u-agent-evals']; assert(lessonDate);
   ctx.AppProgress.sync().setLesson('u-agent-evals',null);
-  verify(h,{total:[3,47],lessons:[2,20],project:[0,6],skills:[0,7]});
+  verify(h,{total:[3,47],lessons:[2,20],project:[0,4],skills:[0,7]});
   assert.equal(ctx.AppProgress.sync().lessonCompletedAtSnapshot()['u-agent-evals'],undefined);
   ctx.AppProgress.sync().set('sep-git',true);
-  verify(h,{total:[4,47],lessons:[2,20],project:[0,6]});
+  verify(h,{total:[4,47],lessons:[2,20],project:[0,4]});
   ctx.AppProgress.sync().set('sep-git',false);
-  verify(h,{total:[3,47],lessons:[2,20],project:[0,6]});
-  assert.equal(ctx.phdCareerProgress.setMilestone('ai-choice-assistant','aca-m0',{status:'doing',evidenceUrl:'https://example.com/synthetic-new-demo'}),true);
-  verify(h,{project:[0,6]});
-  ctx.phdCareerProgress.setMilestone('ai-choice-assistant','aca-m0',{status:'done'});
-  verify(h,{total:[3,47],lessons:[2,20],project:[1,6]});
-  const projectDate=ctx.phdCareerProgress.read().milestones['ai-choice-assistant']['aca-m0'].completedAt;
+  verify(h,{total:[3,47],lessons:[2,20],project:[0,4]});
+  assert.equal(ctx.phdCareerProgress.setMilestone('work-assistant','wa-m0',{status:'doing',evidenceUrl:'https://example.com/synthetic-new-demo'}),true);
+  verify(h,{project:[0,4]});
+  ctx.phdCareerProgress.setMilestone('work-assistant','wa-m0',{status:'done'});
+  verify(h,{total:[3,47],lessons:[2,20],project:[1,4]});
+  const projectDate=ctx.phdCareerProgress.read().milestones['work-assistant']['wa-m0'].completedAt;
   ctx.phdCareerProgress.setSkill('ai-code',{level:'passed',rubric:Object.fromEntries([1,2,3,4].map(n=>['ai-code-c'+n,4])),evidenceNote:'Synthetic test proof only.'});
-  verify(h,{total:[3,47],lessons:[2,20],project:[1,6],skills:[1,7]});
+  verify(h,{total:[3,47],lessons:[2,20],project:[1,4],skills:[1,7]});
   const beforeRole=records(h);
   ctx.phdCareerProgress.setRole('decision_optimization');
-  verify(h,{total:[3,47],lessons:[2,26],project:[1,6],skills:[1,11]});
+  verify(h,{total:[3,47],lessons:[2,26],project:[1,4],skills:[1,11]});
   assert.deepEqual(records(h).lessons,beforeRole.lessons,'changing the denominator does not clear any lessons');
-  assert.deepEqual(records(h).career.milestones,beforeRole.career.milestones,'ACA remains separate from the seven old DDL stages under the other role');
+  assert.deepEqual(records(h).career.milestones,beforeRole.career.milestones,'WA remains separate from the seven old DDL stages under the other role');
   ctx.phdCareerProgress.setRole('agent_engineering');
-  verify(h,{lessons:[2,20],project:[1,6],skills:[1,7]});
+  verify(h,{lessons:[2,20],project:[1,4],skills:[1,7]});
   // Other-tab storage events use the same source; they must redraw even when no task checkbox changed.
   const guestLessons=JSON.parse(memory[keys.lessons+':guest']);guestLessons['u-agent-evals']='done';
   memory[keys.lessons+':guest']=JSON.stringify(guestLessons);
   ctx.dispatchEvent({type:'storage',key:keys.lessons+':guest',newValue:memory[keys.lessons+':guest']});
-  verify(h,{total:[3,47],lessons:[3,20],project:[1,6]});
+  verify(h,{total:[3,47],lessons:[3,20],project:[1,4]});
   const finalRecords=records(h);h.destroy();
   h=app({memory,now,hash:'#modules'});ctx=h.ctx;await ctx.AppProgress.sync().start();
-  verify(h,{total:[3,47],lessons:[3,20],project:[1,6],skills:[1,7]});
+  verify(h,{total:[3,47],lessons:[3,20],project:[1,4],skills:[1,7]});
   assert.deepEqual(records(h),finalRecords,'all independent values and actual dates survive reload');
-  assert.equal(ctx.phdCareerProgress.read().milestones['ai-choice-assistant']['aca-m0'].completedAt,projectDate);
+  assert.equal(ctx.phdCareerProgress.read().milestones['work-assistant']['wa-m0'].completedAt,projectDate);
   assert.equal(ctx.AppProgress.sync().taskCompletedAtSnapshot()['sep-a-data'],undefined,'opening the hub never invents historical completion dates');
   h.destroy();
 
   // Exercise the real sync adapter against in-memory fake accounts. This never signs in to a real service.
   const b=backend();
   const row=(lessons,career)=>({progress:{},version:1,lessons,lessons_version:1,career_state:career,career_state_version:1,completion_dates:{},completion_dates_version:1});
-  b.rows.set('account-a@example.invalid',row({'u-api':'done'},{selectedRole:'agent_engineering','milestone:ai-choice-assistant:aca-m0':{status:'done',evidenceUrl:'https://example.com/synthetic-account-a',completedAt:old}}));
+  b.rows.set('account-a@example.invalid',row({'u-api':'done'},{selectedRole:'agent_engineering','milestone:work-assistant:wa-m0':{status:'done',evidenceUrl:'https://example.com/synthetic-account-a',completedAt:old}}));
   b.rows.set('account-b@example.invalid',row({'u-sql-select':'done','u-or-mip':'done'},{selectedRole:'decision_optimization'}));
   h=app({memory,now,hash:'#modules',cloudClient:b.client});ctx=h.ctx;
   const sync=ctx.AppProgress.sync();await sync.start();
   const login=async email=>{await sync.signIn(email,'synthetic-placeholder');await delay();await sync.syncNow();};
   await login('account-a@example.invalid');
-  verify(h,{total:[0,47],lessons:[1,20],project:[1,6],skills:[0,7],source:'当前账号的私有记录'});
+  verify(h,{total:[0,47],lessons:[1,20],project:[1,4],skills:[0,7],source:'当前账号的私有记录'});
   assert.equal(b.writes.length,0,'viewing the hub never uploads guest records automatically');
   await login('account-b@example.invalid');
-  verify(h,{total:[0,47],lessons:[2,26],project:[0,6],skills:[0,11],source:'当前账号的私有记录'});
+  verify(h,{total:[0,47],lessons:[2,26],project:[0,4],skills:[0,11],source:'当前账号的私有记录'});
   assert(!h.query('#moduleHub').textContent.includes('account-a'),'account A identity/evidence never appears in account B hub');
   assert.equal(b.writes.length,0);
   await sync.signOut();await delay();
-  verify(h,{total:[3,47],lessons:[3,20],project:[1,6],skills:[1,7],source:'此浏览器的本机记录'});
+  verify(h,{total:[3,47],lessons:[3,20],project:[1,4],skills:[1,7],source:'此浏览器的本机记录'});
   assert.deepEqual(records(h),finalRecords,'logout restores the isolated original guest records, including dates');
   await login('account-b@example.invalid');
   assert.equal(sync.importGuest(),true,'explicit synthetic import remains available');
   await sync.syncNow();await delay();await sync.syncNow();
-  verify(h,{total:[3,47],lessons:[3,26],project:[1,6],skills:[1,11]});
+  verify(h,{total:[3,47],lessons:[3,26],project:[1,4],skills:[1,11]});
   assert.equal(ctx.phdCareerProgress.read().selectedRole,'decision_optimization','import preserves an existing account choice');
   h.destroy();
-  console.log('PASS independent hub integration: five real bound destinations, original47 vs independent20/26 lessons and6 ACA stages, oldDDL separation, truthful self-assessment, no navigation writes, real stream/storage callbacks, done/undo/date/reload, role retention, and synthetic account A/B/logout/explicit import without private-record leakage.');
+  console.log('PASS independent hub integration: five real bound destinations, original47 vs independent20/26 lessons and4 WA outcomes, oldDDL separation, truthful self-assessment, no navigation writes, real stream/storage callbacks, done/undo/date/reload, role retention, and synthetic account A/B/logout/explicit import without private-record leakage.');
 })().catch(error=>{console.error(error);process.exit(1);});

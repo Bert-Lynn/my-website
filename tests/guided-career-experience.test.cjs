@@ -30,10 +30,11 @@ assert(first.steps.length >= 3 && first.steps.every(step => step.title && step.t
 const windows = first.steps.map(step => String(step.minutes).match(/^(\d+)–(\d+) 分钟$/)).map(match => { assert(match, 'step has a bounded minute window'); return [Number(match[1]), Number(match[2])]; });
 assert.equal(windows[0][0], 0); assert.equal(windows.at(-1)[1], 30);
 windows.slice(1).forEach((window, i) => assert.equal(window[0], windows[i][1], 'practice windows are contiguous'));
-for (const expected of first.expected) {
-  const feasible = first.sample.filter(row => row.totalCostCny <= expected.budgetCny).sort((a, b) => a.totalHours - b.totalHours);
-  assert.equal(expected.result, feasible[0]?.flight || '没有符合条件的选项', 'published expected output is hand-checkable');
-}
+assert.equal(first.sample.length,8,'the supplied starter contains eight synthetic rows');
+assert.equal(new Set(first.sample.map(row=>row.id)).size,8,'starter IDs are unique');
+assert.equal(first.sample.filter(row=>row.version==='2.1').length,6,'the changed-scope output is hand-checkable');
+assert.deepEqual(first.expected.map(row=>row.result),['8条去重反馈','6条反馈','输入9行，去重仍8条'],'published starter outputs match its actual records');
+assert(!/航班|预算|totalCostCny/.test(JSON.stringify(first)),'current starter no longer mandates the rejected flight product');
 assert(first.materials.length && first.materials.every(source => /^https:\/\//.test(source.url) && source.scope), 'first session limits exact linked source scope');
 assert(catalog.homeIntro.careerGoal && catalog.homeIntro.relationship.length && catalog.homeIntro.growth.length, 'why, work and longer-term growth are explicit public content');
 assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agentUnitCount);
@@ -54,7 +55,7 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
   assert.equal(h.all('#careerToday [data-unit-check]').length, 0, 'homepage is not a course checkbox catalogue');
   assert.equal(h.all('.module-flow [data-open-module]').length, 6);
   assert.equal(h.all('.home-progress-strip [role="progressbar"]').length, 2, 'study and project have separate actual-progress bars');
-  assert.deepEqual(h.all('.home-progress-strip [role="progressbar"]').map(node => node.getAttribute('aria-valuemax')), [String(agentUnitCount), '6']);
+  assert.deepEqual(h.all('.home-progress-strip [role="progressbar"]').map(node => node.getAttribute('aria-valuemax')), [String(agentUnitCount), '4']);
   assert(h.all('.home-progress-strip [role="progressbar"]').every(node => node.getAttribute('aria-valuenow') === '0'));
   for (const stage of project.milestones) {
     const row = h.query('.module-flow [data-open-module="' + stage.moduleId + '"]');
@@ -99,13 +100,13 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
   assert(h.query('#assessmentForm') === form, 'cancel keeps the same unsaved form node');
   h.destroy();
 
-  // Resume exact progress, with the small introduction out of the way after its canonical unit is done.
+  // A different historical diagnostic does not imply completion of the new feedback starter.
   const firstDone = { [lessonKey]: JSON.stringify({ 'u-python-diagnostic': 'done' }) };
   h = app({ memory: firstDone, hash: '#learn/code' }); ctx = h.ctx;
   await ctx.AppProgress.sync().start();
-  assert.equal(h.query('#firstSession'), null, 'returning learner is not forced through the already-completed starter');
-  assert.equal(h.query('[data-start-session]'), null);
-  includes(h.query('.next-action-panel'), project.milestones[0].title, 'homepage still follows the outstanding project output');
+  assert(h.query('#firstSession'),'old diagnostic completion cannot hide a different new-project exercise');
+  assert(h.query('[data-start-session]'));
+  includes(h.query('.next-action-panel'),first.title,'homepage offers the still-unstarted new feedback exercise');
   assert.equal(currentFlowId(h), 'code', 'a course completion alone cannot advance a project stage');
   assert.equal(h.query('[data-module-unit="u-ai-spec"]').open, true, 'first incomplete reference lesson is ready within the current stage');
   assert.equal(ctx.CareerUI.stats().lessons.done, 1);
@@ -114,28 +115,28 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
 
   // Previously completed learning and self-checks cannot skip the new project's independent output stages.
   const oldPass = { level: 'passed', score: 100, rubric: Object.fromEntries([1, 2, 3, 4].map(n => ['ai-code-c' + n, 4])), evidenceUrl: 'https://example.com/old-skill-evidence', evidenceNote: 'Historical synthetic QA self-assessment', assessedAt: '2026-10-01T08:00:00.000Z', verification: 'self_assessed', history: [] };
-  const oldStages = Object.fromEntries(Array.from({ length: 7 }, (_, n) => ['milestone:demand-decision-lab:ddl-m' + n, { status: 'done', evidenceUrl: 'https://example.com/old-project-evidence', completedAt: '2026-10-01T08:00:00.000Z' }]));
+  const oldStages = Object.fromEntries([...Array.from({ length: 7 }, (_, n) => ['milestone:demand-decision-lab:ddl-m' + n, { status: 'done', evidenceUrl: 'https://example.com/old-project-evidence', completedAt: '2026-10-01T08:00:00.000Z' }]), ...Array.from({ length: 6 }, (_, n) => ['milestone:ai-choice-assistant:aca-m' + n, { status: 'done', evidenceUrl: 'https://example.com/old-choice-evidence', completedAt: '2026-10-01T08:00:00.000Z' }])]);
   h = app({ memory: { [lessonKey]: JSON.stringify(Object.fromEntries(agent.modules.flatMap(module => module.unitIds).map(id => [id, 'done']))), [careerKey]: JSON.stringify({ ...oldStages, 'skill:ai-code': oldPass }) } }); ctx = h.ctx;
   await ctx.AppProgress.sync().start();
   assert.equal(ctx.CareerUI.stats().lessons.done, agentUnitCount);
   assert.equal(ctx.CareerUI.mainProjectStats().done, 0);
-  assert.equal(h.query('[data-start-session]'), null);
+  assert(h.query('[data-start-session]'),'old study, ACA and DDL completions do not hide the new feedback starter');
   assert.equal(currentFlowId(h), 'code', 'all old study, skill and project progress cannot skip the new first output stage');
   assert.equal(ctx.phdCareerProgress.read().skills['ai-code'].level, 'passed', 'old self-check stays saved');
-  includes(h.query('.next-action-panel'), project.milestones[0].title, 'completed study leads to the actual missing output stage');
+  includes(h.query('.next-action-panel'),first.title,'completed old study still points to an actual new feedback task');
   click(h.query('.next-action-panel .primary-button'));
   assert.equal(ctx.CareerUI.currentModule().id, 'code', 'portfolio action opens the exact outstanding stage module');
-  assert(h.query('.module-project-output [data-milestone-form="aca-m0"]'), 'current stage save form is reachable');
+  assert(h.query('.module-project-output [data-milestone-form="wa-m0"]'), 'current stage save form is reachable');
   h.destroy();
 
   // A genuinely completed portfolio has its own terminal action, without granting any course credit.
   const finishedStages = Object.fromEntries(project.milestones.map(stage => ['milestone:' + project.projectId + ':' + stage.id, { status: 'done', evidenceUrl: 'https://example.com/new-project-evidence', completedAt: '2026-10-09T08:00:00.000Z' }]));
   h = app({ memory: { [careerKey]: JSON.stringify(finishedStages) } }); ctx = h.ctx; await ctx.AppProgress.sync().start();
-  assert.equal(ctx.CareerUI.mainProjectStats().done, 6);
+  assert.equal(ctx.CareerUI.mainProjectStats().done, 4);
   assert.equal(ctx.CareerUI.stats().lessons.done, 0);
   assert.equal(h.query('[data-start-session]'), null);
   const portfolio = h.query('.next-action-panel [data-career-page="projects"]');
-  assert(portfolio, 'only actual six-stage completion offers the completed-portfolio action');
+  assert(portfolio, 'only actual four-outcome completion offers the completed-portfolio action');
   click(portfolio); assert.equal(ctx.AppNavigation.current(), 'projects');
   h.destroy();
 
@@ -149,10 +150,10 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
     assert.equal(h.query('[data-start-session]'), null);
     click(h.query('.next-action-panel [data-open-module]'));
     assert.equal(h.query('#firstSession'), null, 'Agent first-session content does not replace the saved original route');
-    assert.equal(h.all('#careerLearning [data-project-id="ai-choice-assistant"]').length, 0);
+    assert.equal(h.all('#careerLearning [data-project-id="work-assistant"]').length, 0);
     h.destroy();
   }
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-  assert.match(html, /career-ui\.js\?v=20261010-taskfirst1/, 'new interactive entry bypasses stale old UI');
+  assert.match(html, /career-ui\.js\?v=20261011-workassistant1/, 'new interactive entry bypasses stale old UI');
   console.log('PASS guided career experience: career purpose, one precise first action, output/save/source guidance, 30-minute on-ramp without new state, truthful independent progress, guarded CTA, resume and terminal-state paths, and saved original directions.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

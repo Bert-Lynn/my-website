@@ -39,7 +39,7 @@
     const s = snapshot();
     const independent = [
       {id:'lessons',title:'课程课节',value:s.lessons,unit:'节已学',note:s.role+' · 当前必修课节'},
-      {id:'project',title:'AI 助手 Demo',value:s.project,unit:'阶段完成',note:'独立的 6 个作品阶段 · 手动自查保存'},
+      {id:'project',title:'用户反馈分析 Agent',value:s.project,unit:'阶段完成',note:'独立的 4 件成果 · 手动自查保存'},
       {id:'skills',title:'实习技能自查',value:s.skills,unit:'项自查通过',note:'当前方向的必需技能 · 实操自评'}
     ];
     el.innerHTML = '<section class="hub-plan-progress" aria-labelledby="hubProgressTitle"><div class="hub-overall"><div class="hub-section-kicker">PLAN PROGRESS</div><h2 id="hubProgressTitle">整体进度<span>原计划任务</span></h2><div class="hub-overall-number"><strong id="hubOverallPercent">'+s.total.pct+'<small>%</small></strong><span id="hubOverallCount">'+s.total.done+' / '+s.total.total+' 项已完成</span></div>'+bar(s.total,'原计划整体任务')+'<p>按实际勾选计算，不按时间推进。</p></div><div class="hub-breakdown"><div class="hub-breakdown-heading"><h3>原计划细分进度</h3><span>这三项合计 '+s.total.total+' 个任务</span></div>'+s.buckets.map(b=>'<div class="hub-breakdown-row" data-hub-bucket="'+b.id+'"><div><span>'+b.label+'</span><strong>'+b.done+' <small>/ '+b.total+' 项</small></strong></div>'+bar(b,b.label)+'</div>').join('')+'</div></section>'+

@@ -8,7 +8,11 @@ const baseline = require('./fixtures/growth-hub-baseline.json');
 const root = path.join(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file));
 const sha = value => crypto.createHash('sha256').update(value).digest('hex');
+// Explicitly approved project content and its additive state registry are checked
+// field-by-field by work-assistant-content.test.cjs. All other old files stay protected.
+const changedProjectFiles = new Set(['career-state.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'data/career-curriculum.json', 'data/learning-modules.json', 'data/project-outline.json', 'supabase/CAREER_SYNC.md']);
 for (const [file, hash] of Object.entries(baseline.files)) {
+  if (changedProjectFiles.has(file)) continue;
   assert.equal(sha(read(file)), hash, file + ': hub change must preserve the complete existing data, progress, and sync source');
 }
 // Existing local checkout differs from remote only by final whitespace in this file.
@@ -29,4 +33,4 @@ const curriculum = JSON.parse(read('data/career-curriculum.json'));
 assert.equal(curriculum.learningUnits.length, 30);
 assert.equal(curriculum.tracks.find(track => track.id === 'agent_engineering').requiredLearningUnitIds.length, 20);
 assert.equal(curriculum.tracks.find(track => track.id === 'decision_optimization').requiredLearningUnitIds.length, 26);
-console.log('PASS independent hub data protection: complete47 task definitions, research23/course12/project12 partition, original dates, 53 historical lessons, 30 units, public catalogs, state validation, Auth/sync implementation, connection config and SQL unchanged from baseline.');
+console.log('PASS independent hub data protection: complete47 task definitions, research23/course12/project12 partition, original dates, 53 historical lessons, 30 units, unchanged historical catalog files, Auth/sync implementation, connection config and existing SQL protected; approved project fields verified separately.');
