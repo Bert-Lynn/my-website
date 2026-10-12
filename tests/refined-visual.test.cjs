@@ -12,9 +12,9 @@ assert(doc.querySelector('#cover svg[aria-hidden="true"]'),'cover artwork is dec
 const ids=doc.querySelectorAll('[id]').map(n=>n.id);assert.equal(new Set(ids).size,ids.length);
 assert(!/https?:\/\/|@import/.test(theme+cover),'no third-party visual requests');
 assert(!/cinnabar|journal-serif/.test(theme+cover+course+task),'all theme layers use the shared modern tokens');
-for(const f of ['cover.css','ink-theme.css'])assert(html.includes('./'+f+'?v=20261012-atelier1'),'Chinese visual layer has fresh cache identity: '+f);
+for(const f of ['cover.css','ink-theme.css'])assert(html.includes('./'+f+'?v=20261012-quiet1'),'Chinese visual layer has fresh cache identity: '+f);
 for(const f of ['task-focus.css','course-navigation.css'])assert(html.includes('./'+f+'?v=20261012-refined1'),'unchanged functional styling retains cache identity: '+f);
-assert(read('guide.html').includes('./ink-theme.css?v=20261012-atelier1'));
+assert(read('guide.html').includes('./ink-theme.css?v=20261012-quiet1'));
 assert(cover.includes('body[data-current-page=cover] #workspaceShell{display:none}'));
 assert(cover.includes('body:not([data-current-page=cover]) .site-cover{display:none}'));
 assert(/max-width:760px/.test(cover));assert(/prefers-reduced-motion/.test(cover+theme));assert(/forced-colors/.test(cover+theme));

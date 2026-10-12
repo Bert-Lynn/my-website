@@ -1,42 +1,33 @@
-/* The front door uses a Chinese moon-window and the same book-page grid as the workspace. */
+/* A simple front door. Navigation is unchanged; the former illustration stays hidden. */
 body[data-current-page=cover]{background:var(--paper)}
 body[data-current-page=cover] #workspaceShell{display:none}
 body:not([data-current-page=cover]) .site-cover{display:none}
-.site-cover{position:relative;display:flex;flex-direction:column;min-height:100vh;min-height:100svh;color:var(--ink);background:var(--paper);overflow:hidden;border-top:7px solid var(--ink)}
-.site-cover:before{content:'';position:absolute;top:0;bottom:0;left:44%;width:1px;background:var(--line);pointer-events:none}
-.cover-header,.cover-footer{width:min(1320px,100%);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;padding-inline:64px;box-sizing:border-box}
+.site-cover{position:relative;display:flex;flex-direction:column;min-height:100vh;min-height:100svh;color:var(--ink);background:var(--paper);overflow:hidden;border:0}
+.site-cover:before{display:none;content:none}
+.cover-header,.cover-footer{width:min(1180px,100%);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding-inline:48px;box-sizing:border-box}
 .cover-header{padding-block:28px}
-.cover-brand{display:flex;align-items:center;gap:18px;font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:.08em}
-.cover-monogram{writing-mode:vertical-rl;letter-spacing:.12em!important;color:var(--accent)!important;border:1px solid var(--accent);padding:7px 5px!important;font-size:16px!important;line-height:1.15}
-.cover-brand .cover-brand-sub{font-family:var(--sans);font-size:12px;letter-spacing:.12em;color:var(--muted);padding-left:18px;border-left:1px solid var(--line-strong)}
-.site-cover .cover-main{position:relative;width:min(1320px,100%);max-width:none;display:grid;grid-template-columns:1fr 1.03fr;gap:90px;align-items:center;flex:1;margin:0 auto;padding:35px 64px 50px;box-sizing:border-box}
-.cover-copy{min-width:0;padding-block:12px 35px}
-.cover-eyebrow{color:var(--accent);font-size:13px;letter-spacing:.22em;margin:0 0 28px;display:flex;align-items:center;gap:14px}
-.cover-eyebrow:before{content:'';width:32px;height:1px;background:var(--accent)}
-.site-cover h1{font-family:var(--serif);font-size:clamp(54px,6.3vw,88px);font-weight:400;line-height:1.37;letter-spacing:.03em;margin:0 0 28px;color:var(--ink);outline:none}
-.site-cover h1>span{color:var(--accent);font-weight:400}
-.cover-description{font-size:16px;line-height:1.85;color:var(--text);margin:0 0 34px}
-.cover-enter{display:inline-flex;align-items:center;justify-content:space-between;gap:38px;background:var(--accent);color:var(--surface);border:1px solid var(--accent);min-height:56px;padding:14px 22px 14px 25px;box-sizing:border-box;border-radius:0;font-size:16px;font-weight:500;transition:background .18s,border-color .18s}
-.cover-enter>svg{width:21px;height:21px;flex:0 0 21px}
+.cover-brand{display:flex;align-items:center;gap:14px;font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:.02em}
+.cover-monogram{display:none}
+.cover-brand .cover-brand-sub{font-family:var(--sans);font-size:14px;color:var(--muted);font-weight:400;letter-spacing:0}
+.site-cover .cover-main{position:relative;width:min(1180px,100%);max-width:none;display:flex;align-items:center;flex:1;margin:0 auto;padding:60px 48px 100px;box-sizing:border-box}
+.cover-copy{min-width:0;max-width:680px;padding:0}
+.cover-eyebrow{display:none}
+.site-cover h1{font-family:var(--serif);font-size:clamp(46px,5.3vw,68px);font-weight:400;line-height:1.38;letter-spacing:.025em;margin:0 0 24px;color:var(--ink);outline:none}
+.site-cover h1>span{color:var(--ink);font-weight:400}
+.cover-description{font-size:18px;line-height:1.8;color:var(--muted);margin:0 0 32px}
+.cover-enter{display:inline-flex;align-items:center;justify-content:space-between;gap:34px;background:var(--accent);color:var(--surface);border:1px solid var(--accent);min-height:48px;padding:11px 20px;box-sizing:border-box;border-radius:5px;font-size:16px;font-weight:500;transition:background .15s,border-color .15s}
+.cover-enter>svg{width:20px;height:20px;flex:0 0 20px}
 .cover-enter:hover{color:var(--surface);background:var(--accent-dark);border-color:var(--accent-dark)}
-.cover-enter:focus-visible{outline:3px solid var(--accent);outline-offset:5px}
-.cover-visual{min-width:0;width:100%;max-width:520px;justify-self:end;align-self:center;color:var(--ink)}
-.cover-portal{position:relative;padding:0 0 0 0}
-.cover-art{display:block;width:100%;height:auto}
-.portal-inscription{position:absolute;left:50%;top:44.5%;transform:translate(-50%,-50%);display:flex;flex-direction:row-reverse;gap:14px;font-family:var(--serif);font-size:clamp(24px,2.3vw,33px);line-height:1.4;color:var(--accent)}
-.portal-inscription span{writing-mode:vertical-rl;letter-spacing:.23em}
-.cover-art-caption{display:flex;justify-content:space-between;margin:0 28px;font-size:12px;letter-spacing:.14em;color:var(--muted)}
-.cover-footer{padding-block:20px 25px;position:relative;font-size:12px;color:#635b51;letter-spacing:.08em;line-height:1.8}
-.cover-footer:before{content:'';position:absolute;top:0;left:64px;right:64px;border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line);height:4px}
-.cover-footer>span:last-child{color:#635b51}
-@media(min-width:1600px){.site-cover .cover-main{padding-top:55px;padding-bottom:75px}.site-cover h1{font-size:96px}}
-@media(max-width:1050px){.cover-header,.cover-footer{padding-inline:38px}.site-cover .cover-main{padding:25px 38px 45px;gap:42px}.site-cover h1{font-size:clamp(52px,6.5vw,68px)}.cover-footer:before{left:38px;right:38px}}
+.cover-enter:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+.cover-visual{display:none}
+.cover-footer{padding-block:20px 24px;font-size:14px;color:#666762;letter-spacing:0;line-height:1.8}
+.cover-footer:before{display:none;content:none}
+.cover-footer>span:last-child{color:#666762}
 @media(max-width:760px){
- .site-cover{border-top-width:5px}.site-cover:before{display:none}.cover-header{padding:22px 24px}.cover-brand{font-size:18px;gap:12px}.cover-brand .cover-brand-sub{font-size:11px;padding-left:12px;letter-spacing:.04em}.cover-monogram{font-size:14px!important}
- .site-cover .cover-main{grid-template-columns:1fr;gap:27px;width:100%;max-width:560px;padding:25px 28px 28px}.cover-copy{padding:0}.cover-eyebrow{font-size:12px;margin-bottom:16px}.site-cover h1{font-size:clamp(49px,12.5vw,68px);margin-bottom:20px;line-height:1.32}.cover-description{font-size:16px;margin-bottom:25px}.cover-enter{min-height:52px;font-size:16px;gap:30px;padding:12px 18px 12px 22px}
- .cover-visual{max-width:320px;width:82%;justify-self:end;margin-top:-4px}.portal-inscription{font-size:25px;gap:11px}.cover-art-caption{font-size:10px;margin-inline:17px}.cover-footer{padding:17px 24px 21px;font-size:11px;gap:12px}.cover-footer:before{left:24px;right:24px}
+ .cover-header,.cover-footer{padding-inline:24px}.cover-header{padding-block:24px}.cover-brand{font-size:21px;gap:12px}.cover-brand .cover-brand-sub{font-size:14px}
+ .site-cover .cover-main{padding:40px 24px 70px;max-width:560px}.site-cover h1{font-size:clamp(44px,11vw,58px);line-height:1.4;margin-bottom:22px}.cover-description{font-size:16px;margin-bottom:28px}.cover-enter{min-height:48px;font-size:16px;padding:11px 18px;gap:28px}.cover-footer{gap:12px;flex-wrap:wrap}
 }
-@media(max-width:380px){.cover-brand .cover-brand-sub{font-size:10px}.site-cover .cover-main{padding-inline:22px}.cover-visual{max-width:260px}.portal-inscription{font-size:22px}}
-@media(min-width:761px) and (max-height:690px){.cover-header{padding-block:18px}.site-cover .cover-main{padding-top:10px;padding-bottom:25px}.cover-visual{max-width:410px}.site-cover h1{font-size:62px}}
+@media(max-width:380px){.cover-brand{display:block}.cover-brand .cover-brand-sub{display:block;margin-top:4px}}
+@media(min-width:761px) and (max-height:690px){.site-cover .cover-main{padding-top:25px;padding-bottom:45px}.site-cover h1{font-size:56px}}
 @media(prefers-reduced-motion:reduce){.cover-enter{transition:none}}
-@media(forced-colors:active){.cover-enter{border:1px solid ButtonText}.cover-visual{display:none}}
+@media(forced-colors:active){.cover-enter{border:1px solid ButtonText}}

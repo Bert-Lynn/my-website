@@ -13,7 +13,7 @@ const snapshot=h=>plain({tasks:h.ctx.AppProgress.sync().snapshot(),lessons:h.ctx
  const before=snapshot(h);assert.equal(h.query('#currentTaskList').hidden,false);assert.equal(h.query('#originalTaskPlan').hidden,true);
  const backlog=h.evaluate('carriedTasks(currentMonth()).length');assert(backlog>0);
  assert(h.query('[data-task-section="execution/month"]').textContent.replace(/\s/g,'').includes(backlog+'项顺延'),'current view still surfaces the true original-plan backlog');
- assert(h.query('.current-task-heading').textContent.includes('0 / 4'));assert.equal(ctx.ModuleHub.snapshot().total.total,47);
+ assert(h.query('[data-unified-total]').textContent.includes('0 / 18'));assert.equal(ctx.ModuleHub.snapshot().total.total,47);
  for(const route of ['execution/current','execution/research','execution/year','execution/month','execution','projects','learn/code','modules']){ctx.AppNavigation.open(route);assert.deepEqual(snapshot(h),before,'route '+route+' is read-only')}
  ctx.AppNavigation.open('execution');
  // Out-of-order manual completion must still recommend the earliest gap.
@@ -21,10 +21,10 @@ const snapshot=h=>plain({tasks:h.ctx.AppProgress.sync().snapshot(),lessons:h.ctx
  assert.equal(h.query('#currentTaskList .is-next').dataset.currentTask,'wa-m0');
  ctx.phdCareerProgress.setMilestone('work-assistant','wa-m0',milestone('zero'));
  assert.equal(h.query('#currentTaskList .is-next').dataset.currentTask,'wa-m1');
- assert(h.query('.current-task-heading').textContent.includes('2 / 4'));assert.equal(ctx.ModuleHub.snapshot().total.done,0);assert.equal(ctx.ModuleHub.snapshot().project.done,2);
+ assert(h.query('[data-unified-total]').textContent.includes('2 / 18'));assert.equal(ctx.ModuleHub.snapshot().total.done,0);assert.equal(ctx.ModuleHub.snapshot().project.done,2);
  ctx.AppProgress.sync().setLesson('u-api','done');assert.equal(h.query('#currentTaskList .is-next').dataset.currentTask,'wa-m1');assert.equal(ctx.CareerUI.mainProjectStats().done,2,'course completion never auto-finishes a task');
  ctx.phdCareerProgress.setMilestone('work-assistant','wa-m1',milestone('one'));ctx.phdCareerProgress.setMilestone('work-assistant','wa-m3',milestone('three'));
- assert.equal(h.all('#currentTaskList .is-next').length,0);assert(h.query('.current-tasks-done'));assert.equal(h.all('#currentTaskList [data-milestone-form]').length,4,'completed tasks remain reachable for undo and evidence review');
+ assert.equal(h.all('#currentTaskList .is-next').length,0);assert(h.query('[data-unified-total]').textContent.includes('4 / 18'),'all four deliverables do not auto-complete fourteen learning activities');assert.equal(h.all('#currentTaskList [data-milestone-form]').length,4,'completed tasks remain reachable for undo and evidence review');
  ctx.phdCareerProgress.setMilestone('work-assistant','wa-m0',{status:'todo'});assert.equal(h.query('#currentTaskList .is-next').dataset.currentTask,'wa-m0');assert.equal(ctx.phdCareerProgress.read().milestones['work-assistant']['wa-m0'].completedAt,'');
  ctx.AppNavigation.open('learn/code');const first=ctx.CareerUI.currentModule().unitIds[0];assert.equal(h.query('.module-intro [data-open-course-unit]').dataset.openCourseUnit,first);
  click(h.query('.module-intro [data-open-course-unit]'));assert.equal(h.query('[data-module-unit="'+first+'"]').open,true);assert.equal(h.document.lastScrolled,h.query('[data-module-unit="'+first+'"]'));
@@ -34,7 +34,7 @@ const snapshot=h=>plain({tasks:h.ctx.AppProgress.sync().snapshot(),lessons:h.ctx
  ctx.AppNavigation.open('execution');const firstDraft=form(h);firstDraft.querySelector('[name="milestoneEvidence"]').value='https://example.com/UNSAVED_TASK_ZERO';firstDraft.oninput();
  const secondForm=form(h,'wa-m1');secondForm.querySelector('[name="milestoneStatus"]').value='doing';secondForm.oninput();secondForm.onsubmit({preventDefault(){},currentTarget:secondForm});
  assert.equal(form(h).querySelector('[name="milestoneEvidence"]').value,'https://example.com/UNSAVED_TASK_ZERO','saving another task preserves the unsaved first draft');
- assert(h.query('.current-task-heading').textContent.includes('2 / 4'),'saved completion count updates even while another form is dirty');
+ assert(h.query('[data-unified-total]').textContent.includes('2 / 18'),'saved completion count updates even while another form is dirty');
  assert.equal(h.query('#currentTaskList .is-next').dataset.currentTask,'wa-m0','next task still follows saved state with another draft open');
  h.setConfirmation(false);assert.equal(ctx.AppNavigation.open('resources'),false,'the remaining draft still protects navigation');
  const remaining=form(h);remaining.querySelector('[name="milestoneStatus"]').value='doing';remaining.onsubmit({preventDefault(){},currentTarget:remaining});assert.equal(ctx.AppNavigation.open('resources'),true,'saving the final draft releases navigation');

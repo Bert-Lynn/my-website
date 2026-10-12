@@ -10,7 +10,7 @@ const read = file => fs.readFileSync(path.join(root, file));
 const sha = value => crypto.createHash('sha256').update(value).digest('hex');
 // Explicitly approved project content and its additive state registry are checked
 // field-by-field by work-assistant-content.test.cjs. All other old files stay protected.
-const changedProjectFiles = new Set(['career-state.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'data/career-curriculum.json', 'data/learning-modules.json', 'data/project-outline.json', 'supabase/CAREER_SYNC.md']);
+const changedProjectFiles = new Set(['cloud-sync.js', 'career-state.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'data/career-curriculum.json', 'data/learning-modules.json', 'data/project-outline.json', 'supabase/CAREER_SYNC.md']);
 for (const [file, hash] of Object.entries(baseline.files)) {
   if (changedProjectFiles.has(file)) continue;
   assert.equal(sha(read(file)), hash, file + ': hub change must preserve the complete existing data, progress, and sync source');

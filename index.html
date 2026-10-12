@@ -8,12 +8,13 @@
   <link rel="preload" href="./assets/fonts/growth-song.woff" as="font" type="font/woff" crossorigin>
   <link rel="stylesheet" href="./styles.css?v=20261010-journey1">
   <link rel="stylesheet" href="./career.css?v=20261011-workassistant1">
-  <link rel="stylesheet" href="./cover.css?v=20261012-atelier1">
+  <link rel="stylesheet" href="./cover.css?v=20261012-quiet1">
   <link rel="stylesheet" href="./module-hub.css?v=20261011-modules1">
 <link rel="stylesheet" href="./task-focus.css?v=20261012-refined1">
   <link rel="stylesheet" href="./course-navigation.css?v=20261012-refined1">
   <link rel="stylesheet" href="./employer-events.css?v=20261012-events1">
-  <link rel="stylesheet" href="./ink-theme.css?v=20261012-atelier1&amp;patch=1">
+  <link rel="stylesheet" href="./unified-tasks.css?v=20261012-unified1">
+<link rel="stylesheet" href="./ink-theme.css?v=20261012-quiet1">
 </head>
 <body data-current-page="cover">
 <script>if(window.location.hash&&window.location.hash!=='#cover')document.body.setAttribute('data-current-page',window.location.hash==='#modules'?'modules':'execution');</script>
@@ -48,7 +49,7 @@
       <p class="cover-art-caption"><span>研究 · 学习 · 作品</span><span>二〇二六</span></p>
     </div>
   </main>
-  <div class="cover-footer"><span>研究 · 学习 · 作品</span><span class="release-label">册页版 · 2026.10.12</span></div>
+  <div class="cover-footer"><span>研究 · 学习 · 作品</span><span class="release-label">简洁版 · 2026.10.12</span></div>
 </section>
 <div class="site-shell" id="workspaceShell">
   <header class="app-header">
@@ -66,7 +67,7 @@
       <button type="button" aria-label="实习岗位参考" data-page="roles" aria-pressed="false">实习岗位参考</button>
       <button type="button" aria-label="详细自查记录" data-page="skills" aria-pressed="false">详细自查记录</button>
     </nav></details>
-    <a class="guide-entry" href="./guide.html?v=20261012-currentvideos1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
+    <a class="guide-entry" href="./guide.html?v=20261012-unified1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
     <button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span><span aria-hidden="true">↗</span></button>
   </header>
   <main>
@@ -88,7 +89,7 @@
         <section id="overview" class="page-panel" data-panel="overview" hidden><div id="goalOverview"></div></section>
         <section id="timeline" class="page-panel" data-panel="timeline" hidden><div id="goalTimeline"></div></section>
         <section id="workspace" class="page-panel" data-panel="execution">
-          <nav class="task-section-tabs" aria-label="任务分区"><button data-task-section="execution">当前任务</button><button data-task-section="execution/research">科研任务</button><button data-task-section="execution/month">原月计划</button></nav>
+          <nav class="task-section-tabs" aria-label="任务分区"><button data-task-section="execution">所有任务</button><button data-task-section="execution/research">科研任务</button><button data-task-section="execution/month">原月计划</button></nav>
           <div id="currentTaskList"></div>
           <div id="originalTaskPlan" hidden>
           <nav class="research-task-links" id="researchTaskLinks" aria-label="科研相关页面" hidden><a href="#timeline" data-research-route="timeline">研究时间表</a><a href="#outcomes" data-research-route="outcomes">原有论文与成果</a></nav>
@@ -106,7 +107,7 @@
         <article class="lesson-progress-card" id="lessonProgressCard"></article><article class="upcoming-card"><div class="card-heading"><h2>下一个研究里程碑</h2></div><div id="nextMilestone"></div><button id="showOutcomesBtn" class="text-button">查看成果路线 →</button></article>
       </aside>
     </div>
-    <footer><span>按实际完成记录进度，不会自动替你勾选。</span><span class="release-label">册页版 · 2026.10.12</span><button id="resetBtn" hidden>重置原计划任务进度</button></footer>
+    <footer><span>按实际完成记录进度，不会自动替你勾选。</span><span class="release-label">简洁版 · 2026.10.12</span><button id="resetBtn" hidden>重置原计划任务进度</button></footer>
     <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
   </main>
 </div>
@@ -117,13 +118,14 @@
 <script src="./goal-ui.js?v=20261010-journey1"></script>
 <script src="./lesson-ui.js?v=20261010-journey1"></script>
 <script src="./cloud-config.js?v=20261010-journey1"></script>
-<script src="./cloud-sync.js?v=20261010-journey1"></script>
+<script src="./cloud-sync.js?v=20261012-unified1"></script>
 <script src="./learning-modules.js?v=20261011-workassistant1"></script>
 <script src="./project-outline.js?v=20261011-workassistant1"></script>
 <script src="./video-learning.js?v=20261012-currentvideos1"></script>
 <script src="./employer-events.js?v=20261012-events1"></script>
 <script src="./employer-events-ui.js?v=20261012-events1"></script>
-<script src="./career-ui.js?v=20261012-currentvideos1"></script>
-<script src="./module-hub.js?v=20261012-atelier1"></script>
-<script src="./app.js?v=20261012-video1"></script>
+<script src="./unified-tasks.js?v=20261012-unified1"></script>
+<script src="./career-ui.js?v=20261012-unified1"></script>
+<script src="./module-hub.js?v=20261012-unified1"></script>
+<script src="./app.js?v=20261012-unified1"></script>
 </body></html>

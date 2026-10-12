@@ -14,9 +14,20 @@
     const clean = options.clean || (value => Object.fromEntries(Object.entries(value || {}).filter(([id, v]) => ids.has(id) && valid(v, id))));
     const read = (key, fallback) => { try { return JSON.parse(storage.getItem(key)) || fallback; } catch { return fallback; } };
     const write = (key, value) => storage.setItem(key, JSON.stringify(value));
+    // Versioned sidecar protects newly introduced keys from cached old clients that
+    // clean and rewrite the shared local namespace. It never imports between owners.
+    const protectedIds = new Set(options.preserveIds || []);
+    const SIDECAR = LEGACY + ':extended-20261012:';
+    const protectedPart = value => Object.fromEntries(Object.entries(clean(value)).filter(([id]) => protectedIds.has(id)));
+    const guestValues = () => clean({ ...protectedPart(read(SIDECAR + 'guest', {})), ...read(GUEST, read(OWNER, null) ? {} : read(LEGACY, {})) });
+    function protect() {
+      if (!protectedIds.size) return;
+      if (user) write(SIDECAR + 'account:' + user.id, {base:protectedPart(state.base),values:protectedPart(state.values),version:state.version});
+      else write(SIDECAR + 'guest', protectedPart(values));
+    }
     let user = null, client = null, makeClient = null, dataClient = null, generation = 0, timer = null, working = false, stopped = false, failure = 0;
     let state = { base: {}, values: {}, version: 0, dirty: false, conflict: null };
-    let guest = clean(read(GUEST, read(OWNER, null) ? {} : read(LEGACY, {})));
+    let guest = guestValues();
     let values = { ...guest };
     let status = {};
     let starting = null, memoryOnly = false, remoteKnown = false;
@@ -33,6 +44,7 @@
     }
     function persist() {
       memoryOnly = true;
+      protect();
       if (user) write(PREFIX + user.id, state);
       else { guest = { ...values }; write(GUEST, guest); }
       mirror();
@@ -43,8 +55,17 @@
     function schedule(ms = 600) { clearTimeout(timer); if (!stopped && user) timer = setTimeout(() => syncNow(), ms); }
     function loadAccount(id) {
       const saved = read(PREFIX + id, {});
-      return { base: clean(saved.base), values: clean(saved.values), version: Number.isSafeInteger(saved.version) ? saved.version : 0,
-        dirty: !!saved.dirty, conflict: saved.conflict || null };
+      const backup = protectedIds.size ? read(SIDECAR + 'account:' + id, {}) : {};
+      const savedValues = clean(saved.values), restored = Object.fromEntries(Object.entries(protectedPart(backup.values)).filter(([key]) => !Object.hasOwn(savedValues,key)));
+      const pending = Object.entries(restored).some(([key,value]) => value !== backup.base?.[key]);
+      const version = Number.isSafeInteger(saved.version) ? saved.version : 0;
+      // A cached old tab may have advanced CAS while dropping these pending keys.
+      // Keep the older version so the normal conflict UI, rather than a blind write,
+      // resolves that concurrent change.
+      const backupVersion = Number.isSafeInteger(backup.version) ? backup.version : 0;
+      return { base:{...protectedPart(backup.base),...clean(saved.base)}, values:{...restored,...savedValues},
+        version:pending ? Math.min(version,backupVersion) : version,
+        dirty:!!saved.dirty||pending, conflict:saved.conflict||null };
     }
     async function useSession(session) {
       const next = session?.user || null;
@@ -137,7 +158,7 @@
       return starting;
     }
     async function startInternal() {
-      try { write(GUEST, guest); mirror(); } catch { localError(); }
+      try { if(protectedIds.size)write(SIDECAR+'guest',protectedPart(guest)); write(GUEST, guest); mirror(); } catch { localError(); }
       if (!configured && !options.client) { emit('local', '进度保存在本机；云端同步待启用。'); return; }
       emit('loading', '正在连接云端…');
       try {
@@ -201,7 +222,7 @@
     root.addEventListener?.('focus', () => schedule(0));
     root.addEventListener?.('storage', event => {
       if (user && event.key === PREFIX + user.id) { state = loadAccount(user.id); show(); schedule(0); }
-      if (!user && event.key === GUEST) { guest = clean(read(GUEST, {})); show(); }
+      if (!user && event.key === GUEST) { guest = guestValues(); show(); }
     });
     return { start, acceptSession: useSession,
       conflictDetails: () => state.conflict ? { local: { ...state.values }, remote: { ...state.conflict.values } } : null,
@@ -238,11 +259,13 @@
     const onDates = values => options.onCompletionDates?.({ tasks: datePart(values,'task'), lessons: datePart(values,'lesson') });
     main = createStore({ ...options, acquireClient, onStatus: onStatus(0) });
     lessons = createStore({ ...options, acquireClient, ids: lessonIds,
+      preserveIds: lessonIds.filter(id => /^(watch|practice)-wa-video-/.test(id)),
       namespace: 'lin-ai-phd-roadmap-lessons-v1', field: 'lessons', versionField: 'lessons_version',
       rpc: 'phd_save_lessons', argument: 'next_lessons', valid: v => v === false || v === 'done' || v === 'skipped',
       onProgress: options.onLessons, onStatus: onStatus(1) });
     const dateIds = [...options.ids.map(id => 'task:' + id), ...lessonIds.map(id => 'lesson:' + id)];
     dates = createStore({ ...options, acquireClient, ids: dateIds,
+      preserveIds: lessonIds.filter(id => /^(watch|practice)-wa-video-/.test(id)).map(id=>'lesson:'+id),
       namespace: 'lin-ai-phd-roadmap-completion-dates-v1', field: 'completion_dates', versionField: 'completion_dates_version',
       rpc: 'phd_save_completion_dates', argument: 'next_completion_dates',
       valid: v => v === false || (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(v) && Number.isFinite(Date.parse(v))),

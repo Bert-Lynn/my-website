@@ -39,31 +39,33 @@ function makeDocument(html) {
     focus() { doc.activeElement = this; }
     scrollIntoView() { doc.lastScrolled = this; }
     querySelectorAll(selector) { return [...this.walk()].filter(node => matches(node, selector)); }
-    querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
+    querySelector(selector) { for (const node of this.walk()) if (matches(node, selector)) return node; return null; }
     closest(selector) { for (let node = this; node; node = node.parentElement) if (matches(node, selector)) return node; return null; }
   }
-  function simple(node, selector) {
-    const outsideAttributes = selector.replace(/\[[^\]]*\]/g, '');
-    const tag = outsideAttributes.match(/^[a-z][\w-]*/i)?.[0];
-    if (tag && node.tagName.toLowerCase() !== tag.toLowerCase()) return false;
-    const id = outsideAttributes.match(/#([\w-]+)/)?.[1]; if (id && node.id !== id) return false;
-    for (const [, cls] of outsideAttributes.matchAll(/\.([\w-]+)/g)) if (!node.classList.contains(cls)) return false;
-    for (const [, key, , value] of selector.matchAll(/\[([\w-]+)(?:=(['"]?)(.*?)\2)?\]/g)) {
-      if (!(key in node.attrs)) return false;
-      if (value !== undefined && node.attrs[key] !== value) return false;
-    }
-    return true;
+  // Compile each test selector once instead of re-running its regular expressions
+  // for every node on every render. Matching semantics are unchanged.
+  const selectorCache = new Map();
+  function compileSimple(selector) {
+    const outside = selector.replace(/\[[^\]]*\]/g, '');
+    const tag = outside.match(/^[a-z][\w-]*/i)?.[0]?.toUpperCase();
+    const id = outside.match(/#([\w-]+)/)?.[1];
+    const classes = [...outside.matchAll(/\.([\w-]+)/g)].map(m => m[1]);
+    const attrs = [...selector.matchAll(/\[([\w-]+)(?:=(['"]?)(.*?)\2)?\]/g)].map(m => [m[1],m[3]]);
+    return node => (!tag || node.tagName === tag) && (!id || node.id === id) && classes.every(c => node.classList.contains(c)) && attrs.every(([k,v]) => k in node.attrs && (v === undefined || node.attrs[k] === v));
   }
   function matches(node, selector) {
-    if (selector.includes(',')) return selector.split(',').some(part => matches(node, part.trim()));
-    const parts = selector.trim().split(/\s+(?=(?:[^"']|"[^"]*"|'[^']*')*$)/);
-    if (!simple(node, parts.pop())) return false;
-    for (const part of parts.reverse()) {
-      node = node.parentElement;
-      while (node && !simple(node, part)) node = node.parentElement;
-      if (!node) return false;
+    let compiled = selectorCache.get(selector);
+    if (!compiled) {
+      const choices = selector.split(',').map(part => part.trim().split(/\s+(?=(?:[^"']|"[^"]*"|'[^']*')*$)/).map(compileSimple));
+      compiled = node => choices.some(parts => {
+        let cursor=node;
+        if (!parts[parts.length-1](cursor)) return false;
+        for (let i=parts.length-2;i>=0;i--) { cursor=cursor.parentElement; while(cursor&&!parts[i](cursor)) cursor=cursor.parentElement; if(!cursor)return false; }
+        return true;
+      });
+      selectorCache.set(selector,compiled);
     }
-    return true;
+    return compiled(node);
   }
   function parse(source, parent) {
     const stack = [parent];
@@ -122,7 +124,7 @@ function app({ memory = {}, hash = '', now = null, cloudClient = null } = {}) {
     setInterval() {}, setTimeout, clearTimeout, confirm: message => { confirmations.push(message); return allowNavigation; }, PHD_CLOUD_CONFIG: { enabled: false }
   };
   ctx.window = ctx; vm.createContext(ctx);
-  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'video-learning.js', 'internship-data.js', 'career-state.js', 'goal-ui.js', 'lesson-ui.js', 'cloud-sync.js', 'career-ui.js', 'module-hub.js', 'app.js']) {
+  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'video-learning.js', 'internship-data.js', 'career-state.js', 'goal-ui.js', 'lesson-ui.js', 'cloud-sync.js', 'unified-tasks.js', 'career-ui.js', 'module-hub.js', 'app.js']) {
     if (fs.existsSync(path.join(root, file))) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), ctx, { filename: file });
     if (file === 'cloud-sync.js' && cloudClient) {
       const create = ctx.PhdCloud.create;

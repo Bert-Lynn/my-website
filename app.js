@@ -690,8 +690,8 @@ function render(){
   document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.setAttribute('aria-current',b.dataset.openPage===page?'page':'false'));
   const all=tally(tasks),now=currentMonth(),backlog=carriedTasks(view==='stage'?stages[selectedStage].start:activeMonth),mt=monthTasks(activeMonth),ms=tally(mt);
   document.querySelector('#todayLabel').textContent=now.replace('.','年')+'月 · 上海时间';
-  document.querySelector('#pageTitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[0]||pageNames.today[0]):page==='resources'?'课程学习':page==='execution'?(researchView?'科研与论文':currentView?'当前任务':'原月计划'):(pageNames[page]?.[0]||'成长工作台');
-  document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?(researchView?'实验、写作与投稿，按原计划推进。':currentView?'用户反馈分析 Agent · 按顺序做下面四项。':'原47项任务，未完成的会继续顺延。'):page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'按当前任务看视频，学完就用到自己的项目。':pageNames[page]?.[1]||'';
+  document.querySelector('#pageTitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[0]||pageNames.today[0]):page==='resources'?'课程学习':page==='execution'?(researchView?'科研与论文':currentView?'所有任务':'原月计划'):(pageNames[page]?.[0]||'成长工作台');
+  document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?(researchView?'实验、写作与投稿，按原计划推进。':currentView?'课程、练习、交付和科研，在一个清单中分别记录。':'原47项任务，未完成的会继续顺延。'):page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'按当前任务看视频，学完就用到自己的项目。':pageNames[page]?.[1]||'';
   document.querySelector('#pageEyebrow').textContent=page==='execution'?'任务列表':page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'视频主线':pageNames[page]?.[2]||'研究工作台';
   document.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==page);
   const primaryPage=page==='execution'?'execution':page==='resources'?'resources':['skills','assessments'].includes(page)?'skills':phdPages.includes(page)?'overview':page;
@@ -755,6 +755,7 @@ document.querySelector('#pendingOnly').onchange=e=>{pendingOnly=e.target.checked
 document.querySelector('#resetBtn').onclick=()=>{if(confirm('确定清空全部 '+tasks.length+' 项任务的勾选进度吗？此操作无法撤销。')){if(cloudSync){cloudSync.resetAll();progress=cloudSync.snapshot()}else{progress={};save()}render();document.querySelector('#announcer').textContent='任务进度已重置，课程记录保持不变。'}};
 window.GoalUI?.init({tasks,progress:()=>progress,sync:()=>cloudSync,toggle,openPage:setPage,openArea:area=>setPage('execution/'+area),taskMarkup});
 window.LessonUI?.init({openCourses:()=>{if(setPage('resources')===false)return false;const archive=document.getElementById('legacyLearningArchive');if(archive)archive.open=true;return true},sync:()=>cloudSync});
+window.UnifiedTasks?.init({tasks:()=>tasks,progress:()=>progress,sync:()=>cloudSync,month:currentMonth,toggle,changed:()=>{window.LessonUI?.update(cloudSync?.lessonSnapshot?.()||{});window.GoalUI?.render();window.ModuleHub?.render()}});
 window.CareerUI?.init({openPage:setPage});
 window.ModuleHub?.init({tasks:()=>tasks,progress:()=>progress,sync:()=>cloudSync,openPage:setPage});
 document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.openPage));
@@ -801,7 +802,7 @@ function renderCloud(state){
   }
 }
 if(window.PhdCloud){
-  cloudSync=window.PhdCloud.create({ids:tasks.map(t=>t.id),lessonIds:window.LessonUI?.ids||[],onCompletionDates:value=>{window.GoalUI?.dates(value);window.LessonUI?.dates?.(value.lessons);render()},onLessons:value=>{window.LessonUI?.update(value);window.GoalUI?.render();window.CareerUI?.render();window.ModuleHub?.render()},onProgress:value=>{const changed=tasks.some(t=>!!progress[t.id]!==!!value[t.id]);progress=value;if(changed)render()},onStatus:renderCloud});
+  cloudSync=window.PhdCloud.create({ids:tasks.map(t=>t.id),lessonIds:[...(window.LessonUI?.ids||[]),...(window.UnifiedTasks?.progressIds||[])],onCompletionDates:value=>{window.GoalUI?.dates(value);window.LessonUI?.dates?.(value.lessons);render()},onLessons:value=>{window.LessonUI?.update(value);window.GoalUI?.render();window.CareerUI?.render();window.ModuleHub?.render()},onProgress:value=>{const changed=tasks.some(t=>!!progress[t.id]!==!!value[t.id]);progress=value;if(changed)render()},onStatus:renderCloud});
   progress=cloudSync.snapshot();window.LessonUI?.update(cloudSync.lessonSnapshot?.()||{});render();cloudSync.start();
 }
 

@@ -67,7 +67,7 @@ function verify(h, expected) {
     assert.equal(h.query('#modules').hidden,true);
     assert.equal(h.query('#cover').hidden,true,'selecting a module never loops back through the cover');
     if(route==='execution') {
-      assert.equal(h.query('#pageTitle').textContent,'当前任务');
+      assert.equal(h.query('#pageTitle').textContent,'所有任务');
       assert.equal(h.evaluate('view'),'current');
       assert.equal(h.query('#currentTaskList').hidden,false);
       assert.equal(h.query('#originalTaskPlan').hidden,true);

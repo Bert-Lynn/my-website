@@ -16,7 +16,7 @@ assert(current.includes('4项') && current.includes('47') && current.includes('�
 assert(guide.querySelector('a[href="./index.html#execution"]'), 'current task entry uses the default current-task route');
 assert(guide.querySelector('a[href="./index.html#execution/month"]').textContent.includes('旧月计划'), 'month route is labeled as the historical plan');
 assert(guide.querySelector('#saving').textContent.includes('任务列表') && guide.querySelector('#saving').textContent.includes('操作步骤与完成记录'), 'save directions name the canonical task form entrance');
-assert(current.includes('封面') && current.includes('当前任务'), 'guide explains cover-to-current-task entry');
+assert(current.includes('封面') && current.includes('所有任务'), 'guide explains cover-to-current-task entry');
 assert(!current.includes('网站默认首页是原有任务列表'), 'guide no longer claims the bare URL skips the cover');
 const first = agent.firstSession;
 const videos=require('../data/video-learning.json');
@@ -32,7 +32,7 @@ assert(current.includes('我的作品') && current.includes('课程学习') && c
 assert(!current.includes('继续学习') && !current.includes('我的项目') && !current.includes('今日总览'), 'current instructions do not point to renamed controls');
 assert(!/23\s*(节|个)|9\s*项能力|50\s*小时|100\s*小时/.test(current), 'current guide does not carry the old Agent scope or delivery estimates');
 assert(/作品/.test(current) && /不会自动/.test(current), 'guide explains independent project acceptance');
-assert(current.includes('视频没有额外打卡') && current.includes('保留原记录'), 'short guide keeps original course completion separate; exact90-minute diagnostic remains in original data and detailed runtime guidance');
+assert(current.includes('视频观看和对应练习分别打卡') && current.includes('保留原记录'), 'short guide keeps original course completion separate; exact90-minute diagnostic remains in original data and detailed runtime guidance');
 assert(guide.querySelector('#legacy-manual') && !guide.querySelector('#legacy-manual').open, 'historical instructions remain explicitly collapsed');
 assert(guide.querySelector('.guide-legacy-banner').textContent.includes('不是现在的主项目说明'));
 assert(source.includes('career.css?v=20261011-workassistant1'), 'guide receives the current visual system');

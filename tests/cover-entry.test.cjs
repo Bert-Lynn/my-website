@@ -41,7 +41,7 @@ const assertWorkspace = (h, page = 'execution') => {
   assert(!entry.hasAttribute('target'), 'entry stays in the current tab');
   assert.equal(initial.querySelector('#cover').querySelectorAll('input,select,textarea,form').length, 0, 'decorative cover has no pretend progress controls');
   assert(!/\d+\s*%|\d+\s*\/\s*\d+\s*(?:已完成|项已完成)/.test(initial.querySelector('#cover').textContent), 'cover does not advertise fabricated completion');
-  const coverStyle = initial.querySelector('link[href="./cover.css?v=20261012-atelier1"]');
+  const coverStyle = initial.querySelector('link[href="./cover.css?v=20261012-quiet1"]');
   assert(coverStyle, 'versioned isolated cover stylesheet is loaded');
   const css = fs.readFileSync(path.join(root, 'cover.css'), 'utf8');
   assert(css.includes('body[data-current-page=cover] #workspaceShell{display:none}'), 'cover state hides the workspace before app initialization');

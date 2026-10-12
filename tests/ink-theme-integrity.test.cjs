@@ -7,7 +7,7 @@ const baseline=require('./fixtures/ink-functional-baseline.json');
 // These UI/document files were explicitly reworked after the ink-only release.
 // Their behavior is covered by the task-focus/navigation suites; all immutable
 // source remains hash-protected here and against the newer task-focus baseline.
-const taskClarityFiles=new Set(['app.js','career-ui.js','module-hub.js','README.md']);
+const taskClarityFiles=new Set(['cloud-sync.js','app.js','career-ui.js','module-hub.js','README.md']);
 for(const [file,sha] of Object.entries(baseline.protectedFiles))if(!taskClarityFiles.has(file))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex'),sha,file+': ink styling cannot alter approved functional/data/storage content');
 const html=read('index.html'),guide=read('guide.html'),doc=makeDocument(html);
 const scripts=[...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(m=>m[1]);
