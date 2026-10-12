@@ -17,3 +17,20 @@ for(const t of c.tracks){assert(t.requiredSkillIds.length>0);for(const id of t.r
 for(const r of roles){assert(r.skillMapping,'Missing job-specific mapping: '+r.id);const m=r.skillMapping;for(const id of [...m.directRequiredSkillIds,...m.supportingSkillIds])assert(sid.has(id));assert(m.directRequiredSkillIds.every(id=>!m.supportingSkillIds.includes(id)));assert(m.uncoveredRequirements.length&&m.mappingNote);}
 assert(fs.existsSync(path.join(root,'data/career-challenge-starters.zip')),'Assessment fixtures required');
 console.log('PASS public catalog: ten companies, cited role evidence, 13 skills, 30 independent learning units, closed prerequisite graphs, fixture archive.');
+
+// Public video resources intentionally have no completion identities or sync schema.
+const videos=read('data/video-learning.json'),outline=read('data/project-outline.json');
+assert.equal(videos.schemaVersion,1);assert(videos.checkedAt&&Number.isFinite(Date.parse(videos.checkedAt)));
+unique(videos.resources.map(x=>x.id),'Video resource');unique(videos.stages.map(x=>x.id),'Video stage');
+assert.deepEqual(videos.stages.map(x=>x.taskId),outline.milestones.map(x=>x.id),'Video stages map to the existing WA4 only');
+for(const stage of videos.stages){assert(stage.title&&stage.goal&&stage.moduleIds.length);const milestone=outline.milestones.find(x=>x.id===stage.taskId);assert.deepEqual(stage.moduleIds,milestone.moduleIds);assert(videos.resources.some(x=>x.taskId===stage.taskId),'Every current task has verified video resources');assert.deepEqual(stage.resourceIds,videos.resources.filter(x=>x.taskId===stage.taskId).map(x=>x.id),'Stage resource order matches its exact videos');}
+for(const resource of videos.resources){
+  assert(/^wa-video-/.test(resource.id),'Video IDs cannot be mistaken for old lesson IDs');
+  for(const field of ['title','provider','language','url','episodeLabel','watchScope','skillLabel','practice','check','checkedAt'])assert(typeof resource[field]==='string'&&resource[field].trim(),resource.id+' needs '+field);
+  safe(resource.url);assert(['www.bilibili.com','bilibili.com','www.youtube.com','youtube.com','youtu.be'].includes(new URL(resource.url).hostname),'Video-only playback destinations');
+  assert(Number.isFinite(Date.parse(resource.checkedAt)));assert(resource.sourceVerification,'Video metadata needs traceable verification');
+  assert(resource.skillIds.length&&resource.skillIds.every(id=>sid.has(id)),'Skills use existing registry IDs');
+  assert(outline.milestones.some(x=>x.id===resource.taskId),'Unknown task association');
+  assert(!['canonicalProgressId','progressId','completed','done','status'].some(key=>key in resource),'Read-only videos cannot inherit or fabricate completion');
+}
+console.log('PASS verified video sources: stable resource IDs, four existing WA task mappings, known skill IDs and no completion keys.');

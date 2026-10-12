@@ -101,7 +101,7 @@ for (const stage of project.milestones) {
 const guideSource = fs.readFileSync(path.join(root, 'guide.html'), 'utf8');
 const guide = makeDocument(guideSource), ids = guide.querySelectorAll('[id]').map(node => node.id);
 assert.equal(new Set(ids).size, ids.length, 'guide anchors remain unique after archiving the old manual');
-assert.equal(guide.querySelectorAll('.guide-plain-flow li').length,6,'six reference-module groups remain');
+assert.equal(guide.querySelectorAll('.guide-plain-flow li').length,4,'current guide shows the four video-to-project steps');
 assert.equal(guide.querySelectorAll('#plan .guide-card').length,4,'only four independent product outcomes are required');
 assert.equal(guide.querySelector('#first-use').querySelectorAll('.guide-steps li').length, 3);
 assert.equal(guide.querySelector('#legacy-manual').open, false, 'old navigation/product instructions are closed by default');

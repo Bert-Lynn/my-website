@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-12",
+  "projectId": "work-assistant",
+  "title": "只看当前这一步的视频，然后做同一个作品",
+  "direction": "先做Agent应用；完成可复现作品后，再进检索与评测；后训练与RL留到有训练基础和明确实验问题时。",
+  "stages": [
+    {
+      "id": "video-wa-m0",
+      "taskId": "wa-m0",
+      "moduleIds": [
+        "code",
+        "data"
+      ],
+      "title": "读取反馈",
+      "goal": "先完成8条虚构反馈的读取、筛选、去重和原文核对。",
+      "resourceIds": [
+        "wa-video-csv",
+        "wa-video-filter"
+      ],
+      "practiceSkillIds": [
+        "ai-code",
+        "sql-data"
+      ]
+    },
+    {
+      "id": "video-wa-m1",
+      "taskId": "wa-m1",
+      "moduleIds": [
+        "ai-tools",
+        "app"
+      ],
+      "title": "接入 Agent",
+      "goal": "让真实模型调用你已经验证的工具，并交出Excel和报告。",
+      "resourceIds": [
+        "wa-video-model-api",
+        "wa-video-react"
+      ],
+      "practiceSkillIds": [
+        "api-delivery",
+        "agent-evaluation"
+      ]
+    },
+    {
+      "id": "video-wa-m2",
+      "taskId": "wa-m2",
+      "moduleIds": [
+        "check-results"
+      ],
+      "title": "测试与纠错",
+      "goal": "错误要能被发现，失败要能停止，资料里的越权指令不能被执行。",
+      "resourceIds": [
+        "wa-video-pytest-start",
+        "wa-video-pytest-cases"
+      ],
+      "practiceSkillIds": [
+        "software-testing",
+        "agent-evaluation"
+      ]
+    },
+    {
+      "id": "video-wa-m3",
+      "taskId": "wa-m3",
+      "moduleIds": [
+        "interview"
+      ],
+      "title": "评测与演示",
+      "goal": "保留逐例证据、失败和局限，再演示完整任务、改条件与失败场景。",
+      "resourceIds": [
+        "wa-video-eval-concepts",
+        "wa-video-run-evals"
+      ],
+      "practiceSkillIds": [
+        "agent-evaluation",
+        "statistics-metrics",
+        "ml-validation",
+        "reproducible-workflow",
+        "technical-interview"
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "wa-video-csv",
+      "title": "把反馈CSV读进来，再导出文件",
+      "provider": "哔哩哔哩",
+      "author": "莫烦Python",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/av16378934/?p=15",
+      "episodeLabel": "P15 · 3.5 pandas 导入导出",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "07:22",
+      "durationSeconds": 442,
+      "skillIds": [
+        "sql-data"
+      ],
+      "skillLabel": "数据读写：让程序读到真实反馈，并生成能打开的结果文件。",
+      "taskId": "wa-m0",
+      "practice": "沿用8条虚构反馈，把input/feedback.csv读入，导出一份结果；保留feedback_id和原话。",
+      "check": "输入行数能手算核对；生成文件确实存在且能打开。",
+      "versionNote": "2017年录播，读写思路仍适用；安装和函数参数以当前项目环境为准。",
+      "checkedAt": "2026-10-12",
+      "sourceVerification": "已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/av16378934/?p=15"
+        ],
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "observedPlayerTime": "00:08 / 07:22"
+      },
+      "shortTitle": "把反馈CSV读进来，再导出文件",
+      "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。"
+    },
+    {
+      "id": "wa-video-filter",
+      "title": "只取这次任务需要的反馈",
+      "provider": "哔哩哔哩",
+      "author": "莫烦Python",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/av16378934/?p=12",
+      "episodeLabel": "P12 · 3.2 pandas 选择数据",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "11:43",
+      "durationSeconds": 703,
+      "skillIds": [
+        "sql-data"
+      ],
+      "skillLabel": "筛选数据：把“只看2.1版本”变成真的筛选条件。",
+      "taskId": "wa-m0",
+      "practice": "给同一个反馈读取工具增加product_version筛选；再沿用项目的去重、计数与证据关联要求。",
+      "check": "只看2.1版本应有6条；重复添加F001后去重仍为8条。筛选结果保留反馈编号。",
+      "versionNote": "老版示例若出现.ix不要照搬；本项目只使用当前支持的布尔筛选、loc或iloc。",
+      "checkedAt": "2026-10-12",
+      "sourceVerification": "已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/av16378934/?p=12"
+        ],
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "observedPlayerTime": "00:09 / 11:43"
+      },
+      "shortTitle": "只取这次任务需要的反馈",
+      "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。"
+    },
+    {
+      "id": "wa-video-model-api",
+      "title": "让Python实际调用一次模型",
+      "provider": "哔哩哔哩",
+      "author": "黑马程序员",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV178w1z7EHQ/?p=13",
+      "episodeLabel": "P13 · 12-AI通识-大模型API-编程调用大模型",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "17:59",
+      "durationSeconds": 1079,
+      "skillIds": [
+        "api-delivery"
+      ],
+      "skillLabel": "模型接入：把程序请求送给获准使用的真实模型，接回真实结果。",
+      "taskId": "wa-m1",
+      "practice": "在已有Python项目中接入一个获准模型，记录模型名、输入范围和运行结果；凭据使用安全配置，不写进代码。",
+      "check": "实际请求成功或明确报错；没有账号、授权或费用范围时保留未完成，不用固定回答冒充。",
+      "versionNote": "P序号从1开始，而课程标题从00开始；本节12对应P13。不要照着课程自动开通付费服务。",
+      "checkedAt": "2026-10-12",
+      "sourceVerification": "已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV178w1z7EHQ/?p=13"
+        ],
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "observedPlayerTime": "00:11 / 17:59"
+      },
+      "shortTitle": "让Python实际调用一次模型",
+      "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。"
+    },
+    {
+      "id": "wa-video-react",
+      "title": "让模型选择并调用已有工具",
+      "provider": "哔哩哔哩",
+      "author": "沧海九粟（LangChain × OceanBase社区课程）",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1g52uBZEco/",
+      "episodeLabel": "第1期 · 快速构建 ReAct Agent",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "20:13",
+      "durationSeconds": 1213,
+      "skillIds": [
+        "agent-evaluation"
+      ],
+      "skillLabel": "工具调用：模型选工具和参数，程序执行，再把结果交回模型。",
+      "taskId": "wa-m1",
+      "practice": "将wa-m0的读文件、筛选和统计工具接入Agent；分别运行“最常见5个问题”和“只看2.1版本”。",
+      "check": "两种请求产生对应工具参数及真实Excel/报告；保存工具调用和停止原因。",
+      "versionNote": "课程基于LangChain V1；沿用项目选定版本，不因课程另换整套项目。",
+      "checkedAt": "2026-10-12",
+      "sourceVerification": "已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1g52uBZEco/"
+        ],
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "observedPlayerTime": "00:07 / 20:13"
+      },
+      "shortTitle": "让模型选择并调用已有工具",
+      "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。"
+    },
+    {
+      "id": "wa-video-pytest-start",
+      "title": "先让错误被自动检查发现",
+      "provider": "哔哩哔哩",
+      "author": "白月黑羽编程",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1bV41167a4/",
+      "episodeLabel": "P1 · pytest01-快速上手",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "28:37",
+      "durationSeconds": 1717,
+      "skillIds": [
+        "software-testing"
+      ],
+      "skillLabel": "自动测试：把预期写成检查，让程序告诉你哪一步错了。",
+      "taskId": "wa-m2",
+      "practice": "给反馈工具写正常输入、缺feedback_id、空表三类测试；故意改错一个计数。",
+      "check": "故意改错时测试必须失败；修复后重跑通过，并保存失败与复查输出。",
+      "versionNote": "2020年录播；学习测试函数与断言。pytest不是unittest的版本升级，原视频总标题只是作者命名。",
+      "checkedAt": "2026-10-12",
+      "sourceVerification": "已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1bV41167a4/"
+        ],
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "observedPlayerTime": "00:05 / 28:36"
+      },
+      "shortTitle": "先让错误被自动检查发现",
+      "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。",
+      "durationNote": "目录显示28:37，播放器显示28:36；列表沿用目录时长。"
+    },
+    {
+      "id": "wa-video-pytest-cases",
+      "title": "用一组坏输入重复检查",
+      "provider": "哔哩哔哩",
+      "author": "白月黑羽编程",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1bV41167a4/?p=5",
+      "episodeLabel": "P5 · pytest05-数据驱动与调试",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "13:09",
+      "durationSeconds": 789,
+      "skillIds": [
+        "software-testing"
+      ],
+      "skillLabel": "边界测试：同一检查覆盖多组输入，复现问题再修复。",
+      "taskId": "wa-m2",
+      "practice": "把重复/冲突ID、未知版本、工具超时、越权路径和报告数字错误写成不同用例；先写期望结果再运行。",
+      "check": "逐例保留结果；重试次数有限，越权读取被阻止，失败/中断不会显示成功。",
+      "versionNote": "本课教测试组织方法；文件边界、重试上限等仍须在你自己的Agent代码中实现和验证。",
+      "checkedAt": "2026-10-12",
+      "sourceVerification": "已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1bV41167a4/?p=5"
+        ],
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "observedPlayerTime": "00:12 / 13:09"
+      },
+      "shortTitle": "用一组坏输入重复检查",
+      "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。"
+    },
+    {
+      "id": "wa-video-eval-concepts",
+      "title": "先决定怎样算做对",
+      "provider": "哔哩哔哩",
+      "author": "沧海九粟",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1WdNheeEGG/",
+      "episodeLabel": "独立视频 · 走近LLM应用的评测：LangSmith助力RAG和Agent评估（上）",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "22:26",
+      "durationSeconds": 1346,
+      "skillIds": [
+        "agent-evaluation",
+        "statistics-metrics"
+      ],
+      "skillLabel": "评测标准：分别检查数字、证据、条件和文件，不只凭“回答看起来不错”。",
+      "taskId": "wa-m3",
+      "practice": "固定一组未反复调试的任务与正确答案；为计数、引用、筛选和文件可用性分别定义检查。",
+      "check": "评测答案不进入模型输入；失败也保留，不能事后改标准让分数变好。",
+      "versionNote": "2025年录播；先学评测方法，项目可把结果保存在本地CSV。观看课程不等于同意上传资料。",
+      "checkedAt": "2026-10-12",
+      "sourceVerification": "已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1WdNheeEGG/"
+        ],
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "observedPlayerTime": "00:04 / 22:26"
+      },
+      "shortTitle": "先决定怎样算做对",
+      "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。"
+    },
+    {
+      "id": "wa-video-run-evals",
+      "title": "跑同一批任务，留下可比较的结果",
+      "provider": "哔哩哔哩",
+      "author": "沧海九粟",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV12f421X7j1/",
+      "episodeLabel": "第4节 · LangSmith Evaluations：执行评估评测",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "20:10",
+      "durationSeconds": 1210,
+      "skillIds": [
+        "agent-evaluation",
+        "ml-validation"
+      ],
+      "skillLabel": "对照评测：用同一批任务比较直接问模型和工具Agent。",
+      "taskId": "wa-m3",
+      "practice": "对相同资料范围运行直接问模型与工具Agent，保存逐例输出、错误、模型版本、耗时及可获取的费用。",
+      "check": "真实运行和固定回放分开；报告失败与局限。最后在干净目录重跑，并演示改为2.1版本与一次失败。",
+      "versionNote": "2024年录播，LangSmith界面/API可能已变；不要求注册或上传。可将同样评测流程实现为本地脚本。",
+      "checkedAt": "2026-10-12",
+      "sourceVerification": "已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV12f421X7j1/"
+        ],
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "observedPlayerTime": "00:05 / 20:10"
+      },
+      "shortTitle": "跑同一批任务，留下可比较的结果",
+      "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。"
+    }
+  ],
+  "playbackNote": "8节均已核验公开页、精确课节和短预览；B站完整观看可能需登录，未验证全程播放。",
+  "progressNote": "视频是动手前的短引导，不代表技能掌握或作品完成。仍以wa-m0至wa-m3的实际产物验收。",
+  "totalVideoSeconds": 8499,
+  "selectionNote": "每阶段仅2节；课后任务是本项目的迁移练习，不冒称原视频逐项教授全部验收要求。"
+}

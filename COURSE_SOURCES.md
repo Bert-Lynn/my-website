@@ -61,3 +61,75 @@
 | cs50p-functions | Week 0 · Functions, Variables | https://cs50.harvard.edu/python/weeks/0/ | https://cdn.cs50.net/python/2022/x/lectures/0/lang/en/lecture0.txt | 官方页面及英文SRT字幕已核验；未核实中文字幕或实际片长。 |
 | cs50p-conditionals | Week 1 · Conditionals | https://cs50.harvard.edu/python/weeks/1/ | https://cdn.cs50.net/python/2022/x/lectures/1/lang/en/lecture1.txt | 官方页面及英文SRT字幕已核验；未核实中文字幕或实际片长。 |
 | cs50p-loops | Week 2 · Loops | https://cs50.harvard.edu/python/weeks/2/ | https://cdn.cs50.net/python/2022/x/lectures/2/lang/en/lecture2.txt | 官方页面及英文SRT字幕已核验；未核实中文字幕或实际片长。 |
+
+
+## 2026-10-12 视频主线（独立于历史课节）
+
+本次新增8个只读视频资源，各对应既有WA任务；不复用旧课节ID，不新建视频完成状态。每节的项目练习是迁移应用，不冒称原视频讲解了全部项目验收标准。技能ID连接既有完整量表，只说明部分覆盖。
+
+所有视频均在精确目标地址核验标题、作者、目录或播放器时长，并看到短预览；未验证全程播放。B站页面可能要求登录后完整观看，不承诺免登录、无地区限制或永久免费服务。具体核验字段和证据链接保存在data/video-learning.json。
+
+### 1. 把反馈CSV读进来，再导出文件
+
+- 视频：[P15 · 3.5 pandas 导入导出](https://www.bilibili.com/video/av16378934/?p=15)；莫烦Python；07:22
+- 对应：wa-m0；技能 sql-data
+- 范围：只看本节完整视频，不要求刷完整套课程
+- 版本提醒：2017年录播，读写思路仍适用；安装和函数参数以当前项目环境为准。
+- 核验：已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。
+
+### 2. 只取这次任务需要的反馈
+
+- 视频：[P12 · 3.2 pandas 选择数据](https://www.bilibili.com/video/av16378934/?p=12)；莫烦Python；11:43
+- 对应：wa-m0；技能 sql-data
+- 范围：只看本节完整视频，不要求刷完整套课程
+- 版本提醒：老版示例若出现.ix不要照搬；本项目只使用当前支持的布尔筛选、loc或iloc。
+- 核验：已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。
+
+### 3. 让Python实际调用一次模型
+
+- 视频：[P13 · 12-AI通识-大模型API-编程调用大模型](https://www.bilibili.com/video/BV178w1z7EHQ/?p=13)；黑马程序员；17:59
+- 对应：wa-m1；技能 api-delivery
+- 范围：只看本节完整视频，不要求刷完整套课程
+- 版本提醒：P序号从1开始，而课程标题从00开始；本节12对应P13。不要照着课程自动开通付费服务。
+- 核验：已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。
+
+### 4. 让模型选择并调用已有工具
+
+- 视频：[第1期 · 快速构建 ReAct Agent](https://www.bilibili.com/video/BV1g52uBZEco/)；沧海九粟（LangChain × OceanBase社区课程）；20:13
+- 对应：wa-m1；技能 agent-evaluation
+- 范围：只看本节完整视频，不要求刷完整套课程
+- 版本提醒：课程基于LangChain V1；沿用项目选定版本，不因课程另换整套项目。
+- 核验：已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。
+
+### 5. 先让错误被自动检查发现
+
+- 视频：[P1 · pytest01-快速上手](https://www.bilibili.com/video/BV1bV41167a4/)；白月黑羽编程；28:37
+- 对应：wa-m2；技能 software-testing
+- 范围：只看本节完整视频，不要求刷完整套课程
+- 版本提醒：2020年录播；学习测试函数与断言。pytest不是unittest的版本升级，原视频总标题只是作者命名。
+- 核验：已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。
+
+### 6. 用一组坏输入重复检查
+
+- 视频：[P5 · pytest05-数据驱动与调试](https://www.bilibili.com/video/BV1bV41167a4/?p=5)；白月黑羽编程；13:09
+- 对应：wa-m2；技能 software-testing
+- 范围：只看本节完整视频，不要求刷完整套课程
+- 版本提醒：本课教测试组织方法；文件边界、重试上限等仍须在你自己的Agent代码中实现和验证。
+- 核验：已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。
+
+### 7. 先决定怎样算做对
+
+- 视频：[独立视频 · 走近LLM应用的评测：LangSmith助力RAG和Agent评估（上）](https://www.bilibili.com/video/BV1WdNheeEGG/)；沧海九粟；22:26
+- 对应：wa-m3；技能 agent-evaluation, statistics-metrics
+- 范围：只看本节完整视频，不要求刷完整套课程
+- 版本提醒：2025年录播；先学评测方法，项目可把结果保存在本地CSV。观看课程不等于同意上传资料。
+- 核验：已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。
+
+### 8. 跑同一批任务，留下可比较的结果
+
+- 视频：[第4节 · LangSmith Evaluations：执行评估评测](https://www.bilibili.com/video/BV12f421X7j1/)；沧海九粟；20:10
+- 对应：wa-m3；技能 agent-evaluation, ml-validation
+- 范围：只看本节完整视频，不要求刷完整套课程
+- 版本提醒：2024年录播，LangSmith界面/API可能已变；不要求注册或上传。可将同样评测流程实现为本地脚本。
+- 核验：已在云浏览器核验本节标题、作者、目录时长与短预览；完整观看可能需登录。
+

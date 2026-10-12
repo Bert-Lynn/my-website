@@ -34,7 +34,7 @@ function setup() {
     LessonUI: { stats: () => ({ done: 0, total: 53 }), render() {}, openLesson() {} }
   };
   ctx.window = ctx; vm.createContext(ctx);
-  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'internship-data.js', 'career-state.js', 'cloud-sync.js', 'career-ui.js']) {
+  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'video-learning.js', 'internship-data.js', 'career-state.js', 'cloud-sync.js', 'career-ui.js']) {
     vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), ctx, { filename: file });
   }
   const sync = ctx.PhdCloud.create({ ids: ['task-a'], config: { enabled: false }, storage: ctx.localStorage });

@@ -15,5 +15,5 @@ assert.equal(ctx.CareerUI.role().tag,'当前主线');
 assert.match(ctx.CareerUI.role().name,/Agent 开发/);
 selectedRole='decision_optimization';assert.equal(ctx.CareerUI.role().tag,'原有方向');
 selectedRole='forecasting_ml';assert.equal(ctx.CareerUI.role().tag,'可选方向');
-assert(html.includes('./career-ui.js?v=20261012-courses1'),'updated role labels bypass the previous cached UI asset');
+assert(html.includes('./career-ui.js?v=20261012-video1'),'updated role labels bypass the previous cached UI asset');
 console.log('PASS explicit desktop/narrow navigation names and Agent main-direction labels; saved direction IDs unchanged.');

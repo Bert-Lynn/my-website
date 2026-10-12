@@ -5,7 +5,8 @@ const {app}=require('./helpers/app-harness.cjs');
 const root=path.join(__dirname,'..'),outline=require('../data/project-outline.json');
 const click=node=>{assert(node);assert.equal(typeof node.onclick,'function');return node.onclick({preventDefault(){},currentTarget:node})};
 const snapshot=ctx=>JSON.stringify({tasks:ctx.AppProgress.sync().snapshot(),lessons:ctx.AppProgress.sync().lessonSnapshot(),career:ctx.phdCareerProgress.read()});
-const sources=id=>outline.growthLevels[0].steps.find(s=>s.currentStageId===id).resources;
+const videos=require('../data/video-learning.json');
+const sources=id=>videos.resources.filter(resource=>resource.taskId===id);
 const hrefs=nodes=>nodes.map(a=>a.getAttribute('href'));
 const verifyExternal=nodes=>nodes.forEach(a=>{assert(/^https:\/\//.test(a.getAttribute('href')));assert.equal(a.getAttribute('target'),'_blank');assert.equal(a.getAttribute('rel'),'noopener noreferrer');});
 (async()=>{
@@ -20,9 +21,9 @@ const verifyExternal=nodes=>nodes.forEach(a=>{assert(/^https:\/\//.test(a.getAtt
  assert(!h.query('.hub-course-card').textContent.includes('控制流'),'current WA course entrance does not default to old Python diagnosis');
  click(h.query('[data-hub-route="resources"]'));
  assert.equal(ctx.AppNavigation.current(),'resources');assert.equal(h.query('#pageTitle').textContent,'课程学习');
- assert.deepEqual(hrefs(h.all('.direct-course-link')),sources('wa-m0').map(x=>x.url));
- for(const source of sources('wa-m0'))assert(h.query('.direct-course-section').textContent.includes(source.scope));
- assert.equal(h.query('.direct-course-section').closest('details'),null,'official links are outside all collapsed panels');
+ assert.deepEqual(hrefs(h.all('.video-card-actions a')),sources('wa-m0').map(x=>x.url));
+ for(const source of sources('wa-m0'))assert(h.query('.video-course-list').textContent.includes(source.watchScope));
+ assert.equal(h.query('.video-course-list').closest('details'),null,'official links are outside all collapsed panels');
  assert.equal(h.all('.course-directory-link').length,6);
  assert.deepEqual(h.all('.course-directory-link').map(x=>x.dataset.openModule),['code','data','ai-tools','app','check-results','interview']);
  const unit=ctx.CAREER_CURRICULUM.learningUnits.find(u=>u.id==='u-python-diagnostic');
@@ -32,8 +33,8 @@ const verifyExternal=nodes=>nodes.forEach(a=>{assert(/^https:\/\//.test(a.getAtt
  for(const [module,id] of [['ai-tools','wa-m1'],['app','wa-m1'],['check-results','wa-m2'],['interview','wa-m3'],['data','wa-m0']]){
   click(h.query('.course-directory-link[data-open-module="'+module+'"]'));
   assert.equal(ctx.AppNavigation.route(),'learn/'+module);
-  assert.deepEqual(hrefs(h.all('.direct-course-link')),sources(id).map(x=>x.url),'module '+module+' opens its true WA references');
-  verifyExternal(h.all('.direct-course-link'));
+  assert.deepEqual(hrefs(h.all('.video-card-actions a')),sources(id).map(x=>x.url),'module '+module+' opens its true WA references');
+  verifyExternal(h.all('.video-card-actions a'));
   assert.equal(h.query('.course-directory-link[aria-current="page"]').dataset.openModule,module);
  }
  ctx.history.back();assert.equal(ctx.AppNavigation.route(),'learn/interview');
@@ -60,7 +61,7 @@ const verifyExternal=nodes=>nodes.forEach(a=>{assert(/^https:\/\//.test(a.getAtt
  assert(css.includes('.app-header .main-tabs button{font-size:16px!important}'),'wins against old desktop/mobile important rules');
  assert(css.includes('#careerLearning .lesson-purpose p{font-size:16px!important}'));
  assert(css.includes('.task-brief dd{font-size:16px;'));
- assert(css.includes('.hub-course-card{order:-1}'),'mobile prioritizes course entrance');
+ assert(css.includes('.video-course-card'),'video course cards have dedicated responsive styling');
  assert(css.includes('min-height:44px'));
  console.log('PASS course entrances: exact current-WA sources from hub/tasks/modules, direct links outside folds, 6 route switches/back/forward, original reading scopes, dirty-form protection, progress independence/undo, original26/53 records, and targeted readable CSS source contracts. Browser QA remains separate.');
 })().catch(e=>{console.error(e);process.exitCode=1});

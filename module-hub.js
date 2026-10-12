@@ -31,7 +31,7 @@
   const icon = key => '<svg class="hub-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[key]+'</svg>';
   const bar = (value,label) => '<div class="hub-progress-bar" role="progressbar" aria-label="'+esc(label)+'" aria-valuemin="0" aria-valuemax="'+value.total+'" aria-valuenow="'+value.done+'" aria-valuetext="'+value.done+' / '+value.total+' 已完成"><span style="width:'+value.pct+'%"></span></div>';
   function card({route,number,kicker,title,description,action,key,featured}) {
-    if(key==='learn'){const study=root.CareerUI?.studyLinks?.();return '<article class="hub-module-card hub-card-wide hub-course-card"><div class="hub-card-top"><span>'+number+' / '+kicker+'</span>'+icon(key)+'</div><h3>'+title+'</h3><p>'+esc(study?.title||'当前学习模块')+'</p><div class="hub-course-shortcuts">'+(study?.resources||[]).slice(0,2).map(x=>{const safe=root.CareerUI?.safeURL?.(x.url);return safe?'<a href="'+esc(safe)+'" target="_blank" rel="noopener noreferrer">'+esc(x.shortTitle||x.title)+' ↗</a>':''}).join('')+'</div><a class="hub-course-directory" href="#resources" data-hub-route="resources">打开课程目录 <span aria-hidden="true">→</span></a></article>';}
+    if(key==='learn'){const study=root.CareerUI?.studyLinks?.(),isVideo=root.CareerUI?.role?.().id==='agent_engineering';return '<article class="hub-module-card hub-card-wide hub-course-card"><div class="hub-card-top"><span>'+number+' / '+kicker+'</span>'+icon(key)+'</div><h3>'+(isVideo?'视频课程':'课程学习')+'</h3><p>'+esc(study?.title||'当前学习模块')+'</p><div class="hub-course-shortcuts">'+(study?.resources||[]).slice(0,2).map(x=>{const safe=root.CareerUI?.safeURL?.(x.url);return safe?'<a href="'+esc(safe)+'" target="_blank" rel="noopener noreferrer">'+esc(x.shortTitle||x.title)+' ↗</a>':''}).join('')+'</div><a class="hub-course-directory" href="#resources" data-hub-route="resources">'+(isVideo?'打开视频与对应技能':'打开课程目录')+' <span aria-hidden="true">→</span></a></article>';}
     return '<a class="hub-module-card'+(featured?' hub-card-wide':'')+'" href="#'+route+'" data-hub-route="'+route+'"><div class="hub-card-top"><span>'+number+' / '+kicker+'</span>'+icon(key)+'</div><h3>'+title+'</h3><p>'+description+'</p><div class="hub-card-footer"><span>'+action+'</span>'+arrow+'</div></a>';
   }
   function render() {
@@ -39,14 +39,14 @@
     if(!el || !options.openPage) return;
     const s = snapshot();
     const independent = [
-      {id:'lessons',title:'课程课节',value:s.lessons,unit:'节已学',note:s.role+' · 当前必修课节'},
+      {id:'lessons',title:'原课程课节',value:s.lessons,unit:'节已学',note:s.role+' · 原课节完成记录'},
       {id:'project',title:'用户反馈分析 Agent',value:s.project,unit:'阶段完成',note:'独立的 4 件成果 · 手动自查保存'},
       {id:'skills',title:'实习技能自查',value:s.skills,unit:'项自查通过',note:'当前方向的必需技能 · 实操自评'}
     ];
     el.innerHTML = '<section class="hub-plan-progress" aria-labelledby="hubProgressTitle"><div class="hub-overall"><div class="hub-section-kicker">PLAN PROGRESS</div><h2 id="hubProgressTitle">整体进度<span>原计划任务</span></h2><div class="hub-overall-number"><strong id="hubOverallPercent">'+s.total.pct+'<small>%</small></strong><span id="hubOverallCount">'+s.total.done+' / '+s.total.total+' 项已完成</span></div>'+bar(s.total,'原计划整体任务')+'<p>按实际勾选计算，不按时间推进。</p></div><div class="hub-breakdown"><div class="hub-breakdown-heading"><h3>原计划细分进度</h3><span>这三项合计 '+s.total.total+' 个任务</span></div>'+s.buckets.map(b=>'<div class="hub-breakdown-row" data-hub-bucket="'+b.id+'"><div><span>'+b.label+'</span><strong>'+b.done+' <small>/ '+b.total+' 项</small></strong></div>'+bar(b,b.label)+'</div>').join('')+'</div></section>'+
       '<section class="hub-module-section" aria-labelledby="hubModuleTitle"><div class="hub-module-heading"><h2 id="hubModuleTitle">今天，从哪里开始？</h2><span>选择一个模块，专注眼前这件事。</span></div><div class="hub-module-grid">'+[
         {route:'execution',number:'01',kicker:'PLAN & DO',title:'当前任务',description:'从第一项未完成任务开始，查看资料、文件与完成检查。',action:'打开任务列表',key:'tasks',featured:true},
-        {route:'resources',number:'02',kicker:'LEARN',title:'课程学习',description:'按当前方向继续学习，打开资料、完成练习，再记录课节。',action:'继续当前学习模块',key:'learn',featured:true},
+        {route:'resources',number:'02',kicker:'LEARN',title:'视频课程',description:'按当前任务看视频，知道学会什么，再用到自己的项目。',action:'看当前任务的视频',key:'learn',featured:true},
         {route:'projects',number:'03',kicker:'BUILD & DELIVER',title:'Demo 制作与交付',description:'查看要做出的工具、成品要求和后续学习计划。',action:'查看作品说明',key:'project'},
         {route:'execution/research',number:'04',kicker:'RESEARCH',title:'科研与论文',description:'集中查看研究任务，推进实验、写作与论文投稿。',action:'打开 '+s.buckets[0].total+' 项科研任务',key:'research'},
         {route:'roles',number:'05',kicker:'PREPARE',title:'实习准备',description:'对照岗位要求与技能记录，明确下一步准备什么。',action:'查看岗位与准备要求',key:'roles'}
