@@ -21,16 +21,24 @@ console.log('PASS public catalog: ten companies, cited role evidence, 13 skills,
 // Public video resources intentionally have no completion identities or sync schema.
 const videos=read('data/video-learning.json'),outline=read('data/project-outline.json');
 assert.equal(videos.schemaVersion,1);assert(videos.checkedAt&&Number.isFinite(Date.parse(videos.checkedAt)));
-unique(videos.resources.map(x=>x.id),'Video resource');unique(videos.stages.map(x=>x.id),'Video stage');
+unique([...videos.resources,...(videos.archivedResources||[])].map(x=>x.id),'Current and archived video resource');unique(videos.stages.map(x=>x.id),'Video stage');
 assert.deepEqual(videos.stages.map(x=>x.taskId),outline.milestones.map(x=>x.id),'Video stages map to the existing WA4 only');
 for(const stage of videos.stages){assert(stage.title&&stage.goal&&stage.moduleIds.length);const milestone=outline.milestones.find(x=>x.id===stage.taskId);assert.deepEqual(stage.moduleIds,milestone.moduleIds);assert(videos.resources.some(x=>x.taskId===stage.taskId),'Every current task has verified video resources');assert.deepEqual(stage.resourceIds,videos.resources.filter(x=>x.taskId===stage.taskId).map(x=>x.id),'Stage resource order matches its exact videos');}
 for(const resource of videos.resources){
   assert(/^wa-video-/.test(resource.id),'Video IDs cannot be mistaken for old lesson IDs');
-  for(const field of ['title','provider','language','url','episodeLabel','watchScope','skillLabel','practice','check','checkedAt'])assert(typeof resource[field]==='string'&&resource[field].trim(),resource.id+' needs '+field);
+  for(const field of ['title','provider','language','url','episodeLabel','watchScope','skillLabel','practice','check','checkedAt','publishedAt','technologySummary'])assert(typeof resource[field]==='string'&&resource[field].trim(),resource.id+' needs '+field);
   safe(resource.url);assert(['www.bilibili.com','bilibili.com','www.youtube.com','youtube.com','youtu.be'].includes(new URL(resource.url).hostname),'Video-only playback destinations');
   assert(Number.isFinite(Date.parse(resource.checkedAt)));assert(resource.sourceVerification,'Video metadata needs traceable verification');
+  assert(/^202[56]-\d{2}(?:-\d{2})?$/.test(resource.publishedAt)&&Number.isFinite(Date.parse(resource.publishedAt)),'Current videos need a verified 2025–26 publication date');
+  assert(resource.publishedAt<=resource.checkedAt,'A future release cannot be represented as available');
+  assert(['day','month'].includes(resource.publicationPrecision)&&resource.publishedAt.length===(resource.publicationPrecision==='month'?7:10),'Publication precision must match observed evidence');
+  assert(['course','video'].includes(resource.publicationScope),'Album release dates must not be presented as individual-episode update dates');
+  assert(resource.verification?.publicationDateVerified&&resource.verification?.publicationEvidenceUrl,'Publication dates need a traceable source');safe(resource.verification.publicationEvidenceUrl);
+  assert(resource.verification?.exactEpisodeUrlVerified,'Verify the exact video or episode');
+  for(const url of resource.verification.technologyEvidenceUrls||[])safe(url);
   assert(resource.skillIds.length&&resource.skillIds.every(id=>sid.has(id)),'Skills use existing registry IDs');
   assert(outline.milestones.some(x=>x.id===resource.taskId),'Unknown task association');
   assert(!['canonicalProgressId','progressId','completed','done','status'].some(key=>key in resource),'Read-only videos cannot inherit or fabricate completion');
 }
-console.log('PASS verified video sources: stable resource IDs, four existing WA task mappings, known skill IDs and no completion keys.');
+for(const resource of videos.archivedResources||[]){assert(!['canonicalProgressId','progressId','completed','done','status'].some(key=>key in resource));safe(resource.url)}
+console.log('PASS verified video sources: dated 2025–26 resources, distinct archived IDs, exact episode evidence, four existing WA task mappings, known skill IDs and no completion keys.');

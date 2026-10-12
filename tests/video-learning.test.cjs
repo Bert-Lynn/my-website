@@ -25,7 +25,7 @@ const hrefs=nodes=>nodes.map(node=>node.getAttribute('href'));
    assert.deepEqual(hrefs(h.all('.video-card-actions a')),videos(stage.taskId).map(resource=>resource.url));
    for(const [i,card] of h.all('.video-course-card').entries()){
      const resource=videos(stage.taskId)[i];assert.equal(card.dataset.videoResource,resource.id);
-     for(const field of ['title','episodeLabel','skillLabel','practice','check'])assert(card.textContent.includes(resource[field]),field+' is visible per video');
+     for(const field of ['title','episodeLabel','skillLabel','practice','check','publishedAt','technologySummary'])assert(card.textContent.includes(resource[field]),field+' is visible per video');
      assert.equal(card.closest('details'),null);assert.equal(card.querySelector('.video-skill-detail').open,false);
      assert.deepEqual(card.querySelectorAll('[data-assess]').map(node=>node.dataset.assess),resource.skillIds);
      const link=card.querySelector('.video-card-actions a');assert.equal(link.getAttribute('target'),'_blank');assert.equal(link.getAttribute('rel'),'noopener noreferrer');

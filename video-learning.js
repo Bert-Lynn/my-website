@@ -3,7 +3,7 @@ window.VIDEO_LEARNING = {
   "schemaVersion": 1,
   "checkedAt": "2026-10-12",
   "projectId": "work-assistant",
-  "title": "只看当前这一步的视频，然后做同一个作品",
+  "title": "看新视频，做同一个反馈分析 Agent",
   "direction": "先做Agent应用；完成可复现作品后，再进检索与评测；后训练与RL留到有训练基础和明确实验问题时。",
   "stages": [
     {
@@ -16,8 +16,8 @@ window.VIDEO_LEARNING = {
       "title": "读取反馈",
       "goal": "先完成8条虚构反馈的读取、筛选、去重和原文核对。",
       "resourceIds": [
-        "wa-video-csv",
-        "wa-video-filter"
+        "wa-video-2025-heima-pandas-io",
+        "wa-video-2025-heima-pandas-filter"
       ],
       "practiceSkillIds": [
         "ai-code",
@@ -34,8 +34,7 @@ window.VIDEO_LEARNING = {
       "title": "接入 Agent",
       "goal": "让真实模型调用你已经验证的工具，并交出Excel和报告。",
       "resourceIds": [
-        "wa-video-model-api",
-        "wa-video-react"
+        "wa-video-2026-nange-langchain-quickstart"
       ],
       "practiceSkillIds": [
         "api-delivery",
@@ -51,8 +50,8 @@ window.VIDEO_LEARNING = {
       "title": "测试与纠错",
       "goal": "错误要能被发现，失败要能停止，资料里的越权指令不能被执行。",
       "resourceIds": [
-        "wa-video-pytest-start",
-        "wa-video-pytest-cases"
+        "wa-video-2025-heima-assertions",
+        "wa-video-2025-heima-pytest"
       ],
       "practiceSkillIds": [
         "software-testing",
@@ -68,8 +67,8 @@ window.VIDEO_LEARNING = {
       "title": "评测与演示",
       "goal": "保留逐例证据、失败和局限，再演示完整任务、改条件与失败场景。",
       "resourceIds": [
-        "wa-video-eval-concepts",
-        "wa-video-run-evals"
+        "wa-video-2026-manxue-agent-graders",
+        "wa-video-2026-manxue-evaluation-suite"
       ],
       "practiceSkillIds": [
         "agent-evaluation",
@@ -81,6 +80,451 @@ window.VIDEO_LEARNING = {
     }
   ],
   "resources": [
+    {
+      "id": "wa-video-2025-heima-pandas-io",
+      "title": "读取反馈 CSV，导出结果",
+      "provider": "哔哩哔哩",
+      "author": "黑马程序员",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1sHU9BmEne/?p=142",
+      "episodeLabel": "P142 · 数据分析-Pandas基础-数据读取与写入",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "15:41",
+      "durationSeconds": 941,
+      "skillIds": [
+        "sql-data"
+      ],
+      "skillLabel": "数据读写：让程序读到真实反馈，并生成能打开的结果文件。",
+      "taskId": "wa-m0",
+      "practice": "沿用8条虚构反馈，把input/feedback.csv读入，导出一份结果；保留feedback_id和原话。",
+      "check": "输入行数能手算核对；生成文件确实存在且能打开。",
+      "checkedAt": "2026-10-12",
+      "shortTitle": "Pandas：CSV 读写",
+      "publishedAt": "2025-11",
+      "publicationPrecision": "month",
+      "publicationScope": "course",
+      "technologySummary": "Python 3 · pandas 文件读写",
+      "versionNote": "新版Python+AI课程的Pandas课节，专辑于2025年11月发布；原课未公开pandas小版本。只迁移读写方法，不要求刷完整185节。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "publicationDateVerified": true,
+        "publicationEvidenceUrl": "https://www.bilibili.com/video/BV1sHU9BmEne/",
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1sHU9BmEne/?p=142",
+          "https://yun.itheima.com/map",
+          "https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"
+        ],
+        "publicationDetail": "原视频搜索索引显示2025-11-26 10:00:00，云浏览器原页面显示2025-11-25 18:00:00；存在日期时区渲染差异，主线保守显示2025-11。为课程发布日，未单独核实P142上传或实质更新日。",
+        "sourceVersionEvidence": "课中未公开可核验的pandas小版本；当前官方文档支持read_csv。不得把当前文档版本当成录课版本。",
+        "previewObservation": "原生浏览器播放本节，看到数据导入导出讲义与读取写入操作。",
+        "observedPlayerTime": "01:03 / 15:41"
+      },
+      "sourceVerification": "已核验原作者页面、精确视频/课节、时长与短预览；发布日期按来源可确定的精度标注。",
+      "accessNote": "已验证短预览，未验证全程播放；B站完整观看可能需要登录。",
+      "sourceTitle": "黑马程序员Python+AI零基础入门到大神全套视频课程，覆盖Python核心语法、AI应用、数据分析及Web应用等python实战项目开发全流程",
+      "sourceEpisodeTitle": "142. 数据分析-Pandas基础-数据读取与写入",
+      "sourceReferences": [
+        {
+          "url": "https://yun.itheima.com/map",
+          "role": "原提供方课程目录，列出2025.11.26课程日期"
+        },
+        {
+          "url": "https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html",
+          "role": "当前官方read_csv文档核对基础API"
+        }
+      ],
+      "exerciseBoundary": "原课教授通用读写；feedback_id、版本号字符串保真与WA输出路径为本项目迁移要求。"
+    },
+    {
+      "id": "wa-video-2025-heima-pandas-filter",
+      "title": "按条件筛选反馈",
+      "provider": "哔哩哔哩",
+      "author": "黑马程序员",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1sHU9BmEne/?p=144",
+      "episodeLabel": "P144 · 数据分析-Pandas基础-数据过滤",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "16:51",
+      "durationSeconds": 1011,
+      "skillIds": [
+        "sql-data"
+      ],
+      "skillLabel": "筛选数据：把“只看2.1版本”变成真的筛选条件。",
+      "taskId": "wa-m0",
+      "practice": "给同一个反馈读取工具增加product_version筛选；再沿用项目的去重、计数与证据关联要求。",
+      "check": "只看2.1版本应有6条；重复添加F001后去重仍为8条。筛选结果保留反馈编号。",
+      "checkedAt": "2026-10-12",
+      "shortTitle": "Pandas：条件筛选",
+      "publishedAt": "2025-11",
+      "publicationPrecision": "month",
+      "publicationScope": "course",
+      "technologySummary": "pandas · loc / iloc / 布尔筛选",
+      "versionNote": "2025年11月发布的课程；目录与预览包含loc、iloc、isin、between和布尔条件。原课pandas小版本未公开。去重是本项目的后续迁移练习。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "publicationDateVerified": true,
+        "publicationEvidenceUrl": "https://www.bilibili.com/video/BV1sHU9BmEne/",
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1sHU9BmEne/?p=144",
+          "https://yun.itheima.com/map",
+          "https://pandas.pydata.org/docs/user_guide/indexing.html"
+        ],
+        "publicationDetail": "同一课程；索引2025-11-26与原生页面2025-11-25有日期渲染差异，主线显示2025-11。未单独核实P144上传或实质更新日。",
+        "sourceVersionEvidence": "pandas小版本未公开核实。布尔过滤、loc/iloc与isin为本节内容；不采用已移除的.ix。",
+        "previewObservation": "原生浏览器已看到loc/iloc、isin/between与布尔筛选讲义，以及随后变化的notebook数据运行画面；播放器秒数未可靠记录。"
+      },
+      "sourceVerification": "已核验原作者页面、精确视频/课节、时长与短预览；发布日期按来源可确定的精度标注。",
+      "accessNote": "已验证短预览，未验证全程播放；B站完整观看可能需要登录。",
+      "sourceTitle": "黑马程序员Python+AI零基础入门到大神全套视频课程，覆盖Python核心语法、AI应用、数据分析及Web应用等python实战项目开发全流程",
+      "sourceEpisodeTitle": "144. 数据分析-Pandas基础-数据过滤",
+      "sourceReferences": [
+        {
+          "url": "https://yun.itheima.com/map",
+          "role": "原提供方课程目录，列出2025.11.26课程日期"
+        },
+        {
+          "url": "https://pandas.pydata.org/docs/user_guide/indexing.html",
+          "role": "当前官方索引与筛选API文档"
+        }
+      ],
+      "exerciseBoundary": "原课教授通用筛选；F001重复/冲突、版本2.1及原文核对是WA实践与验收，不宣称原课覆盖。"
+    },
+    {
+      "id": "wa-video-2026-nange-langchain-quickstart",
+      "title": "接入模型，让 Agent 调用工具",
+      "provider": "哔哩哔哩",
+      "author": "南哥AGI研习社",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1EZ62BhEbR/",
+      "episodeLabel": "独立视频 · EP01_快速入门用例",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "29:24",
+      "durationSeconds": 1764,
+      "skillIds": [
+        "api-delivery",
+        "agent-evaluation"
+      ],
+      "skillLabel": "模型与工具接入：实际调用模型，由Agent选择已有工具，返回可检查的结构化结果。",
+      "taskId": "wa-m1",
+      "practice": "将wa-m0的读文件、筛选和统计函数接入获准使用的真实模型；分别运行“最常见5个问题”和“只看2.1版本”。记录模型、工具参数和运行结果，凭据不写进代码。",
+      "check": "两种请求实际执行对应工具并生成Excel/报告；保留调用与停止原因。缺少账号、费用或使用授权时保持未完成，不用固定回答冒充。",
+      "checkedAt": "2026-10-12",
+      "shortTitle": "LangChain v1：模型与工具调用",
+      "publishedAt": "2026-01-10",
+      "publicationPrecision": "day",
+      "publicationScope": "video",
+      "technologySummary": "LangChain 1.2.1 · langchain-openai 1.1.6",
+      "versionNote": "原作者配套Quickstart明确固定langchain==1.2.1与langchain-openai==1.1.6；在独立项目环境核对这些版本，避免混用旧教程接口。视频不授权开通付费API。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "publicationDateVerified": true,
+        "publicationEvidenceUrl": "https://www.bilibili.com/video/BV1EZ62BhEbR/",
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1EZ62BhEbR/",
+          "https://github.com/NanGePlus/LangChain_V1_Test",
+          "https://raw.githubusercontent.com/NanGePlus/LangChain_V1_Test/main/01_Quickstart/README.md",
+          "https://docs.langchain.com/oss/python/langchain/agents"
+        ],
+        "technologyEvidenceUrls": [
+          "https://github.com/NanGePlus/LangChain_V1_Test/tree/main/01_Quickstart"
+        ],
+        "publicationDetail": "原视频2026-01-10；搜索索引时间18:15:02、原生页面02:15:02，日期相同。独立视频发布日，不是系列标题年份。",
+        "sourceVersionEvidence": "本课配套01_Quickstart/README明确langchain==1.2.1、langchain-openai==1.1.6、concurrent-log-handler==0.9.28；当前官方V1文档仍使用create_agent与工具机制。本课是V1.2时代录制，不标为2026-10最新小版本。",
+        "previewObservation": "原生浏览器短预览出现原作者GitHub README与快速入门目录，公开播放；README逐项核对模型集成、工具定义、Agent执行与工具调用。",
+        "observedPlayerTime": "00:40 / 29:24"
+      },
+      "sourceVerification": "已核验原作者页面、精确视频/课节、时长与短预览；发布日期按来源可确定的精度标注。",
+      "accessNote": "已验证短预览，未验证全程播放；B站完整观看可能需要登录。",
+      "sourceTitle": "【EP01_快速入门用例】2026必学！LangChain最新V1.x版本全家桶LangChain+LangGraph+DeepAgents开发经验免费分享",
+      "sourceEpisodeTitle": "EP01_快速入门用例",
+      "sourceReferences": [
+        {
+          "url": "https://github.com/NanGePlus/LangChain_V1_Test",
+          "role": "原作者公开配套仓库，列出本视频链接"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/NanGePlus/LangChain_V1_Test/main/01_Quickstart/README.md",
+          "role": "本课配套README明确依赖安装版本与功能"
+        },
+        {
+          "url": "https://docs.langchain.com/oss/python/langchain/agents",
+          "role": "当前LangChain官方V1 Agent API适用性核验"
+        }
+      ],
+      "exerciseBoundary": "使用已获授权的模型服务及项目固定依赖进行WA迁移；不要求使用作者推广的第三方代理、注册付费或把密钥写入源码。工具超时/权限防护由本项目补充。"
+    },
+    {
+      "id": "wa-video-2025-heima-assertions",
+      "title": "把正确结果写成断言",
+      "provider": "哔哩哔哩",
+      "author": "黑马程序员",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1edEizxEbU/?p=13",
+      "episodeLabel": "P13 · 13-AI自动化测试速成（断言）",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "09:52",
+      "durationSeconds": 592,
+      "skillIds": [
+        "software-testing"
+      ],
+      "skillLabel": "断言：把手算的正确结果写成程序能检查的条件。",
+      "taskId": "wa-m2",
+      "practice": "先为反馈函数写三条断言：全部8条、2.1版本6条、重复F001去重后8条；故意把一项预期写成7。",
+      "check": "正确预期通过；错误预期必须报错并说明原因。继续为缺feedback_id和空表写清期望结果。",
+      "checkedAt": "2026-10-12",
+      "shortTitle": "Python：用断言检查结果",
+      "publishedAt": "2025-05",
+      "publicationPrecision": "month",
+      "publicationScope": "course",
+      "technologySummary": "Python 3.11 · assert 断言",
+      "versionNote": "2025年新版课程；抽查画面使用Python 3.11，讲解assert条件、错误消息和相等断言。课后把这些方法迁移到本地反馈函数。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "publicationDateVerified": true,
+        "publicationEvidenceUrl": "https://yun.itheima.com/course/1069.html?capid=1",
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1edEizxEbU/?p=13",
+          "https://yun.itheima.com/course/1069.html?capid=1",
+          "https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement",
+          "https://docs.pytest.org/en/stable/how-to/assert.html"
+        ],
+        "observedPlayerTime": "02:31 / 09:52",
+        "publicationDetail": "B站搜索索引发布2025-05-15、原生页面2025-05-14 18:00:00；原提供方页面列更新日期2025.05.15。为整课日期，主线保守显示2025-05，非独立P13更新日。",
+        "sourceVersionEvidence": "播放画面可见Python3.11运行路径；具体补丁版本未核实。assert语法仍适用，优化模式可能移除断言，安全边界和生产输入验证必须显式检查/抛错。",
+        "previewObservation": "原生浏览器自02:04开始抽查assert condition, message讲义；保存截图为02:31，展示布尔条件和相等断言，随后观察成员关系。开头Web自动化演示终端可见Python3.11路径。"
+      },
+      "sourceVerification": "已核验原作者页面、精确视频/课节、时长与短预览；发布日期按来源可确定的精度标注。",
+      "accessNote": "已验证短预览，未验证全程播放；B站完整观看可能需要登录。",
+      "sourceTitle": "黑马程序员AI手工全流程测试和自动化测试入门，AI软件测试全套3小时从需求分析到测试报告全流程讲解",
+      "sourceEpisodeTitle": "13-AI自动化测试速成（断言）",
+      "sourceReferences": [
+        {
+          "url": "https://yun.itheima.com/course/1069.html?capid=1",
+          "role": "原提供方课程页面，更新日期2025.05.15、真实P13/P14目录"
+        },
+        {
+          "url": "https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement",
+          "role": "当前Python assert语义与优化模式限制"
+        },
+        {
+          "url": "https://docs.pytest.org/en/stable/how-to/assert.html",
+          "role": "当前pytest断言用法"
+        }
+      ],
+      "exerciseBoundary": "原课是Web自动化登录例，不是专讲WA或纯API测试；仅迁移断言思路，无需照搬Selenium。"
+    },
+    {
+      "id": "wa-video-2025-heima-pytest",
+      "title": "写自动测试，让错误真的报出来",
+      "provider": "哔哩哔哩",
+      "author": "黑马程序员",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1edEizxEbU/?p=14",
+      "episodeLabel": "P14 · 14-AI自动化测试速成（pytest框架）",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "15:03",
+      "durationSeconds": 903,
+      "skillIds": [
+        "software-testing"
+      ],
+      "skillLabel": "自动测试：用pytest集中运行用例，复现问题后再修复。",
+      "taskId": "wa-m2",
+      "practice": "把前一节的断言整理成测试函数，加入空表、缺ID和重复ID用例；按项目标准继续为工具超时与越权路径写检查。",
+      "check": "故意改错时测试失败；修复后全部重跑通过。保留失败与复查输出，中断或越权不能显示成功。",
+      "checkedAt": "2026-10-12",
+      "shortTitle": "pytest：测试与断言",
+      "publishedAt": "2025-05",
+      "publicationPrecision": "month",
+      "publicationScope": "course",
+      "technologySummary": "pytest · 测试函数 / fixture / 断言",
+      "versionNote": "2025年新版课程，原课pytest小版本未公开。视频用Selenium网页登录例讲测试函数与fixture；这里只迁移测试结构到反馈函数，不要求改做网站自动化。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "publicationDateVerified": true,
+        "publicationEvidenceUrl": "https://yun.itheima.com/course/1069.html?capid=1",
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1edEizxEbU/?p=14",
+          "https://yun.itheima.com/course/1069.html?capid=1",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html"
+        ],
+        "observedPlayerTime": "00:56 / 15:03",
+        "publicationDetail": "同一整课2025年5月；具体日期显示存在上述时区差异。未单独核实P14上传/实质更新日。",
+        "sourceVersionEvidence": "本节未公开/展示足够信息确认pytest小版本；test_发现与fixture核心机制已对照当前官方文档。不能声称使用最新pytest。",
+        "previewObservation": "原生浏览器短预览可见@pytest.fixture(scope=\"module\")、def test_login(driver)与Selenium登录测试示例。"
+      },
+      "sourceVerification": "已核验原作者页面、精确视频/课节、时长与短预览；发布日期按来源可确定的精度标注。",
+      "accessNote": "已验证短预览，未验证全程播放；B站完整观看可能需要登录。",
+      "sourceTitle": "黑马程序员AI手工全流程测试和自动化测试入门，AI软件测试全套3小时从需求分析到测试报告全流程讲解",
+      "sourceEpisodeTitle": "14-AI自动化测试速成（pytest框架）",
+      "sourceReferences": [
+        {
+          "url": "https://yun.itheima.com/course/1069.html?capid=1",
+          "role": "原提供方2025.05.15课程日期与真实课节目录"
+        },
+        {
+          "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "role": "当前pytest fixture文档"
+        }
+      ],
+      "exerciseBoundary": "课中演示Web登录测试；WA的空数据/坏ID/冲突/未知版本/工具超时/越权路径为本项目迁移用例，用fixtures或mock注入，不宣称视频教授全部安全边界。"
+    },
+    {
+      "id": "wa-video-2026-manxue-agent-graders",
+      "title": "把“做得对”写成评分规则",
+      "provider": "哔哩哔哩",
+      "author": "慢学AI",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1oFrkBmEyg/",
+      "episodeLabel": "独立视频 · Agent评估中的评分器Grader怎么做：Anthropic《Demystifying evals for AI agents》②",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "09:57",
+      "durationSeconds": 597,
+      "skillIds": [
+        "agent-evaluation",
+        "statistics-metrics"
+      ],
+      "skillLabel": "评测标准：分别检查数字、证据、条件和文件，不只凭“回答看起来不错”。",
+      "taskId": "wa-m3",
+      "practice": "固定一组未反复调试的任务与正确答案；为计数、引用、筛选和文件可用性分别定义检查。",
+      "check": "评测答案不进入模型输入；失败也保留，不能事后改标准让分数变好。",
+      "checkedAt": "2026-10-12",
+      "shortTitle": "Agent 评测：设计评分器",
+      "publishedAt": "2026-01-16",
+      "publicationPrecision": "day",
+      "publicationScope": "video",
+      "technologySummary": "评测方法 · 规则评分 / LLM 评分",
+      "versionNote": "2026年1月中文方法讲解，解读Anthropic同期官方评测指南，不绑定旧版SDK。视频不是完整编码实战；课后将评分规则用本地pytest和CSV实现，保留人工复核。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "publicationDateVerified": true,
+        "publicationEvidenceUrl": "https://www.bilibili.com/video/BV1oFrkBmEyg/",
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1oFrkBmEyg/",
+          "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        ],
+        "observedPlayerTime": "00:33 / 09:57",
+        "publicationDetail": "独立视频原页面2026-01-16 03:04:21，索引2026-01-16 19:04:21；日期一致。",
+        "sourceVersionEvidence": "框架无关评测方法课，无LangSmith/Langfuse SDK安装或小版本依赖。依据2026-01-09原文，不宣称为完整代码构建课程。",
+        "previewObservation": "原生浏览器从00:15观察至00:33；画面明确code/model/human三类评分器及代码式结果、工具检查，不是仅讲日志追踪。"
+      },
+      "sourceVerification": "已核验原作者页面、精确视频/课节、时长与短预览；发布日期按来源可确定的精度标注。",
+      "accessNote": "已验证短预览，未验证全程播放；B站完整观看可能需要登录。",
+      "sourceTitle": "Agent评估中的评分器Grader怎么做:Anthropic《Demystifying evals for AI agents》②",
+      "sourceEpisodeTitle": "评分器 Grader · 第②讲",
+      "sourceReferences": [
+        {
+          "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+          "role": "视频解读的Anthropic原始工程文章，发布2026-01-09"
+        }
+      ],
+      "exerciseBoundary": "WA任务要求自行把报告事实、文件存在、原文引用做成可复核评分标准；客观检查与人工抽核结合，LLM评分不能单独充当真值。"
+    },
+    {
+      "id": "wa-video-2026-manxue-evaluation-suite",
+      "title": "搭一套能重复运行的 Agent 评测",
+      "provider": "哔哩哔哩",
+      "author": "慢学AI",
+      "language": "中文",
+      "url": "https://www.bilibili.com/video/BV1JukeBYEFT/",
+      "episodeLabel": "独立视频 · 如何从0到1打造自己的agent评估体系：Anthropic《Demystifying evals for AI agents》⑤",
+      "watchScope": "只看本节完整视频，不要求刷完整套课程",
+      "durationLabel": "07:08",
+      "durationSeconds": 428,
+      "skillIds": [
+        "agent-evaluation",
+        "ml-validation"
+      ],
+      "skillLabel": "对照评测：用同一批任务比较直接问模型和工具Agent。",
+      "taskId": "wa-m3",
+      "practice": "对相同资料范围运行直接问模型与工具Agent，保存逐例输出、错误、模型版本、耗时及可获取的费用。",
+      "check": "真实运行和固定回放分开；报告失败与局限。最后在干净目录重跑，并演示改为2.1版本与一次失败。",
+      "checkedAt": "2026-10-12",
+      "shortTitle": "Agent 评测：固定样例与对照",
+      "publishedAt": "2026-01-20",
+      "publicationPrecision": "day",
+      "publicationScope": "video",
+      "technologySummary": "评测方法 · 固定样例 / 环境隔离 / 逐例记录",
+      "versionNote": "2026年1月的方法讲解，覆盖样本、正反例、环境隔离、评分和记录检查，不依赖Langfuse旧SDK。本项目用本地pytest与CSV实现并保存真实输出；视频本身不提供完整WA代码。",
+      "verification": {
+        "status": "page_and_preview_verified_full_playback_not_tested",
+        "titleVerified": true,
+        "authorVerified": true,
+        "durationVerified": true,
+        "playbackTested": true,
+        "fullPlaybackTested": false,
+        "previewOnly": true,
+        "exactEpisodeUrlVerified": true,
+        "publicationDateVerified": true,
+        "publicationEvidenceUrl": "https://www.bilibili.com/video/BV1JukeBYEFT/",
+        "evidenceUrls": [
+          "https://www.bilibili.com/video/BV1JukeBYEFT/",
+          "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        ],
+        "observedPlayerTime": "00:42 / 07:08",
+        "publicationDetail": "独立视频原生页面明确2026-01-20 02:40:00；原作者系列目录7:08，非同标题索引中其他时长条目。",
+        "sourceVersionEvidence": "框架无关方法课，无SDK版本前提。指导构建真实任务集和结果检查，不将可观测性追踪冒充评测，也不承诺完整代码演示。",
+        "previewObservation": "原生浏览器从同作者系列目录点击7:08条目抵达精确BV1JukeBYEFT地址；观察00:42，课件列出从真实失败起步、清晰任务、正反案例、隔离环境、评分器与阅读轨迹等步骤。"
+      },
+      "sourceVerification": "已核验原作者页面、精确视频/课节、时长与短预览；发布日期按来源可确定的精度标注。",
+      "accessNote": "已验证短预览，未验证全程播放；B站完整观看可能需要登录。",
+      "sourceTitle": "如何从0到1打造自己的agent评估体系:Anthropic《Demystifying evals for AI agents》⑤",
+      "sourceEpisodeTitle": "从 0 到 1 建立 Agent 评估体系 · 第⑤讲",
+      "sourceReferences": [
+        {
+          "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+          "role": "对应原文从零建立evals一节，发表于2026-01-09"
+        }
+      ],
+      "exerciseBoundary": "直接模型与Agent公平对照、固定留出集、逐例记录、失败保留、清洁目录复现及3场景演示为WA落地要求；需结合前几阶段自行实现。"
+    }
+  ],
+  "playbackNote": "已核验公开页面、精确目录与已记录的短预览；未验证全程播放。B站完整观看可能需要登录。",
+  "progressNote": "视频是动手前的短引导，不代表技能掌握或作品完成。仍以wa-m0至wa-m3的实际产物验收。",
+  "totalVideoSeconds": 6236,
+  "selectionNote": "仅选有原作者发布时间证据的2025—2026视频，按项目需要取具体课节，不固定每步数量。项目练习是迁移应用，不冒称视频覆盖全部验收。",
+  "archivedResources": [
     {
       "id": "wa-video-csv",
       "title": "把反馈CSV读进来，再导出文件",
@@ -389,8 +833,6 @@ window.VIDEO_LEARNING = {
       "accessNote": "B站完整观看可能需登录；已验证公开页面与短预览，未验证全程播放。"
     }
   ],
-  "playbackNote": "8节均已核验公开页、精确课节和短预览；B站完整观看可能需登录，未验证全程播放。",
-  "progressNote": "视频是动手前的短引导，不代表技能掌握或作品完成。仍以wa-m0至wa-m3的实际产物验收。",
-  "totalVideoSeconds": 8499,
-  "selectionNote": "每阶段仅2节；课后任务是本项目的迁移练习，不冒称原视频逐项教授全部验收要求。"
+  "editionLabel": "2025—2026 新视频课",
+  "archiveNote": "上一次推荐的8节视频完整保留在这里，仅作回查。新视频使用新资源ID；原课程、任务和技能的记录保持独立。"
 };

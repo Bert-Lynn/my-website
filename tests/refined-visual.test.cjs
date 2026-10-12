@@ -12,8 +12,9 @@ assert(doc.querySelector('#cover svg[aria-hidden="true"]'),'cover artwork is dec
 const ids=doc.querySelectorAll('[id]').map(n=>n.id);assert.equal(new Set(ids).size,ids.length);
 assert(!/https?:\/\/|@import/.test(theme+cover),'no third-party visual requests');
 assert(!/cinnabar|journal-serif/.test(theme+cover+course+task),'all theme layers use the shared modern tokens');
-for(const f of ['cover.css','ink-theme.css','task-focus.css','course-navigation.css'])assert(html.includes('./'+f+'?v=20261012-refined1'),'changed style has fresh cache identity: '+f);
-assert(read('guide.html').includes('./ink-theme.css?v=20261012-refined1'));
+for(const f of ['cover.css','ink-theme.css'])assert(html.includes('./'+f+'?v=20261012-atelier1'),'Chinese visual layer has fresh cache identity: '+f);
+for(const f of ['task-focus.css','course-navigation.css'])assert(html.includes('./'+f+'?v=20261012-refined1'),'unchanged functional styling retains cache identity: '+f);
+assert(read('guide.html').includes('./ink-theme.css?v=20261012-atelier1'));
 assert(cover.includes('body[data-current-page=cover] #workspaceShell{display:none}'));
 assert(cover.includes('body:not([data-current-page=cover]) .site-cover{display:none}'));
 assert(/max-width:760px/.test(cover));assert(/prefers-reduced-motion/.test(cover+theme));assert(/forced-colors/.test(cover+theme));
@@ -30,4 +31,4 @@ assert(/\.video-card-actions \.primary-button\{[^}]*min-height:48px/.test(course
 assert(/\.video-course-list\{[^}]*grid-template-columns:minmax\(0,1fr\)/.test(course));
 for(const selector of ['.video-direction>p{font-size:16px;', '.video-direction-steps li>strong,.video-direction-steps li>span{display:block}', '.video-source-note>summary{font-size:16px;', '.task-work-detail form label.milestone-attest{'])assert(course.includes(selector),'readable video and attestation contracts');
 assert(!/scale\(|zoom\s*:/.test(theme+cover+course),'legibility comes from type and layout, not page scaling');
-console.log('PASS modern visual source: accessible routes and decorative art, no stamps/landscape/mottos, unique IDs, no external asset requests, fresh style caches, 4.5:1 text contrast, 3:1 progress contrast, 16px body and 48px video actions, responsive/reduced-motion/forced-color contracts. Pixel QA is separate.');
+console.log('PASS modern Chinese visual source: accessible routes and decorative art, decorative moon-window and no landscape, unique IDs, no external asset requests, fresh style caches, 4.5:1 text contrast, 3:1 progress contrast, 16px body and 48px video actions, responsive/reduced-motion/forced-color contracts. Pixel QA is separate.');

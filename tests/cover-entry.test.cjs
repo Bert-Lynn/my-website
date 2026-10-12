@@ -41,7 +41,7 @@ const assertWorkspace = (h, page = 'execution') => {
   assert(!entry.hasAttribute('target'), 'entry stays in the current tab');
   assert.equal(initial.querySelector('#cover').querySelectorAll('input,select,textarea,form').length, 0, 'decorative cover has no pretend progress controls');
   assert(!/\d+\s*%|\d+\s*\/\s*\d+\s*(?:已完成|项已完成)/.test(initial.querySelector('#cover').textContent), 'cover does not advertise fabricated completion');
-  const coverStyle = initial.querySelector('link[href="./cover.css?v=20261012-refined1"]');
+  const coverStyle = initial.querySelector('link[href="./cover.css?v=20261012-atelier1"]');
   assert(coverStyle, 'versioned isolated cover stylesheet is loaded');
   const css = fs.readFileSync(path.join(root, 'cover.css'), 'utf8');
   assert(css.includes('body[data-current-page=cover] #workspaceShell{display:none}'), 'cover state hides the workspace before app initialization');
@@ -58,7 +58,7 @@ const assertWorkspace = (h, page = 'execution') => {
     .reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
   for (const selector of ['.cover-footer', '.cover-footer>span:last-child']) {
     const color = colorFor(selector); assert(color, selector + ' has an explicit text color');
-    assert((luminance('#f3f2ee') + .05) / (luminance(color) + .05) >= 4.5, 'small cover footer text meets 4.5:1 contrast on its background');
+    assert((luminance('#f5f0e7') + .05) / (luminance(color) + .05) >= 4.5, 'small cover footer text meets 4.5:1 contrast on its background');
   }
 
 

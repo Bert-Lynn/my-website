@@ -4,47 +4,55 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>个人成长 · 研究与学习工作台</title>
   <meta name="description" content="我的研究与学习空间。按月查看科研、课程和项目任务，记录实际完成与顺延待办。">
-  <meta name="theme-color" content="#f3f2ee">
+  <meta name="theme-color" content="#f5f0e7">
+  <link rel="preload" href="./assets/fonts/growth-song.woff" as="font" type="font/woff" crossorigin>
   <link rel="stylesheet" href="./styles.css?v=20261010-journey1">
   <link rel="stylesheet" href="./career.css?v=20261011-workassistant1">
-  <link rel="stylesheet" href="./cover.css?v=20261012-refined1">
+  <link rel="stylesheet" href="./cover.css?v=20261012-atelier1">
   <link rel="stylesheet" href="./module-hub.css?v=20261011-modules1">
-  <link rel="stylesheet" href="./ink-theme.css?v=20261012-refined1">
 <link rel="stylesheet" href="./task-focus.css?v=20261012-refined1">
   <link rel="stylesheet" href="./course-navigation.css?v=20261012-refined1">
   <link rel="stylesheet" href="./employer-events.css?v=20261012-events1">
+  <link rel="stylesheet" href="./ink-theme.css?v=20261012-atelier1">
 </head>
 <body data-current-page="cover">
 <script>if(window.location.hash&&window.location.hash!=='#cover')document.body.setAttribute('data-current-page',window.location.hash==='#modules'?'modules':'execution');</script>
 <a class="skip-link" id="skipLink" href="#coverTitle">跳到主要内容</a>
 <section class="site-cover" id="cover" aria-labelledby="coverTitle">
   <header class="cover-header">
-    <div class="cover-brand">个人成长<span>PERSONAL WORKSPACE</span></div>
+    <div class="cover-brand"><span class="cover-monogram" aria-hidden="true">成长</span>个人成长<span class="cover-brand-sub">研究与学习工作台</span></div>
   </header>
   <main class="cover-main">
     <div class="cover-copy">
-      <p class="cover-eyebrow">研究 · 学习 · 作品</p>
+      <p class="cover-eyebrow">个人成长 · 研习手记</p>
       <h1 id="coverTitle" tabindex="-1">个人成长<br><span>工作台</span></h1>
       <p class="cover-description">从当前任务开始，继续课程与项目。</p>
       <a class="cover-enter" id="enterWorkspace" href="#modules"><span>进入成长工作台</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
     <div class="cover-visual" aria-hidden="true">
-      <svg class="cover-art" viewBox="0 0 540 540" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
-        <path d="M70 76h346v382H70z" fill="#e5e6e2"/>
-        <path d="M130 34h346v382H130z" fill="#c9d1d2"/>
-        <path d="M186 104h232v354H186z" fill="#596b73"/>
-        <path d="M186 104h232v354H186z" stroke="#394d58" stroke-opacity=".22"/>
-        <path d="M213 134v292M229 134v292M245 134v292" stroke="#edf0ec" stroke-opacity=".27"/>
-        <path d="M70 487h406" stroke="#b7bdbb"/>
-        <path d="M70 477v20M476 477v20" stroke="#b7bdbb"/>
-      </svg>
+      <div class="cover-portal">
+        <svg class="cover-art" viewBox="0 0 520 580" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
+          <defs><clipPath id="portalCircle"><circle cx="260" cy="263" r="199"/></clipPath><linearGradient id="portalLight" x1="80" y1="50" x2="440" y2="440" gradientUnits="userSpaceOnUse"><stop stop-color="#e9dfcb"/><stop offset="1" stop-color="#f9f6ef"/></linearGradient></defs>
+          <path d="M29 18h462v515H29z" stroke="currentColor" stroke-opacity=".3"/><path d="M39 28h442v495H39z" stroke="currentColor" stroke-opacity=".24"/>
+          <circle cx="260" cy="263" r="211" stroke="currentColor" stroke-width="2"/><circle cx="260" cy="263" r="199" fill="url(#portalLight)" stroke="currentColor" stroke-width="1"/>
+          <g clip-path="url(#portalCircle)" stroke="currentColor" stroke-opacity=".7">
+            <path d="M109 63v400m14-400v400M397 63v400m14-400v400M52 113h420M52 127h420M52 399h420M52 413h420"/>
+            <path d="M123 127h71V90h132v37h71M123 399h71v37h132v-37h71M194 127v41h-39v190h39v41m132-272v41h39v190h-39v41" stroke-width="1.6"/>
+            <path d="M212 185h96v156h-96z" stroke-opacity=".22"/>
+            <path d="M179 344c55-37 98-60 178-62M169 359c60-24 116-27 190-21" stroke-opacity=".22"/>
+          </g>
+          <path d="M11 542h498M29 554h462" stroke="currentColor" stroke-opacity=".4"/>
+        </svg>
+        <div class="portal-inscription"><span>研究</span><span>学习</span></div>
+      </div>
+      <p class="cover-art-caption"><span>研究 · 学习 · 作品</span><span>二〇二六</span></p>
     </div>
   </main>
-  <div class="cover-footer"><span>研究与学习空间</span><span>任务 / 课程 / 项目</span></div>
+  <div class="cover-footer"><span>研究 · 学习 · 作品</span><span class="release-label">册页版 · 2026.10.12</span></div>
 </section>
 <div class="site-shell" id="workspaceShell">
   <header class="app-header">
-    <a href="#modules" id="homeBtn" class="brand" aria-label="返回模块选择"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V5h5v14M14 19V5h5v14" stroke="currentColor" stroke-width="1.5"/></svg></span><span>研究 · 作品<small>CAREER WORKSPACE</small></span></a>
+    <a href="#modules" id="homeBtn" class="brand" aria-label="返回模块选择"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor"/><path d="M5 7h5v4H5m14-4h-5v4h5M5 17h5v-4H5m14 4h-5v-4h5" stroke="currentColor"/></svg></span><span>个人成长<small>研究 · 学习 · 作品</small></span></a>
     
     <nav class="main-tabs" id="mainTabs" aria-label="工作台导航">
       <button type="button" aria-label="任务列表" data-page="execution" aria-pressed="true"><span class="nav-icon" aria-hidden="true">↗</span>任务列表</button>
@@ -58,7 +66,7 @@
       <button type="button" aria-label="实习岗位参考" data-page="roles" aria-pressed="false">实习岗位参考</button>
       <button type="button" aria-label="详细自查记录" data-page="skills" aria-pressed="false">详细自查记录</button>
     </nav></details>
-    <a class="guide-entry" href="./guide.html?v=20261012-video1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
+    <a class="guide-entry" href="./guide.html?v=20261012-currentvideos1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
     <button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span><span aria-hidden="true">↗</span></button>
   </header>
   <main>
@@ -98,7 +106,7 @@
         <article class="lesson-progress-card" id="lessonProgressCard"></article><article class="upcoming-card"><div class="card-heading"><h2>下一个研究里程碑</h2></div><div id="nextMilestone"></div><button id="showOutcomesBtn" class="text-button">查看成果路线 →</button></article>
       </aside>
     </div>
-    <footer><span>按实际完成记录进度，不会自动替你勾选。</span><button id="resetBtn" hidden>重置原计划任务进度</button></footer>
+    <footer><span>按实际完成记录进度，不会自动替你勾选。</span><span class="release-label">册页版 · 2026.10.12</span><button id="resetBtn" hidden>重置原计划任务进度</button></footer>
     <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
   </main>
 </div>
@@ -112,10 +120,10 @@
 <script src="./cloud-sync.js?v=20261010-journey1"></script>
 <script src="./learning-modules.js?v=20261011-workassistant1"></script>
 <script src="./project-outline.js?v=20261011-workassistant1"></script>
-<script src="./video-learning.js?v=20261012-video1"></script>
+<script src="./video-learning.js?v=20261012-currentvideos1"></script>
 <script src="./employer-events.js?v=20261012-events1"></script>
 <script src="./employer-events-ui.js?v=20261012-events1"></script>
-<script src="./career-ui.js?v=20261012-video1"></script>
-<script src="./module-hub.js?v=20261012-video1"></script>
+<script src="./career-ui.js?v=20261012-currentvideos1"></script>
+<script src="./module-hub.js?v=20261012-atelier1"></script>
 <script src="./app.js?v=20261012-video1"></script>
 </body></html>

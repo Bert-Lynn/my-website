@@ -40,7 +40,7 @@ const verifyExternal=nodes=>nodes.forEach(a=>{assert(/^https:\/\//.test(a.getAtt
  ctx.history.back();assert.equal(ctx.AppNavigation.route(),'learn/interview');
  ctx.history.forward();assert.equal(ctx.AppNavigation.route(),'learn/data');
  ctx.AppNavigation.open('execution');
- for(const m of outline.milestones){const links=h.all('[data-current-task="'+m.id+'"] .task-course-link');assert.equal(links.length,2);assert.deepEqual(hrefs(links),sources(m.id).map(x=>x.url));verifyExternal(links);assert.equal(links[0].closest('details'),null);}
+ for(const m of outline.milestones){const links=h.all('[data-current-task="'+m.id+'"] .task-course-link');assert.equal(links.length,sources(m.id).length);assert.deepEqual(hrefs(links),sources(m.id).map(x=>x.url));verifyExternal(links);assert.equal(links[0].closest('details'),null);}
  assert.equal(snapshot(ctx),before,'all course navigation and source links preserve every progress stream');
  const form=h.query('#currentTaskList [data-milestone-form="wa-m0"]');form.querySelector('[name="milestoneEvidence"]').value='https://example.com/synthetic-unsaved';form.oninput();h.setConfirmation(false);
  assert.equal(ctx.AppNavigation.open('resources'),false);assert.equal(ctx.AppNavigation.route(),'execution');assert.equal(h.query('#currentTaskList [data-milestone-form="wa-m0"]'),form);
