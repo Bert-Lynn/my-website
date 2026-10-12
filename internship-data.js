@@ -1,7 +1,7 @@
 // Generated public data. Edit data/internships.json and run node scripts/build-career-data.cjs.
 window.INTERNSHIP_DATA = {
   "schemaVersion": "1.0",
-  "verifiedAt": "2026-10-10",
+  "verifiedAt": "2026-10-12",
   "target": {
     "country": "中国大陆",
     "currency": "CNY",
@@ -430,7 +430,15 @@ window.INTERNSHIP_DATA = {
           }
         }
       ],
-      "sources": []
+      "sources": [
+        {
+          "url": "https://seed.bytedance.com/zh/seedearlycareer",
+          "type": "official",
+          "checkedAt": "2026-10-12",
+          "supports": "Seed项目级实习通道面向2027年9月及以后毕业的在读学生；没有公开数值日薪。它与2027届ByteIntern是不同通道，不证明某具体岗位的当前HC。",
+          "accessNote": "官网项目正文直接可读；不是具体职位详情。"
+        }
+      ]
     },
     {
       "company": "美团",
@@ -938,8 +946,8 @@ window.INTERNSHIP_DATA = {
             "caveat": "不保证2027年仍有同岗；投递前须重新核实HC、届别、薪资和出勤"
           },
           "internshipType": "日常实习",
-          "eligibility": "计算机或统计/运筹相关专业；未在正文限定具体毕业年份。",
-          "attendance": "该页未公开每周出勤/最短月份",
+          "eligibility": "计算机或统计/运筹相关专业；未在正文限定具体毕业年份。 百度官网项目总说明：日常实习面向在校生、不限毕业时间；这不代表专业与能力审核已经通过。",
+          "attendance": "职位正文未列每周天数或最短月份；公司实习项目总说明为不少于3个月。",
           "skillsRequired": [
             "数据结构、算法、编码",
             "SQL",
@@ -956,9 +964,16 @@ window.INTERNSHIP_DATA = {
             {
               "url": "https://talent.baidu.com/jobs/detail/INTERN/e0c5d573-11b1-4ff5-a83e-c1d67776e057",
               "type": "official",
-              "checkedAt": "2026-10-10",
+              "checkedAt": "2026-10-12",
               "supports": "日期、日常实习、专业、技能、会员定价/uplift业务；未公开薪资",
               "accessNote": "网页正文或搜索索引可读"
+            },
+            {
+              "url": "https://talent.baidu.com/jobs/list?recruitType=INTERN",
+              "type": "official",
+              "checkedAt": "2026-10-12",
+              "supports": "公司项目总说明：日常实习不限毕业时间；实习项目不少于3个月。不是本岗位独立的每周出勤要求。",
+              "accessNote": "官网列表正文直接可读。"
             }
           ],
           "skillMapping": {
@@ -1021,8 +1036,8 @@ window.INTERNSHIP_DATA = {
             "caveat": "不保证2027年仍有同岗；投递前须重新核实HC、届别、薪资和出勤"
           },
           "internshipType": "日常实习",
-          "eligibility": "本科及以上在读，计算机/数学/统计/ML相关；未写毕业年份限制。",
-          "attendance": "连续6个月以上、每周4天以上优先",
+          "eligibility": "本科及以上在读，计算机/数学/统计/ML相关；未写毕业年份限制。 百度官网项目总说明：日常实习面向在校生、不限毕业时间；这不代表专业与能力审核已经通过。",
+          "attendance": "职位正文为连续6个月以上、每周4天以上者优先；公司项目不少于3个月的总说明不替代该岗优先条件。",
           "skillsRequired": [
             "Python、NumPy/Pandas/sklearn",
             "机器学习与数据分析基础",
@@ -1039,9 +1054,16 @@ window.INTERNSHIP_DATA = {
             {
               "url": "https://talent.baidu.com/jobs/detail/INTERN/22b11ac9-3920-4236-b079-49e13f5d08d3",
               "type": "official",
-              "checkedAt": "2026-10-10",
+              "checkedAt": "2026-10-12",
               "supports": "日期、日常实习、Python/评测/Agent技能、出勤偏好；未公开薪资",
               "accessNote": "网页正文或搜索索引可读"
+            },
+            {
+              "url": "https://talent.baidu.com/jobs/list?recruitType=INTERN",
+              "type": "official",
+              "checkedAt": "2026-10-12",
+              "supports": "公司项目总说明：日常实习不限毕业时间；实习项目不少于3个月。不是本岗位独立的每周出勤要求。",
+              "accessNote": "官网列表正文直接可读。"
             }
           ],
           "skillMapping": {
@@ -1089,12 +1111,21 @@ window.INTERNSHIP_DATA = {
           }
         }
       ],
-      "sources": []
+      "sources": [
+        {
+          "url": "https://github.com/Bert-Lynn/my-website/blob/main/data/internship-verification-2026-10-12.md",
+          "type": "verification_note",
+          "label": "10月12日补充核验说明",
+          "checkedAt": "2026-10-12",
+          "supports": "新增J106354等独立线索的来源、资格、薪资与技能映射另列；这些新增线索尚未纳入结构化16条目录或其汇总，不等同已确认可投岗位。",
+          "accessNote": "公开核验说明；不包含个人进度或申请资料。"
+        }
+      ]
     },
     {
       "company": "阿里巴巴",
       "companyEn": "Alibaba",
-      "overallFinding": "物流AI应用+运筹、预测优化一体化是专业优势路线；优先日常实习，不误投仅2027毕业生的转正计划。",
+      "overallFinding": "物流AI应用与运筹方向贴合。现已直接核实日常岗位199904240014的官网正文：毕业窗口为2026-04-29至2029-12-30，不能把日常实习理解为不限届别。薪资、出勤及实际HC仍待确认。",
       "targetSalaryEvidence": "阿里云历史2024招聘为400–500/天；当前物流Agent运筹岗薪资未公开，不能继承历史价。",
       "officialCareersUrl": "https://campus-talent.alibaba.com/",
       "roles": [
@@ -1114,45 +1145,44 @@ window.INTERNSHIP_DATA = {
             "note": "未公开薪资；不代表无薪，也不能假定达到目标"
           },
           "status": {
-            "value": "aggregator_unconfirmed",
-            "label": "聚合页有正文，官网抓取未成功",
-            "sourceDate": "2026-08-06",
-            "caveat": "2026-08-06为聚合收录日；另一聚合称2026-01-07发布，官方发布时间未核实。"
+            "value": "public_page_unconfirmed",
+            "label": "官网正文及投递入口可读，HC待确认",
+            "sourceDate": "2026-04-14",
+            "sourceDateType": "官方职位更新日",
+            "caveat": "2026-10-12直接读取官网动态正文；投递入口不证明当前实际名额或2027年仍开放。聚合收录日与官方更新日分别保留。"
           },
-          "internshipType": "日常实习（聚合转引）",
-          "eligibility": "本科及以上，未见明确毕业窗口；官网需再次确认。",
-          "attendance": "未公开",
+          "internshipType": "日常实习（官网直接核实）",
+          "eligibility": "本科及以上；官网页面显示毕业起止时间为2026-04-29至2029-12-30。须以预计毕业日期逐项核对，不能因2027年去实习或日常实习身份直接认定符合。",
+          "attendance": "官网未公开每周天数或最短月份",
           "skillsRequired": [
-            "OR业务建模",
-            "MIP、启发式或ADP",
-            "离线/在线工程实现",
-            "ML与优化结合"
+            "扎实的运筹优化业务建模",
+            "深入理解MIP、启发式、ADP并解决实际问题",
+            "扎实工程实现及离线/在线系统经验",
+            "能推进技术业务落地"
           ],
-          "skillsPreferred": [
-            "业务落地和数据建模"
-          ],
-          "fit": "主线方向非常贴合，但目前技能正文来自聚合转引，保留验证标记。",
+          "skillsPreferred": [],
+          "fit": "运筹建模、物流决策与ML融合方向贴合；官方正文已核实。须先核对预计毕业日期是否落在2026-04-29至2029-12-30窗口内，薪资和实际名额仍未知。",
           "priority": "primary",
           "sources": [
             {
               "url": "https://campus-talent.alibaba.com/campus/position/199904240014",
-              "type": "official_link_only",
-              "checkedAt": "2026-10-10",
-              "supports": "聚合页面指向的官方职位；未成功读取正文",
-              "accessNote": "两次抓取超时"
+              "type": "official",
+              "checkedAt": "2026-10-12",
+              "supports": "完整标题、杭州、2026-04-14更新、毕业窗口、日常项目、在招业务及完整技能正文；未列薪资/出勤",
+              "accessNote": "云端浏览器直接读取官网动态正文；普通网页文本抓取为空，不据此判关闭。"
             },
             {
               "url": "https://jobs.ultraai.site/jobs/alibaba_campus/internship:199904240014",
               "type": "aggregator",
               "checkedAt": "2026-10-10",
-              "supports": "日常实习正文、杭州、技能；收录时间",
+              "supports": "保留聚合收录日2026-08-06及正文的历史溯源；不作为官方更新日期",
               "accessNote": "网页正文或搜索索引可读"
             },
             {
               "url": "https://www.jdwatch.work/jobs/jt5qtu3nb",
               "type": "aggregator",
               "checkedAt": "2026-10-10",
-              "supports": "同职位正文及另一发布日期，未当作官方日期",
+              "supports": "保留另一聚合自称2026-01-07发布的历史溯源；不覆盖官网2026-04-14更新日",
               "accessNote": "网页正文或搜索索引可读"
             }
           ],
@@ -1176,21 +1206,22 @@ window.INTERNSHIP_DATA = {
               "对离线/在线系统有经验的工程深度，单机API演示不足。",
               "电商物流真实大规模数据建模与ML结合优化。"
             ],
-            "mappingNote": "直接映射优化建模与系统实现的基础部分；Agent在团队描述中出现，但不能据此把课程工具调用当作全部算法要求。该JD正文仍是聚合转引。 此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
+            "mappingNote": "直接映射优化建模与系统实现的基础部分；本次已直接核实官网正文。Agent出现在团队方向中，不能把工具调用项目等同MIP、ADP与线上系统经验。此处为路线设计者对JD的映射，不是雇主认证；完成所列单元不表示满足完整JD。",
             "preferredSkillIds": [],
             "directCoverageNotes": {
               "optimization-modeling": "对应MIP与业务建模；不包含ADP或全部优化方法。",
               "api-delivery": "仅对应把算法交付成可运行服务的起步能力；不等于JD所需线上系统经验。"
             },
             "nonSkillBlockers": [
-              "日常实习信息来自聚合，官网未成功读取；HC、出勤、日薪未确认。"
+              "官网毕业窗口2026-04-29至2029-12-30；须核对预计毕业日，日常实习不代表不限届别。",
+              "官网投递入口可读，实际HC和2027年开放情况仍未确认；日薪、每周天数与最短月份未公开。"
             ],
             "sourceUrls": [
               "https://campus-talent.alibaba.com/campus/position/199904240014",
               "https://jobs.ultraai.site/jobs/alibaba_campus/internship:199904240014",
               "https://www.jdwatch.work/jobs/jt5qtu3nb"
             ],
-            "mappedAt": "2026-10-10",
+            "mappedAt": "2026-10-12",
             "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
           }
         },
