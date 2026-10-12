@@ -1,0 +1,106 @@
+/* Clear course entrances and readable content, without scaling the whole page. */
+.app-header .main-tabs button,.app-header .more-navigation summary{font-size:16px;min-height:44px}
+.module-return,body[data-current-page="execution"][data-task-view="current"] .module-return{font-size:16px;min-height:44px}
+.workspace-heading p{font-size:16px;line-height:1.7}
+body[data-current-page=modules] .workspace-heading{margin-bottom:18px}
+body[data-current-page=modules] .workspace-heading p{font-size:16px}
+body[data-current-page=modules] .period-label{font-size:12px}
+.hub-plan-progress{grid-template-columns:1fr 1.8fr}
+.hub-overall{padding:18px 22px}
+.hub-section-kicker,.hub-overall>p,.hub-breakdown-heading>span{display:none}
+.hub-overall h2{font-size:16px;flex-wrap:wrap;gap:8px}
+.hub-overall h2>span{font-size:14px}
+.hub-overall-number{gap:14px;margin:12px 0}
+.hub-overall-number>strong{font-size:32px;letter-spacing:-1px}
+.hub-overall-number>strong small{font-size:18px}
+.hub-overall-number>span{font-size:14px}
+.hub-breakdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-content:center;padding:18px 22px}
+.hub-breakdown-heading{grid-column:1/-1;margin:0}
+.hub-breakdown-heading h3{font-size:14px}
+.hub-breakdown-row+.hub-breakdown-row{margin:0}
+.hub-breakdown-row>div:first-child{display:grid;gap:5px;font-size:14px}
+.hub-breakdown-row strong{font-size:16px}
+.hub-breakdown-row small{font-size:14px}
+.hub-module-section{margin-top:22px}
+.hub-module-heading{margin-bottom:14px}
+.hub-module-heading h2{font-size:23px}
+.hub-module-heading>span{font-size:14px}
+.hub-module-card{padding:20px 22px}
+.hub-card-top>span{font-size:12px;letter-spacing:1px}
+.hub-module-card h3{font-size:24px;margin:10px 0 6px}
+.hub-module-card p{font-size:16px;line-height:1.65;margin-bottom:14px}
+.hub-card-footer{font-size:16px;min-height:44px;padding-top:10px;box-sizing:border-box}
+.hub-course-card{border-color:var(--cinnabar)}
+.hub-course-card p{font-size:14px;flex:0;color:var(--muted);margin-bottom:10px}
+.hub-course-shortcuts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.hub-course-shortcuts a,.task-reading a.task-course-link{display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box;padding:9px 12px;border:1px solid var(--cinnabar);border-radius:4px;background:var(--paper);color:var(--cinnabar);font-size:16px;line-height:1.5;font-weight:600;text-decoration:none;overflow-wrap:anywhere}
+.hub-course-directory{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:10px 14px;border-radius:4px;box-sizing:border-box;background:var(--cinnabar);color:var(--paper-raised);font-size:16px;font-weight:600;margin-top:auto}
+.hub-course-directory:hover{background:#743e31;color:#fff}
+.hub-record-details{margin-top:22px;border-block:1px solid var(--line);padding-block:4px}
+.hub-record-details>summary{font-size:16px;min-height:44px;box-sizing:border-box;padding:12px 0;cursor:pointer;color:var(--ink)}
+.hub-independent-progress{padding-bottom:8px}
+.hub-independent-progress h3,.hub-independent-progress p,.hub-independent-progress strong small,.hub-progress-note,.hub-data-note{font-size:14px}
+.hub-data-note{margin-top:14px;padding-top:0;border:0}
+.task-section-tabs button,body[data-current-page="execution"][data-task-view="current"] .task-section-tabs button{font-size:16px;min-height:44px;padding:9px 14px}
+#currentTaskList .focus-task h3{font-size:21px}
+.focus-task-state,.task-brief dt{font-size:14px}
+.task-brief{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+.task-brief dd{font-size:16px;line-height:1.75}
+.task-reading{display:flex;flex-wrap:wrap;gap:8px}
+.task-start .outline-button,.task-work-detail .outline-button{font-size:16px;min-height:44px;box-sizing:border-box}
+.task-start>span,.task-work-detail form small{font-size:14px}
+.task-work-detail>summary,.task-file-list>summary,.task-reading-detail>summary{font-size:16px;min-height:44px;box-sizing:border-box;line-height:1.6}
+.task-work-detail p,.task-work-detail li,.task-work-detail h4,.task-work-detail form>label:not(.milestone-attest),.task-work-detail form input[type="url"],.task-work-detail form select{font-size:16px;line-height:1.75}
+.current-task-heading .text-action{font-size:16px;min-height:44px}
+.direct-course-section{margin:0 0 22px}
+.direct-course-heading{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:12px}
+.direct-course-heading h2{margin:0;font-size:22px;font-weight:650;letter-spacing:0}
+.direct-course-heading>span{font-size:14px;color:var(--muted)}
+.direct-course-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.direct-course-card{display:flex;gap:14px;align-items:flex-start;padding:18px;border:1px solid var(--cinnabar);border-radius:7px;background:var(--paper-raised);min-width:0}
+.direct-course-number{font:20px Georgia,serif;color:var(--cinnabar);padding-top:10px}
+.direct-course-card>div{min-width:0;flex:1}
+.direct-course-link{display:flex;align-items:center;min-height:44px;font-size:18px;font-weight:650;line-height:1.6;color:var(--cinnabar);text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.direct-course-card p{font-size:16px;line-height:1.75;margin:7px 0 0;color:var(--ink);overflow-wrap:anywhere}
+.course-directory{margin-bottom:24px;padding:18px 20px;border:1px solid var(--line);border-radius:7px;background:var(--paper)}
+.course-directory-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px}
+.course-directory-heading h3{font-size:18px;margin:0}
+.course-directory .flow-route-select{font-size:14px;gap:8px;display:flex;align-items:center}
+.course-directory select{font-size:16px;min-height:44px;max-width:100%}
+.course-directory-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.course-directory-link{display:flex;align-items:center;text-align:left;gap:10px;font:inherit;font-size:16px;line-height:1.6;min-height:48px;border:1px solid var(--line);border-radius:4px;padding:10px 12px;background:var(--paper-raised);color:var(--ink);cursor:pointer;overflow-wrap:anywhere}
+.course-directory-link>span{font-size:14px;color:var(--muted)}
+.course-directory-link.is-selected{border-color:var(--cinnabar);background:var(--selected);color:var(--cinnabar);font-weight:650}
+#careerLearning .module-intro p,#careerLearning .lesson-instructions p,#careerLearning .lesson-purpose p,#careerLearning .module-lesson-body p,#careerLearning .module-lesson-body li,#careerLearning .module-complete-check{font-size:16px;line-height:1.8}
+#careerLearning .module-lesson-name strong{font-size:18px;line-height:1.6}
+#careerLearning .module-lesson-name small,#careerLearning .module-lesson-state,#careerLearning .module-reference-note,#careerLearning .module-breadcrumb,#careerLearning .module-total{font-size:14px}
+#careerLearning .module-section-heading h3{font-size:20px}
+#careerLearning .module-section-heading>span{font-size:14px}
+#careerLearning .outline-button,#careerLearning .text-action,#careerLearning summary,#careerLearning .module-task-link>strong{font-size:16px;line-height:1.65}
+#careerLearning .outline-button,#careerLearning .text-action,#careerLearning .module-source-detail button{min-height:44px;box-sizing:border-box}
+#careerLearning .module-make{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#careerLearning .module-source-detail button{font-size:16px}
+#careerLearning .module-intro{gap:16px}
+#careerLearning .module-intro>div:first-child{min-width:0}
+.legacy-learning-archive>summary{font-size:16px;min-height:44px;box-sizing:border-box}
+.legacy-learning-archive p,.legacy-learning-archive .lesson-content p{font-size:16px;line-height:1.8}
+.direct-course-link:focus-visible,.course-directory-link:focus-visible,.hub-course-card a:focus-visible,.task-course-link:focus-visible{outline:3px solid var(--cinnabar);outline-offset:4px}
+@media(max-width:900px){.hub-plan-progress{grid-template-columns:1fr 1.45fr}.hub-overall,.hub-breakdown{padding:16px}.course-directory-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){
+ .hub-plan-progress{grid-template-columns:1fr}.hub-overall{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:14px 16px;border-right:0;border-bottom:1px solid var(--line)}.hub-overall-number{margin:0;gap:12px}.hub-overall-number>strong{font-size:28px}.hub-overall-number>span{max-width:95px;line-height:1.5}.hub-overall>.hub-progress-bar{grid-column:1/-1}.hub-overall h2{display:block}.hub-overall h2>span{display:block;border:0;padding:0;margin-top:4px}
+ .hub-breakdown{padding:12px 16px;gap:12px}.hub-breakdown-heading{display:none}.hub-breakdown-row>div:first-child{font-size:14px;gap:4px}.hub-module-section{margin-top:20px}.hub-module-heading>span{display:none}.hub-course-card{order:-1}.hub-module-grid{gap:12px}.hub-module-card h3{font-size:22px}.hub-module-card p{font-size:16px}.hub-course-card p{font-size:14px}.hub-module-card{padding:17px 18px}.hub-course-shortcuts{gap:8px}.hub-independent-progress article{grid-template-columns:1fr 1fr}
+ #currentTaskList .focus-task h3{font-size:20px}.task-brief{grid-template-columns:1fr;gap:14px}.task-brief>div{grid-template-columns:72px minmax(0,1fr);gap:8px}.task-brief dd{font-size:16px}.task-brief .task-reading{display:flex}.task-reading a.task-course-link{font-size:16px;width:100%}.current-task-heading .text-action{font-size:16px}
+ .direct-course-heading{align-items:flex-start;flex-direction:column;gap:6px}.direct-course-grid{grid-template-columns:1fr;gap:10px}.direct-course-card{padding:14px 16px;gap:12px}.direct-course-card p{margin-top:4px}.direct-course-link{font-size:17px}.course-directory{padding:16px}.course-directory-heading{align-items:flex-start;flex-direction:column;gap:10px}.course-directory .flow-route-select{width:100%;justify-content:space-between}.course-directory-links{grid-template-columns:1fr 1fr}.course-directory-link{padding:10px;gap:7px}
+ #careerLearning .module-intro{padding:18px}#careerLearning .module-total{font-size:14px}#careerLearning .module-make{grid-column:1/-1}#careerLearning .module-breadcrumb{flex-wrap:wrap}#careerLearning .module-lesson-name strong{font-size:17px}#careerLearning .module-lesson-state{font-size:14px}
+}
+@media(max-width:380px){.hub-overall-number{gap:7px}.hub-overall-number>span{max-width:84px}.course-directory-link{font-size:16px;display:block}.course-directory-link>span{display:block}.task-brief>div{display:block}.task-brief dt{margin-bottom:5px}}
+/* Older responsive rules use !important here; keep the readable size at every width. */
+.app-header .main-tabs button{font-size:16px!important}
+#careerLearning .lesson-purpose p{font-size:16px!important}
+#careerLearning .lesson-purpose strong,#careerLearning .lesson-instructions h4{font-size:16px}
+@media(max-width:760px){
+ /* Let the three readable primary tabs have their own row on narrow phones. */
+ body:not([data-current-page="modules"]) .app-header .main-tabs{order:3;flex:1 0 100%;width:100%;height:auto;min-height:52px;gap:8px!important}
+ body:not([data-current-page="modules"]) .app-header .more-navigation{order:1;flex:0 0 auto;margin-top:0;margin-left:auto}
+ body:not([data-current-page="modules"]) .app-header .cloud-pill{order:2;margin-left:8px}
+}

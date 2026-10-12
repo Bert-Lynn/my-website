@@ -3,8 +3,9 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {app}=require('./helpers/app-harness.cjs');
 const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.html'),'utf8'),css=fs.readFileSync(path.join(root,'task-focus.css'),'utf8');
-for(const file of ['app.js','career-ui.js','task-focus.css'])assert(html.includes('./'+file+'?v=20261011-tasks2'),'changed asset cache is invalidated: '+file);
-for(const file of ['module-hub.js','guide.html'])assert(html.includes('./'+file+'?v=20261011-tasks1'),'unchanged asset keeps its cache identity: '+file);
+for(const file of ['app.js','career-ui.js','module-hub.js','course-navigation.css'])assert(html.includes('./'+file+'?v=20261012-courses1'),'changed asset cache is invalidated: '+file);
+assert(html.includes('./task-focus.css?v=20261011-tasks2'),'unchanged task stylesheet keeps its cache identity');
+for(const file of ['guide.html'])assert(html.includes('./'+file+'?v=20261011-tasks1'),'unchanged asset keeps its cache identity: '+file);
 assert(html.indexOf('task-focus.css')>html.indexOf('ink-theme.css'),'density overrides follow the existing theme');
 assert(css.includes('#currentTaskList .focus-task{max-width:none;width:100%;font-weight:400;box-sizing:border-box}'),'current cards override inherited narrow/heavy styling without affecting other cards');
 for(const selector of ['main','.module-return','.workspace-heading','.workspace-heading h1','.today-label','.task-section-tabs','.task-section-tabs button'])assert(css.includes('body[data-current-page="execution"][data-task-view="current"] '+selector),'header density rule is scoped to the current task route: '+selector);

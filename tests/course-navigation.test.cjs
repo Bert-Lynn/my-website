@@ -1,0 +1,66 @@
+'use strict';
+// Bound DOM behavior and CSS source contracts. Visual dimensions need browser QA.
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {app}=require('./helpers/app-harness.cjs');
+const root=path.join(__dirname,'..'),outline=require('../data/project-outline.json');
+const click=node=>{assert(node);assert.equal(typeof node.onclick,'function');return node.onclick({preventDefault(){},currentTarget:node})};
+const snapshot=ctx=>JSON.stringify({tasks:ctx.AppProgress.sync().snapshot(),lessons:ctx.AppProgress.sync().lessonSnapshot(),career:ctx.phdCareerProgress.read()});
+const sources=id=>outline.growthLevels[0].steps.find(s=>s.currentStageId===id).resources;
+const hrefs=nodes=>nodes.map(a=>a.getAttribute('href'));
+const verifyExternal=nodes=>nodes.forEach(a=>{assert(/^https:\/\//.test(a.getAttribute('href')));assert.equal(a.getAttribute('target'),'_blank');assert.equal(a.getAttribute('rel'),'noopener noreferrer');});
+(async()=>{
+ const h=app({hash:'#modules'}),ctx=h.ctx;await ctx.AppProgress.sync().start();
+ const before=snapshot(ctx),hub=h.query('#moduleHub');
+ assert(hub.children.indexOf(h.query('.hub-plan-progress'))<hub.children.indexOf(h.query('.hub-module-section')),'compact overall and category progress remains above modules');
+ assert(hub.children.indexOf(h.query('.hub-record-details'))>hub.children.indexOf(h.query('.hub-module-section')),'independent statistics move below useful entrances');
+ assert.equal(h.query('.hub-record-details').open,false);
+ assert.equal(h.query('#hubOverallCount').textContent,'0 / 47 项已完成');
+ assert.deepEqual(hrefs(h.all('.hub-course-shortcuts a')),sources('wa-m0').map(x=>x.url));
+ verifyExternal(h.all('.hub-course-shortcuts a'));
+ assert(!h.query('.hub-course-card').textContent.includes('控制流'),'current WA course entrance does not default to old Python diagnosis');
+ click(h.query('[data-hub-route="resources"]'));
+ assert.equal(ctx.AppNavigation.current(),'resources');assert.equal(h.query('#pageTitle').textContent,'课程学习');
+ assert.deepEqual(hrefs(h.all('.direct-course-link')),sources('wa-m0').map(x=>x.url));
+ for(const source of sources('wa-m0'))assert(h.query('.direct-course-section').textContent.includes(source.scope));
+ assert.equal(h.query('.direct-course-section').closest('details'),null,'official links are outside all collapsed panels');
+ assert.equal(h.all('.course-directory-link').length,6);
+ assert.deepEqual(h.all('.course-directory-link').map(x=>x.dataset.openModule),['code','data','ai-tools','app','check-results','interview']);
+ const unit=ctx.CAREER_CURRICULUM.learningUnits.find(u=>u.id==='u-python-diagnostic');
+ assert(h.query('[data-module-unit="'+unit.id+'"] .lesson-instructions').textContent.includes(unit.readingGuide),'exact original reading scope is visible, not replaced by project copy');
+ const hero=h.query('.module-intro .module-make a'),detail=h.query('[data-module-unit="'+unit.id+'"] .lesson-instructions a');
+ assert.equal(hero.getAttribute('href'),detail.getAttribute('href'));assert.equal(hero.getAttribute('href'),unit.url);
+ for(const [module,id] of [['ai-tools','wa-m1'],['app','wa-m1'],['check-results','wa-m2'],['interview','wa-m3'],['data','wa-m0']]){
+  click(h.query('.course-directory-link[data-open-module="'+module+'"]'));
+  assert.equal(ctx.AppNavigation.route(),'learn/'+module);
+  assert.deepEqual(hrefs(h.all('.direct-course-link')),sources(id).map(x=>x.url),'module '+module+' opens its true WA references');
+  verifyExternal(h.all('.direct-course-link'));
+  assert.equal(h.query('.course-directory-link[aria-current="page"]').dataset.openModule,module);
+ }
+ ctx.history.back();assert.equal(ctx.AppNavigation.route(),'learn/interview');
+ ctx.history.forward();assert.equal(ctx.AppNavigation.route(),'learn/data');
+ ctx.AppNavigation.open('execution');
+ for(const m of outline.milestones){const links=h.all('[data-current-task="'+m.id+'"] .task-course-link');assert.equal(links.length,2);assert.deepEqual(hrefs(links),sources(m.id).map(x=>x.url));verifyExternal(links);assert.equal(links[0].closest('details'),null);}
+ assert.equal(snapshot(ctx),before,'all course navigation and source links preserve every progress stream');
+ const form=h.query('#currentTaskList [data-milestone-form="wa-m0"]');form.querySelector('[name="milestoneEvidence"]').value='https://example.com/synthetic-unsaved';form.oninput();h.setConfirmation(false);
+ assert.equal(ctx.AppNavigation.open('resources'),false);assert.equal(ctx.AppNavigation.route(),'execution');assert.equal(h.query('#currentTaskList [data-milestone-form="wa-m0"]'),form);
+ h.setConfirmation(true);ctx.AppNavigation.open('modules');
+ ctx.AppProgress.sync().setLesson('u-python-diagnostic','done');
+ assert.deepEqual(hrefs(h.all('.hub-course-shortcuts a')),sources('wa-m0').map(x=>x.url),'course completion cannot advance current WA task recommendations');
+ ctx.phdCareerProgress.setMilestone('work-assistant','wa-m0',{status:'done',evidenceUrl:'https://example.com/synthetic-wa0'});
+ assert.deepEqual(hrefs(h.all('.hub-course-shortcuts a')),sources('wa-m1').map(x=>x.url),'hub follows earliest unfinished WA task');
+ ctx.phdCareerProgress.setMilestone('work-assistant','wa-m0',{status:'todo'});
+ assert.deepEqual(hrefs(h.all('.hub-course-shortcuts a')),sources('wa-m0').map(x=>x.url),'undo restores prior task reading');
+ ctx.phdCareerProgress.setRole('decision_optimization');ctx.AppNavigation.open('resources');
+ const m=ctx.CareerUI.currentModule(),units=m.unitIds.map(id=>ctx.CAREER_CURRICULUM.learningUnits.find(u=>u.id===id));
+ assert.deepEqual(hrefs(h.all('.direct-course-link')),JSON.parse(JSON.stringify(units.map(u=>u.url))),'other direction preserves its own official sources');
+ assert.equal(ctx.CareerUI.stats().lessons.total,26);assert.equal(h.all('#courseList [data-lesson]').length,53);
+ h.destroy();
+ const html=fs.readFileSync(path.join(root,'index.html'),'utf8'),css=fs.readFileSync(path.join(root,'course-navigation.css'),'utf8');
+ assert(html.indexOf('course-navigation.css')>html.indexOf('task-focus.css'));
+ assert(css.includes('.app-header .main-tabs button{font-size:16px!important}'),'wins against old desktop/mobile important rules');
+ assert(css.includes('#careerLearning .lesson-purpose p{font-size:16px!important}'));
+ assert(css.includes('.task-brief dd{font-size:16px;'));
+ assert(css.includes('.hub-course-card{order:-1}'),'mobile prioritizes course entrance');
+ assert(css.includes('min-height:44px'));
+ console.log('PASS course entrances: exact current-WA sources from hub/tasks/modules, direct links outside folds, 6 route switches/back/forward, original reading scopes, dirty-form protection, progress independence/undo, original26/53 records, and targeted readable CSS source contracts. Browser QA remains separate.');
+})().catch(e=>{console.error(e);process.exitCode=1});
