@@ -11,11 +11,11 @@ assert(h.query('#castleCatalog').textContent.includes('近期 23 项 / 全部 17
 assert(h.query('#castleNext').textContent.includes('Pandas'));
 assert(h.query('#castleNext').textContent.includes('15:41'));
 assert(h.query('#castleNext').innerHTML.includes('https://www.bilibili.com/video/BV1sHU9BmEne/?p=142'));
-assert(h.query('#castleCompanion').classList.contains('motion-paused'),'honors reduced-motion initially');
-h.query('#castleMotion').onclick();assert(!h.query('#castleCompanion').classList.contains('motion-paused'));h.query('#castleMotion').onclick();assert(h.query('#castleCompanion').classList.contains('motion-paused'));
+assert(!h.query('#castleCompanion').classList.contains('motion-paused'),'static presentation has no running motion state');
+assert.equal(h.query('#castleMotion'),null,'static F3 exposes no pretend motion control');
 h.query('#castleHide').onclick();assert(h.query('#castleCompanion').hidden);assert(!h.query('#castleRestore').hidden);assert.equal(h.document.activeElement.id,'castleRestore');
 h.query('#castleRestore').onclick();assert(!h.query('#castleCompanion').hidden);assert(h.query('#castleRestore').hidden);assert.equal(h.document.activeElement.id,'castleHide');
-assert(h.query('#castleDialogue').hidden);h.query('#castleDialogueToggle').onclick();assert(!h.query('#castleDialogue').hidden);
+assert(!h.query('#castleDialogue').hidden);h.query('#castleDialogueToggle').onclick();assert(h.query('#castleDialogue').hidden);h.query('#castleDialogueToggle').onclick();assert(!h.query('#castleDialogue').hidden);
 h.query('#castleTipCheck').onclick();assert(h.query('#castleCompanionText').textContent.includes('手动勾选'));
 h.query('#castleTipNext').onclick();assert(h.query('#castleCompanionText').textContent.includes('先做'));
 const course=h.all('[data-unified-filter]').find(e=>e.dataset.unifiedFilter==='research');course.onclick();

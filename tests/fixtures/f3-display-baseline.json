@@ -1,0 +1,8 @@
+{
+  "description": "F3 presentation-only replacement. All original paper2/G4 business, data and auth hash protections remain unchanged.",
+  "files": {
+    "castle-theme.css": "839ab87a7fc9a6bbd9496ede7c530b6bcc5414145e11429e4a15e24d50f749e1",
+    "castle-theme.js": "0eb8883e173131067a02d11e954b839f841af37f2b10c70597874b5d547890f3"
+  },
+  "coverMarkupSha256": "3d5a47967ced4e4b44bbb6121cd6530281cbba42515294716f46cb4ab1b09391"
+}

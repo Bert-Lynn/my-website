@@ -12,7 +12,7 @@ for(const [file,sha] of Object.entries(baseline.files)){
 }
 const html=read('index.html'),css=read('ink-theme.css'),cover=read('cover.css'),hub=read('module-hub.js');
 assert(html.indexOf('ink-theme.css')>html.indexOf('employer-events.css'),'the unified display layer owns the final cascade');
-assert(html.includes('星灯学舍 · 2026.10.13'),'visible edition distinguishes the castle release');
+assert(html.includes('成长小屋 · 2026.10.15'),'visible edition distinguishes the F3 release');
 assert(html.indexOf('castle-theme.css')>html.indexOf('ink-theme.css'),'castle theme is the final display cascade');
 assert(html.includes('id="portalCircle"')&&html.includes('clip-path="url(#portalCircle)"'),'moon-window art is a real structured decorative component');
 assert(html.includes('aria-hidden="true"'),'decorative artwork remains noninteractive');

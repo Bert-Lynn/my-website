@@ -3,7 +3,8 @@
 'use strict';
 const doc=root.document,byId=id=>doc.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let paused=!!root.matchMedia?.('(prefers-reduced-motion: reduce)').matches,hidden=false,tipMode='next',tipOpen=false;
+let hidden=false,tipMode='next',tipOpen=true;
+const reducedMotion=()=>!!root.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 const safeURL=url=>{try{const parsed=new URL(url);return ['https:','http:'].includes(parsed.protocol)&&!parsed.username&&!parsed.password?parsed.href:null}catch{return null}};
 const tasks=()=>root.UnifiedTasks?.registry?.()||[];
 const nextTask=list=>list.find(x=>['watch','practice','delivery'].includes(x.kind)&&!x.done);
@@ -12,14 +13,13 @@ function openTask(item){
  root.UnifiedTasks?.reset?.();
  if(root.AppNavigation?.open?.('execution')===false)return false;
  const row=[...doc.querySelectorAll('[data-unified-row]')].find(x=>x.dataset.unifiedRow===item.id);
- if(row){row.open=true;row.scrollIntoView?.({block:'center',behavior:paused?'auto':'smooth'});row.querySelector('summary')?.focus?.({preventScroll:true})}
+ if(row){row.open=true;row.scrollIntoView?.({block:'center',behavior:reducedMotion()?'auto':'smooth'});row.querySelector('summary')?.focus?.({preventScroll:true})}
  return true;
 }
 function updateCompanion(){
- const stage=byId('castleCompanion'),toggle=byId('castleMotion'),hide=byId('castleHide'),restore=byId('castleRestore');
+ const stage=byId('castleCompanion'),hide=byId('castleHide'),restore=byId('castleRestore');
  if(!stage)return;
- stage.classList.toggle('motion-paused',paused);stage.hidden=hidden;
- if(toggle){toggle.textContent=paused?'开启轻动':'暂停轻动';toggle.setAttribute('aria-pressed',String(!paused))}
+ stage.hidden=hidden;
  if(hide)hide.setAttribute('aria-expanded',String(!hidden));if(restore)restore.hidden=!hidden;
  doc.body.classList.toggle('companion-hidden',hidden);
  const dialogue=byId('castleDialogue'),dialogueToggle=byId('castleDialogueToggle');
@@ -34,6 +34,8 @@ function render(){
   if(byId('castleOpenNext'))byId('castleOpenNext').onclick=()=>openTask(next);
   hero.querySelectorAll('[data-castle-route]').forEach(a=>a.onclick=e=>{e.preventDefault();root.AppNavigation?.open?.(a.dataset.castleRoute)});
  }
+ const research=doc.body.getAttribute('data-task-view')==='research';
+ doc.querySelectorAll('#mainTabs [data-page]').forEach(button=>{if(['execution','execution/research'].includes(button.dataset.page))button.setAttribute('aria-pressed',String(doc.body.getAttribute('data-current-page')==='execution'&&(button.dataset.page==='execution/research'?research:!research)))});
  const catalog=byId('castleCatalog');if(catalog)catalog.textContent='近期 '+all.filter(x=>x.current).length+' 项 / 全部 '+all.length+' 项';
  const summary=byId('castleProject');if(summary)summary.textContent='用户反馈分析 Agent · 四阶段研习';
  if(note)note.textContent=!next?'主线记录已完成，可以回看课程和验收。':tipMode==='check'?(next.check||next.description||'打开任务，查看原有验收标准。'):'先做「'+next.title.replace(/^(看课：|练习：)/,'')+'」。'+(next.kind==='watch'?'看完指定课节，再亲手练习。':next.kind==='practice'?'保留输入和输出，按标准核对结果。':'把结果与证据整理好，再记录实际进度。');
@@ -43,15 +45,13 @@ function render(){
 }
 function init(){
  byId('castleDialogueToggle')?.addEventListener('click',()=>{tipOpen=!tipOpen;render()});
- byId('castleMotion')?.addEventListener('click',()=>{paused=!paused;updateCompanion()});
  byId('castleHide')?.addEventListener('click',()=>{hidden=true;updateCompanion();byId('castleRestore')?.focus?.()});
  byId('castleRestore')?.addEventListener('click',()=>{hidden=false;updateCompanion();byId('castleHide')?.focus?.()});
  byId('castleTipNext')?.addEventListener('click',()=>{tipMode='next';render()});
  byId('castleTipCheck')?.addEventListener('click',()=>{tipMode='check';render()});
  byId('castleTaskFocus')?.addEventListener('click',()=>openTask(nextTask(tasks())));
- const figure=byId('castlePortrait');figure?.addEventListener('click',()=>{tipOpen=!tipOpen;render()});
+ const figure=byId('castlePortrait');figure?.addEventListener('click',()=>{tipOpen=true;render()});
  const list=byId('currentTaskList');if(list&&root.MutationObserver)new root.MutationObserver(render).observe(list,{childList:true});
- root.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change',event=>{paused=event.matches;updateCompanion()});
  render();
 }
 root.CastleTheme={render,openTask,nextTask,safeURL};

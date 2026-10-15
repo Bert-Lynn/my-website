@@ -2,9 +2,11 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict'),vm=require('node:vm');
 const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 const baseline=require('./fixtures/paper2-preserved-g4-baseline.json');
-for(const [file,digest] of Object.entries(baseline.files))assert.equal(hash(fs.readFileSync(path.join(root,file))),digest,'immutable G4 source: '+file);
+// The user-approved F3 display layer has its own exact hashes; all business/data hashes stay at G4.
+const f3=require('./fixtures/f3-display-baseline.json');
+for(const [file,digest] of Object.entries(baseline.files))assert.equal(hash(fs.readFileSync(path.join(root,file))),f3.files[file]||digest,'protected source: '+file);
 const appSource=read('app.js'),prefix=appSource.split('const streamLabels=')[0];assert.equal(hash(prefix),baseline.taskPrefixSha256,'all 47 full definitions/IDs/dates preserved');
-const html=read('index.html');assert.equal(hash(html.slice(html.indexOf('<section class="site-cover"'),html.indexOf('<div class="site-shell"'))),baseline.coverMarkupSha256,'approved G4 cover markup unchanged');
+const html=read('index.html');assert.equal(hash(html.slice(html.indexOf('<section class="site-cover"'),html.indexOf('<div class="site-shell"'))),f3.coverMarkupSha256,'approved F3 cover markup unchanged');
 const d=JSON.parse(read('data/paper2-research.json')),w={};vm.runInNewContext(read('paper2-research.js'),{window:w});assert.deepEqual(JSON.parse(JSON.stringify(w.PAPER2_RESEARCH)),d,'JSON/browser snapshot identical');
 assert.equal(d.steps.length,3);assert.equal(d.references.length,6);assert.equal(d.status,'候选题未定');assert.equal(d.steps[0].read.length,1);assert.equal(d.steps[1].read.length,2);assert(d.steps[1].readingMode.includes('二选一'));assert.equal(d.steps[2].optionalRead.length,3);
 assert(d.scope.includes('求解算法内部')&&d.scope.includes('鲁棒性'));assert(d.alternativesNote.includes('CV + OR')&&d.alternativesNote.includes('待补充'));assert(d.steps[2].focus[1].includes('不确定集／风险准则'));assert(d.steps[2].focus[1].includes('建模错误')); assert(d.steps[1].deliverable.includes('1页'));
