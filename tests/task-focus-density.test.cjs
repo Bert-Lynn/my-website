@@ -3,7 +3,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {app}=require('./helpers/app-harness.cjs');
 const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.html'),'utf8'),css=fs.readFileSync(path.join(root,'task-focus.css'),'utf8');
-for(const [file,version] of Object.entries({'app.js':'20261014-paper2-1','career-ui.js':'20261012-unified1','module-hub.js':'20261014-paper2-1','course-navigation.css':'20261012-refined1','task-focus.css':'20261012-refined1'}))assert(html.includes('./'+file+'?v='+version),'changed asset cache is invalidated: '+file);
+for(const [file,version] of Object.entries({'app.js':'20261014-paper2-1','career-ui.js':'20261015-courseclarity1','module-hub.js':'20261014-paper2-1','course-navigation.css':'20261012-refined1','task-focus.css':'20261012-refined1','course-clarity.css':'20261015-courseclarity1'}))assert(html.includes('./'+file+'?v='+version),'changed asset cache is invalidated: '+file);
 for(const file of ['guide.html'])assert(html.includes('./'+file+'?v=20261012-unified1'),'updated guide bypasses its previous cache: '+file);
 assert(html.indexOf('ink-theme.css')>html.indexOf('task-focus.css'),'unified book-page theme follows the unchanged density layer');
 assert(css.includes('#currentTaskList .focus-task{max-width:none;width:100%;font-weight:400;box-sizing:border-box}'),'current cards override inherited narrow/heavy styling without affecting other cards');

@@ -4,7 +4,9 @@ const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'
 const baseline=require('./fixtures/paper2-preserved-g4-baseline.json');
 // The user-approved F3 display layer has its own exact hashes; all business/data hashes stay at G4.
 const f3=require('./fixtures/f3-display-baseline.json');
-for(const [file,digest] of Object.entries(baseline.files))assert.equal(hash(fs.readFileSync(path.join(root,file))),f3.files[file]||digest,'protected source: '+file);
+// Course presentation now has its own exact reviewed hash; no protected file is skipped.
+const courseDisplay={'career-ui.js':'a0e143d2df7b7d25ff8bffda8a8272ae440ad3c55503237af11665623d4e9670'};
+for(const [file,digest] of Object.entries(baseline.files))assert.equal(hash(fs.readFileSync(path.join(root,file))),courseDisplay[file]||f3.files[file]||digest,'protected source: '+file);
 const appSource=read('app.js'),prefix=appSource.split('const streamLabels=')[0];assert.equal(hash(prefix),baseline.taskPrefixSha256,'all 47 full definitions/IDs/dates preserved');
 const html=read('index.html');assert.equal(hash(html.slice(html.indexOf('<section class="site-cover"'),html.indexOf('<div class="site-shell"'))),f3.coverMarkupSha256,'approved F3 cover markup unchanged');
 const d=JSON.parse(read('data/paper2-research.json')),w={};vm.runInNewContext(read('paper2-research.js'),{window:w});assert.deepEqual(JSON.parse(JSON.stringify(w.PAPER2_RESEARCH)),d,'JSON/browser snapshot identical');
