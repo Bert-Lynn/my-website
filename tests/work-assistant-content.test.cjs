@@ -4,9 +4,11 @@ const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'
 const sha=x=>crypto.createHash('sha256').update(typeof x==='string'?x:JSON.stringify(x)).digest('hex');
 const baseline=require('./fixtures/work-assistant-preserved-baseline.json');
 const c=json('data/career-curriculum.json'),m=json('data/learning-modules.json'),p=json('data/project-outline.json');
-const originalHashes=require('./fixtures/growth-hub-baseline.json').files;
+const stateBaseline=require('./fixtures/growth-hub-baseline.json');
+const originalHashes=stateBaseline.files;
+assert.equal(sha(read('career-state.js')),originalHashes['career-state.js'],'current private-state code matches verified main exactly');
 const registryOnly=read('career-state.js').replace("const MAIN_PROJECT = 'work-assistant';","const MAIN_PROJECT = 'ai-choice-assistant';").replace("const PROJECTS = { [PROJECT]: MILESTONES, 'ai-choice-assistant': Array.from({length:6},(_,i)=>'aca-m'+i), [MAIN_PROJECT]: Array.from({length:4},(_,i)=>'wa-m'+i) };","const PROJECTS = { [PROJECT]: MILESTONES, [MAIN_PROJECT]: Array.from({length:6},(_,i)=>'aca-m'+i) };");
-assert.equal(sha(registryOnly),originalHashes['career-state.js'],'client validation, dates, history and storage logic are byte-unchanged outside the explicit additive registry');
+assert.equal(sha(registryOnly),stateBaseline.legacyPreWAStateSha256,'client validation, dates, history and storage logic are byte-unchanged outside the explicit additive registry');
 assert.equal(sha(read('app.js').split('const streamLabels=')[0]),baseline.taskPrefixSha256,'all 47 complete original task records are byte-preserved');
 assert.equal(sha(read('course-lessons.js')),baseline.courseLessonsSha256,'all 53 lesson records are byte-preserved');
 for(const [field,key] of [['learningUnits','unitsSha256'],['skills','skillsSha256'],['projects','legacyProjectsSha256'],['challenges','challengesSha256'],['lessonOverrides','lessonOverridesSha256']]) assert.equal(sha(c[field]),baseline[key],field+': original identities, prompts, acceptance criteria and progress meaning are preserved');

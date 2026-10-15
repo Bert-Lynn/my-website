@@ -1,16 +1,16 @@
 {
   "files": {
-    "career-curriculum.js": "dd4c37484e8be29fd18f6e8461e95da946b236845754bbd4ccb8d5b510115f16",
-    "career-state.js": "a7a0c268c06419a63d6be1360bff7e31112d9673cd0f83d71a3d7d9e4efcf9e7",
-    "cloud-sync.js": "2d9e05cf8fbf2963052dafdc3357c0a5d65283b489d6474d03ad9437969e276d",
+    "career-curriculum.js": "6c48ea2c7e0186f8027d9bb8ed26a9f1a75d928a29702d5e7afa9eba1c867353",
+    "career-state.js": "2ada43acbbe11c9be1cab93b76b6767d4aa0e42ecb9a2746e6c78cdb1bb39dad",
+    "cloud-sync.js": "790f24edabe91a21b486df20d1b7981ecd0a5f976465def98d5b5598e1c4c726",
     "course-lessons.js": "36e73c05b8fc44a371861523ab19f764dc5e179a769c58b7198af894556ffcb7",
-    "internship-data.js": "860fa7ca7f4b71c2737c183df4f55d87d52c3eb9d8383e5003c32de4fa28b7e1",
-    "learning-modules.js": "9771fa570bf93292f22f72a00ad5c037e22a1afeded09a4f23e5cd2049f5b6b0",
-    "project-outline.js": "58a74acb0f8e13745cac58b036be70e01de5319fcf956e14d04f7010a43ddb9a",
-    "data/career-curriculum.json": "06bd7a673c62c21230f602d98a389ee33635cca1a9c17e7ed4cd3a892eaf4a85",
-    "data/internships.json": "c87e73750cf12110ffc3cefc82d2533de815da54896e160a9bfe9ac1bbfdf8ff",
-    "data/learning-modules.json": "3b2e2059a4757203c6cfd4368cec6c310147ec9ca848b2c14589ada4652e0e01",
-    "data/project-outline.json": "3b47bf37b0feb5d214262eb84d56b5650027f78cdca3578ac688271f71664268",
+    "internship-data.js": "f53fb50d1dd741f8da2cc6cc815bb3278ee1e26320d86b39ba8b051ad064193c",
+    "learning-modules.js": "23e3f517e9b71a8daec6c72a136b043236ffac8717baeabe7784b29faed8c342",
+    "project-outline.js": "3fe95eadd6d3fb4ba5e00ef3eeb90b3cf53f9465fd8a7059276ca508faa472b1",
+    "data/career-curriculum.json": "03308a132023e934fa29a4f5d64bb3fc990bb06438b2fb00eae46f81f18e482a",
+    "data/internships.json": "aec9b34f7dd694a3b0ba0aaacc6158cc936c66190e97e37adae048cfeef05f8d",
+    "data/learning-modules.json": "7592351a84d38b1e3e528d26e155e2840cac886b9c0b5a8f3ebdb18fd1798314",
+    "data/project-outline.json": "c555bfb19198702703e142f941b9eb0d37b98b2cccaa45c7ccc087edfbbed9e1",
     "supabase/20261010104000_phd_private_lessons_and_completion_dates.sql": "df016f10807df951f6735161d0b3707316e4bb912b00a978d3f9357ceb0525aa",
     "supabase/20261010111351_phd_private_career_assessments.sql": "840cefb2241a8ce4b7b518235c3db1ca8418096c2a7da005186c7274c69161df",
     "supabase/20261010111945_phd_career_learning_units.sql": "95d2ba019cdbd6d49374afbc4f559f39a9c707c6a53d0f7f2b91e86db2611cfc",
@@ -26,5 +26,8 @@
   },
   "tasks_sha256": "6c55ed9ece4de6edd88de62197842e456a43b9dc7c14dcd61abe28aeab745a1a",
   "baseline_ref": "b32bd7a3023392423fa1aa2844f836386a1ba8b9",
-  "cloud_config_trimmed_sha256": "a406c87f2314a7ea3f17dafd0db3c7a58209eede9588b82909f22ca0622ae363"
+  "cloud_config_trimmed_sha256": "a406c87f2314a7ea3f17dafd0db3c7a58209eede9588b82909f22ca0622ae363",
+  "verifiedMainCommit": "7f549312bd32364827a640e04aa55eaf23691f9d",
+  "refreshNote": "Old assertions rebased onto current main whose complete tree was independently verified by Git blob SHA. Authorized paper2 display changes are separately scoped and tested; no task, course or private-state hashes are relaxed.",
+  "legacyPreWAStateSha256": "a7a0c268c06419a63d6be1360bff7e31112d9673cd0f83d71a3d7d9e4efcf9e7"
 }

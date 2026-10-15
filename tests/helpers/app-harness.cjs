@@ -124,7 +124,7 @@ function app({ memory = {}, hash = '', now = null, cloudClient = null } = {}) {
     setInterval() {}, setTimeout, clearTimeout, confirm: message => { confirmations.push(message); return allowNavigation; }, PHD_CLOUD_CONFIG: { enabled: false }
   };
   ctx.window = ctx; vm.createContext(ctx);
-  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'video-learning.js', 'internship-data.js', 'career-state.js', 'goal-ui.js', 'lesson-ui.js', 'cloud-sync.js', 'unified-tasks.js', 'career-ui.js', 'module-hub.js', 'app.js']) {
+  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'video-learning.js', 'internship-data.js', 'career-state.js', 'paper2-research.js', 'paper2-ui.js', 'goal-ui.js', 'lesson-ui.js', 'cloud-sync.js', 'unified-tasks.js', 'career-ui.js', 'module-hub.js', 'app.js']) {
     if (fs.existsSync(path.join(root, file))) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), ctx, { filename: file });
     if (file === 'cloud-sync.js' && cloudClient) {
       const create = ctx.PhdCloud.create;

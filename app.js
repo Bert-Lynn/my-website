@@ -620,7 +620,7 @@ function bar(percent){return '<div class="progress-line"><i style="width:'+perce
 function taskMarkup(t){
   const carried=t.month<activeMonth&&!progress[t.id];
   const lesson=(window.COURSE_LESSONS?.courses||[]).flatMap(c=>c.lessons).find(l=>l.taskId===t.id);
-  const oldProjectNote=t.category==='demo'?'<p class="task-plan-context">原月计划 · '+(t.id==='sep-apply'?'实习投递任务，与作品成果分别记录。':'历史项目方案，保留原勾选；不是当前主作品的必做清单。')+'</p>':'';
+  const oldProjectNote=t.stream===window.PAPER2_RESEARCH?.legacyStream?'<p class="task-plan-context">旧论文B历史方向 · 勾选只代表原任务，不映射为当前paper2。</p>':t.category==='demo'?'<p class="task-plan-context">原月计划 · '+(t.id==='sep-apply'?'实习投递任务，与作品成果分别记录。':'历史项目方案，保留原勾选；不是当前主作品的必做清单。')+'</p>':'';
   const timing=(t.originalMonth!==t.month?'原计划 '+t.originalMonth+' → ':'')+'计划 '+t.month;
   return '<article id="task-'+t.id+'" class="task-item category-'+t.category+' '+(progress[t.id]?'done':'')+'"><label class="task-check"><input id="check-'+t.id+'" type="checkbox" data-id="'+t.id+'" aria-label="完成：'+t.title+'" '+(progress[t.id]?'checked':'')+'></label><div class="task-copy">'+oldProjectNote+'<label class="task-title" for="check-'+t.id+'">'+t.title+'</label><p class="task-outcome"><span>交付：</span>'+t.outcome+'</p><div class="task-meta"><i>'+streamLabels[t.stream]+'</i>'+(t.milestone?'<i class="hot">里程碑</i>':'')+((t.optional||window.CAREER_CURRICULUM?.taskOverrides?.[t.id]?.optional)?'<i class="optional-tag">当前主线选修</i>':'')+(carried?'<i class="carry-tag">顺延自 '+t.month+'</i>':'<span>计划 '+t.month+'</span>')+'</div><details class="task-detail"><summary>任务说明</summary><p>'+t.detail+'</p><small>'+timing+(progress[t.id]?' · 完成：'+(window.GoalUI?.date(cloudSync?.taskCompletedAtSnapshot?.()[t.id])||'历史完成日期未记录'):'')+'</small></details>'+(lesson?'<button class="task-lessons-button" data-task-lessons="'+lesson.id+'">查看对应的逐节课程 →</button>':'')+'</div>'+(t.url?'<a class="task-link" href="'+t.url+'" target="_blank" rel="noreferrer" aria-label="打开'+t.title+'学习资料">资料 →</a>':'')+'</article>';
 }
@@ -660,6 +660,7 @@ window.addEventListener('hashchange',restoreLocationRoute);
 function setMonth(month){activeMonth=month;view='month';setPage('execution/month')}
 function navigateMonth(direction){const [y,m]=activeMonth.split('.').map(Number),d=new Date(y,m-1+direction,1);setMonth(d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0'))}
 function render(){
+  window.UnifiedTasks?.route(activeRoute);
   if(window.LessonUI) window.LessonUI.render();
   window.GoalUI?.render();
   document.querySelector('#nextLessonHero').hidden=true;
@@ -675,12 +676,12 @@ function render(){
   document.querySelector('#skillTabs').hidden=!['skills','assessments'].includes(page);
   document.querySelector('#researchTabs').hidden=!['overview','timeline','outcomes'].includes(page);
   document.querySelector('.journey').hidden=page!=='timeline';
-  document.querySelector('.progress-sidebar').hidden=page!=='execution'||view==='current';
-  document.querySelector('.workspace-layout').classList.toggle('with-sidebar',page==='execution'&&view!=='current');
+  document.querySelector('.progress-sidebar').hidden=page!=='execution'||['current','research'].includes(view);
+  document.querySelector('.workspace-layout').classList.toggle('with-sidebar',page==='execution'&&!['current','research'].includes(view));
   document.querySelector('#resetBtn').hidden=page!=='storage';
   const researchView=page==='execution'&&view==='research',currentView=page==='execution'&&view==='current';
-  document.getElementById('currentTaskList').hidden=!currentView;
-  document.getElementById('originalTaskPlan').hidden=currentView;
+  document.getElementById('currentTaskList').hidden=!(currentView||researchView);
+  document.getElementById('originalTaskPlan').hidden=currentView||researchView;
   document.getElementById('pageEyebrow').hidden=currentView;
   document.getElementById('pageSubtitle').hidden=currentView;
   const carriedCount=carriedTasks(currentMonth()).length,oldPlanTab=document.querySelector('[data-task-section="execution/month"]');if(oldPlanTab)oldPlanTab.textContent='原月计划'+(carriedCount?' · '+carriedCount+' 项顺延':'');
@@ -691,7 +692,7 @@ function render(){
   const all=tally(tasks),now=currentMonth(),backlog=carriedTasks(view==='stage'?stages[selectedStage].start:activeMonth),mt=monthTasks(activeMonth),ms=tally(mt);
   document.querySelector('#todayLabel').textContent=now.replace('.','年')+'月 · 上海时间';
   document.querySelector('#pageTitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[0]||pageNames.today[0]):page==='resources'?'课程学习':page==='execution'?(researchView?'科研与论文':currentView?'所有任务':'原月计划'):(pageNames[page]?.[0]||'成长工作台');
-  document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?(researchView?'实验、写作与投稿，按原计划推进。':currentView?'课程、练习、交付和科研，在一个清单中分别记录。':'原47项任务，未完成的会继续顺延。'):page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'按当前任务看视频，学完就用到自己的项目。':pageNames[page]?.[1]||'';
+  document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?(researchView?'paper2先完成期刊阅读与1页对比，具体题目仍待确定。':currentView?'课程、练习、交付和科研，在一个清单中分别记录。':'原47项任务，未完成的会继续顺延。'):page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'按当前任务看视频，学完就用到自己的项目。':pageNames[page]?.[1]||'';
   document.querySelector('#pageEyebrow').textContent=page==='execution'?'任务列表':page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'视频主线':pageNames[page]?.[2]||'研究工作台';
   document.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==page);
   const primaryPage=page==='execution'?'execution':page==='resources'?'resources':['skills','assessments'].includes(page)?'skills':phdPages.includes(page)?'overview':page;
@@ -729,8 +730,9 @@ function render(){
   document.querySelectorAll('[data-task-lessons]').forEach(b=>b.onclick=()=>window.LessonUI?.openLesson(b.dataset.taskLessons));
   document.querySelectorAll('.task-item input').forEach(el=>el.onchange=()=>toggle(el.dataset.id));
   const submitted=['feb-a-submit','jun-b-submit','sep-c-submit'].filter(id=>progress[id]).length,finished=['feb-air-v1','aug-vision-v1','aug-agent-v1'].filter(id=>progress[id]).length;
-  document.querySelector('#outcomeCount').textContent='已投稿 '+submitted+'/3 · 成熟项目 '+finished+'/'+demos.length;
-  document.querySelector('#paperGrid').innerHTML=papers.map(p=>{const a=tasks.filter(t=>t.stream===p.stream),s=tally(a),next=a.find(t=>!progress[t.id]);return '<article><div class="paper-top"><div class="paper-code">'+p.code+'</div><span>目标投稿 · '+p.due+'</span></div><h3>'+p.title+'</h3><p>'+p.desc+'</p><div class="paper-foot"><span>'+s.done+' / '+s.total+' 项已完成</span><strong>'+s.pct+'%</strong></div>'+bar(s.pct)+'<div class="stream-next">'+(next?'下一步：'+next.title:'全部任务已完成 ✓')+'</div></article>'}).join('');
+  document.querySelector('#outcomeCount').textContent='原计划投稿记录 '+submitted+'/3 · 成熟项目 '+finished+'/'+demos.length;
+  document.querySelector('#paperGrid').innerHTML=papers.map(p=>{if(p.stream===window.PAPER2_RESEARCH?.legacyStream)return window.Paper2UI?.outcome()||'';const a=tasks.filter(t=>t.stream===p.stream),s=tally(a),next=a.find(t=>!progress[t.id]);return '<article><div class="paper-top"><div class="paper-code">'+p.code+'</div><span>目标投稿 · '+p.due+'</span></div><h3>'+p.title+'</h3><p>'+p.desc+'</p><div class="paper-foot"><span>'+s.done+' / '+s.total+' 项已完成</span><strong>'+s.pct+'%</strong></div>'+bar(s.pct)+'<div class="stream-next">'+(next?'下一步：'+next.title:'全部任务已完成 ✓')+'</div></article>'}).join('');
+  window.Paper2UI?.bind();
   document.querySelector('#demoList').innerHTML=demos.map((d,i)=>{const s=tally(tasks.filter(t=>t.stream===d.stream));return '<article><span class="demo-icon">'+(i===2?'E':i?'V':'A')+'</span><div><h3>'+d.title+'</h3><p>'+d.desc+'</p>'+bar(s.pct)+'</div><div class="demo-stat"><strong>'+s.done+' / '+s.total+'</strong><span>项已完成</span><span>目标 '+d.due+'</span></div></article>'}).join('');
   const milestones=tasks.filter(t=>t.milestone).sort((a,b)=>a.month.localeCompare(b.month)),next=milestones.find(t=>!progress[t.id]);
   document.querySelector('#nextMilestone').innerHTML=next?'<span class="next-milestone-date">目标 '+next.month+'</span><strong class="next-milestone-title">'+next.title+'</strong><p class="next-milestone-note">'+next.outcome+'</p>':'<p class="next-milestone-note">全部里程碑已完成 ✓</p>';

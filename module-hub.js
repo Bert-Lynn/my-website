@@ -48,7 +48,7 @@
         {route:'execution',number:'一',kicker:'任务清单',title:'所有任务',description:'课程、练习、项目交付与科研，在一份清单里逐项推进。',action:'打开任务列表',key:'tasks',featured:true},
         {route:'resources',number:'二',kicker:'课程学习',title:'视频课程',description:'按当前任务看视频，知道学会什么，再用到自己的项目。',action:'看当前任务的视频',key:'learn',featured:true},
         {route:'projects',number:'三',kicker:'作品交付',title:'Demo 制作与交付',description:'查看要做出的工具、成品要求和后续学习计划。',action:'查看作品说明',key:'project'},
-        {route:'execution/research',number:'四',kicker:'科研计划',title:'科研与论文',description:'集中查看研究任务，推进实验、写作与论文投稿。',action:'打开 '+s.buckets[0].total+' 项科研任务',key:'research'},
+        {route:'execution/research',number:'四',kicker:'科研计划',title:'科研与论文',description:'paper2先读期刊、交1页对比，再确定Agent参与OR求解的具体题目。',action:'打开当前研究与阅读计划',key:'research'},
         {route:'roles',number:'五',kicker:'实习准备',title:'实习准备',description:'对照岗位要求与技能记录，明确下一步准备什么。',action:'查看岗位与准备要求',key:'roles'}
       ].map(card).join('')+'</div></section><details class="hub-record-details"><summary>查看课节、作品与自查进度</summary>'+'<section class="hub-independent-progress" aria-label="独立学习与准备记录">'+independent.map(item=>'<article data-hub-metric="'+item.id+'"><div><h3>'+item.title+'</h3><strong>'+item.value.done+' <small>/ '+item.value.total+'</small></strong></div>'+bar(item.value,item.title)+'<p>'+item.unit+' · '+item.note+'</p></article>').join('')+'</section><p class="hub-progress-note">课节、Demo 阶段和技能自查分别记录，不计入上方 '+s.total.total+' 项；自查通过不代表已投递或已录用。</p>'+'</details><div class="hub-data-note"><span>数据来源：'+s.source+'。</span><span>交付入口用于保存证据链接，不会自动发布或向外投递。</span></div>';
     el.querySelectorAll('[data-hub-route]').forEach(link=>link.onclick=event=>{event.preventDefault();return options.openPage(link.dataset.hubRoute);});

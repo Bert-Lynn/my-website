@@ -1,0 +1,18 @@
+/* Research guidance inherits the approved castle palette and existing task layout. */
+.paper2-intro{padding:14px 0 18px;border-bottom:1px solid #b48c5a;margin-bottom:12px}
+.paper2-intro p,.paper2-readings p,.paper2-legacy-note p{line-height:1.8;margin:7px 0}
+.paper2-intro small,.paper2-readonly{display:block;line-height:1.8;color:#70543f}
+.paper2-readings,.paper2-focus{padding-left:23px;margin:12px 0}
+.paper2-readings>li,.paper2-focus>li{margin:10px 0;line-height:1.8}
+.paper2-readings a,.paper2-outcome a,.paper2-reading-entry a{color:#703b32;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.paper2-citation{display:block;font-size:14px;line-height:1.7;color:#70543f}
+.paper2-source summary,.paper2-optional summary,.paper2-legacy-note summary{cursor:pointer;min-height:44px;padding:10px 0;line-height:1.6}
+.paper2-source p{overflow-wrap:anywhere}
+.paper2-readonly{border-top:1px solid #b48c5a;padding-top:12px;margin-top:16px!important}
+.paper2-reading-entry{line-height:1.8;padding:12px 0;border-bottom:1px solid #b48c5a;margin-bottom:18px}
+.paper2-outcome .text-action{display:inline-flex;align-items:center;min-height:44px;margin:10px 0}
+.paper2-intro strong{font-weight:650}
+.paper2-legacy-note{margin-top:12px}
+.paper2-legacy-note .goal-task-list{padding:0}
+@media(max-width:760px){.paper2-intro p,.paper2-readings p,.paper2-focus li,.paper2-reading-entry{font-size:16px}.paper2-citation{font-size:14px}.paper2-intro small{font-size:14px}.paper2-readings{padding-left:20px}}
+@media(forced-colors:active){.paper2-readings a,.paper2-outcome a,.paper2-reading-entry a{color:LinkText}.paper2-intro,.paper2-readonly{border-color:CanvasText}}

@@ -1,0 +1,33 @@
+{
+  "remoteCommit": "f65809fa97801f9e0e12f97328da2a7891fbf1ca",
+  "archivedResourcesSha256": "ad8845e124aa20c34c183870304477c16b31a663632c2cd037590f8884784a8e",
+  "archivedResourceIds": [
+    "wa-video-csv",
+    "wa-video-filter",
+    "wa-video-model-api",
+    "wa-video-react",
+    "wa-video-pytest-start",
+    "wa-video-pytest-cases",
+    "wa-video-eval-concepts",
+    "wa-video-run-evals"
+  ],
+  "protectedFiles": {
+    "course-lessons.js": "36e73c05b8fc44a371861523ab19f764dc5e179a769c58b7198af894556ffcb7",
+    "career-state.js": "2ada43acbbe11c9be1cab93b76b6767d4aa0e42ecb9a2746e6c78cdb1bb39dad",
+    "cloud-sync.js": "790f24edabe91a21b486df20d1b7981ecd0a5f976465def98d5b5598e1c4c726",
+    "data/career-curriculum.json": "03308a132023e934fa29a4f5d64bb3fc990bb06438b2fb00eae46f81f18e482a",
+    "career-curriculum.js": "6c48ea2c7e0186f8027d9bb8ed26a9f1a75d928a29702d5e7afa9eba1c867353",
+    "data/learning-modules.json": "7592351a84d38b1e3e528d26e155e2840cac886b9c0b5a8f3ebdb18fd1798314",
+    "learning-modules.js": "23e3f517e9b71a8daec6c72a136b043236ffac8717baeabe7784b29faed8c342",
+    "data/project-outline.json": "c555bfb19198702703e142f941b9eb0d37b98b2cccaa45c7ccc087edfbbed9e1",
+    "project-outline.js": "3fe95eadd6d3fb4ba5e00ef3eeb90b3cf53f9465fd8a7059276ca508faa472b1",
+    "data/internships.json": "aec9b34f7dd694a3b0ba0aaacc6158cc936c66190e97e37adae048cfeef05f8d",
+    "internship-data.js": "f53fb50d1dd741f8da2cc6cc815bb3278ee1e26320d86b39ba8b051ad064193c",
+    "data/employer-events.json": "a13d34892e36491e61b01bc33cf6b1f0663ddb1e05a0ff278031d491411dc3a2",
+    "employer-events.js": "70d8dfad8dfc3a4e55d5b84a3be51c7cccc198dac8e4da396354566436a1f0e5",
+    "classroom/index.html": "e68367f8bff5347526bc470a6d7a336ec1bb4ca967f3b0e64176834c3dc1459c",
+    "app.js": "2474bb6bf8e459348ad93714c35bbcd50a52bce1d8c75d4cccb1fd719e0f82c1"
+  },
+  "verifiedMainCommit": "7f549312bd32364827a640e04aa55eaf23691f9d",
+  "refreshNote": "Old assertions rebased onto current main whose complete tree was independently verified by Git blob SHA. Authorized paper2 display changes are separately scoped and tested; no task, course or private-state hashes are relaxed."
+}

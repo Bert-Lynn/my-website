@@ -1,0 +1,149 @@
+{
+  "version": "2026-10-14",
+  "id": "paper2",
+  "legacyStream": "paperB",
+  "title": "paper2 · Agent参与OR求解",
+  "status": "候选题未定",
+  "scope": "研究 Agent 如何参与运筹优化求解算法内部的启发式生成、算子设计或搜索改进，并检验跨实例与扰动下的鲁棒性。",
+  "boundary": "关注求解算法本身；只做自动建模或用OR调度Agent工具，不能替代本方向的问题定义。",
+  "progressNote": "这3步是当前只读计划，尚未接入完成打卡，不计入原47项或学习与作品的完成率。旧论文B的勾选只代表旧任务。",
+  "readingPolicy": "先读1篇，再从2篇中选1篇对照；其余仅按问题需要补读，不要求读完6篇。全部主参考为正式期刊论文，毕业适用性仍需按学校与导师要求确认。",
+  "legacyNote": "旧论文B：预测到优化／决策导向学习。原ID、日期和勾选保留，不映射为当前paper2的完成状态。",
+  "steps": [
+    {
+      "id": "paper2-read-automodsat",
+      "title": "1. 读AutoModSAT：标出Agent进入求解算法的位置",
+      "summary": "先读方法与实验设置，画一条“生成／修改算法 → 求解评测 → 反馈改进”的流程。",
+      "read": [
+        "automodsat"
+      ],
+      "readingMode": "先读这一篇",
+      "focus": [
+        "Agent具体修改什么：启发式、模块、搜索逻辑，还是仅模型描述？用原文位置作证。",
+        "分清算法设计阶段与求解运行阶段；记录目标问题、实例集、预算、基线和失败处理。",
+        "查论文实际测了哪些跨规模／跨分布／扰动情况；没测的写“未报告”，不推成已具备鲁棒性。"
+      ],
+      "deliverable": "半页流程图或条目笔记，附方法与实验的页码／小节位置。",
+      "check": "能说清Agent的输入、可修改对象、反馈信号和最终求解器；保留至少1个待核验的鲁棒性问题。"
+    },
+    {
+      "id": "paper2-compare-journals",
+      "title": "2. 二选一对照，交1页研究比较",
+      "summary": "从单机调度启发式（COR）与多Agent启发式设计（ARES）中选1篇，和AutoModSAT比较。",
+      "read": [
+        "cor-scheduling",
+        "ares"
+      ],
+      "readingMode": "二选一，不必两篇都做",
+      "focus": [
+        "COR侧重特定调度问题的构造启发式，不直接当作通用MIP求解器控制；ARES重点看多Agent如何影响启发式设计。",
+        "统一比较：OR问题、Agent介入点、反馈、预算、基线、可行性保证、失败处理与泛化／鲁棒性证据。",
+        "把“论文已证明的结果”和“值得检验的候选缺口”分开；记录代码、数据、全文是否可获得。"
+      ],
+      "deliverable": "1页对比：两篇论文 × 关键维度，末尾写1—2个候选问题和最小对照实验。",
+      "check": "对比中有具体算法介入点和来源位置；候选问题仍标待验证，不宣布创新性或题目已定。"
+    },
+    {
+      "id": "paper2-decide-scope",
+      "title": "3. 用对比页缩小范围，再确定题目",
+      "summary": "在已有对比上讨论一个窄问题；确认可复现基线与成本后，再决定是否开展实验。",
+      "read": [],
+      "optionalRead": [
+        "cie-jobshop",
+        "llamea",
+        "multiobjective"
+      ],
+      "readingMode": "按需补读，先完成前两步",
+      "focus": [
+        "候选切口可在启发式／算子生成、搜索中自适应改进等位置选择；先证实论文缺口，不预先定题。",
+        "分别界定建模错误、算法稳健性与参数不确定：未见规模／实例分布、扰动和随机种子可用于算法稳健性测试；参数不确定下的鲁棒优化需另写不确定集／风险准则，不能仅凭多随机种子就这样命名。选择适配的可行率、目标值／gap、运行时间与失败率。",
+        "设计固定预算的经典算法／无Agent基线与消融；算法开发集和最终测试集分离，报告多次运行和失败，不只报最好一次。"
+      ],
+      "deliverable": "1页候选问题说明：选择理由、1个最小实验、基线／数据、预算与停止条件；与导师确认后再定题。",
+      "check": "能说明为什么Agent参与求解内部、为什么值得测鲁棒性，以及什么证据会让候选题被否定；无获准经费不启动付费API或训练。"
+    }
+  ],
+  "references": [
+    {
+      "id": "automodsat",
+      "shortTitle": "AutoModSAT",
+      "title": "Discovering heuristics in a complex SAT solver with large language models",
+      "journal": "Nature Communications",
+      "year": 2026,
+      "citation": "17 (2026), 9008",
+      "url": "https://www.nature.com/articles/s41467-026-74949-2",
+      "focus": "看coder／evaluator／repairer与演化搜索如何修改CDCL求解器的7个启发式函数；重点查跨域迁移、生成代码正确性、超时预算和共享状态限制。",
+      "doi": "10.1038/s41467-026-74949-2",
+      "checkedAt": "2026-10-14",
+      "verificationNote": "期刊信息经出版社页面／DOI元数据核验；本页是有来源的阅读方向，尚未完成全文鲁棒性复核或实验复现。"
+    },
+    {
+      "id": "cor-scheduling",
+      "shortTitle": "单机调度启发式 · COR",
+      "title": "Discovering heuristics with Large Language Models (LLMs) for mixed-integer programs: Single-machine scheduling",
+      "journal": "Computers & Operations Research",
+      "year": 2026,
+      "citation": "186 (2026), 107325",
+      "doi": "10.1016/j.cor.2025.107325",
+      "url": "https://doi.org/10.1016/j.cor.2025.107325",
+      "focus": "看LLM发现的单机调度构造启发式、与MIP的比较及跨实例表现，不泛化成通用MIP求解器控制。",
+      "checkedAt": "2026-10-14",
+      "verificationNote": "期刊信息经出版社页面／DOI元数据核验；本页是有来源的阅读方向，尚未完成全文鲁棒性复核或实验复现。"
+    },
+    {
+      "id": "ares",
+      "shortTitle": "ARES · 多Agent启发式设计",
+      "title": "A multi-agent framework powered by large language models for automatic heuristic design",
+      "journal": "Swarm and Evolutionary Computation",
+      "year": 2026,
+      "citation": "107 (2026), 102487",
+      "doi": "10.1016/j.swevo.2026.102487",
+      "url": "https://doi.org/10.1016/j.swevo.2026.102487",
+      "focus": "看Theorist／Experimenter／Critic如何结合生成、结构消融和参数扫描；核对留出实例、额外Agent调用预算及机制分析是否带来实际收益。",
+      "checkedAt": "2026-10-14",
+      "verificationNote": "期刊信息经出版社页面／DOI元数据核验；本页是有来源的阅读方向，尚未完成全文鲁棒性复核或实验复现。"
+    },
+    {
+      "id": "cie-jobshop",
+      "shortTitle": "车间调度 · LLM引导仿真优化",
+      "title": "Large language model-guided simulation optimization for balancing productivity, energy, and worker physical load in job shop scheduling",
+      "journal": "Computers & Industrial Engineering",
+      "year": 2026,
+      "citation": "220 (2026), 112286",
+      "doi": "10.1016/j.cie.2026.112286",
+      "url": "https://doi.org/10.1016/j.cie.2026.112286",
+      "focus": "按需看LLM交叉／变异算子、不可行解回退和随机扰动检验；不把已报告场景外推成普遍鲁棒性。",
+      "checkedAt": "2026-10-14",
+      "verificationNote": "期刊信息经出版社页面／DOI元数据核验；本页是有来源的阅读方向，尚未完成全文鲁棒性复核或实验复现。"
+    },
+    {
+      "id": "llamea",
+      "shortTitle": "LLaMEA · 演化式算法设计",
+      "title": "LLaMEA: A Large Language Model Evolutionary Algorithm for Automatically Generating Metaheuristics",
+      "journal": "IEEE Transactions on Evolutionary Computation",
+      "year": 2025,
+      "citation": "29(2) (2025), 331–345",
+      "doi": "10.1109/TEVC.2024.3497793",
+      "url": "https://doi.org/10.1109/TEVC.2024.3497793",
+      "focus": "需要算法生成基线时补读；原论文为连续盒约束优化，关注代码生成／变异、执行反馈、维度迁移与独立生成运行，不把后续仓库功能当作原论文结果。",
+      "verificationNote": "卷期页码由出版社登记的DOI元数据核验；IEEE正文入口受限，算法说明与作者仓库交叉核对，尚非全文鲁棒性复核。",
+      "sourceURL": "https://github.com/XAI-liacs/LLaMEA",
+      "checkedAt": "2026-10-14"
+    },
+    {
+      "id": "multiobjective",
+      "shortTitle": "自主多目标优化 · TEVC",
+      "title": "Autonomous Multiobjective Optimization Using Large Language Model",
+      "journal": "IEEE Transactions on Evolutionary Computation",
+      "year": 2026,
+      "citation": "30(2) (2026), 594–608",
+      "doi": "10.1109/TEVC.2025.3561001",
+      "url": "https://doi.org/10.1109/TEVC.2025.3561001",
+      "focus": "仅在选择多目标切口时补读；看LLM生成／演化多目标算法与报错修复，区分可执行性测试和不确定数据下的鲁棒优化。",
+      "verificationNote": "卷期页码由出版社登记的DOI元数据核验；IEEE正文入口受限，算法说明与作者机构稿交叉核对，尚非全文鲁棒性复核。",
+      "sourceURL": "https://ira.lib.polyu.edu.hk/handle/10397/113678",
+      "checkedAt": "2026-10-14"
+    }
+  ],
+  "alternativesNote": "CV + OR仍保留为共同比较的备选，待补充正式期刊证据；当前6篇先覆盖Agent算法主线，不表示已排除CV。"
+}
