@@ -1,0 +1,16 @@
+/* Keep titles, progress, links and forms outside the clipped reading area. */
+.compact-reading{min-width:0;max-width:100%;margin-block:8px 12px;overflow-anchor:none}
+.compact-reading-body{display:flow-root;line-height:1.8;overflow-wrap:anywhere}
+.compact-reading:not(.is-expanded):not(.is-short)>.compact-reading-body{max-height:var(--reading-preview-height,7.2em);overflow:hidden}
+.compact-reading-body> :first-child{margin-top:0}
+.compact-reading-body> :last-child{margin-bottom:0}
+.site-shell .compact-reading-toggle{display:inline-flex;align-items:center;min-height:44px;max-width:100%;margin-top:5px;padding:6px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--accent-dark);font:inherit;font-size:14px;cursor:pointer;white-space:normal}
+.site-shell .compact-reading-toggle:hover{background:var(--surface-soft)}
+.site-shell .compact-reading-toggle:focus-visible{outline:3px solid var(--accent-dark);outline-offset:3px}
+.site-shell .compact-reading-toggle[hidden]{display:none!important}
+@media(max-width:390px){.site-shell .compact-reading-toggle{padding-inline:10px}}
+@media print{.compact-reading>.compact-reading-body{max-height:none!important;overflow:visible!important}.compact-reading-toggle{display:none!important}}
+@media(forced-colors:active){.site-shell .compact-reading-toggle{border-color:ButtonText;color:ButtonText;background:ButtonFace}}
+
+/* These descriptions originally occupy the text column beside the paper icon. */
+.paper-grid article > .compact-reading{grid-column:2}

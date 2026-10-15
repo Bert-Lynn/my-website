@@ -11,8 +11,9 @@ const taskClarityFiles=new Set(['cloud-sync.js','app.js','career-ui.js','module-
 for(const [file,sha] of Object.entries(baseline.protectedFiles))if(!taskClarityFiles.has(file))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex'),sha,file+': ink styling cannot alter approved functional/data/storage content');
 const html=read('index.html'),guide=read('guide.html'),doc=makeDocument(html);
 const scripts=[...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(m=>m[1]);
-assert.deepEqual(scripts.map(x=>x.split('?')[0]),baseline.indexScripts.map(x=>x.split('?')[0]),'static F3 preserves the original script dependency order');
-for(const [i,url] of scripts.entries())if(!taskClarityFiles.has(url.split('?')[0].replace('./','')))assert.equal(url,baseline.indexScripts[i],'unchanged script keeps its original cache identity');
+assert.deepEqual(scripts.map(x=>x.split('?')[0]),baseline.indexScripts.map(x=>x.split('?')[0]).concat('./compact-reading.js'),'reading enhancement appends after the unchanged original script dependency order');
+assert.equal(scripts.at(-1),'./compact-reading.js?v=20261015-reading1');
+for(const [i,url] of scripts.slice(0,-1).entries())if(!taskClarityFiles.has(url.split('?')[0].replace('./','')))assert.equal(url,baseline.indexScripts[i],'unchanged script keeps its original cache identity');
 const ids=doc.querySelectorAll('[id]').map(x=>x.id);assert.equal(new Set(ids).size,ids.length,'new decorative SVG has no duplicate IDs');
 assert.equal(doc.querySelector('#enterWorkspace').getAttribute('href'),'#modules');
 assert.equal(doc.querySelector('#coverTitle').tagName,'H1');assert.equal(doc.querySelector('#coverTitle').getAttribute('tabindex'),'-1');
