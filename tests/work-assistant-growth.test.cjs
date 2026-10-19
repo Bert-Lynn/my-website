@@ -11,6 +11,7 @@ const plain=x=>JSON.parse(JSON.stringify(x));
  assert.deepEqual(Object.keys(state.projects).sort(),['ai-choice-assistant','demand-decision-lab','work-assistant']);
  const h=app({hash:'#projects'}),ctx=h.ctx;await ctx.AppProgress.sync().start();
  const snapshot=()=>plain({career:ctx.phdCareerProgress.read(),tasks:ctx.AppProgress.sync().snapshot(),lessons:ctx.AppProgress.sync().lessonSnapshot()});
+ h.query('[data-unified-filter="all"]').onclick();
  const before=snapshot();
  const root=h.query('#careerProjects .growth-ladder');assert(root);
  const cards=root.querySelectorAll('.growth-level');assert.equal(cards.length,3);assert(cards.every(x=>!x.open),'all three explanation layers are collapsed initially');

@@ -67,10 +67,12 @@ function verify(h, expected) {
     assert.equal(h.query('#modules').hidden,true);
     assert.equal(h.query('#cover').hidden,true,'selecting a module never loops back through the cover');
     if(route==='execution') {
-      assert.equal(h.query('#pageTitle').textContent,'所有任务');
+      assert.equal(h.query('#pageTitle').textContent,'当前任务');
       assert.equal(h.evaluate('view'),'current');
       assert.equal(h.query('#currentTaskList').hidden,false);
       assert.equal(h.query('#originalTaskPlan').hidden,true);
+      assert.equal(h.all('[data-unified-row]').length,5, 'default focuses the first unfinished stage');
+      click(h.query('[data-unified-filter="all"]'));
       assert.deepEqual(h.all('#currentTaskList [data-milestone-form]').map(node=>node.dataset.milestoneForm),['wa-m0','wa-m1','wa-m2','wa-m3']);
       assert.equal(h.all('#currentTaskList [data-id]').length,0,'current project outcomes do not reuse original task checkboxes');
     }

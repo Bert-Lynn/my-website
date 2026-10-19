@@ -7,7 +7,7 @@ for(const e of h.document.walk())e.addEventListener=(type,fn)=>{e['on'+type]=fn}
 let observed;ctx.MutationObserver=class{constructor(fn){observed=fn}observe(el,opts){assert.equal(el.id,'currentTaskList');assert.deepEqual(JSON.parse(JSON.stringify(opts)),{childList:true})}};
 ctx.matchMedia=()=>({matches:true,addEventListener(){}});
 const before=JSON.stringify(h.memory);h.evaluate(fs.readFileSync(path.join(root,'castle-theme.js'),'utf8'));
-assert(h.query('#castleCatalog').textContent.includes('近期 23 项 / 全部 177 项'));
+assert(h.query('#castleCatalog').textContent.includes('当前主线 18 项 · 全部 177 条记录'));
 assert(h.query('#castleNext').textContent.includes('Pandas'));
 assert(h.query('#castleNext').textContent.includes('15:41'));
 assert(h.query('#castleNext').innerHTML.includes('https://www.bilibili.com/video/BV1sHU9BmEne/?p=142'));

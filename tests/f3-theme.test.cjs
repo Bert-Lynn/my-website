@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {app}=require('./helpers/app-harness.cjs');
 const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const html=read('index.html'),css=read('castle-theme.css'),source=read('castle-theme.js');
-assert(html.includes('成长小屋 · 2026.10.15'));
+assert(html.includes('个人成长 · 2026.10.19'));
 assert(!/castleCompanion|castlePortrait|castleRestore|f3-chibi|assets\/f3\//.test(html),'no character markup or asset references');
 assert(!/castle-companion|castle-portrait|castle-dialogue|f3-chibi|castle-cover-scholar/.test(css),'no character space or decorations');
 assert(css.includes('max-width:1180px')&&css.includes('margin:0 auto'),'workspace uses the freed width');

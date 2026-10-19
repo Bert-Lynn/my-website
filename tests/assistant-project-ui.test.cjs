@@ -23,10 +23,13 @@ const currentFlowId=h=>h.query('.module-flow [aria-current="step"]')?.dataset.op
  assert.deepEqual(plain(stages.map(s=>s.moduleId)),['code','ai-tools','check-results','interview']);
  assert.deepEqual(plain(stages.flatMap(s=>s.moduleIds).sort()),plain(ctx.CareerUI.modules().map(m=>m.id).sort()));
  const uniqueForms=()=>{
-  assert.deepEqual(h.all('[data-project-id="work-assistant"]').map(f=>f.dataset.milestoneForm),['wa-m0','wa-m1','wa-m2','wa-m3'],'exactly one canonical form per outcome across all panels');
+  const forms=h.all('[data-project-id="work-assistant"]').map(f=>f.dataset.milestoneForm);
+  assert.equal(new Set(forms).size,forms.length,'rendered outcomes have no duplicate forms');
+  assert(forms.length>0&&forms.every(id=>stages.some(stage=>stage.id===id)),'only canonical stage IDs expose forms');
   assert.equal(h.all('#careerLearning [data-milestone-form]').length,0,'lessons do not duplicate project forms');
   assert.equal(h.all('#careerProjects [data-project-id="work-assistant"]').length,0,'project overview does not duplicate task forms');
  };
+ h.query('[data-unified-filter="all"]').onclick();assert.deepEqual(h.all('[data-project-id="work-assistant"]').map(f=>f.dataset.milestoneForm),['wa-m0','wa-m1','wa-m2','wa-m3']);
  uniqueForms();assert.equal(h.all('.legacy-project-plan [data-milestone-form]').length,7);assert.equal(h.all('.archived-assistant-plan [data-milestone-form]').length,6);
  for(const module of ctx.CareerUI.modules()){
   ctx.AppNavigation.open('learn/'+module.id);uniqueForms();
@@ -34,6 +37,7 @@ const currentFlowId=h=>h.query('.module-flow [aria-current="step"]')?.dataset.op
   click(link);assert.equal(ctx.location.hash,'#execution');assert.equal(h.document.lastScrolled,h.query('[data-current-task="'+stage.id+'"]'));
   assert.equal(record(ctx,stage.id),undefined,'reading/opening lessons or tasks never creates completion');
  }
+ h.query('[data-unified-filter="all"]').onclick();
  let form=formFor(h);
  setForm(form,'done','',false);submit(form);assert(form.querySelector('.form-error').textContent.includes('证据'));assert.equal(record(ctx,'wa-m0'),undefined);
  for(const bad of ['javascript:alert(1)','file:///tmp/result','https://user:password@example.com']){setForm(form,'done',bad,true);submit(form);assert.equal(record(ctx,'wa-m0'),undefined)}
@@ -62,7 +66,7 @@ const currentFlowId=h=>h.query('.module-flow [aria-current="step"]')?.dataset.op
  ctx.phdCareerProgress.setMilestone=original;submit(form);assert.equal(record(ctx,'wa-m1').status,'doing');assert.equal(record(ctx,'wa-m1').completedAt,'');assert.equal(ctx.AppNavigation.open('today'),true);
  ctx.phdCareerProgress.setRole('decision_optimization');assert.equal(ctx.CareerUI.mainProjectStats().done,0);assert.equal(record(ctx,'wa-m1').status,'doing');
  ctx.AppNavigation.open('learn/data');assert.equal(h.all('#careerLearning [data-open-task]').length,0,'legacy route does not relabel its exercises as WA');
- ctx.AppNavigation.open('execution');uniqueForms();assert.equal(h.all('#currentTaskList [data-project-id="work-assistant"]').length,4,'WA remains reachable under a saved legacy role');
+ ctx.AppNavigation.open('execution');h.query('[data-unified-filter="all"]').onclick();uniqueForms();assert.equal(h.all('#currentTaskList [data-project-id="work-assistant"]').length,4,'WA remains reachable under a saved legacy role');
  ctx.AppNavigation.open('projects');let archived=h.query('.archived-assistant-plan [data-milestone-form="aca-m0"]');setForm(archived,'todo','https://example.com/old-aca-evidence');submit(archived);
  assert.equal(ctx.phdCareerProgress.read().milestones['ai-choice-assistant']['aca-m0'].completedAt,'');assert.equal(ctx.phdCareerProgress.read().milestones['demand-decision-lab']['ddl-m0'].completedAt,oldDate);assert.equal(record(ctx,'wa-m1').status,'doing');
  archived=h.query('.archived-assistant-plan [data-milestone-form="aca-m0"]');setForm(archived,'done','https://example.com/old-aca-evidence',true);submit(archived);assert.equal(ctx.phdCareerProgress.read().milestones['ai-choice-assistant']['aca-m0'].status,'done');assert.equal(ctx.CareerUI.mainProjectStats().done,0);

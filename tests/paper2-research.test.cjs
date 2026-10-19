@@ -8,7 +8,7 @@ const baseline=require('./fixtures/paper2-preserved-g4-baseline.json');
 // The user-approved B display layer has its own exact hashes; other business/data hashes stay at G4.
 const f3=require('./fixtures/f3-display-baseline.json');
 // Course presentation now has its own exact reviewed hash; maintained recruiting catalogs have separate semantic protection.
-const courseDisplay={'career-ui.js':'9361a85bbd3551742be17f0933a1cb838917e19cd13b953752625be3bcfef611'};
+const courseDisplay={"career-ui.js": "c2a50cc73fbe1a871fada44eadc1ef479fd3734a659cfaee45f1d222106bf177", "guide.html": "5153f35e2ff75353bbd64f98e8249726c630c19a54f46af5a8f70e8da98cc6a0"};
 for(const [file,digest] of Object.entries(baseline.files))if(!maintainedCatalogs.has(file))assert.equal(hash(fs.readFileSync(path.join(root,file))),courseDisplay[file]||f3.files[file]||digest,'protected source: '+file);
 const appSource=read('app.js'),prefix=appSource.split('const streamLabels=')[0];assert.equal(hash(prefix),baseline.taskPrefixSha256,'all 47 full definitions/IDs/dates preserved');
 const html=read('index.html');assert.equal(hash(html.slice(html.indexOf('<section class="site-cover"'),html.indexOf('<div class="site-shell"'))),f3.coverMarkupSha256,'approved character-free cover markup unchanged');
@@ -35,7 +35,7 @@ const memory={'lin-ai-phd-roadmap-progress-v1':JSON.stringify(Object.fromEntries
  const goal=h.query('[data-goal="paperB"]');assert(goal.textContent.includes('候选题未定'));assert.equal(goal.querySelector('summary').querySelectorAll('.progress-line,.goal-completion').length,0,'old completion never appears as new research completion');
  c.AppNavigation.open('outcomes');assert(h.query('.paper2-outcome').textContent.includes('候选题未定'));assert.equal(h.query('.paper2-outcome').querySelectorAll('.progress-line').length,0);click(h.query('.paper2-outcome [data-paper2-route]'));assert.equal(c.AppNavigation.route(),'execution/research');
  click(h.query('[data-unified-filter="original"]'));assert.equal(h.all('[data-unified-row]').length,139);for(const id of bids){const row=h.query('[data-unified-row="task:'+id+'"]');assert(row&&row.classList.contains('is-done'));assert(row.textContent.includes('历史方向'));}
- c.AppNavigation.open('execution');assert.equal(h.all('[data-unified-row]').length,23);assert.equal(h.query('#currentTaskList').hidden,false);
+ c.AppNavigation.open('execution');assert.equal(h.all('[data-unified-row]').length,5);assert.equal(h.query('#currentTaskList').hidden,false);
  c.history.back();assert.equal(c.AppNavigation.route(),'execution/research');assert.equal(h.all('[data-unified-row]').length,20);c.history.forward();assert.equal(c.AppNavigation.route(),'execution');
  c.AppNavigation.open('resources');click(h.query('.paper2-reading-entry a'));assert.equal(c.AppNavigation.route(),'execution/research');
  const search=h.query('#unifiedSearch');search.value='ARES';search.onchange();assert(h.all('[data-unified-row]').some(x=>x.dataset.unifiedRow==='research-plan:paper2-compare-journals'));

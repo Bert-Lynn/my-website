@@ -15,7 +15,7 @@ const snapshot=h=>plain({tasks:h.ctx.AppProgress.sync().snapshot(),lessons:h.ctx
  assert(h.query('[data-task-section="execution/month"]').textContent.replace(/\s/g,'').includes(backlog+'项顺延'),'current view still surfaces the true original-plan backlog');
  assert(h.query('[data-unified-total]').textContent.includes('0 / 18'));assert.equal(ctx.ModuleHub.snapshot().total.total,47);
  for(const route of ['execution/current','execution/research','execution/year','execution/month','execution','projects','learn/code','modules']){ctx.AppNavigation.open(route);assert.deepEqual(snapshot(h),before,'route '+route+' is read-only')}
- ctx.AppNavigation.open('execution');
+ ctx.AppNavigation.open('execution');click(h.query('[data-unified-filter="all"]'));
  // Out-of-order manual completion must still recommend the earliest gap.
  ctx.phdCareerProgress.setMilestone('work-assistant','wa-m2',milestone('two'));
  assert.equal(h.query('#currentTaskList .is-next').dataset.currentTask,'wa-m0');
@@ -31,7 +31,7 @@ const snapshot=h=>plain({tasks:h.ctx.AppProgress.sync().snapshot(),lessons:h.ctx
  ctx.AppProgress.sync().setLesson(first,'done');assert.notEqual(h.query('.module-intro [data-open-course-unit]').dataset.openCourseUnit,first,'next-lesson entrance follows real course progress');
  assert.equal(h.query('.first-session-guide').open,false);assert(h.query('.session-save').textContent.includes('回任务列表保存进度'));assert(!h.query('.session-save').textContent.includes('我的作品'));
  // Saving a second task must not discard the first task's unsaved input.
- ctx.AppNavigation.open('execution');const firstDraft=form(h);firstDraft.querySelector('[name="milestoneEvidence"]').value='https://example.com/UNSAVED_TASK_ZERO';firstDraft.oninput();
+ ctx.AppNavigation.open('execution');click(h.query('[data-unified-filter="all"]'));const firstDraft=form(h);firstDraft.querySelector('[name="milestoneEvidence"]').value='https://example.com/UNSAVED_TASK_ZERO';firstDraft.oninput();
  const secondForm=form(h,'wa-m1');secondForm.querySelector('[name="milestoneStatus"]').value='doing';secondForm.oninput();secondForm.onsubmit({preventDefault(){},currentTarget:secondForm});
  assert.equal(form(h).querySelector('[name="milestoneEvidence"]').value,'https://example.com/UNSAVED_TASK_ZERO','saving another task preserves the unsaved first draft');
  assert(h.query('[data-unified-total]').textContent.includes('2 / 18'),'saved completion count updates even while another form is dirty');

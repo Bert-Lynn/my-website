@@ -1,0 +1,68 @@
+'use strict';
+// Presentation and bound-handler coverage; this is not browser pixel or real-account QA.
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {app,makeDocument}=require('./helpers/app-harness.cjs');
+const html=fs.readFileSync('index.html','utf8'),theme=fs.readFileSync('castle-theme.js','utf8');
+const initial=makeDocument(html);
+for(const word of ['成长小屋','任务簿','小课堂','科研角','研习手记','一点点向前'])assert(!html.includes(word),'professional visible copy replaces '+word);
+assert.equal(initial.querySelector('title').textContent,'个人成长 · 研究与学习工作台');
+for(const [route,label] of [['execution','任务'],['resources','课程学习'],['projects','项目作品'],['execution/research','科研']])assert(initial.querySelector('#mainTabs [data-page="'+route+'"]').textContent.includes(label));
+assert(html.indexOf('task-actions.css')>html.indexOf('light-future.css'),'action layout is loaded after the existing B theme');
+const create=memory=>{
+ const h=app({hash:'#execution',now:'2026-10-19T12:00:00Z',memory});
+ for(const e of h.document.walk())e.addEventListener=(type,fn)=>{e['on'+type]=fn};
+ h.evaluate(theme);return h;
+};
+const lessonsKey='lin-ai-phd-roadmap-lessons-v1',careerKey='lin-ai-phd-roadmap-career-v1';
+let h=create({}),next=h.ctx.UnifiedTasks.nextAction(),before=JSON.stringify(h.memory);
+assert.equal(next.kind,'watch');
+assert(h.query('#castleNext h2').textContent.includes(next.title));
+assert(h.query('.future-next-action').textContent.includes(next.action));
+assert(h.query('.future-next-output').textContent.includes(next.output));
+assert.equal(h.query('.future-record-source').textContent,'依据本机记录推荐');
+assert(h.query('#castleNext').innerHTML.includes('href="'+next.href+'"'),'exact watch URL is the primary external action');
+assert(!h.query('#castleNext').textContent.includes('候选题未定'),'read-only research exploration does not override the concrete next action');
+assert.equal(h.ctx.CastleTheme.openTask(next),true);
+assert(h.query('[data-unified-row="'+next.id+'"]').open,'view-details targets the exact next record');
+assert.equal(JSON.stringify(h.memory),before,'opening details does not write progress');
+const status=h.ctx.AppProgress.sync().status;
+h.ctx.AppProgress.sync().status=()=>({userId:'synthetic-account'});h.ctx.CastleTheme.render();
+assert.equal(h.query('.future-record-source').textContent,'依据当前账号记录推荐');
+h.ctx.AppProgress.sync().status=status;
+const originalNext=h.ctx.UnifiedTasks.nextAction;
+h.ctx.UnifiedTasks.nextAction=()=>({...next,title:'<img src=x onerror=alert(1)>',action:'<script>bad</script>',output:'<b>fake</b>',href:'javascript:alert(1)'});h.ctx.CastleTheme.render();
+assert(h.query('#castleNext').innerHTML.includes('&lt;img'));
+assert(!h.query('#castleNext').innerHTML.includes('<script>bad')&&!h.query('#castleNext').innerHTML.includes('href="javascript:'));
+h.ctx.UnifiedTasks.nextAction=originalNext;h.destroy();
+
+h=create({[lessonsKey]:JSON.stringify({'watch-wa-video-2025-heima-pandas-io':'done'})});
+next=h.ctx.UnifiedTasks.nextAction();assert.equal(next.kind,'practice');
+assert.equal(h.query('#futureOpenPractice'),null,'a practice next action is not duplicated as a side exercise');
+assert(h.query('.future-next-output').textContent.includes(next.output));
+for(let i=0;i<3;i++)h.ctx.CastleTheme.render();
+assert.equal(h.all('#castleOpenNext').length,1,'repeated rendering keeps one primary task control');
+before=JSON.stringify(h.memory);h.query('#castleOpenNext').onclick();
+assert(h.query('[data-unified-row="'+next.id+'"]').open);
+assert.equal(JSON.stringify(h.memory),before);
+const form=h.query('[data-milestone-form="wa-m0"]');
+form.querySelector('[name="milestoneEvidence"]').value='https://example.invalid/synthetic-unsaved';form.oninput();h.setConfirmation(false);
+assert.equal(h.ctx.CastleTheme.openTask(next),false,'the next-action shortcut honors unsaved-form cancellation');
+assert.equal(h.query('[data-milestone-form="wa-m0"]'),form);
+assert.equal(JSON.stringify(h.memory),before);h.destroy();
+
+h=create({[lessonsKey]:JSON.stringify({'watch-wa-video-2025-heima-pandas-io':'done','practice-wa-video-2025-heima-pandas-io':'done'})});
+next=h.ctx.UnifiedTasks.nextAction();assert.equal(next.progressId,'watch-wa-video-2025-heima-pandas-filter');
+h.query('#futureOpenPractice').onclick();
+assert(h.query('[data-unified-row="lesson:practice-wa-video-2025-heima-pandas-filter"]').open,'side practice matches the exact selected video');
+h.destroy();
+
+const videos=require('../data/video-learning.json').resources;
+const lessons=Object.fromEntries(videos.flatMap(v=>[['watch-'+v.id,'done'],['practice-'+v.id,'done']]));
+const career=Object.fromEntries(['wa-m0','wa-m1','wa-m2','wa-m3'].map(id=>['milestone:work-assistant:'+id,{status:'done',evidenceUrl:'https://example.invalid/synthetic-evidence',completedAt:'2026-10-18T00:00:00.000Z'}]));
+h=create({[lessonsKey]:JSON.stringify(lessons),[careerKey]:JSON.stringify(career)});
+assert.equal(h.ctx.UnifiedTasks.nextAction(),null);
+assert(h.query('#castleNext h2').textContent.includes('当前学习与项目交付已完成'),'completion claim is limited to independently recorded mainline work');
+assert(h.query('#castleNext [data-castle-route="execution/research"]'));
+assert.equal(h.query('#futureOpenPractice'),null);
+h.destroy();
+console.log('PASS professional copy and next action: stable routes, explicit source, shared concrete action/output, exact video/practice targets, no duplicate practice, all-done boundary, unsaved cancellation, escaping, and no navigation writes. DOM/source tests only.');

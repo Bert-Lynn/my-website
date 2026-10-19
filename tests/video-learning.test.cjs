@@ -35,6 +35,7 @@ const hrefs=nodes=>nodes.map(node=>node.getAttribute('href'));
  assert.equal(snapshot(ctx),before,'all video navigation is read-only');
  for(const [module,task] of [['data','wa-m0'],['app','wa-m1']]){ctx.AppNavigation.open('learn/'+module);assert.deepEqual(hrefs(h.all('.video-card-actions a')),videos(task).map(resource=>resource.url),'existing aliases preserve their task mapping');}
  ctx.AppNavigation.open('execution');
+ click(h.query('[data-unified-filter="all"]'));
  for(const stage of catalog.stages){assert.deepEqual(hrefs(h.all('[data-current-task="'+stage.taskId+'"] .task-course-link')),videos(stage.taskId).map(resource=>resource.url));}
  const form=h.query('#currentTaskList [data-milestone-form="wa-m0"]');form.querySelector('[name="milestoneEvidence"]').value='https://example.com/synthetic-unsaved';form.oninput();h.setConfirmation(false);
  assert.equal(ctx.AppNavigation.open('resources'),false);assert.equal(ctx.AppNavigation.route(),'execution');assert.equal(h.query('#currentTaskList [data-milestone-form="wa-m0"]'),form);

@@ -16,7 +16,7 @@ const inputFor = (h, id) => h.query('#taskGroups [data-id="' + id + '"]');
   assert.equal(ctx.AppNavigation.current(), 'execution', 'the overall-task card opens actual tasks');
   assert.equal(ctx.AppNavigation.route(), 'execution');
   assert.equal(h.query('#currentTaskList').hidden, false);
-  assert.equal(h.all('#currentTaskList [data-current-task]').length, 4, 'default entry exposes the current four concrete WA tasks');
+  assert.equal(h.all('#currentTaskList [data-current-task]').length, 1, 'default entry focuses the current concrete WA stage; all stages remain in the full list');
   assert.equal(h.query('#originalTaskPlan').hidden, true);
   click(h.query('[data-task-section="execution/month"]'));
   assert.equal(ctx.AppNavigation.route(), 'execution/month');

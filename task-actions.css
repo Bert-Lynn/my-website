@@ -1,0 +1,56 @@
+/* Compact, explicit task actions; loaded after the inherited visual themes. */
+.unified-tasks .unified-summary{font-size:15px;line-height:1.65;gap:8px}
+.unified-tasks .unified-summary>p{display:block;margin:0}
+.unified-tasks .unified-summary span{font-size:14px}
+.unified-tasks .unified-filters button{min-height:44px;font-size:14px}
+.unified-tasks .unified-group{padding:10px 16px}
+.unified-tasks .unified-group>h2{font-size:17px;line-height:1.5;padding:9px 2px}
+.unified-task-card{border-bottom:1px solid #e8ebf4;padding:6px 0 14px}
+.unified-task-card:last-child{border-bottom:0}
+.unified-tasks .unified-task-card>.unified-row{border-bottom:0}
+.unified-tasks .unified-row>summary{grid-template-columns:76px minmax(0,1fr) auto;align-items:start;gap:7px 13px;padding:12px 4px;min-height:68px;border-radius:8px}
+.unified-tasks .unified-kind{display:block;font-size:13px;line-height:1.45;padding:7px 4px;grid-column:1;grid-row:1}
+.unified-tasks .unified-title{font-size:17px;line-height:1.5;grid-column:2;grid-row:1}
+.unified-tasks .unified-title small{font-size:13px;line-height:1.6;margin-top:3px}
+.unified-tasks .unified-state{font-size:13px;line-height:1.5;grid-column:3;grid-row:1;align-items:flex-end}
+.unified-tasks .unified-state b{font-size:13px}
+.unified-brief{grid-column:2 / -1;display:grid;gap:5px;font-size:15px;line-height:1.65;color:#4b5270;min-width:0}
+.unified-brief>span{display:grid;grid-template-columns:3.5em minmax(0,1fr);gap:8px}
+.unified-brief strong{font-weight:600;color:#69708b}
+.unified-brief>span>span{overflow-wrap:anywhere}
+.unified-disclosure{grid-column:2 / -1;font-size:13px;line-height:1.5;color:#625ca4;margin-top:4px}
+.unified-disclosure::after{content:' ＋'}
+.unified-row[open]>summary .unified-disclosure{font-size:0}
+.unified-row[open]>summary .unified-disclosure::after{content:'收起详情与记录 −';font-size:13px}
+.unified-quick-actions{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;margin:0 4px 0 93px}
+.unified-quick-actions :is(a,button){display:inline-flex;align-items:center;min-height:44px;padding:5px 0;font-size:15px;line-height:1.5;white-space:normal;text-align:left;overflow-wrap:anywhere}
+.unified-quick-actions>span{font-size:13px;line-height:1.6;color:#69708b}
+.unified-tasks .unified-row-body{padding:16px;margin-bottom:8px;border-radius:8px}
+.unified-tasks .unified-row-body .task-brief{display:grid}
+.unified-tasks .unified-row-body .task-work-detail>summary{min-height:44px}
+.unified-tasks :is(button,a,summary,input,select):focus-visible{outline:3px solid #7366c8;outline-offset:3px}
+.unified-tasks :is(.unified-count,.unified-note){font-size:14px;line-height:1.7}
+.castle-next .future-next-action,.castle-next .future-next-output,.castle-next .future-task-meta{font-size:16px;line-height:1.7;overflow-wrap:anywhere;max-width:70ch}
+.castle-next .future-next-output{margin-top:10px}
+.future-practice p{font-size:15px;line-height:1.7;overflow-wrap:anywhere}
+@media(max-width:640px){
+ .unified-tasks .unified-group{padding:8px 12px}
+ .unified-tasks .unified-row>summary{grid-template-columns:minmax(0,1fr) auto;gap:7px 10px;padding:10px 0}
+ .unified-tasks .unified-kind{grid-column:1;grid-row:1;justify-self:start;padding:4px 8px;font-size:13px}
+ .unified-tasks .unified-state{grid-column:2;grid-row:1 / span 2;max-width:88px;white-space:normal}
+ .unified-tasks .unified-title{grid-column:1;grid-row:2;font-size:16px}
+ .unified-brief,.unified-disclosure{grid-column:1 / -1}
+ .unified-brief{font-size:14px;gap:6px}
+ .unified-brief>span{grid-template-columns:3.4em minmax(0,1fr);gap:6px}
+ .unified-quick-actions{margin:0;gap:5px 16px}
+ .unified-quick-actions>span{flex-basis:100%}
+ .unified-tasks .unified-row-body{padding:12px}
+ .unified-tasks .unified-search{min-width:0;width:100%}
+ .unified-tasks .unified-toolbar{align-items:stretch}
+ .unified-tasks .unified-toolbar input{width:100%;min-width:0;box-sizing:border-box}
+ .castle-next .future-next-action,.castle-next .future-next-output,.castle-next .future-task-meta{font-size:15px}
+}
+@media(forced-colors:active){.unified-task-card{border-color:CanvasText}.unified-brief,.unified-brief strong,.unified-disclosure,.unified-quick-actions>span{color:CanvasText}}
+/* Action and output text stays readable in the recommendation, including mobile. */
+.castle-next .future-practice p{max-height:none;overflow:visible}
+.castle-next .future-practice .future-check{display:block;-webkit-line-clamp:unset;line-clamp:unset;max-height:none;overflow:visible}

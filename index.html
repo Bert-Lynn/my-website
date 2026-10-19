@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>成长小屋 · 个人成长工作台</title>
-  <meta name="description" content="我的研究与学习空间。按月查看科研、课程和项目任务，记录实际完成与顺延待办。">
+  <title>个人成长 · 研究与学习工作台</title>
+  <meta name="description" content="个人成长工作台。查看具体任务、课程学习、项目作品和科研计划，记录实际完成与顺延待办。">
   <meta name="theme-color" content="#f6f3fa">
   <link rel="preload" href="./assets/fonts/growth-song.woff" as="font" type="font/woff" crossorigin>
   <link rel="stylesheet" href="./styles.css?v=20261010-journey1">
@@ -20,20 +20,21 @@
 <link rel="stylesheet" href="./compact-reading.css?v=20261015-reading1">
   <link rel="stylesheet" href="./course-clarity.css?v=20261015-courseclarity1">
   <link rel="stylesheet" href="./light-future.css?v=20261019-b2">
+  <link rel="stylesheet" href="./task-actions.css?v=20261019-action-clarity1">
 </head>
 <body data-current-page="execution">
 <script>document.body.setAttribute('data-current-page',window.location.hash==='#cover'?'cover':window.location.hash==='#modules'?'modules':'execution');</script>
 <a class="skip-link" id="skipLink" href="#coverTitle">跳到主要内容</a>
 <section class="site-cover" id="cover" aria-labelledby="coverTitle">
   <header class="cover-header">
-    <div class="cover-brand"><span class="cover-monogram" aria-hidden="true">成长</span>成长小屋<span class="cover-brand-sub">研究与学习工作台</span></div>
+    <div class="cover-brand"><span class="cover-monogram" aria-hidden="true">成长</span>个人成长<span class="cover-brand-sub">研究与学习工作台</span></div>
   </header>
   <main class="cover-main">
     <div class="cover-copy">
-      <p class="cover-eyebrow">个人成长 · 研习手记</p>
-      <h1 id="coverTitle" tabindex="-1">成长小屋<br><span>今天的任务</span></h1>
-      <p class="cover-description">在这里，写下你的下一件作品。<br>课程、练习与科研，逐页推进。</p>
-      <button class="castle-button cover-task-entry" aria-label="任务列表" data-page="execution" type="button">打开今天的任务 →</button>
+      <p class="cover-eyebrow">个人成长 · 研究与学习</p>
+      <h1 id="coverTitle" tabindex="-1">个人成长<br><span>当前任务</span></h1>
+      <p class="cover-description">明确下一步行动与交付内容。<br>课程、练习、项目和科研，按实际完成记录。</p>
+      <button class="castle-button cover-task-entry" aria-label="任务列表" data-page="execution" type="button">查看当前任务 →</button>
       <a class="cover-enter" id="enterWorkspace" href="#modules"><span>进入成长工作台</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
     <div class="cover-visual" aria-hidden="true">
@@ -55,17 +56,17 @@
       <p class="cover-art-caption"><span>研究 · 学习 · 作品</span><span>二〇二六</span></p>
     </div>
   </main>
-  <div class="cover-footer"><span>研究 · 学习 · 作品</span><span class="release-label">成长小屋 · 2026.10.15</span></div>
+  <div class="cover-footer"><span>研究 · 学习 · 作品</span><span class="release-label">个人成长 · 2026.10.19</span></div>
 </section>
 <div class="site-shell" id="workspaceShell">
   <header class="app-header">
-    <a href="#modules" id="homeBtn" class="brand" aria-label="返回模块选择"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor"/><path d="M5 7h5v4H5m14-4h-5v4h5M5 17h5v-4H5m14 4h-5v-4h5" stroke="currentColor"/></svg></span><span>成长小屋<small>研究 · 学习 · 作品</small></span></a>
+    <a href="#modules" id="homeBtn" class="brand" aria-label="返回模块选择"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor"/><path d="M5 7h5v4H5m14-4h-5v4h5M5 17h5v-4H5m14 4h-5v-4h5" stroke="currentColor"/></svg></span><span>个人成长<small>研究 · 学习 · 作品</small></span></a>
     
     <nav class="main-tabs" id="mainTabs" aria-label="工作台导航">
-      <button type="button" aria-label="任务列表" data-page="execution" aria-pressed="true"><span class="nav-icon" aria-hidden="true">↗</span>任务簿</button>
-      <button type="button" aria-label="课程学习" data-page="resources" aria-pressed="false"><span class="nav-icon" aria-hidden="true">▤</span>小课堂</button>
-      <button type="button" aria-label="我的作品" data-page="projects" aria-pressed="false"><span class="nav-icon" aria-hidden="true">◫</span>作品集</button>
-      <button type="button" aria-label="科研任务" data-page="execution/research" aria-pressed="false">科研角</button>
+      <button type="button" aria-label="任务列表" data-page="execution" aria-pressed="true"><span class="nav-icon" aria-hidden="true">↗</span>任务</button>
+      <button type="button" aria-label="课程学习" data-page="resources" aria-pressed="false"><span class="nav-icon" aria-hidden="true">▤</span>课程学习</button>
+      <button type="button" aria-label="项目作品" data-page="projects" aria-pressed="false"><span class="nav-icon" aria-hidden="true">◫</span>项目作品</button>
+      <button type="button" aria-label="科研任务" data-page="execution/research" aria-pressed="false">科研</button>
     </nav>
     <details class="more-navigation" id="moreNavigation"><summary>更多</summary><nav aria-label="其他内容">
       <button type="button" aria-label="返回封面" data-page="cover" aria-pressed="false">返回封面</button>
@@ -74,12 +75,12 @@
       <button type="button" aria-label="实习岗位参考" data-page="roles" aria-pressed="false">实习岗位参考</button>
       <button type="button" aria-label="详细自查记录" data-page="skills" aria-pressed="false">详细自查记录</button>
     </nav></details>
-    <a class="guide-entry" href="./guide.html?v=20261012-unified1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
+    <a class="guide-entry" href="./guide.html?v=20261019-action-clarity1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
     <button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span><span aria-hidden="true">↗</span></button>
   </header>
   <main>
     <a class="module-return" href="#modules" id="returnToModules"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4m5-5-5 5 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>返回模块选择</a>
-    <div class="workspace-heading"><div><div class="period-label" id="pageEyebrow">任务列表</div><h1 id="pageTitle" tabindex="-1">我的任务</h1><p id="pageSubtitle">用户反馈分析 Agent · 按顺序做下面四项。</p></div><span class="today-label" id="todayLabel"></span></div>
+    <div class="workspace-heading"><div><div class="period-label" id="pageEyebrow">任务列表</div><h1 id="pageTitle" tabindex="-1">我的任务</h1><p id="pageSubtitle">用户反馈分析 Agent · 课程、练习和项目交付分别记录。</p></div><span class="today-label" id="todayLabel"></span></div>
     <nav class="section-tabs" id="skillTabs" aria-label="详细记录分区" hidden><button data-open-page="skills">全部自查</button><button data-open-page="resources">回到学习</button><button data-open-page="assessments">练习与记录</button></nav>
     <nav class="section-tabs" id="researchTabs" aria-label="博士计划分区" hidden><button data-open-page="overview">研究目标</button><button data-open-page="execution">执行清单</button><button data-open-page="timeline">里程碑</button><button data-open-page="outcomes">论文与成果</button></nav>
     <section id="nextLessonHero" class="next-lesson-hero" aria-label="建议学习内容" hidden></section>
@@ -96,12 +97,12 @@
         <section id="overview" class="page-panel" data-panel="overview" hidden><div id="goalOverview"></div></section>
         <section id="timeline" class="page-panel" data-panel="timeline" hidden><div id="goalTimeline"></div></section>
         <section id="workspace" class="page-panel" data-panel="execution">
-          <nav class="task-section-tabs" aria-label="任务分区"><button data-task-section="execution">所有任务</button><button data-task-section="execution/research">科研任务</button><button data-task-section="execution/month">原月计划</button></nav>
-          <div class="castle-book-heading"><div><span class="castle-kicker">MY LITTLE STEPS · 一点点向前</span><h2>今天的任务</h2><p id="castleProject">用户反馈分析 Agent · 四阶段研习</p></div><span id="castleCatalog">任务目录</span></div>
+          <nav class="task-section-tabs" aria-label="任务分区"><button data-task-section="execution">当前任务</button><button data-task-section="execution/research">科研任务</button><button data-task-section="execution/month">原月计划</button></nav>
+          <div class="castle-book-heading"><div><span class="castle-kicker">PERSONAL GROWTH · 当前任务</span><h2>当前任务</h2><p id="castleProject">用户反馈分析 Agent · 四项项目交付</p></div><span id="castleCatalog">任务目录</span></div>
           <section class="castle-next" id="castleNext" aria-label="接下来做什么"></section>
           <nav class="research-task-links" id="researchTaskLinks" aria-label="科研相关页面" hidden><a href="#timeline" data-research-route="timeline">研究时间表</a><a href="#outcomes" data-research-route="outcomes">原有论文与成果</a></nav>
           <div class="future-task-layout"><div id="currentTaskList"></div><aside class="future-task-aside" aria-label="学习与科研导航"><section class="future-info-card"><h3>课程 → 练习 → 交付</h3><p>学习与进度，分别记录。</p><ol><li>看指定课节，理解方法</li><li>亲手运行，核对结果</li><li>整理作品与证据，再记录交付</li></ol><a href="#resources" data-future-route="resources">打开全部课程 →</a></section><section class="future-info-card"><h3>科研与论文</h3><p>按当前任务推进，保留原有计划。</p><a href="#execution/research" data-future-route="execution/research">查看科研任务 →</a><a href="#execution/month" data-future-route="execution/month">原月计划与顺延 →</a></section></aside></div>
-          <nav class="castle-route" aria-label="作品四阶段"><span>四阶段研习</span><button type="button" data-page="projects">Ⅰ 整理数据</button><button type="button" data-page="projects">Ⅱ 模型与工具</button><button type="button" data-page="projects">Ⅲ 容错测试</button><button type="button" data-page="projects">Ⅳ 评测展示</button></nav>
+          <nav class="castle-route" aria-label="作品四阶段"><span>四项项目交付</span><button type="button" data-page="projects">Ⅰ 整理数据</button><button type="button" data-page="projects">Ⅱ 模型与工具</button><button type="button" data-page="projects">Ⅲ 容错测试</button><button type="button" data-page="projects">Ⅳ 评测展示</button></nav>
           <div id="originalTaskPlan" hidden>
           
           <div class="execution-stats"><div><span id="scopeCountLabel">本月计划完成</span><strong id="monthCount">0 / 4<small>项</small></strong></div><div><span id="pendingScopeLabel">所选月待办</span><strong id="pendingCount">4<small>项</small></strong></div><button id="backlogJump"><span>其中顺延</span><strong id="backlogCount">0<small>项</small></strong></button></div>
@@ -118,7 +119,7 @@
         <article class="lesson-progress-card" id="lessonProgressCard"></article><article class="upcoming-card"><div class="card-heading"><h2>下一个研究里程碑</h2></div><div id="nextMilestone"></div><button id="showOutcomesBtn" class="text-button">查看成果路线 →</button></article>
       </aside>
     </div>
-    <footer><span>按实际完成记录进度，不会自动替你勾选。</span><span class="release-label">成长小屋 · 2026.10.15</span><button id="resetBtn" hidden>重置原计划任务进度</button></footer>
+    <footer><span>按实际完成记录进度，不会自动替你勾选。</span><span class="release-label">个人成长 · 2026.10.19</span><button id="resetBtn" hidden>重置原计划任务进度</button></footer>
     <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
   </main>
 </div>
@@ -137,10 +138,10 @@
 <script src="./video-learning.js?v=20261012-currentvideos1"></script>
 <script src="./employer-events.js?v=20261012-events1"></script>
 <script src="./employer-events-ui.js?v=20261012-events1"></script>
-<script src="./unified-tasks.js?v=20261014-paper2-1"></script>
-<script src="./career-ui.js?v=20261019-salary-label1"></script>
-<script src="./module-hub.js?v=20261014-paper2-1"></script>
-<script src="./app.js?v=20261019-b-20261014-paper2-1"></script>
-<script src="./castle-theme.js?v=20261019-character-free1"></script>
+<script src="./unified-tasks.js?v=20261019-action-clarity1"></script>
+<script src="./career-ui.js?v=20261019-action-clarity1"></script>
+<script src="./module-hub.js?v=20261019-action-clarity1"></script>
+<script src="./app.js?v=20261019-action-clarity1"></script>
+<script src="./castle-theme.js?v=20261019-action-clarity1"></script>
 <script src="./compact-reading.js?v=20261015-reading1"></script>
 </body></html>

@@ -20,7 +20,7 @@ assert.equal(declaration('.primary-button', 'background'), 'var(--ink)');
 assert.equal(declaration('.primary-button', 'color'), 'var(--surface)!important');
 assert(!rules('.next-action-cta .primary-button').some(rule => /background\s*:\s*(?:#fff|var\(--surface\))/.test(rule)));
 assert(html.includes('./career.css?v=20261011-workassistant1'),'unchanged base CSS identity retained');
-assert(html.includes('./career-ui.js?v=20261019-salary-label1'),'task clarity UI cache invalidated');
+assert(html.includes('./career-ui.js?v=20261019-action-clarity1'),'task clarity UI cache invalidated');
 assert(html.includes('./task-focus.css?v=20261012-refined1'),'isolated task clarity overrides loaded');
 assert(css.includes('html{scroll-padding-top:100px}'), 'desktop navigation leaves room for the sticky header');
 assert(css.includes('@media(max-width:760px){html{scroll-padding-top:128px}'), 'narrow navigation leaves room for two header rows');

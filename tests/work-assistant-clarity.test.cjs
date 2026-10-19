@@ -5,6 +5,7 @@ const p=require('../data/project-outline.json');
 const copy=x=>JSON.parse(JSON.stringify(x));
 (async()=>{
  const h=app({hash:'#execution'}),ctx=h.ctx;await ctx.AppProgress.sync().start();
+ h.query('[data-unified-filter="all"]').onclick();
  const initial=copy(ctx.phdCareerProgress.read());
  const cards=h.all('#currentTaskList [data-current-task]');assert.equal(cards.length,4);
  assert.deepEqual(cards.map(card=>card.dataset.currentTask),p.milestones.map(m=>m.id));

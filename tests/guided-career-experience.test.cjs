@@ -145,6 +145,7 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
   assert.equal(ctx.location.hash, '#execution');
   assert.equal(h.document.lastScrolled, h.query('#currentTaskList [data-current-task="wa-m0"]'), 'task link scrolls to the exact corresponding task');
   assert(h.query('#currentTaskList [data-milestone-form="wa-m0"]'), 'current stage save form is reachable from its course module');
+  click(h.query('[data-unified-filter="all"]'));
   assert.deepEqual(h.all('[data-milestone-form][data-project-id="work-assistant"]').map(node => node.dataset.milestoneForm), project.milestones.map(stage => stage.id), 'current outcomes have exactly one canonical form per stable ID');
   assert.deepEqual(plain(ctx.phdCareerProgress.read()), beforeTaskLink, 'following a course-to-task link never creates progress');
   ctx.history.back();
@@ -180,6 +181,6 @@ assert.equal(new Set(agent.modules.flatMap(module => module.unitIds)).size, agen
     h.destroy();
   }
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-  assert.match(html, /career-ui\.js\?v=20261019-salary-label1/, 'new interactive entry bypasses stale old UI');
+  assert.match(html, /career-ui\.js\?v=20261019-action-clarity1/, 'new interactive entry bypasses stale old UI');
   console.log('PASS guided career experience: career purpose, one precise first action, output/save/source guidance, 30-minute on-ramp without new state, truthful independent progress, exact original lesson controls, canonical task links without duplicate WA forms, guarded CTA, task-link history, resume and terminal-state paths, and saved original directions.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

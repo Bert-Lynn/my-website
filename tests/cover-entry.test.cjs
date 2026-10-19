@@ -104,7 +104,7 @@ const assertWorkspace = (h, page = 'execution') => {
   assert.equal(ctx.location.hash, '#execution');
   assert.equal(h.query('#currentTaskList').hidden, false);
   assert.equal(h.query('#originalTaskPlan').hidden, true, 'current tasks do not expose the old monthly plan');
-  assert.equal(h.all('#currentTaskList [data-milestone-form]').length, 4);
+  assert.equal(h.all('#currentTaskList [data-milestone-form]').length, 1);
   click(h.query('[data-task-section="execution/month"]'));
   assert.equal(ctx.location.hash, '#execution/month');
   assert.equal(h.query('#originalTaskPlan').hidden, false);

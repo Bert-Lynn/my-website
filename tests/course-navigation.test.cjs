@@ -39,7 +39,7 @@ const verifyExternal=nodes=>nodes.forEach(a=>{assert(/^https:\/\//.test(a.getAtt
  }
  ctx.history.back();assert.equal(ctx.AppNavigation.route(),'learn/interview');
  ctx.history.forward();assert.equal(ctx.AppNavigation.route(),'learn/data');
- ctx.AppNavigation.open('execution');
+ ctx.AppNavigation.open('execution');click(h.query('[data-unified-filter="all"]'));
  for(const m of outline.milestones){const links=h.all('[data-current-task="'+m.id+'"] .task-course-link');assert.equal(links.length,sources(m.id).length);assert.deepEqual(hrefs(links),sources(m.id).map(x=>x.url));verifyExternal(links);const container=links[0].closest('details');assert.equal(container?.dataset.unifiedRow,'milestone:work-assistant:'+m.id,'course links are directly in their expandable task row, not a nested hidden disclosure');container.open=true;assert(links.every(link=>link.closest('details')===container),'all exact course links are visible once their task row opens');}
  assert.equal(snapshot(ctx),before,'all course navigation and source links preserve every progress stream');
  const form=h.query('#currentTaskList [data-milestone-form="wa-m0"]');form.querySelector('[name="milestoneEvidence"]').value='https://example.com/synthetic-unsaved';form.oninput();h.setConfirmation(false);
