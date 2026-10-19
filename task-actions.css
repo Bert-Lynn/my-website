@@ -54,3 +54,5 @@
 /* Action and output text stays readable in the recommendation, including mobile. */
 .castle-next .future-practice p{max-height:none;overflow:visible}
 .castle-next .future-practice .future-check{display:block;-webkit-line-clamp:unset;line-clamp:unset;max-height:none;overflow:visible}
+/* Research and historical plan tabs should start with their own content. */
+body[data-current-page="execution"]:not([data-task-view="current"]) #castleNext{display:none}
