@@ -16,3 +16,6 @@ body,body[data-current-page=cover],body[data-current-page=modules]{background:ra
 @media(forced-colors:active){body,.app-header,.site-shell>main,.castle-next,.unified-group,.future-info-card,.cover-copy{background:Canvas;color:CanvasText;border:1px solid CanvasText;box-shadow:none}.castle-button,.primary-button{background:ButtonFace;color:ButtonText;border:1px solid ButtonText}}
 
 .future-practice .future-check{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-height:none;font-size:14px;color:#606984}
+/* Explicitly override legacy horizontal !important navigation at every desktop width. */
+@media(min-width:761px){.app-header .main-tabs{flex-direction:column!important;flex:0 0 auto!important;height:auto!important;width:100%!important;order:0;overflow:visible!important}.app-header .main-tabs button{height:auto!important;flex:0 0 auto!important;min-height:46px;border-radius:10px!important}}
+@media(max-width:760px){.app-header .main-tabs{flex-direction:row!important;height:auto!important}.app-header .main-tabs button{height:auto!important;flex:1 1 0!important;width:auto;min-width:0;border-radius:9px!important}}

@@ -5,6 +5,8 @@ const html=fs.readFileSync('index.html','utf8'),css=fs.readFileSync('light-futur
 assert(html.indexOf('light-future.css')>html.indexOf('course-clarity.css'));
 assert(!/castleCompanion|castlePortrait|castleRestore|f3-chibi|assets\/f3\//.test(html));
 assert(css.includes('padding:0 0 24px 214px')&&css.includes('@media(max-width:760px)'));
+assert(css.includes('flex-direction:column!important;flex:0 0 auto!important'),'legacy important row layout cannot override the sidebar');
+assert(css.includes('height:auto!important;flex:0 0 auto!important'),'sidebar buttons cannot inherit viewport-filling height');
 assert.equal((css.match(/{/g)||[]).length,(css.match(/}/g)||[]).length);
 const h=app({hash:'#execution',now:'2026-10-19T12:00:00Z'});
 for(const e of h.document.walk())e.addEventListener=(type,fn)=>{e['on'+type]=fn};
