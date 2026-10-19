@@ -16,12 +16,13 @@
   <link rel="stylesheet" href="./unified-tasks.css?v=20261012-unified1">
 <link rel="stylesheet" href="./ink-theme.css?v=20261012-quiet1">
   <link rel="stylesheet" href="./paper2-research.css?v=20261014-paper2-1">
-  <link rel="stylesheet" href="./castle-theme.css?v=20261015-f3-static1">
+  <link rel="stylesheet" href="./castle-theme.css?v=20261019-character-free1">
 <link rel="stylesheet" href="./compact-reading.css?v=20261015-reading1">
   <link rel="stylesheet" href="./course-clarity.css?v=20261015-courseclarity1">
+  <link rel="stylesheet" href="./light-future.css?v=20261019-b1">
 </head>
-<body data-current-page="cover">
-<script>if(window.location.hash&&window.location.hash!=='#cover')document.body.setAttribute('data-current-page',window.location.hash==='#modules'?'modules':'execution');</script>
+<body data-current-page="execution">
+<script>document.body.setAttribute('data-current-page',window.location.hash==='#cover'?'cover':window.location.hash==='#modules'?'modules':'execution');</script>
 <a class="skip-link" id="skipLink" href="#coverTitle">跳到主要内容</a>
 <section class="site-cover" id="cover" aria-labelledby="coverTitle">
   <header class="cover-header">
@@ -35,7 +36,6 @@
       <button class="castle-button cover-task-entry" aria-label="任务列表" data-page="execution" type="button">打开今天的任务 →</button>
       <a class="cover-enter" id="enterWorkspace" href="#modules"><span>进入成长工作台</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-    <img class="castle-cover-scholar" src="./assets/f3/companion.webp" width="900" height="1350" alt="紫发成长伙伴穿蓝紫开衫，手持打开的书">
     <div class="cover-visual" aria-hidden="true">
       <div class="cover-portal">
         <svg class="cover-art" viewBox="0 0 520 580" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
@@ -77,12 +77,6 @@
     <a class="guide-entry" href="./guide.html?v=20261012-unified1" target="_blank" rel="noopener" aria-label="使用说明（新标签页打开）"><span aria-hidden="true">?</span><span class="guide-entry-label">使用说明</span></a>
     <button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span><span aria-hidden="true">↗</span></button>
   </header>
-  <aside class="castle-companion" id="castleCompanion" aria-label="研习助手">
-    <button class="castle-portrait" id="castlePortrait" type="button" aria-label="显示成长伙伴的任务提示"><img src="./assets/f3/companion.webp" alt="成年成长伙伴，穿蓝紫开衫、手持书本" width="900" height="1350" decoding="async"></button>
-    <div class="castle-dialogue" id="castleDialogue" hidden><img class="f3-chibi" src="./assets/f3/chibi.webp" alt="Q版伙伴提示" width="125" height="172" decoding="async"><span class="castle-dialogue-label">Q版任务提醒</span><p id="castleCompanionText" aria-live="polite">从今天要做的一项开始。</p><div class="castle-dialogue-actions"><button id="castleTipNext" type="button">下一步</button><button id="castleTipCheck" type="button">验收提示</button><button id="castleTaskFocus" type="button">展开任务</button></div><a id="castleCompanionCourse" href="https://www.bilibili.com/video/BV1sHU9BmEne/?p=142" target="_blank" rel="noopener noreferrer">打开对应课程 ↗</a></div>
-    <div class="castle-companion-controls"><button id="castleDialogueToggle" type="button" aria-expanded="false" aria-controls="castleDialogue">研习提示</button><button id="castleHide" type="button" aria-expanded="true">收起助手</button></div>
-  </aside>
-  <button class="castle-restore" id="castleRestore" type="button" hidden>显示研习助手</button>
   <main>
     <a class="module-return" href="#modules" id="returnToModules"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4m5-5-5 5 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>返回模块选择</a>
     <div class="workspace-heading"><div><div class="period-label" id="pageEyebrow">任务列表</div><h1 id="pageTitle" tabindex="-1">我的任务</h1><p id="pageSubtitle">用户反馈分析 Agent · 按顺序做下面四项。</p></div><span class="today-label" id="todayLabel"></span></div>
@@ -106,7 +100,7 @@
           <div class="castle-book-heading"><div><span class="castle-kicker">MY LITTLE STEPS · 一点点向前</span><h2>今天的任务</h2><p id="castleProject">用户反馈分析 Agent · 四阶段研习</p></div><span id="castleCatalog">任务目录</span></div>
           <section class="castle-next" id="castleNext" aria-label="接下来做什么"></section>
           <nav class="research-task-links" id="researchTaskLinks" aria-label="科研相关页面" hidden><a href="#timeline" data-research-route="timeline">研究时间表</a><a href="#outcomes" data-research-route="outcomes">原有论文与成果</a></nav>
-          <div id="currentTaskList"></div>
+          <div class="future-task-layout"><div id="currentTaskList"></div><aside class="future-task-aside" aria-label="学习与科研导航"><section class="future-info-card"><h3>课程 → 练习 → 交付</h3><p>学习与进度，分别记录。</p><ol><li>看指定课节，理解方法</li><li>亲手运行，核对结果</li><li>整理作品与证据，再记录交付</li></ol><a href="#resources" data-future-route="resources">打开全部课程 →</a></section><section class="future-info-card"><h3>科研与论文</h3><p>按当前任务推进，保留原有计划。</p><a href="#execution/research" data-future-route="execution/research">查看科研任务 →</a><a href="#execution/month" data-future-route="execution/month">原月计划与顺延 →</a></section></aside></div>
           <nav class="castle-route" aria-label="作品四阶段"><span>四阶段研习</span><button type="button" data-page="projects">Ⅰ 整理数据</button><button type="button" data-page="projects">Ⅱ 模型与工具</button><button type="button" data-page="projects">Ⅲ 容错测试</button><button type="button" data-page="projects">Ⅳ 评测展示</button></nav>
           <div id="originalTaskPlan" hidden>
           
@@ -130,7 +124,7 @@
 </div>
 <script src="./course-lessons.js?v=20261010-journey1"></script>
 <script src="./career-curriculum.js?v=20261011-workassistant1"></script>
-<script src="./internship-data.js?v=20261010-journey1"></script>
+<script src="./internship-data.js?v=20261019-catalog20"></script>
 <script src="./career-state.js?v=20261011-workassistant1"></script>
 <script src="./paper2-research.js?v=20261014-paper2-1"></script>
 <script src="./paper2-ui.js?v=20261014-paper2-1"></script>
@@ -144,9 +138,9 @@
 <script src="./employer-events.js?v=20261012-events1"></script>
 <script src="./employer-events-ui.js?v=20261012-events1"></script>
 <script src="./unified-tasks.js?v=20261014-paper2-1"></script>
-<script src="./career-ui.js?v=20261015-courseclarity1"></script>
+<script src="./career-ui.js?v=20261019-salary-label1"></script>
 <script src="./module-hub.js?v=20261014-paper2-1"></script>
-<script src="./app.js?v=20261014-paper2-1"></script>
-<script src="./castle-theme.js?v=20261015-f3-static1"></script>
+<script src="./app.js?v=20261019-b-20261014-paper2-1"></script>
+<script src="./castle-theme.js?v=20261019-character-free1"></script>
 <script src="./compact-reading.js?v=20261015-reading1"></script>
 </body></html>

@@ -5,8 +5,12 @@ const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'
 const baseline=require('./fixtures/atelier-protected-baseline.json');
 // Unified adapters have separate sync tests. paper2 changes goal display only; its immutable source/state protection is covered by paper2-research.test.cjs.
 const reviewedChanges=new Set(['app.js','cloud-sync.js','goal-ui.js']);
+// Public recruiting evidence is maintained independently of the visual design.
+// Validate its schema, historical identities and generated parity instead of freezing its bytes.
+const maintainedCatalogs=new Set(['data/internships.json','internship-data.js']);
+require('./career-data.test.cjs');
 for(const [file,sha] of Object.entries(baseline.files)){
- if(reviewedChanges.has(file))continue;
+ if(reviewedChanges.has(file)||maintainedCatalogs.has(file))continue;
  const bytes=fs.readFileSync(path.join(root,file));
  assert.equal(crypto.createHash('sha1').update(Buffer.from('blob '+bytes.length+'\0')).update(bytes).digest('hex'),sha,file+': protected source remains at the verified pre-redesign main');
 }

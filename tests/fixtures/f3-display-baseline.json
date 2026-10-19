@@ -1,8 +1,8 @@
 {
-  "description": "F3 presentation-only replacement. All original paper2/G4 business, data and auth hash protections remain unchanged.",
+  "description": "User-approved B light-future presentation without characters. Original business, data and authentication protections remain unchanged.",
   "files": {
-    "castle-theme.css": "839ab87a7fc9a6bbd9496ede7c530b6bcc5414145e11429e4a15e24d50f749e1",
-    "castle-theme.js": "0eb8883e173131067a02d11e954b839f841af37f2b10c70597874b5d547890f3"
+    "castle-theme.css": "d96efba6d976269e944ed176116aa5d1ff22f8e6d46a4005e19c751e904e9303",
+    "castle-theme.js": "3bb2917b63badf1b30657d5f2ed3839afda874261d55b4444e0551a989463c36"
   },
-  "coverMarkupSha256": "3d5a47967ced4e4b44bbb6121cd6530281cbba42515294716f46cb4ab1b09391"
+  "coverMarkupSha256": "a586ec45b27455d344b3832426c26100ab97062ebfd4dfaffb7f149e4eadec2b"
 }

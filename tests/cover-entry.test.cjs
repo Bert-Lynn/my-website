@@ -30,7 +30,7 @@ const assertWorkspace = (h, page = 'execution') => {
   const initial = makeDocument(html);
   assert(initial.querySelector('#cover'));
   assert.equal(initial.querySelector('#cover').hidden, false);
-  assert.equal(initial.body.getAttribute('data-current-page'), 'cover');
+  assert.equal(initial.body.getAttribute('data-current-page'), 'execution');
   const heading = initial.querySelector('#coverTitle');
   assert.equal(heading.tagName, 'H1');
   assert.equal(heading.getAttribute('tabindex'), '-1', 'route focus has a heading target');
@@ -69,13 +69,13 @@ const assertWorkspace = (h, page = 'execution') => {
     [keys.career]: JSON.stringify({ selectedRole: 'agent_engineering', 'milestone:demand-decision-lab:ddl-m0': { status: 'done', evidenceUrl: 'https://example.com/synthetic-legacy-evidence', completedAt: oldDate } }),
     unrelated: 'keep'
   };
-  let h = app({ memory, now }), ctx = h.ctx;
+  let h = app({ memory, now, hash:'#cover' }), ctx = h.ctx;
   await ctx.AppProgress.sync().start();
   assertCover(h);
-  assert.equal(ctx.location.hash, '', 'startup does not overwrite the bare URL');
+  assert.equal(ctx.location.hash, '#cover', 'startup preserves the explicit cover URL');
   click(h.query('#skipLink'));
   assert.equal(h.document.activeElement, h.query('#coverTitle'));
-  assert.equal(ctx.location.hash, '', 'cover skip link focuses content without mutating the route');
+  assert.equal(ctx.location.hash, '#cover', 'cover skip link focuses content without mutating the route');
   const before = snapshots(h), persisted = plain(memory);
   assert.equal(before.tasks['sep-python'], true);
   assert.equal(before.taskDates['sep-python'], oldDate);
@@ -157,7 +157,7 @@ const assertWorkspace = (h, page = 'execution') => {
     } else assert.equal(h.query('#resetBtn').hidden, true);
     h.destroy();
   }
-  for (const hash of ['', '#cover']) {
+  for (const hash of ['#cover']) {
     h = app({ memory, hash, now }); await h.ctx.AppProgress.sync().start();
     assertCover(h); assert.deepEqual(snapshots(h), before); h.destroy();
   }

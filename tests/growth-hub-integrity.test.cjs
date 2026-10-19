@@ -1,4 +1,7 @@
 'use strict';
+// Independently maintained recruiting evidence uses semantic protection, not frozen bytes.
+const maintainedCatalogs=new Set(['data/internships.json','internship-data.js']);
+require('./career-data.test.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -12,7 +15,7 @@ const sha = value => crypto.createHash('sha256').update(value).digest('hex');
 // field-by-field by work-assistant-content.test.cjs. All other old files stay protected.
 const changedProjectFiles = new Set(['cloud-sync.js', 'career-state.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'data/career-curriculum.json', 'data/learning-modules.json', 'data/project-outline.json', 'supabase/CAREER_SYNC.md']);
 for (const [file, hash] of Object.entries(baseline.files)) {
-  if (changedProjectFiles.has(file)) continue;
+  if (changedProjectFiles.has(file)||maintainedCatalogs.has(file)) continue;
   assert.equal(sha(read(file)), hash, file + ': hub change must preserve the complete existing data, progress, and sync source');
 }
 // Existing local checkout differs from remote only by final whitespace in this file.

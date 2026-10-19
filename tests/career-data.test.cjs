@@ -97,7 +97,25 @@ assert.equal(jobs.target.salaryMin, 400); assert.equal(jobs.target.salaryMax, 60
 assert.equal(jobs.target.currency, 'CNY'); assert.equal(jobs.target.unit, 'day');
 const roles = jobs.companies.flatMap(company => company.roles), roleIds = ids(roles, 'jobs');
 assert.equal(roles.length, jobs.summaryCounts.rolesDocumented);
-assert.equal(roles.length, 16);
+const historicalRoleIdentity = {
+  jd_or_intern:['京东','decision_optimization'], jd_or_salary_history:['京东','decision_optimization'],
+  bytedance_tts_algo_engineering:['字节跳动','agent_engineering'], bytedance_ecommerce_or:['字节跳动','decision_optimization'],
+  meituan_forecasting:['美团','forecasting_ml'], meituan_planning_eval:['美团','decision_optimization'],
+  xiaohongshu_agent_engine:['小红书','agent_engineering'], xiaohongshu_growth_agent_history:['小红书','agent_engineering'],
+  didi_passenger_pricing:['滴滴','decision_optimization'], baidu_business_j92971:['百度','decision_optimization'],
+  baidu_agent_j104743:['百度','agent_engineering'], alibaba_logistics_or_agent:['阿里巴巴','decision_optimization'],
+  alibaba_ecs_salary_history:['阿里巴巴','decision_optimization'], alibaba_2027_or:['阿里巴巴','decision_optimization'],
+  tencent_agentic_rl_history:['腾讯','foundation_model_research'], netease_youdao_llm_history:['网易','foundation_model_research']
+};
+for (const [id, [company, family]] of Object.entries(historicalRoleIdentity)) {
+  const preserved=jobs.companies.find(c=>c.company===company)?.roles.find(r=>r.id===id);
+  assert(preserved, id+': historical role identity cannot be deleted or moved to another company');
+  assert.equal(preserved.roleFamily,family,id+': preserve the historical role meaning');
+}
+assert.deepEqual(jobs,JSON.parse(fs.readFileSync(path.join(root,'data/internships.json'),'utf8')),'browser snapshot must exactly match editable public JSON');
+assert(date(jobs.verifiedAt));
+assert.equal(jobs.summaryCounts.companiesChecked,jobs.companies.length);
+assert.equal(jobs.summaryCounts.referenceShortlist,jobs.recommendedReferenceRoleIds.length);
 refs(jobs.recommendedReferenceRoleIds, roleIds, 'reference shortlist');
 assert.equal(jobs.recommendedReferenceRoleIds.length, 8);
 const families = new Set(curriculum.roleCoverage.map(item => item.roleFamily));
@@ -111,13 +129,26 @@ for (const role of roles) {
   const salary = role.salary;
   assert(salary.scope && salary.note, role.id + ': salary is scoped to the specific posting');
   assert(role.status.value && role.status.label && role.status.caveat, role.id + ': status and uncertainty retained');
+  assert(Object.hasOwn(jobs.statusLabels,role.status.value),role.id+': known status without inventing confirmed HC');
   assert(role.eligibility && role.attendance && role.sources.length, role.id + ': eligibility, attendance and evidence present');
   if (role.status.sourceDate !== null) assert(date(role.status.sourceDate), role.id + ': source date is valid or remains unknown');
   for (const source of role.sources) {
     https(source.url, role.id + ' source');
     assert(source.type && source.supports && source.accessNote, role.id + ': source type, supported claim and access caveat');
     assert(date(source.checkedAt));
+    assert(source.checkedAt<=jobs.verifiedAt,role.id+': source check cannot postdate catalog verification');
   }
+  const mapping=role.skillMapping;
+  assert(mapping && mapping.mappingNote && mapping.uncoveredRequirements?.length,role.id+': honest partial coverage and gaps');
+  for(const field of ['directRequiredSkillIds','supportingSkillIds','preferredSkillIds']) {
+    assert(Array.isArray(mapping[field]),role.id+': '+field+' is an array');
+    assert.equal(new Set(mapping[field]).size,mapping[field].length,role.id+': no duplicate mapped skills');
+    refs(mapping[field],skillIds,role.id+' '+field);
+  }
+  assert(mapping.directRequiredSkillIds.every(id=>!mapping.supportingSkillIds.includes(id)),role.id+': direct and support meanings stay distinct');
+  assert(mapping.directRequiredSkillIds.every(id=>mapping.directCoverageNotes?.[id]),role.id+': explain each direct partial mapping');
+  assert(mapping.nonSkillBlockers?.length && date(mapping.mappedAt),role.id+': preserve eligibility and time barriers');
+  assert(mapping.sourceUrls?.length && mapping.sourceUrls.every(url=>role.sources.some(s=>s.url===url)),role.id+': skill mapping must cite this same role');
   if (salary.evidenceClass === 'undisclosed') {
     assert.equal(salary.min, null); assert.equal(salary.max, null);
   } else {
@@ -125,14 +156,17 @@ for (const role of roles) {
     assert.equal(salary.currency, 'CNY'); assert.equal(salary.unit, 'day');
     if (salary.evidenceClass === 'exact_target') {
       assert(salary.min >= 400 && salary.max <= 600, role.id + ': entire disclosed range lies in target');
-      assert.equal(role.status.value, 'closed', role.id + ': current evidence has no verified-open target-band examples');
+      if(role.status.value!=='closed') {
+        assert(['publisher_page_unconfirmed','public_page_unconfirmed','aggregator_unconfirmed'].includes(role.status.value));
+        assert(role.status.caveat,role.id+': target-band price never establishes current HC or user eligibility');
+      }
     } else if (salary.evidenceClass === 'overlap_only') {
       assert(salary.max >= 400 && salary.min <= 600 && !(salary.min >= 400 && salary.max <= 600));
     } else if (salary.evidenceClass === 'below_target') assert(salary.max < 400);
     else assert.fail(role.id + ': unsupported salary classification');
   }
 }
-assert.equal(roles.filter(role => role.salary.evidenceClass === 'exact_target').length, 5);
+assert.equal(jobs.summaryCounts.historicalExactBandExamples,roles.filter(role=>role.salary.evidenceClass==='exact_target'&&role.status.value==='closed').length,'historical salary count derives from closed roles only');
 assert.equal(jobs.summaryCounts.confirmedCurrentEligibleTargetSalaryMatches, 0, 'never invent live eligible salary matches');
 for (const excluded of jobs.exclusions) assert(!roles.some(role => role.sources.some(source => source.url === excluded.url)), 'conflicting source must stay excluded');
 const privateKeys = new Set(['assessedAt', 'completedAt', 'evidenceUrl', 'evidenceNote', 'history', 'access_token', 'refresh_token']);

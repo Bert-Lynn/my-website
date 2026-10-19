@@ -1,10 +1,13 @@
 'use strict';
+// Independently maintained recruiting evidence uses semantic protection, not frozen bytes.
+const maintainedCatalogs=new Set(['data/internships.json','internship-data.js']);
+require('./career-data.test.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {app}=require('./helpers/app-harness.cjs');
 const catalog=require('../data/video-learning.json'),baseline=require('./fixtures/video-refresh-preserved-baseline.json');
 const root=path.join(__dirname,'..'),sha=value=>crypto.createHash('sha256').update(value).digest('hex');
 // Sync compatibility is covered by unified-sync; requested app display changes by paper2-research, which also freezes all47 original tasks and unchanged course catalogs.
-for(const [file,hash] of Object.entries(baseline.protectedFiles))if(!['cloud-sync.js','app.js'].includes(file))assert.equal(sha(fs.readFileSync(path.join(root,file))),hash,file+' retains its exact previous bytes');
+for(const [file,hash] of Object.entries(baseline.protectedFiles))if(!['cloud-sync.js','app.js'].includes(file)&&!maintainedCatalogs.has(file))assert.equal(sha(fs.readFileSync(path.join(root,file))),hash,file+' retains its exact previous bytes');
 assert.equal(sha(JSON.stringify(catalog.archivedResources)),baseline.archivedResourcesSha256,'all previous video metadata, IDs and URLs remain intact');
 assert.deepEqual(catalog.archivedResources.map(resource=>resource.id),baseline.archivedResourceIds);
 const archiveIDs=new Set(baseline.archivedResourceIds),archiveURLs=new Set(catalog.archivedResources.map(resource=>resource.url));

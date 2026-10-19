@@ -4,7 +4,10 @@ const {app}=require('./helpers/app-harness.cjs');
 const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const html=read('index.html'),css=read('castle-theme.css'),source=read('castle-theme.js');
 assert(html.includes('成长小屋 · 2026.10.15'));
-assert(html.includes('class="f3-chibi"'));
+assert(!/castleCompanion|castlePortrait|castleRestore|f3-chibi|assets\/f3\//.test(html),'no character markup or asset references');
+assert(!/castle-companion|castle-portrait|castle-dialogue|f3-chibi|castle-cover-scholar/.test(css),'no character space or decorations');
+assert(css.includes('max-width:1180px')&&css.includes('margin:0 auto'),'workspace uses the freed width');
+assert(!css.includes('padding:270px'),'mobile cover has no character-sized gap');
 assert(!/f3-companion\.js|f3-rig|f3-motion|castleMotion/.test(html),'published F3 never loads rejected animation or offers fake motion controls');
 assert(!html.includes('assets/castle/scholar.webp'));
 assert(!/chamber\.webp|scholar-breathe|scale\(/.test(css),'F3 has no castle backdrop or whole-character zoom');
@@ -18,7 +21,7 @@ for(const e of h.document.walk())e.addEventListener=(type,fn)=>{e['on'+type]=fn}
 h.ctx.matchMedia=()=>({matches:false,addEventListener(){}});
 h.evaluate(source);
 const before=JSON.stringify(h.memory),ids=h.ctx.UnifiedTasks.registry().map(x=>x.id);
-assert(!h.query('#castleDialogue').hidden,'Q版提示初始可见');
+assert.equal(h.query('#castleCompanion'),null);
 assert(h.query('#castleNext').innerHTML.includes('?p=142'),'next lesson remains exact episode');
 const nav=h.all('#mainTabs [data-page]');
 assert.equal(nav.length,4);
@@ -30,9 +33,6 @@ assert.equal(nav.find(e=>e.dataset.page==='execution').getAttribute('aria-presse
 nav.find(e=>e.dataset.page==='execution').onclick();h.ctx.CastleTheme.render();
 assert.equal(h.document.body.getAttribute('data-task-view'),'current');
 assert.equal(nav.find(e=>e.dataset.page==='execution').getAttribute('aria-pressed'),'true');
-h.query('#castleDialogueToggle').onclick();assert(h.query('#castleDialogue').hidden);
-h.query('#castlePortrait').onclick();assert(!h.query('#castleDialogue').hidden,'portrait interaction keeps helpful dialogue visible');
-for(let i=0;i<3;i++){h.query('#castleHide').onclick();h.query('#castleRestore').onclick();}
-assert.equal(JSON.stringify(h.memory),before,'navigation and animation controls never write progress');
+assert.equal(JSON.stringify(h.memory),before,'navigation never write progress');
 assert.deepEqual(h.ctx.UnifiedTasks.registry().map(x=>x.id),ids,'all canonical task IDs retained');
-h.destroy();console.log('PASS F3: separate portrait/chibi, responsive source rules, no whole-character zoom, exact lesson, accessible research navigation, repeated controls, no progress mutation. DOM/source checks only; no pixel QA.');
+h.destroy();console.log('PASS F3: character-free workspace, responsive source rules, no whole-character zoom, exact lesson, accessible research navigation, no progress mutation. DOM/source checks only; no pixel QA.');
