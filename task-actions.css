@@ -56,3 +56,59 @@
 .castle-next .future-practice .future-check{display:block;-webkit-line-clamp:unset;line-clamp:unset;max-height:none;overflow:visible}
 /* Research and historical plan tabs should start with their own content. */
 body[data-current-page="execution"]:not([data-task-view="current"]) #castleNext{display:none}
+
+/* Density pass: concise summaries, full instructions only after an explicit expansion. */
+.future-task-layout{display:block}
+.castle-book-heading{padding-bottom:14px}
+.castle-book-heading .castle-kicker,#castleCatalog,.castle-route{display:none}
+.castle-next{align-items:center;padding:22px 26px;margin-bottom:18px;gap:24px}
+.castle-next-copy{flex:1 1 auto}
+.castle-next h2{font-size:24px;line-height:1.45;margin:8px 0}
+.castle-next .future-task-meta{font-size:14px;line-height:1.6;margin:0}
+.castle-next-actions{flex:0 0 auto;min-width:0}
+.castle-next-actions .castle-button{margin:0;white-space:normal}
+.unified-tools{margin-bottom:12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.unified-tools>summary,.unified-record-note>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:14px;color:var(--muted);gap:8px;list-style:none}
+.unified-tools>summary:after,.unified-record-note>summary:after{content:'＋'}
+.unified-tools[open]>summary:after,.unified-record-note[open]>summary:after{content:'−'}
+.unified-tools .unified-summary{margin:0 0 12px}
+.unified-tasks .unified-count{margin:4px 0;font-size:13px}
+.unified-tasks .unified-group{margin:10px 0;padding:5px 14px}
+.unified-tasks .unified-group>h2{font-size:14px;padding:9px 4px;color:var(--muted)}
+.unified-task-card{position:relative;padding:0;border-bottom:1px solid var(--line)}
+.unified-tasks .unified-task-card>.unified-row>summary{grid-template-columns:66px minmax(0,1fr) 70px 44px;min-height:66px;align-items:center;gap:10px;padding:10px 4px}
+.unified-tasks .unified-kind{font-size:12px;padding:5px 3px}
+.unified-tasks .unified-title{font-size:16px;line-height:1.5}
+.unified-tasks .unified-title small{display:none}
+.unified-tasks .unified-state{grid-column:3;grid-row:1;font-size:12px;align-items:flex-end}
+.unified-tasks .unified-state b{font-size:11px}
+.unified-tasks .unified-disclosure{grid-column:4;grid-row:1;font-size:12px;margin:0;white-space:nowrap}
+.unified-disclosure:after{content:' ＋'}
+.unified-row[open]>summary .unified-disclosure:after{content:'收起 −';font-size:12px}
+.unified-task-card:has(>.unified-direct-link)>.unified-row>summary{padding-right:86px}
+.unified-direct-link{position:absolute;top:12px;right:4px}
+.unified-direct-link a{display:flex;align-items:center;min-height:44px;font-size:14px}
+.unified-brief{display:grid;margin:0 0 16px;font-size:15px}
+.unified-quick-actions{margin:12px 0 0}
+.unified-row-body>.unified-quick-actions>span{display:none}
+.unified-record-note{margin-top:14px}
+.course-practice-detail,.project-brief-detail,.project-preview-detail{margin:14px 0;border-top:1px solid var(--line)}
+:is(.course-practice-detail,.project-brief-detail,.project-preview-detail)>summary{cursor:pointer;min-height:44px;padding:12px 0;font-size:14px;color:var(--muted)}
+.course-next .course-practice-detail{grid-column:1 / -1}
+.project-next-delivery>.project-preview-note{display:none}
+@media(max-width:760px){
+ .castle-next{padding:18px;gap:14px;display:block}
+ .castle-next h2{font-size:21px}
+ .castle-next-actions{margin-top:14px}
+ .unified-tasks .unified-task-card>.unified-row>summary{grid-template-columns:62px minmax(0,1fr) 64px;gap:6px 10px;padding:12px 2px;min-height:76px}
+ .unified-tasks .unified-kind{grid-column:1;grid-row:1;justify-self:start}
+ .unified-tasks .unified-title{grid-column:1 / 3;grid-row:2;font-size:15px}
+ .unified-tasks .unified-state{grid-column:3;grid-row:1 / 3}
+ .unified-tasks .unified-disclosure{grid-column:2;grid-row:1;justify-self:end}
+ .unified-task-card:has(>.unified-direct-link)>.unified-row>summary{padding-right:2px}
+ .unified-task-card:has(>.unified-direct-link)>.unified-row>summary .unified-state{padding-bottom:38px}
+ .unified-direct-link{top:36px;right:2px}
+ .unified-tasks .unified-group{padding:5px 10px}
+}
+body[data-current-page="execution"][data-task-view="current"] .castle-route{display:none}
+.unified-tasks .unified-kind{display:block}

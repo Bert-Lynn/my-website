@@ -20,14 +20,14 @@ const click=node=>{assert(node);return node.onclick({preventDefault(){},currentT
  }
  for(const card of h.all('[data-unified-card]')){
   const row=card.querySelector('[data-unified-row]');assert.equal(row.open,false,'compact actions are visible without expanding');
-  const summary=row.querySelector('summary');assert(summary.querySelector('.unified-brief'));assert(summary.textContent.includes('现在做'));assert(summary.textContent.includes('验收'));
+  const summary=row.querySelector('summary');assert.equal(summary.querySelector('.unified-brief'),null);assert(row.querySelector('.unified-row-body .unified-brief'));assert(!summary.textContent.includes('现在做'));assert(!summary.textContent.includes('验收'));
   assert(card.querySelector('.unified-quick-actions'));
  }
  const watchCard=h.query('[data-unified-card="lesson:watch-'+first.id+'"]');
  assert.equal(watchCard.querySelector('.unified-quick-actions a').getAttribute('href'),first.url);
  const practiceCard=h.query('[data-unified-card="lesson:practice-'+first.id+'"]');
- assert(practiceCard.querySelector('summary').textContent.includes(first.practice));
- assert(practiceCard.querySelector('summary').textContent.includes(first.check));
+ assert(practiceCard.querySelector('.unified-row-body').textContent.includes(first.practice));
+ assert(practiceCard.querySelector('.unified-row-body').textContent.includes(first.check));
  assert.equal(practiceCard.querySelector('.unified-quick-actions a').getAttribute('href'),'./data/work-agent-starter.zip');
  click(practiceCard.querySelector('[data-unified-open]'));
  assert(h.query('[data-unified-row="lesson:practice-'+first.id+'"]').open);
@@ -54,9 +54,9 @@ const click=node=>{assert(node);return node.onclick({preventDefault(){},currentT
  assert(u.openItem('lesson:practice-'+later.id));assert(h.query('[data-unified-row="lesson:practice-'+later.id+'"]').open);assert.equal(snapshot(),beforeJump);
  click(h.query('[data-unified-filter="recent"]'));assert.equal(h.all('[data-unified-row]').length,5);
  click(h.query('[data-unified-filter="research"]'));const plan=u.registry().find(x=>x.kind==='researchPlan');
- const planRow=h.query('[data-unified-row="'+plan.id+'"]');assert(planRow.querySelector('summary').textContent.includes(plan.source.deliverable));assert.equal(planRow.querySelectorAll('input,form,textarea,select').length,0);
+ const planRow=h.query('[data-unified-row="'+plan.id+'"]');assert(planRow.querySelector('.unified-row-body').textContent.includes(plan.source.deliverable));assert.equal(planRow.querySelectorAll('input,form,textarea,select').length,0);
  click(h.query('[data-unified-filter="all"]'));assert.equal(h.all('[data-unified-row]').length,177);assert.deepEqual(Array.from(u.registry(),x=>x.id).sort(),ids);
- const original=u.registry().find(x=>x.kind==='lesson'&&x.exercise&&x.check);assert(h.query('[data-unified-row="'+original.id+'"] summary').textContent.includes(original.check));
+ const original=u.registry().find(x=>x.kind==='lesson'&&x.exercise&&x.check);assert(h.query('[data-unified-row="'+original.id+'"] .unified-row-body').textContent.includes(original.check));
  // Every independent item must be complete before the automatic view is empty.
  for(const id of u.progressIds)sync.setLesson(id,'done');
  for(const m of c.PROJECT_OUTLINE.milestones)c.phdCareerProgress.setMilestone('work-assistant',m.id,{status:'done',evidenceUrl:'https://example.invalid/task-action-test'});

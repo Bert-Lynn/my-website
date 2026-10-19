@@ -13,12 +13,12 @@ for(const e of h.document.walk())e.addEventListener=(type,fn)=>{e['on'+type]=fn}
 h.evaluate(fs.readFileSync('castle-theme.js','utf8'));
 const before=JSON.stringify(h.memory),ids=h.ctx.UnifiedTasks.registry().map(x=>x.id);
 assert(h.query('#castleNext').innerHTML.includes('?p=142'));
-assert(h.query('#futureOpenPractice'));
-h.query('#futureOpenPractice').onclick();
+assert.equal(h.query('#futureOpenPractice'),null,'duplicate practice card removed');
+h.ctx.UnifiedTasks.openItem('lesson:practice-wa-video-2025-heima-pandas-io');
 assert(h.all('[data-unified-row]').some(e=>e.open&&e.dataset.unifiedRow==='lesson:practice-wa-video-2025-heima-pandas-io'));
 for(let i=0;i<3;i++)h.ctx.CastleTheme.render();
-assert.equal(h.all('#futureOpenPractice').length,1);
-const course=h.all('[data-future-route]').find(x=>x.dataset.futureRoute==='resources');
+assert.equal(h.all('#futureOpenPractice').length,0);
+const course=h.all('#mainTabs [data-page]').find(x=>x.dataset.page==='resources');
 course.onclick({preventDefault(){}});assert.equal(h.document.body.getAttribute('data-current-page'),'resources');
 assert.deepEqual(h.ctx.UnifiedTasks.registry().map(x=>x.id),ids);
 assert.equal(JSON.stringify(h.memory),before);

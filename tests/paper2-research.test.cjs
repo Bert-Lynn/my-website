@@ -8,7 +8,7 @@ const baseline=require('./fixtures/paper2-preserved-g4-baseline.json');
 // The user-approved B display layer has its own exact hashes; other business/data hashes stay at G4.
 const f3=require('./fixtures/f3-display-baseline.json');
 // Course presentation now has its own exact reviewed hash; maintained recruiting catalogs have separate semantic protection.
-const courseDisplay={"career-ui.js": "c2a50cc73fbe1a871fada44eadc1ef479fd3734a659cfaee45f1d222106bf177", "guide.html": "5153f35e2ff75353bbd64f98e8249726c630c19a54f46af5a8f70e8da98cc6a0"};
+const courseDisplay={"career-ui.js": "b656ae10878009e94e1369d3f1c33a63eddd8da084e1c05ad3a9740611991639", "guide.html": "5153f35e2ff75353bbd64f98e8249726c630c19a54f46af5a8f70e8da98cc6a0"};
 for(const [file,digest] of Object.entries(baseline.files))if(!maintainedCatalogs.has(file))assert.equal(hash(fs.readFileSync(path.join(root,file))),courseDisplay[file]||f3.files[file]||digest,'protected source: '+file);
 const appSource=read('app.js'),prefix=appSource.split('const streamLabels=')[0];assert.equal(hash(prefix),baseline.taskPrefixSha256,'all 47 full definitions/IDs/dates preserved');
 const html=read('index.html');assert.equal(hash(html.slice(html.indexOf('<section class="site-cover"'),html.indexOf('<div class="site-shell"'))),f3.coverMarkupSha256,'approved character-free cover markup unchanged');
