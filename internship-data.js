@@ -1,7 +1,7 @@
 // Generated public data. Edit data/internships.json and run node scripts/build-career-data.cjs.
 window.INTERNSHIP_DATA = {
   "schemaVersion": "1.0",
-  "verifiedAt": "2026-10-19",
+  "verifiedAt": "2026-10-26",
   "target": {
     "country": "中国大陆",
     "currency": "CNY",
@@ -443,7 +443,7 @@ window.INTERNSHIP_DATA = {
     {
       "company": "美团",
       "companyEn": "Meituan",
-      "overallFinding": "酒店/销量预测、调度评测与航空需求研究贴合；公开薪资证据为宽区间，不能保证400元以上。",
+      "overallFinding": "保留预测与规划历史样本；新增两条官方索引中的大模型/搜索Agent日常实习，均未公开薪资。搜索Agent有硕博及相关顶会论文基本门槛，当前开放状态待核。",
       "targetSalaryEvidence": "预测岗位200–500/天仅部分重合；未核实适合本用户的当前400–600具体岗位。",
       "officialCareersUrl": "https://join.meituan.com/web/position",
       "roles": [
@@ -606,6 +606,161 @@ window.INTERNSHIP_DATA = {
             "mappedAt": "2026-10-10",
             "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
           }
+        },
+        {
+          "id": "meituan_llm_agent_4061749831",
+          "title": "大模型算法实习生（4061749831）",
+          "roleFamily": "agent_engineering",
+          "location": "北京",
+          "salary": {
+            "min": null,
+            "max": null,
+            "currency": "CNY",
+            "unit": "day",
+            "evidenceClass": "undisclosed",
+            "scope": "该具体岗位官方公开资料；未披露日薪，不采用公司平均薪资或其他帖子标价",
+            "label": "薪资未公开",
+            "note": "未公开不代表无薪，也不能假定达到400–600元/天目标。"
+          },
+          "status": {
+            "value": "public_page_unconfirmed",
+            "label": "官方岗位资料可检索，当前开放待核",
+            "sourceDate": "2026-09-30",
+            "sourceDateType": "官网搜索索引所列更新日",
+            "caveat": "官方页面或搜索索引存在不证明当前可投或实际HC；没有联系招聘方，未核实本人资格。"
+          },
+          "internshipType": "日常实习",
+          "eligibility": "未列明确毕业届别/学历门槛；实习须征得导师同意",
+          "attendance": "每周至少全职4天，至少4个月",
+          "skillsRequired": [
+            "LLM/NLP算法基础",
+            "Hugging Face Transformers/PyTorch",
+            "LangGraph/Swarm等Agent框架经验，MCP与工具生态",
+            "多智能体协作或复杂规划任务经验"
+          ],
+          "skillsPreferred": [
+            "高质量训练数据构造",
+            "相关论文或竞赛成绩"
+          ],
+          "fit": "官方无薪资的进阶算法样本。后训练、奖励建模、Agentic RL、规划反思与执行，复现调优及落地。 现有作品只支持局部基础，不重排当前课程或目标。",
+          "priority": "secondary",
+          "sources": [
+            {
+              "url": "https://zhaopin.meituan.com/web/position/detail?jobUnionId=4061749831&source=interviewEmail",
+              "type": "official",
+              "checkedAt": "2026-10-26",
+              "supports": "具体岗位标题、地点、项目类别、职责与任职要求；未列薪资。 页面显示日期2026-09-30。",
+              "accessNote": "官方页面的搜索索引全文；直接打开返回JS空壳，不是已读取实时正文；更新时间来自该官方索引，不是本次核查日。"
+            }
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "pytorch-training",
+              "agent-evaluation"
+            ],
+            "supportingSkillIds": [
+              "ml-validation",
+              "reproducible-workflow",
+              "ai-code"
+            ],
+            "preferredSkillIds": [],
+            "uncoveredRequirements": [
+              "基础训练单元不能替代LLM后训练/强化学习",
+              "现有课程未系统覆盖LangGraph/Swarm/MCP与多智能体规划"
+            ],
+            "directCoverageNotes": {
+              "pytorch-training": "只覆盖训练闭环基础，不等于大规模模型训练或后训练经验。",
+              "agent-evaluation": "对应工具调用与结果验证的基础；不覆盖完整多智能体规划、搜索或Agentic RL研究。"
+            },
+            "nonSkillBlockers": [
+              "未列明确毕业届别/学历门槛；实习须征得导师同意",
+              "每周至少全职4天，至少4个月",
+              "薪资未公开，当前可投与实际HC未核实。"
+            ],
+            "sourceUrls": [
+              "https://zhaopin.meituan.com/web/position/detail?jobUnionId=4061749831&source=interviewEmail"
+            ],
+            "mappedAt": "2026-10-26",
+            "mappingNote": "维护者对具体JD的局部能力映射，不是雇主认证；支持项不是硬门槛，完成现有课程不等于满足完整JD。",
+            "definition": "直接对应仅指岗位明确职责或要求中由现有单元支持的局部；其余缺口单独保留。"
+          }
+        },
+        {
+          "id": "meituan_search_agent_4748418063",
+          "title": "大模型Search Agent实习生（4748418063）",
+          "roleFamily": "agent_engineering",
+          "location": "北京、上海",
+          "salary": {
+            "min": null,
+            "max": null,
+            "currency": "CNY",
+            "unit": "day",
+            "evidenceClass": "undisclosed",
+            "scope": "该具体岗位官方公开资料；未披露日薪，不采用公司平均薪资或其他帖子标价",
+            "label": "薪资未公开",
+            "note": "未公开不代表无薪，也不能假定达到400–600元/天目标。"
+          },
+          "status": {
+            "value": "public_page_unconfirmed",
+            "label": "官方岗位资料可检索，当前开放待核",
+            "sourceDate": "2026-09-20",
+            "sourceDateType": "官网搜索索引所列更新日",
+            "caveat": "官方页面或搜索索引存在不证明当前可投或实际HC；没有联系招聘方，未核实本人资格。"
+          },
+          "internshipType": "日常实习",
+          "eligibility": "计算机/AI/数学等相关领域硕博；相关大模型领域顶会论文列在基本要求（不是仅优先项）",
+          "attendance": "未公开",
+          "skillsRequired": [
+            "相关大模型领域顶会论文（基本要求，不是仅优先）",
+            "LLM/RL/Agent/多模态至少一个方向扎实理论实践",
+            "独立问题定义、设计、开发、验证",
+            "复杂模型实现和大规模训练"
+          ],
+          "skillsPreferred": [
+            "大规模训练infra",
+            "高影响开源贡献",
+            "竞赛成绩"
+          ],
+          "fit": "官方无薪资的进阶算法样本。Agentic RL、开放域搜索智能体、多轮检索与证据聚合、长程任务和生活服务多工具智能体。 现有作品只支持局部基础，不重排当前课程或目标。",
+          "priority": "stretch",
+          "sources": [
+            {
+              "url": "https://zhaopin.meituan.com/web/position/detail?highlightType=campus&jobUnionId=4748418063",
+              "type": "official",
+              "checkedAt": "2026-10-26",
+              "supports": "具体岗位标题、地点、项目类别、职责与任职要求；未列薪资。 页面显示日期2026-09-20。",
+              "accessNote": "官方搜索索引完整；直接打开空JS壳；更新时间来自该官方索引，不是本次核查日。"
+            }
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "agent-evaluation"
+            ],
+            "supportingSkillIds": [
+              "pytorch-training",
+              "ml-validation",
+              "reproducible-workflow"
+            ],
+            "preferredSkillIds": [],
+            "uncoveredRequirements": [
+              "顶会成果和独立科研能力不是课程完成能替代",
+              "大规模训练与Agentic RL不在现基础课程完整覆盖范围"
+            ],
+            "directCoverageNotes": {
+              "agent-evaluation": "对应工具调用与结果验证的基础；不覆盖完整多智能体规划、搜索或Agentic RL研究。"
+            },
+            "nonSkillBlockers": [
+              "计算机/AI/数学等相关领域硕博；相关大模型领域顶会论文列在基本要求（不是仅优先项）",
+              "未公开",
+              "薪资未公开，当前可投与实际HC未核实。"
+            ],
+            "sourceUrls": [
+              "https://zhaopin.meituan.com/web/position/detail?highlightType=campus&jobUnionId=4748418063"
+            ],
+            "mappedAt": "2026-10-26",
+            "mappingNote": "维护者对具体JD的局部能力映射，不是雇主认证；支持项不是硬门槛，完成现有课程不等于满足完整JD。",
+            "definition": "直接对应仅指岗位明确职责或要求中由现有单元支持的局部；其余缺口单独保留。"
+          }
         }
       ],
       "sources": []
@@ -613,7 +768,7 @@ window.INTERNSHIP_DATA = {
     {
       "company": "小红书",
       "companyEn": "Xiaohongshu",
-      "overallFinding": "官方Agent工程实习允许用真实工程作品证明能力，是比基座/Agentic RL研究更可学的入口。",
+      "overallFinding": "原引擎架构Agent工程岗位保留；新增官方AI Agent算法样本20284，偏NLP/后训练，薪资和当前开放未知。第三方500元线索未与官方岗位一一对应，不合并薪资。",
       "targetSalaryEvidence": "官方引擎Agent岗薪资未公开；另一个历史社区增长后端Agent岗400–500/天，不能套给当前岗。",
       "officialCareersUrl": "https://job.xiaohongshu.com/campus",
       "roles": [
@@ -775,6 +930,76 @@ window.INTERNSHIP_DATA = {
             ],
             "mappedAt": "2026-10-10",
             "definition": "直接对应指JD明确写出的工作内容或基础要求的可覆盖部分；支持项是我们的准备建议，不能倒推为雇主硬性要求。优先项另列。"
+          }
+        },
+        {
+          "id": "xiaohongshu_agent_algorithm_20284",
+          "title": "AI Agent算法实习生（20284）",
+          "roleFamily": "agent_engineering",
+          "location": "北京 / 上海",
+          "salary": {
+            "min": null,
+            "max": null,
+            "currency": "CNY",
+            "unit": "day",
+            "evidenceClass": "undisclosed",
+            "scope": "该具体岗位官方公开资料；未披露日薪，不采用公司平均薪资或其他帖子标价",
+            "label": "薪资未公开",
+            "note": "未公开不代表无薪，也不能假定达到400–600元/天目标。"
+          },
+          "status": {
+            "value": "public_page_unconfirmed",
+            "label": "官方岗位资料可检索，当前开放待核",
+            "sourceDate": null,
+            "sourceDateType": "发布日期未公开",
+            "caveat": "官方页面或搜索索引存在不证明当前可投或实际HC；没有联系招聘方，未核实本人资格。"
+          },
+          "internshipType": "实习；日常/转正类别未明确",
+          "eligibility": "官方索引未披露可核实的毕业届别或统一学历门槛。",
+          "attendance": "每周天数与最短月份未公开",
+          "skillsRequired": [
+            "机器学习/NLP基础",
+            "SFT及偏好优化、强化学习后训练方法",
+            "Agent harness与算法实践"
+          ],
+          "skillsPreferred": [
+            "Agent相关研究或论文"
+          ],
+          "fit": "算法与后训练方向样本，不是现有AI工具应用项目的直接入门岗位；没有采用第三方点点帖的500元标价。",
+          "priority": "secondary",
+          "sources": [
+            {
+              "url": "https://job.xiaohongshu.com/campus/intern/position/20284",
+              "type": "official",
+              "checkedAt": "2026-10-26",
+              "supports": "具体岗位标题、地点、项目类别、职责与任职要求；未列薪资。",
+              "accessNote": "同一官方URL的搜索索引提供JD；直接抓取无正文或不可读，未确认实时开放。未与任何第三方500元招聘帖建立同岗关联。"
+            }
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [],
+            "supportingSkillIds": [
+              "pytorch-training",
+              "agent-evaluation",
+              "ml-validation"
+            ],
+            "preferredSkillIds": [],
+            "uncoveredRequirements": [
+              "NLP、SFT与偏好优化/强化学习后训练能力；DPO不能直接归类为RL。",
+              "Agent harness与完整研究实践，工具调用练习只提供局部基础。"
+            ],
+            "directCoverageNotes": {},
+            "nonSkillBlockers": [
+              "官方索引未披露可核实的毕业届别或统一学历门槛。",
+              "每周天数与最短月份未公开",
+              "薪资未公开，当前可投与实际HC未核实。"
+            ],
+            "sourceUrls": [
+              "https://job.xiaohongshu.com/campus/intern/position/20284"
+            ],
+            "mappedAt": "2026-10-26",
+            "mappingNote": "维护者对具体JD的局部能力映射，不是雇主认证；支持项不是硬门槛，完成现有课程不等于满足完整JD。",
+            "definition": "直接对应仅指岗位明确职责或要求中由现有单元支持的局部；其余缺口单独保留。"
           }
         }
       ],
@@ -1076,8 +1301,8 @@ window.INTERNSHIP_DATA = {
     {
       "company": "百度",
       "companyEn": "Baidu",
-      "overallFinding": "商业算法岗位明确欢迎统计/运筹；Agent岗要求评测和工程化。两条2026官方日常实习是本次最可靠的能力对照。",
-      "targetSalaryEvidence": "两条官网均未公开薪资，不能宣称400–600；需招聘方给出博士档日薪和补贴口径。",
+      "overallFinding": "保留商业算法与预测/优化Agent岗位；新增大模型工程研发J100640，涉及RL训练奖励与环境服务。各具体官网岗位均未公开日薪，不能计入400–600已确认匹配。",
+      "targetSalaryEvidence": "目录所列具体官网岗位均未公开日薪，不能据公司通用待遇或其他帖子推定达到400–600元/天。",
       "officialCareersUrl": "https://talent.baidu.com/",
       "roles": [
         {
@@ -1352,6 +1577,82 @@ window.INTERNSHIP_DATA = {
             "mappingNote": "维护者对JD局部能力的映射，不是雇主认证；支持项不等于硬门槛，完成课程不等于满足完整JD。",
             "definition": "直接对应仅指岗位明确要求可被现有单元支持的局部；缺口和非技能约束独立保留。"
           }
+        },
+        {
+          "id": "baidu_llm_engineering_j100640",
+          "title": "大模型工程研发实习生 J100640",
+          "roleFamily": "foundation_model_research",
+          "location": "北京",
+          "salary": {
+            "min": null,
+            "max": null,
+            "currency": "CNY",
+            "unit": "day",
+            "evidenceClass": "undisclosed",
+            "scope": "该具体岗位官方公开资料；未披露日薪，不采用公司平均薪资或其他帖子标价",
+            "label": "薪资未公开",
+            "note": "未公开不代表无薪，也不能假定达到400–600元/天目标。"
+          },
+          "status": {
+            "value": "public_page_unconfirmed",
+            "label": "官方岗位资料可检索，当前开放待核",
+            "sourceDate": "2026-07-21",
+            "sourceDateType": "官方页面所列日期",
+            "caveat": "官方页面或搜索索引存在不证明当前可投或实际HC；没有联系招聘方，未核实本人资格。"
+          },
+          "internshipType": "日常实习项目",
+          "eligibility": "计算机相关专业本科及以上；单岗未写毕业届别，不能由日常项目名称自动推断本人符合。",
+          "attendance": "具体JD未列每周天数及最短月份；公司日常项目总则至少3个月不替代单岗核验。",
+          "skillsRequired": [
+            "Java/Python/Go至少一种、Linux基础",
+            "深度学习及PyTorch/PaddlePaddle使用基础",
+            "MDP、策略、价值与PPO等强化学习基础"
+          ],
+          "skillsPreferred": [
+            "容器或虚拟化",
+            "C/C++",
+            "模型训练、微调或推理经历"
+          ],
+          "fit": "面向大模型RL训练的奖励/环境服务工程；可对照训练闭环与可靠接口，但不应误认为仅API调用即可胜任。",
+          "priority": "secondary",
+          "sources": [
+            {
+              "url": "https://talent.baidu.com/jobs/detail/INTERN/09a5cef9-73c6-4462-995b-fe74a8450d10",
+              "type": "official",
+              "checkedAt": "2026-10-26",
+              "supports": "具体岗位标题、地点、项目类别、职责与任职要求；未列薪资。 页面显示日期2026-07-21。",
+              "accessNote": "直接打开取得标题、北京、日常、日期及职责；完整任职要求来自同一官方URL的搜索索引。"
+            }
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "pytorch-training"
+            ],
+            "supportingSkillIds": [
+              "api-delivery",
+              "software-testing",
+              "reproducible-workflow"
+            ],
+            "preferredSkillIds": [],
+            "uncoveredRequirements": [
+              "强化学习算法及训练服务体系，基础MLP不等于PPO或RL训练经验。",
+              "高可用可扩展系统、Linux与虚拟化的完整工程能力。"
+            ],
+            "directCoverageNotes": {
+              "pytorch-training": "只覆盖深度学习训练基础，不覆盖RL训练平台与全部框架能力。"
+            },
+            "nonSkillBlockers": [
+              "计算机相关专业本科及以上；单岗未写毕业届别，不能由日常项目名称自动推断本人符合。",
+              "具体JD未列每周天数及最短月份；公司日常项目总则至少3个月不替代单岗核验。",
+              "薪资未公开，当前可投与实际HC未核实。"
+            ],
+            "sourceUrls": [
+              "https://talent.baidu.com/jobs/detail/INTERN/09a5cef9-73c6-4462-995b-fe74a8450d10"
+            ],
+            "mappedAt": "2026-10-26",
+            "mappingNote": "维护者对具体JD的局部能力映射，不是雇主认证；支持项不是硬门槛，完成现有课程不等于满足完整JD。",
+            "definition": "直接对应仅指岗位明确职责或要求中由现有单元支持的局部；其余缺口单独保留。"
+          }
         }
       ],
       "sources": [
@@ -1368,8 +1669,8 @@ window.INTERNSHIP_DATA = {
     {
       "company": "阿里巴巴",
       "companyEn": "Alibaba",
-      "overallFinding": "新增千问MOS Agent平台帖，500–510元/天、2028年及以后毕业、5天/周至少6个月；训练与搜索要求高，HC未独立确认。原运筹日常岗位继续保留。",
-      "targetSalaryEvidence": "牛客432153具体帖标500–510元/天，当前平台有申请入口；不是官网HC确认或本人资格通过。原关闭样本保持历史状态。",
+      "overallFinding": "千问MOS Agent具体帖已明确结束，500–510元/天只作历史标价与技能样本；原运筹日常岗位保留，薪资和实际名额仍未知。",
+      "targetSalaryEvidence": "千问MOS牛客432153于2026-10-26核验为已结束，保留500–510元/天历史标价；不再作为当前可投目标薪资候选。",
       "officialCareersUrl": "https://campus-talent.alibaba.com/",
       "roles": [
         {
@@ -1648,14 +1949,14 @@ window.INTERNSHIP_DATA = {
             "evidenceClass": "exact_target",
             "scope": "该具体岗位公开页面的标价；非公司统一标准、非个人报价",
             "label": "500–510元/天",
-            "note": "平台具体帖子标价；实际薪资与名额须独立确认。"
+            "note": "该具体帖500–510元/天的历史标价全段落在目标区间内；页面已结束，不代表当前可投或个人报价。"
           },
           "status": {
-            "value": "publisher_page_unconfirmed",
-            "label": "平台可投页，未独立确认HC",
+            "value": "closed",
+            "label": "平台明确已结束，保留历史样本",
             "sourceDate": null,
             "sourceDateType": "发布日期未公开",
-            "caveat": "页面正文或申请按钮可见，不证明当前实际名额、本人资格或2027年仍有同岗。 尚未找到可一一对应的官方职位ID；资格与薪资均来自该招聘帖。"
+            "caveat": "2026-10-26直接读取该具体招聘页，明确显示“已结束”；关闭发生日期未公开，不把本次核查日当作截止日。尚无一一对应的官方职位ID。"
           },
           "internshipType": "实习，可转正；未明确日常/转正项目类别",
           "eligibility": "计算机/AI/NLP等相关专业硕士及以上；明确2028年及以后毕业，不能按2027年实习推断符合。",
@@ -1669,15 +1970,15 @@ window.INTERNSHIP_DATA = {
             "独立Agent或开源贡献",
             "强化学习"
           ],
-          "fit": "薪资有目标区间证据，但训练与搜索算法门槛高；不是只会调用API的Agent入门岗。",
-          "priority": "primary",
+          "fit": "保留Agent训练、搜索与工具评测的技能参考；2026-10-26平台明确已结束，不再作为当前机会。",
+          "priority": "salary_reference",
           "sources": [
             {
               "url": "https://www.nowcoder.com/jobs/detail/432153",
               "type": "employer_platform",
-              "checkedAt": "2026-10-19",
-              "supports": "该具体职位的标题、地点、任职要求、出勤与状态；薪资原文：500-510元/天。",
-              "accessNote": "直接读取完整正文；页面可读及申请按钮不能替代实际HC和本人资格确认。"
+              "checkedAt": "2026-10-26",
+              "supports": "该具体岗位标题、地点、资格、出勤与明确已结束状态；薪资原文：500-510元/天。",
+              "accessNote": "直接读取完整正文，明确显示已结束；首次发布和实际关闭日期未公开。"
             }
           ],
           "skillMapping": {
@@ -1701,8 +2002,8 @@ window.INTERNSHIP_DATA = {
             "nonSkillBlockers": [
               "计算机/AI/NLP等相关专业硕士及以上；明确2028年及以后毕业，不能按2027年实习推断符合。",
               "5天/周，至少6个月",
-              "平台具体帖子标价；实际薪资与名额须独立确认。",
-              "当前HC未独立确认；未联系或投递。"
+              "2026-10-26平台明确已结束；500–510元/天仅作该具体帖历史标价。",
+              "未找到一一对应官方职位ID，未联系或投递。"
             ],
             "sourceUrls": [
               "https://www.nowcoder.com/jobs/detail/432153"
@@ -1953,9 +2254,9 @@ window.INTERNSHIP_DATA = {
   ],
   "summaryCounts": {
     "companiesChecked": 10,
-    "rolesDocumented": 20,
+    "rolesDocumented": 24,
     "referenceShortlist": 8,
-    "historicalExactBandExamples": 5,
+    "historicalExactBandExamples": 6,
     "confirmedCurrentEligibleTargetSalaryMatches": 0
   }
 };
