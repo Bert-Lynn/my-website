@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "verifiedAt": "2026-10-26",
+  "verifiedAt": "2026-11-02",
   "target": {
     "country": "中国大陆",
     "currency": "CNY",
@@ -1300,8 +1300,8 @@
     {
       "company": "百度",
       "companyEn": "Baidu",
-      "overallFinding": "保留商业算法与预测/优化Agent岗位；新增大模型工程研发J100640，涉及RL训练奖励与环境服务。各具体官网岗位均未公开日薪，不能计入400–600已确认匹配。",
-      "targetSalaryEvidence": "目录所列具体官网岗位均未公开日薪，不能据公司通用待遇或其他帖子推定达到400–600元/天。",
+      "overallFinding": "保留商业算法与预测/优化Agent等官方岗位；J104743同编号平台帖明确已下线，历史250–500元/天仅部分重合。官网渠道实时状态未知，不能计入400–600已确认匹配。",
+      "targetSalaryEvidence": "具体官网岗位未公开日薪；J104743实习僧已下线帖历史250–500元/天不是官网当前报价，仅400–500部分重合。",
       "officialCareersUrl": "https://talent.baidu.com/",
       "roles": [
         {
@@ -1400,20 +1400,20 @@
           "roleFamily": "agent_engineering",
           "location": "北京",
           "salary": {
-            "min": null,
-            "max": null,
+            "min": 250,
+            "max": 500,
             "currency": "CNY",
             "unit": "day",
-            "evidenceClass": "undisclosed",
-            "scope": "该具体岗位的公开标价；非公司统一标准、非个人已获报价",
-            "label": "薪资未公开",
-            "note": "未公开薪资；不代表无薪，也不能假定达到目标"
+            "evidenceClass": "overlap_only",
+            "scope": "同编号实习僧已下线帖的历史标价；非官方当前报价、非公司统一标准",
+            "label": "历史250–500元/天（平台已下线）",
+            "note": "薪资原文250-500/天；仅400–500段与目标重合。该平台帖已下线，官网当前薪资未确认。"
           },
           "status": {
             "value": "public_page_unconfirmed",
-            "label": "官方日常实习页可读，HC待确认",
+            "label": "同编号平台帖已下线；官网状态待核",
             "sourceDate": "2026-08-19",
-            "caveat": "不保证2027年仍有同岗；投递前须重新核实HC、届别、薪资和出勤"
+            "caveat": "2026-11-02观察到实习僧同编号J104743明确已下线；其截止日期2027-01-01不代表仍可投。官网本次仅返回登录文字，不能据此判断官方渠道关闭；当前HC未知。"
           },
           "internshipType": "日常实习",
           "eligibility": "本科及以上在读，计算机/数学/统计/ML相关；未写毕业年份限制。 百度官网项目总说明：日常实习面向在校生、不限毕业时间；这不代表专业与能力审核已经通过。",
@@ -1434,9 +1434,9 @@
             {
               "url": "https://talent.baidu.com/jobs/detail/INTERN/22b11ac9-3920-4236-b079-49e13f5d08d3",
               "type": "official",
-              "checkedAt": "2026-10-12",
+              "checkedAt": "2026-11-02",
               "supports": "日期、日常实习、Python/评测/Agent技能、出勤偏好；未公开薪资",
-              "accessNote": "网页正文或搜索索引可读"
+              "accessNote": "此前官网正文/索引可读；本轮直接页面仅返回登录文字，无法复核实时投递状态。历史JD保留，不将读取失败当关闭。"
             },
             {
               "url": "https://talent.baidu.com/jobs/list?recruitType=INTERN",
@@ -1444,6 +1444,13 @@
               "checkedAt": "2026-10-12",
               "supports": "公司项目总说明：日常实习不限毕业时间；实习项目不少于3个月。不是本岗位独立的每周出勤要求。",
               "accessNote": "官网列表正文直接可读。"
+            },
+            {
+              "url": "https://www.shixiseng.com/intern/inn_fephq9s5ylsm?pcm=pc_SearchList",
+              "type": "employer_platform",
+              "checkedAt": "2026-11-02",
+              "supports": "同标题及编号J104743；薪资原文250-500/天；页面明确当前职位已下线；刷新2026-09-28，标示截止2027-01-01。",
+              "accessNote": "直接正文可读。4天/周、6个月为平台页头，正文仍为4天以上、6个月以上优先；关闭仅适用于此平台帖，实际关闭日期未公开。"
             }
           ],
           "skillMapping": {
@@ -1480,7 +1487,7 @@
               "agent-evaluation": "对应工具调用、结构化输出与搜索评测Agent原型，搜索专属模型尚未覆盖。"
             },
             "nonSkillBlockers": [
-              "官方日常实习页2026-08-19，当前HC需确认，薪资未公开。",
+              "同编号实习僧帖已下线，历史250–500元/天仅部分重合；官方渠道当前HC和薪资未确认。",
               "6个月以上、每周4天以上优先。"
             ],
             "sourceUrls": [
