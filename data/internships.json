@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "verifiedAt": "2026-11-09",
+  "verifiedAt": "2026-11-16",
   "target": {
     "country": "中国大陆",
     "currency": "CNY",
@@ -1603,7 +1603,7 @@
     {
       "company": "百度",
       "companyEn": "Baidu",
-      "overallFinding": "保留商业算法与预测/优化Agent等官方岗位；J104743同编号平台帖明确已下线，历史250–500元/天仅部分重合。官网渠道实时状态未知，不能计入400–600已确认匹配。 新增秒哒J93721，RAG/Agent/代码生成方向，至少4天/周和4个月，未公开日薪。",
+      "overallFinding": "保留商业算法与预测/优化Agent等官方岗位；J104743同编号平台帖明确已下线，历史250–500元/天仅部分重合。官网渠道实时状态未知，不能计入400–600已确认匹配。 新增秒哒J93721，RAG/Agent/代码生成方向，至少4天/周和4个月，未公开日薪。 另新增J106616、J107063、J107216官方正文证据，均未公开日薪且实际在招状态未确认。",
       "targetSalaryEvidence": "具体官网岗位未公开日薪；J104743实习僧已下线帖历史250–500元/天不是官网当前报价，仅400–500部分重合。",
       "officialCareersUrl": "https://talent.baidu.com/",
       "roles": [
@@ -2034,6 +2034,233 @@
             "mappedAt": "2026-11-09",
             "mappingNote": "维护者对具体JD的局部能力映射，不是雇主认证；支持项不等于硬门槛，完成课程不等于满足完整JD。",
             "definition": "直接对应仅指现有单元支持的职责或能力片段；岗位研究与工程缺口独立保留。"
+          }
+        },
+        {
+          "id": "baidu_j106616",
+          "title": "Agent评测算法实习生 J106616",
+          "roleFamily": "agent_engineering",
+          "location": "北京",
+          "salary": {
+            "min": null,
+            "max": null,
+            "currency": "CNY",
+            "unit": "day",
+            "evidenceClass": "undisclosed",
+            "scope": "该职位的百度校招官方详情页",
+            "label": "薪资未公开",
+            "note": "未见日薪原文，不以同公司其他岗位估算。"
+          },
+          "status": {
+            "value": "public_page_unconfirmed",
+            "label": "官网职位正文可读，接受投递状态未确认",
+            "sourceDate": "2026-10-16",
+            "sourceDateType": "官方页面日期",
+            "caveat": "官方详情正文可读，未取得明确截止日期或独立当前在招确认；不据此推断名额。"
+          },
+          "internshipType": "日常实习项目；未说明转正安排",
+          "eligibility": "2028届及以后毕业的在读硕博，计算机、人工智能、运筹优化等相关专业。",
+          "attendance": "未公开每周天数与最短月数。",
+          "skillsRequired": [
+            "Python/pandas、Linux与Git",
+            "LLM/Agent基础及模型API或编程Agent实操",
+            "运筹或机器学习基础，能编写求解或建模代码"
+          ],
+          "skillsPreferred": [
+            "评测集经验、求解器或相关竞赛、开源与论文经历"
+          ],
+          "fit": "对排程、路径、装箱和预测任务构建Agent评测环境与基准；兼顾优化建模和工具评测。",
+          "priority": "primary",
+          "sources": [
+            {
+              "url": "https://talent.baidu.com/jobs/detail/INTERN/4bd782af-7dc6-44c1-b02a-e31bb6bc7cb2",
+              "type": "official",
+              "checkedAt": "2026-11-16",
+              "supports": "职位编号、地点、项目类型、页面日期、具体职责与资格；无公开日薪。",
+              "accessNote": "读取官方详情正文，未登录或发起申请。"
+            }
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "optimization-modeling",
+              "agent-evaluation",
+              "reproducible-workflow"
+            ],
+            "supportingSkillIds": [
+              "decision-evaluation",
+              "software-testing",
+              "sql-data"
+            ],
+            "preferredSkillIds": [],
+            "uncoveredRequirements": [
+              "产业决策任务的标准化大型基准和评测平台建设。",
+              "Python/pandas与Linux实操需独立证明。"
+            ],
+            "directCoverageNotes": {
+              "optimization-modeling": "对应OR方向的求解及建模基础，JD也接受ML基础。",
+              "agent-evaluation": "对应工具型Agent测试与评测设计基础。",
+              "reproducible-workflow": "对应Git与可复现实验基础。"
+            },
+            "nonSkillBlockers": [
+              "2028届及以后毕业的在读硕博，计算机、人工智能、运筹优化等相关专业。",
+              "未公开每周天数与最短月数。",
+              "薪资及当前接受投递状态未确认。"
+            ],
+            "sourceUrls": [
+              "https://talent.baidu.com/jobs/detail/INTERN/4bd782af-7dc6-44c1-b02a-e31bb6bc7cb2"
+            ],
+            "mappedAt": "2026-11-16",
+            "mappingNote": "基于公开JD的局部对应，不是雇主对技能、专业等同或资格的认定。",
+            "definition": "仅映射现有课程能力；未覆盖部分分别保留。"
+          }
+        },
+        {
+          "id": "baidu_j107063",
+          "title": "Agent策略工程师 J107063",
+          "roleFamily": "agent_engineering",
+          "location": "北京",
+          "salary": {
+            "min": null,
+            "max": null,
+            "currency": "CNY",
+            "unit": "day",
+            "evidenceClass": "undisclosed",
+            "scope": "该职位的百度校招官方详情页",
+            "label": "薪资未公开",
+            "note": "未见日薪原文，不以同公司其他岗位估算。"
+          },
+          "status": {
+            "value": "public_page_unconfirmed",
+            "label": "官网职位正文可读，接受投递状态未确认",
+            "sourceDate": "2026-11-09",
+            "sourceDateType": "官方页面日期",
+            "caveat": "官方详情正文可读，未取得明确截止日期或独立当前在招确认；不据此推断名额。"
+          },
+          "internshipType": "日常实习项目；未说明转正安排",
+          "eligibility": "计算机相关专业本科及以上；未公开毕业年份。",
+          "attendance": "未公开每周天数与最短月数。",
+          "skillsRequired": [
+            "编程与复杂系统设计",
+            "Agent规划、工具、记忆和反思机制",
+            "大模型微调与对齐",
+            "Harness工程、自进化数据闭环或大规模推理工程背景"
+          ],
+          "skillsPreferred": [
+            "有循环式Agent落地、完整训练评测流程、医疗或检索/知识图谱经验优先"
+          ],
+          "fit": "健康内容Agent的工具路由、自动巡检与模型策略工程；课程应用评测仅部分覆盖。",
+          "priority": "primary",
+          "sources": [
+            {
+              "url": "https://talent.baidu.com/jobs/detail/INTERN/a2bb2e1c-f25d-4605-b271-cfa2f37dfa7a",
+              "type": "official",
+              "checkedAt": "2026-11-16",
+              "supports": "职位编号、地点、项目类型、页面日期、具体职责与资格；无公开日薪。",
+              "accessNote": "读取官方详情正文，未登录或发起申请。"
+            }
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "agent-evaluation"
+            ],
+            "supportingSkillIds": [
+              "software-testing",
+              "api-delivery",
+              "pytorch-training"
+            ],
+            "preferredSkillIds": [],
+            "uncoveredRequirements": [
+              "生产级Harness及规模化推理。",
+              "SFT/DPO/RLHF对齐实践不由基础训练单元代替。"
+            ],
+            "directCoverageNotes": {
+              "agent-evaluation": "对应多工具协作与行为评测的基础。"
+            },
+            "nonSkillBlockers": [
+              "计算机相关专业本科及以上；未公开毕业年份。",
+              "未公开每周天数与最短月数。",
+              "薪资及当前接受投递状态未确认。"
+            ],
+            "sourceUrls": [
+              "https://talent.baidu.com/jobs/detail/INTERN/a2bb2e1c-f25d-4605-b271-cfa2f37dfa7a"
+            ],
+            "mappedAt": "2026-11-16",
+            "mappingNote": "基于公开JD的局部对应，不是雇主对技能、专业等同或资格的认定。",
+            "definition": "仅映射现有课程能力；未覆盖部分分别保留。"
+          }
+        },
+        {
+          "id": "baidu_j107216",
+          "title": "多模态算法实习生 J107216",
+          "roleFamily": "foundation_model_research",
+          "location": "北京",
+          "salary": {
+            "min": null,
+            "max": null,
+            "currency": "CNY",
+            "unit": "day",
+            "evidenceClass": "undisclosed",
+            "scope": "该职位的百度校招官方详情页",
+            "label": "薪资未公开",
+            "note": "未见日薪原文，不以同公司其他岗位估算。"
+          },
+          "status": {
+            "value": "public_page_unconfirmed",
+            "label": "官网职位正文可读，接受投递状态未确认",
+            "sourceDate": "2026-11-11",
+            "sourceDateType": "官方页面日期",
+            "caveat": "官方详情正文可读，未取得明确截止日期或独立当前在招确认；不据此推断名额。"
+          },
+          "internshipType": "日常实习项目；未说明转正安排",
+          "eligibility": "计算机、AI及相关专业在读；未公开毕业年份。",
+          "attendance": "每周到岗5天，连续实习6个月以上。",
+          "skillsRequired": [
+            "Python和PyTorch",
+            "多模态后训练 SFT/LoRA/DPO 至少一项",
+            "用可量化指标判断实验效果"
+          ],
+          "skillsPreferred": [
+            "多模态、RAG、工具调用、数据合成、蒸馏、推理或相关科研/开源经验"
+          ],
+          "fit": "多模态后训练、长轨迹工具调用、检索和效果评测；更适合后训练方向参考。",
+          "priority": "secondary",
+          "sources": [
+            {
+              "url": "https://talent.baidu.com/jobs/detail/INTERN/9d6b19c0-378c-4c1a-8271-a8362fd1e26d",
+              "type": "official",
+              "checkedAt": "2026-11-16",
+              "supports": "职位编号、地点、项目类型、页面日期、具体职责与资格；无公开日薪。",
+              "accessNote": "读取官方详情正文，未登录或发起申请。"
+            }
+          ],
+          "skillMapping": {
+            "directRequiredSkillIds": [
+              "pytorch-training",
+              "statistics-metrics"
+            ],
+            "supportingSkillIds": [
+              "agent-evaluation",
+              "reproducible-workflow"
+            ],
+            "preferredSkillIds": [],
+            "uncoveredRequirements": [
+              "多模态训练/检索、长轨迹合成、蒸馏及线上端到端评测。"
+            ],
+            "directCoverageNotes": {
+              "pytorch-training": "对应训练闭环基础，不等同多模态后训练。",
+              "statistics-metrics": "对应量化评价与消融设计的基础。"
+            },
+            "nonSkillBlockers": [
+              "计算机、AI及相关专业在读；未公开毕业年份。",
+              "每周到岗5天，连续实习6个月以上。",
+              "薪资及当前接受投递状态未确认。"
+            ],
+            "sourceUrls": [
+              "https://talent.baidu.com/jobs/detail/INTERN/9d6b19c0-378c-4c1a-8271-a8362fd1e26d"
+            ],
+            "mappedAt": "2026-11-16",
+            "mappingNote": "基于公开JD的局部对应，不是雇主对技能、专业等同或资格的认定。",
+            "definition": "仅映射现有课程能力；未覆盖部分分别保留。"
           }
         }
       ],
@@ -2636,7 +2863,7 @@
   ],
   "summaryCounts": {
     "companiesChecked": 10,
-    "rolesDocumented": 29,
+    "rolesDocumented": 32,
     "referenceShortlist": 8,
     "historicalExactBandExamples": 6,
     "confirmedCurrentEligibleTargetSalaryMatches": 0
