@@ -62,7 +62,7 @@ function human(x,z,kind){
   const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);
   const fallback=box(g,0,1,0,.5,1.7,.35,mat('#59635a'));
   const modelId=kind==='garrick'?'9h7odik5fl':kind==='mira'?'k6bdm27lba':'fbd1hbd0su';
-  loadGLB(modelId,g,.95,0,Math.PI).then(({model,animations})=>{g.remove(fallback);if(animations.length){const mixer=new THREE.AnimationMixer(model);const idle=animations.find(a=>/idle/i.test(a.name))||animations[0];mixer.clipAction(idle).play();characterMixers.push(mixer)}}).catch(()=>{});
+  loadGLB(modelId,g,.95,0,Math.PI).then(({model,animations})=>{g.remove(fallback);if(animations.length){const mixer=new THREE.AnimationMixer(model);const idle=animations.find(a=>/idle/i.test(a.name))||animations[0];mixer.clipAction(idle).play();characterMixers.push(mixer)}}).catch(err=>console.error('NPC GLB load failed',kind,err));
   return g;
 }
 const characterMixers=[];
@@ -74,7 +74,7 @@ const playerFallback=box(player,0,1.1,0,.5,1.8,.35,mat('#59635a'));
 let playerMixer=null,playerActions={},playerMode='Idle';
 loadGLB('lvj49vzlzd',player,1,0,Math.PI).then(({model,animations})=>{
   player.remove(playerFallback); if(animations.length){playerMixer=new THREE.AnimationMixer(model);animations.forEach(clip=>playerActions[clip.name]=playerMixer.clipAction(clip));const idle=animations.find(a=>/idle/i.test(a.name))||animations[0];idle.play();}
-}).catch(()=>toast('骑士模型加载失败，检查网络后刷新页面'));
+}).catch(err=>{console.error('Knight GLB load failed',err);toast('骑士模型加载失败：'+(err?.message||'资源解析错误'))});
 function playHeroAction(name){if(!playerMixer)return;const clip=Object.keys(playerActions).find(k=>k.toLowerCase().includes(name.toLowerCase()));if(!clip)return;Object.entries(playerActions).forEach(([k,a])=>{if(k===clip)a.reset().fadeIn(.15).play();else a.fadeOut(.15)})}
 let ally=new THREE.Group();scene.add(ally);let allyBody=box(ally,0,1,0,.5,.8,.32,mat('#45634b'));sphere(ally,0,1.6,0,.22,M.skin);ally.visible=true;
 function wolf(x,z,big=false){let g=new THREE.Group();g.position.set(x,0,z);let f=mat(big?'#51413d':'#746052');let b=sphere(g,0,.72,0,big?.75:.52,f);b.scale.set(1.3,.72,.75);sphere(g,0,1.04,.48,.31,f);for(let q of [-1,1]){cyl(g,q*.3,.35,.15,.12,.14,.65,f);cone(g,q*.2,1.34,.4,.13,.32,f)}let eye=mat('#d15a3e',.25);sphere(g,-.14,1.1,.73,.05,eye);sphere(g,.14,1.1,.73,.05,eye);g.userData={hp:big?90:45,max:big?90:45,big,dead:false,cd:0};scene.add(g);enemies.push(g)}
