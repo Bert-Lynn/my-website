@@ -8,8 +8,13 @@ const snapshot=ctx=>JSON.stringify({tasks:ctx.AppProgress.sync().snapshot(),less
   const h=app({hash:'#modules'}),ctx=h.ctx;await ctx.AppProgress.sync().start();
   const videos=ctx.VIDEO_LEARNING.resources,stages=ctx.PROJECT_OUTLINE.milestones,before=snapshot(ctx);
   const research=h.query('[data-hub-route="execution/research"]');
-  for(const text of ['AutoModSAT','方法与实验','半页流程笔记','原文位置'])assert(research.textContent.includes(text));
+  assert.equal(research.getAttribute('href'),'#execution/research');
+  click(research);
+  assert.equal(ctx.AppNavigation.route(),'execution/research');
+  const researchPlan=h.query('#currentTaskList');
+  for(const text of ['AutoModSAT','方法与实验'])assert(researchPlan.textContent.includes(text),text);
   assert(!research.textContent.includes('确定Agent'),'research entry does not decide the candidate topic');
+  ctx.AppNavigation.open('modules');
   assert(h.query('[data-hub-route="projects"]').textContent.includes('4 项交付'));
   assert(h.query('.hub-course-card p').textContent.includes('交付 1'));
   click(h.query('[data-hub-route="projects"]'));

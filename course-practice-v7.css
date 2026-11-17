@@ -1,0 +1,67 @@
+/* Lesson and practice interiors. Loaded after the original utility sheets. */
+#resources #courseList .study-week {
+ display:block;background:#fff;border:0;border-top:3px solid var(--v7-accent,#3157ad);
+ border-radius:0;box-shadow:none;padding:1.45rem 0;margin:0 0 1rem;
+}
+#resources #courseList .study-week header h3 {margin:0 0 .3rem;color:#18202e;font-size:1.38rem}
+#resources #courseList .study-week header p,#resources #courseList .lesson-help {color:var(--v7-muted,#535b6b);margin:.4rem 0 0}
+#resources #courseList .v7-old-recommendations {margin-top:1rem;border-top:1px solid var(--v7-rule,#dce1ea)}
+#resources #courseList .v7-old-recommendations>summary {min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--v7-accent,#3157ad)}
+#resources #courseList .v7-old-recommendations>summary:before {content:'+';margin-inline-end:.6em}
+#resources #courseList .v7-old-recommendations[open]>summary:before {content:'−'}
+#resources #courseList .lesson-toolbar {padding:1rem;background:var(--v7-tint,#f3f6fb);border:0;border-radius:0;margin:0}
+#resources #courseList .lesson-course {background:white;border:0;border-top:1px solid var(--v7-rule,#dce1ea);border-radius:0;box-shadow:none;margin:0;padding:0}
+#resources #courseList .lesson-course>summary {min-height:85px;padding:.85rem .5rem;background:white}
+#resources #courseList .lesson-course>summary:hover,#resources #courseList .lesson-course[open]>summary {background:var(--v7-tint,#f3f6fb)}
+#resources #courseList .lesson-course .course-number {background:none;color:var(--v7-accent,#3157ad);font-weight:700}
+#resources #courseList .lesson-help {padding:.55rem .1rem 1rem}
+#resources #courseList .lesson-row {
+ display:grid;grid-template-columns:52px minmax(0,1fr);gap:1rem;background:white;
+ border:0;border-top:1px solid var(--v7-rule,#dce1ea);box-shadow:none;border-radius:0;padding:1rem .7rem;margin:0;
+}
+#resources #courseList .lesson-row.lesson-next {border-inline-start:3px solid var(--v7-accent,#3157ad)}
+#resources #courseList .lesson-heading {display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;margin:0 0 .35rem}
+#resources #courseList .lesson-heading h4 {margin:0;color:#18202e;font-size:1.13rem;line-height:1.4}
+#resources #courseList .lesson-heading .lesson-state {color:var(--v7-muted,#535b6b);font-size:.86rem;white-space:nowrap}
+#resources #courseList .lesson-row .lesson-tags {gap:.4rem;margin-bottom:.45rem}
+#resources #courseList .lesson-row .lesson-check {width:44px;min-height:44px}
+#resources #courseList .lesson-row .lesson-practice {background:var(--v7-tint,#f3f6fb);border:0;border-radius:0;margin-top:.8rem;padding:.2rem .8rem}
+#resources #courseList .lesson-row .lesson-practice>summary {min-height:44px;align-content:center;cursor:pointer}
+#workspace #currentTaskList .v7-task-group-header {display:flex;align-items:baseline;justify-content:space-between;gap:1rem;padding:.75rem 0;border-bottom:2px solid #1d2739}
+#workspace #currentTaskList .v7-task-group-header h2 {margin:0;color:#18202e;font-size:1.3rem}
+#workspace #currentTaskList .v7-task-group-header>span {color:var(--v7-muted,#535b6b);white-space:nowrap}
+#workspace #currentTaskList .unified-task-card {margin:0;border:0;border-bottom:1px solid var(--v7-rule,#dce1ea);border-radius:0;background:#fff;box-shadow:none}
+#workspace #currentTaskList .unified-row>summary {
+ grid-template-columns:minmax(0,1fr) 6.7rem 5rem 3.5rem;align-items:center;gap:.75rem;
+ padding:.9rem .6rem;min-height:66px;border-radius:0;
+}
+#workspace #currentTaskList .unified-row>summary:hover,#workspace #currentTaskList .unified-row[open]>summary {background:var(--v7-tint,#f3f6fb)}
+#workspace #currentTaskList .unified-title {grid-column:1;grid-row:1;line-height:1.35;font-size:1.06rem}
+#workspace #currentTaskList .unified-kind {grid-column:2;grid-row:1;color:var(--v7-muted,#535b6b)}
+#workspace #currentTaskList .unified-state {grid-column:3;grid-row:1;padding:0}
+#workspace #currentTaskList .unified-disclosure {grid-column:4;grid-row:1;color:var(--v7-accent,#3157ad)}
+#workspace #currentTaskList .unified-task-card:has(>.unified-direct-link)>.unified-row>summary {padding-inline-end:5.75rem}
+#workspace #currentTaskList .unified-row-body {background:white;border:0;border-radius:0;padding:1rem .75rem 1.25rem;margin:0}
+#workspace #currentTaskList .unified-brief {
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;
+ padding:.85rem 0;margin:0;list-style:none;counter-reset:practice;
+}
+#workspace #currentTaskList .unified-brief>li {border-top:2px solid var(--v7-rule,#dce1ea);padding:.7rem .3rem 0 0;counter-increment:practice}
+#workspace #currentTaskList .unified-brief>li>strong {display:block;margin:0 0 .45rem;color:#18202e}
+#workspace #currentTaskList .unified-brief>li>strong:before {content:'0' counter(practice);margin-inline-end:.55rem;color:var(--v7-accent,#3157ad)}
+#workspace #currentTaskList .v7-task-source {margin-top:1rem;color:var(--v7-muted,#535b6b);overflow-wrap:anywhere}
+@media(max-width:640px) {
+ #workspace #currentTaskList .unified-row>summary {grid-template-columns:minmax(0,1fr) auto;gap:.35rem .75rem}
+ #workspace #currentTaskList .unified-title {grid-column:1;grid-row:1}
+ #workspace #currentTaskList .unified-state {grid-column:2;grid-row:1}
+ #workspace #currentTaskList .unified-kind {grid-column:1;grid-row:2}
+ #workspace #currentTaskList .unified-disclosure {grid-column:2;grid-row:2}
+ #workspace #currentTaskList .unified-task-card:has(>.unified-direct-link)>.unified-row>summary {padding-inline-end:.6rem}
+ #workspace #currentTaskList .unified-direct-link {position:static;padding:0 .6rem .3rem}
+ #workspace #currentTaskList .unified-brief {grid-template-columns:1fr;gap:.55rem}
+ #resources #courseList .lesson-row {grid-template-columns:40px minmax(0,1fr);gap:.45rem}
+ #resources #courseList .lesson-heading {flex-wrap:wrap;gap:.2rem .5rem}
+}
+#workspace #currentTaskList .unified-row>summary:after{display:none;content:none}
+#workspace #currentTaskList .unified-kind{background:var(--v7-tint)}
+#workspace #currentTaskList .unified-title{color:var(--v7-ink)}

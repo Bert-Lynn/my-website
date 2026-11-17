@@ -1,6 +1,6 @@
 /* Full-width editorial home. Legacy workspace routes are isolated. */
 .learning-home[hidden],.learning-home [hidden],
-body:is([data-current-page="home"],[data-current-page="path"]) #workspaceShell > :not(.learning-home) {display:none!important}
+body:is([data-current-page="home"],[data-current-page="path"]) #workspaceShell > :not(.learning-home,.v7-topbar) {display:none!important}
 body:is([data-current-page="home"],[data-current-page="path"]) {background:#fff}
 body:is([data-current-page="home"],[data-current-page="path"]) #workspaceShell:not([hidden]) {display:block;max-width:none;width:100%;min-height:100vh;padding:0;border:0;background:transparent}
 .learning-home {

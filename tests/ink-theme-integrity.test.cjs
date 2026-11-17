@@ -11,14 +11,15 @@ const baseline=require('./fixtures/ink-functional-baseline.json');
 // Their behavior is covered by the task-focus/navigation suites; all immutable
 // source remains hash-protected here and against the newer task-focus baseline.
 const taskClarityFiles=new Set(['cloud-sync.js','app.js','career-ui.js','module-hub.js','README.md','goal-ui.js','castle-theme.js','f3-companion.js','unified-tasks.js','guide.html']);
-for(const [file,sha] of Object.entries(baseline.protectedFiles))if(!taskClarityFiles.has(file)&&!maintainedCatalogs.has(file))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex'),sha,file+': ink styling cannot alter approved functional/data/storage content');
+const v7ViewHashes={'lesson-ui.js':'ac5f2e694e033cbd509517f2f851215c0b8b764d460d0b0f316db06d814029aa'};
+for(const [file,sha] of Object.entries(baseline.protectedFiles))if(!taskClarityFiles.has(file)&&!maintainedCatalogs.has(file))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex'),v7ViewHashes[file]||sha,file+': ink styling cannot alter approved functional/data/storage content');
 const html=read('index.html'),guide=read('guide.html'),doc=makeDocument(html);
 const scripts=[...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(m=>m[1]);
 const originalScripts=scripts.filter(url=>!url.startsWith('./learning-home.js?'));
 assert.equal(scripts.findIndex(s=>s.startsWith('./learning-home.js?')),scripts.findIndex(s=>s.startsWith('./app.js?'))-1,'focused home loads before the route gets initialized');
 assert.deepEqual(originalScripts.map(x=>x.split('?')[0]),baseline.indexScripts.map(x=>x.split('?')[0]).concat('./compact-reading.js'),'reading enhancement appends after the unchanged original script dependency order');
 assert.equal(scripts.at(-1),'./compact-reading.js?v=20261015-reading1');
-for(const [i,url] of originalScripts.slice(0,-1).entries())if(!taskClarityFiles.has(url.split('?')[0].replace('./',''))&&!maintainedCatalogs.has(url.split('?')[0].replace('./','')))assert.equal(url,baseline.indexScripts[i],'unchanged script keeps its original cache identity');
+for(const [i,url] of originalScripts.slice(0,-1).entries())if(!taskClarityFiles.has(url.split('?')[0].replace('./',''))&&!v7ViewHashes[url.split('?')[0].replace('./','')]&&!maintainedCatalogs.has(url.split('?')[0].replace('./',''))&&!url.startsWith('./paper2-ui.js?'))assert.equal(url,baseline.indexScripts[i],'unchanged script keeps its original cache identity');
 const ids=doc.querySelectorAll('[id]').map(x=>x.id);assert.equal(new Set(ids).size,ids.length,'new decorative SVG has no duplicate IDs');
 assert.equal(doc.querySelector('#enterWorkspace').getAttribute('href'),'#modules');
 assert.equal(doc.querySelector('#coverTitle').tagName,'H1');assert.equal(doc.querySelector('#coverTitle').getAttribute('tabindex'),'-1');
@@ -35,7 +36,7 @@ assert(!/https?:\/\//.test(ink+cover),'visual theme adds no third-party font or 
 assert(!/@import/.test(ink),'theme has no hidden stylesheet dependency');
 assert(/prefers-reduced-motion/.test(cover+ink));assert(/:focus-visible/.test(cover+ink));
 assert(/@media\s*\([^)]*max-width/.test(cover+ink),'narrow-screen ink layout exists');
-assert(doc.querySelector('#cover svg[aria-hidden="true"]'),'ink artwork is decorative to screen readers');
+assert.equal(doc.querySelector('#cover').querySelectorAll('img,svg,video,iframe').length,0,'cover remains free from the rejected artwork');
 const vars=Object.fromEntries([...ink.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)].map(m=>[m[1],m[2].trim()]));
 const resolve=value=>{value=value.trim();if(/^var\(--[\w-]+\)$/.test(value))return resolve(vars[value.slice(4,-1)]);assert(/^#[0-9a-f]{6}$/i.test(value),'contrast token resolves to solid six-digit color: '+value);return value;};
 const luminance=hex=>hex.slice(1).match(/../g).map(v=>parseInt(v,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);

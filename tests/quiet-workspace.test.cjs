@@ -19,7 +19,7 @@ assert(license.includes('2017–2024 Adobe')&&license.includes('SIL OPEN FONT LI
 assert(cover.includes('body[data-current-page=cover] #workspaceShell{display:none}'));
 assert(cover.includes('body:not([data-current-page=cover]) .site-cover{display:none}'));
 assert(cover.includes('.cover-visual{display:none}'),'moon window is removed from visible layout');
-assert(html.includes('id="enterWorkspace" href="#modules"'),'cover navigation remains');
+assert(html.includes('id="enterWorkspace" class="v7-button" href="#modules"'),'cover navigation remains');
 assert(theme.includes('.hub-module-card:before,.hub-module-card:after{display:none;content:none}'),'no decorative spines or inner rules');
 assert(theme.includes('.hub-card-top{display:none}'),'no decorative numbers or repeated labels');
 assert(theme.includes('.hub-module-section{order:0;margin:0}')&&theme.includes('.hub-plan-progress{order:1;'),'primary entrances precede supporting metrics');

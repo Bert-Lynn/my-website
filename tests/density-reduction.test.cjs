@@ -13,7 +13,7 @@ const {app}=require('./helpers/app-harness.cjs');
  assert.equal(h.all('[data-unified-row]').length,5);
  for(const row of h.all('[data-unified-row]')){
   assert.equal(row.open,false);assert.equal(row.querySelector('summary .unified-brief'),null);
-  const brief=row.querySelector('.unified-row-body .unified-brief');assert(brief);assert(brief.textContent.includes('现在做'));assert(brief.textContent.includes('验收'));
+  const brief=row.querySelector('.unified-row-body .unified-brief');assert(brief);assert(brief.textContent.includes('动手做'));assert(brief.textContent.includes('怎么检查'));
  }
  const tools=h.query('.unified-tools');assert.equal(tools.open,false);tools.open=true;tools.ontoggle();
  h.query('[data-unified-filter="all"]').onclick();assert(h.query('.unified-tools').open);assert.equal(h.all('[data-unified-row]').length,177);

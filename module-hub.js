@@ -20,37 +20,27 @@
       source:status.userId ? '当前账号的私有记录' : '此浏览器的本机记录'
     };
   }
-  const arrow = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  const icons = {
-    tasks:'<path d="M8 5h12v16H4V5h4m0-2h8v4H8V3Z"/><path d="m8 12 1.5 1.5L12 11m2 2h3m-9 4h9"/>',
-    learn:'<path d="M12 5v15m0-15C8 2 4 3 2 4v15c4-2 7-1 10 1 3-2 6-3 10-1V4c-2-1-6-2-10 1Z"/>',
-    project:'<rect x="3" y="4" width="18" height="14" rx="2"/><path d="m8 9-3 3 3 3m8-6 3 3-3 3m-3-7-2 8M7 21h10"/>',
-    research:'<path d="M5 2h10l5 5v15H5V2Zm10 0v5h5M8 11h9m-9 4h9m-9 4h5"/>',
-    roles:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V3h8v4M2 12l10 3 10-3m-10 1v4"/>'
-  };
-  const icon = key => '<svg class="hub-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[key]+'</svg>';
   const bar = (value,label) => '<div class="hub-progress-bar" role="progressbar" aria-label="'+esc(label)+'" aria-valuemin="0" aria-valuemax="'+value.total+'" aria-valuenow="'+value.done+'" aria-valuetext="'+value.done+' / '+value.total+' 已完成"><span style="width:'+value.pct+'%"></span></div>';
-  function card({route,number,kicker,title,description,action,key,featured}) {
-    if(key==='learn'){const study=root.CareerUI?.studyLinks?.(),isVideo=root.CareerUI?.role?.().id==='agent_engineering';return '<article class="hub-module-card hub-card-wide hub-course-card"><div class="hub-card-top"><span><b aria-hidden="true">'+number+'</b><span>'+kicker+'</span></span>'+icon(key)+'</div><h3>'+(isVideo?'视频课程':'课程学习')+'</h3><p>'+esc(study?.title||'当前学习模块')+'</p><div class="hub-course-shortcuts">'+(study?.resources||[]).slice(0,2).map(x=>{const safe=root.CareerUI?.safeURL?.(x.url);return safe?'<a href="'+esc(safe)+'" target="_blank" rel="noopener noreferrer">'+esc(x.shortTitle||x.title)+' ↗</a>':''}).join('')+'</div><a class="hub-course-directory" href="#resources" data-hub-route="resources">'+(isVideo?'打开视频、练习与验收':'打开课程目录')+' <span aria-hidden="true">→</span></a></article>';}
-    return '<a class="hub-module-card'+(featured?' hub-card-wide':'')+'" href="#'+route+'" data-hub-route="'+route+'"><div class="hub-card-top"><span><b aria-hidden="true">'+number+'</b><span>'+kicker+'</span></span>'+icon(key)+'</div><h3>'+title+'</h3><p>'+description+'</p><div class="hub-card-footer"><span>'+action+'</span>'+arrow+'</div></a>';
-  }
+  const link=(route,label)=>'<a href="#'+route+'" data-hub-route="'+route+'">'+label+' <span aria-hidden="true">→</span></a>';
   function render() {
     const el = root.document?.getElementById('moduleHub');
     if(!el || !options.openPage) return;
     const s = snapshot();
     const independent = [
-      {id:'lessons',title:'原课程课节',value:s.lessons,unit:'节已学',note:s.role+' · 原课节完成记录'},
-      {id:'project',title:'用户反馈分析 Agent',value:s.project,unit:'阶段完成',note:'独立的 4 件成果 · 手动自查保存'},
-      {id:'skills',title:'实习技能自查',value:s.skills,unit:'项自查通过',note:'当前方向的必需技能 · 实操自评'}
+      {id:'lessons',title:'以前的课程',value:s.lessons},
+      {id:'project',title:'主项目验收',value:s.project},
+      {id:'skills',title:'技能自查',value:s.skills}
     ];
-    el.innerHTML = '<section class="hub-plan-progress" aria-labelledby="hubProgressTitle"><div class="hub-overall"><div class="hub-section-kicker">原计划</div><h2 id="hubProgressTitle">整体进度<span>原计划任务</span></h2><div class="hub-overall-number"><strong id="hubOverallPercent">'+s.total.pct+'<small>%</small></strong><span id="hubOverallCount">'+s.total.done+' / '+s.total.total+' 项已完成</span></div>'+bar(s.total,'原计划整体任务')+'<p>按实际勾选计算，不按时间推进。</p></div><div class="hub-breakdown"><div class="hub-breakdown-heading"><h3>原计划细分进度</h3><span>这三项合计 '+s.total.total+' 个任务</span></div>'+s.buckets.map(b=>'<div class="hub-breakdown-row" data-hub-bucket="'+b.id+'"><div><span>'+b.label+'</span><strong>'+b.done+' <small>/ '+b.total+' 项</small></strong></div>'+bar(b,b.label)+'</div>').join('')+'</div></section>'+
-      '<section class="hub-module-section" aria-labelledby="hubModuleTitle"><div class="hub-module-heading"><h2 id="hubModuleTitle">今天，从哪里开始？</h2><span>选择一个模块，专注眼前这件事。</span></div><div class="hub-module-grid">'+[
-        {route:'execution',number:'一',kicker:'任务清单',title:'所有任务',description:'打开当前任务，先看做什么、交什么，再按步骤完成并保存记录。',action:'查看现在要做的任务',key:'tasks',featured:true},
-        {route:'resources',number:'二',kicker:'课程学习',title:'视频课程',description:'按当前任务看视频，知道学会什么，再用到自己的项目。',action:'看当前任务的视频',key:'learn',featured:true},
-        {route:'projects',number:'三',kicker:'作品交付',title:'制作用户反馈分析 Agent',description:'先生成问题表，再接入模型、补测试、做演示。每项都有文件清单和验收标准。',action:'查看 4 项交付与当前步骤',key:'project'},
-        {route:'execution/research',number:'四',kicker:'科研计划',title:'科研与论文',description:'paper2 先读 AutoModSAT 的方法与实验，整理半页流程笔记，附原文位置；再选 1 篇做对比。',action:'打开阅读步骤与原文入口',key:'research'},
-        {route:'roles',number:'五',kicker:'实习准备',title:'实习准备',description:'打开岗位样本，对照技能、毕业时间和到岗要求，找出仍需补齐的准备项。',action:'查看岗位要求与技能自查',key:'roles'}
-      ].map(card).join('')+'</div></section><details class="hub-record-details"><summary>查看课节、作品与自查进度</summary>'+'<section class="hub-independent-progress" aria-label="独立学习与准备记录">'+independent.map(item=>'<article data-hub-metric="'+item.id+'"><div><h3>'+item.title+'</h3><strong>'+item.value.done+' <small>/ '+item.value.total+'</small></strong></div>'+bar(item.value,item.title)+'<p>'+item.unit+' · '+item.note+'</p></article>').join('')+'</section><p class="hub-progress-note">课节、Demo 阶段和技能自查分别记录，不计入上方 '+s.total.total+' 项；自查通过不代表已投递或已录用。</p>'+'</details><div class="hub-data-note"><span>数据来源：'+s.source+'。</span><span>交付入口用于保存证据链接，不会自动发布或向外投递。</span></div>';
+    const study=root.CareerUI?.studyLinks?.();
+    const currentVideos=(study?.resources||[]).slice(0,2).map(x=>{const safe=root.CareerUI?.safeURL?.(x.url);return safe?'<a href="'+esc(safe)+'" target="_blank" rel="noopener noreferrer">'+esc(x.shortTitle||x.title)+' ↗</a>':''}).join('');
+    el.innerHTML='<div class="v7-record-grid"><section class="v7-record-section" aria-labelledby="hubProgressTitle">'+
+      '<h2 id="hubProgressTitle">学习与项目</h2><p>这三类各自记录，完成一个不等于完成另一个。</p><dl class="v7-record-list">'+
+      independent.map(item=>'<div data-hub-metric="'+item.id+'"><dt>'+item.title+'</dt><dd><strong>'+item.value.done+' / '+item.value.total+'</strong>'+bar(item.value,item.title)+'</dd></div>').join('')+
+      '</dl></section><section class="v7-record-section v7-record-archive"><h2>原计划</h2><div class="v7-record-total"><strong id="hubOverallPercent">'+s.total.pct+'<small>%</small></strong><span id="hubOverallCount">'+s.total.done+' / '+s.total.total+' 项已完成</span></div>'+
+      bar(s.total,'原计划整体任务')+'<dl class="v7-record-list">'+s.buckets.map(b=>'<div data-hub-bucket="'+b.id+'"><dt>'+b.label+'</dt><dd><strong>'+b.done+' / '+b.total+'</strong>'+bar(b,b.label)+'</dd></div>').join('')+'</dl></section></div>'+
+      '<nav class="v7-record-shortcuts" aria-label="进度相关页面">'+link('execution','打开练习')+link('resources','课程')+link('projects','查看 4 项交付')+link('execution/research','阅读与研究任务')+link('roles','实习岗位')+'</nav>'+
+      '<details class="hub-course-card v7-record-section"><summary>最近的课程参考</summary><p>'+esc(study?.title||'当前学习模块')+'</p><div class="hub-course-shortcuts">'+currentVideos+'</div></details>'+
+      '<p class="hub-progress-note">自查通过不代表已投递或已录用。</p><p class="hub-data-note">数据来源：'+esc(s.source)+'。保存证据不会自动发布或向外投递。</p>';
     el.querySelectorAll('[data-hub-route]').forEach(link=>link.onclick=event=>{event.preventDefault();return options.openPage(link.dataset.hubRoute);});
   }
   root.ModuleHub = {init(value){options=value;render();},render,snapshot};

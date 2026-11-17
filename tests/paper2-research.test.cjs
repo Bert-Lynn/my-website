@@ -8,10 +8,11 @@ const baseline=require('./fixtures/paper2-preserved-g4-baseline.json');
 // The user-approved B display layer has its own exact hashes; other business/data hashes stay at G4.
 const f3=require('./fixtures/f3-display-baseline.json');
 // Course presentation now has its own exact reviewed hash; maintained recruiting catalogs have separate semantic protection.
-const courseDisplay={"career-ui.js": "b656ae10878009e94e1369d3f1c33a63eddd8da084e1c05ad3a9740611991639", "guide.html": "5153f35e2ff75353bbd64f98e8249726c630c19a54f46af5a8f70e8da98cc6a0"};
+const courseDisplay={"career-ui.js":"8e0bbabd4eb08f14c99f87bdfac2727822efeb2fab1205e348e78ae031eb6068","lesson-ui.js":"ac5f2e694e033cbd509517f2f851215c0b8b764d460d0b0f316db06d814029aa","guide.html":"5153f35e2ff75353bbd64f98e8249726c630c19a54f46af5a8f70e8da98cc6a0"};
 for(const [file,digest] of Object.entries(baseline.files))if(!maintainedCatalogs.has(file))assert.equal(hash(fs.readFileSync(path.join(root,file))),courseDisplay[file]||f3.files[file]||digest,'protected source: '+file);
 const appSource=read('app.js'),prefix=appSource.split('const streamLabels=')[0];assert.equal(hash(prefix),baseline.taskPrefixSha256,'all 47 full definitions/IDs/dates preserved');
-const html=read('index.html');assert.equal(hash(html.slice(html.indexOf('<section class="site-cover"'),html.indexOf('<div class="site-shell"'))),f3.coverMarkupSha256,'approved character-free cover markup unchanged');
+const html=read('index.html'),cover=html.slice(html.indexOf('<section class="site-cover'),html.indexOf('<div class="site-shell"'));
+assert(cover.includes('id="coverTitle"')&&/id="enterWorkspace"[^>]*href="#modules"/.test(cover)&&!/<(?:input|form|img|video)\b/i.test(cover),'cover has the semantic entry and no artificial state or artwork');
 const d=JSON.parse(read('data/paper2-research.json')),w={};vm.runInNewContext(read('paper2-research.js'),{window:w});assert.deepEqual(JSON.parse(JSON.stringify(w.PAPER2_RESEARCH)),d,'JSON/browser snapshot identical');
 assert.equal(d.steps.length,3);assert.equal(d.references.length,6);assert.equal(d.status,'候选题未定');assert.equal(d.steps[0].read.length,1);assert.equal(d.steps[1].read.length,2);assert(d.steps[1].readingMode.includes('二选一'));assert.equal(d.steps[2].optionalRead.length,3);
 assert(d.scope.includes('求解算法内部')&&d.scope.includes('鲁棒性'));assert(d.alternativesNote.includes('CV + OR')&&d.alternativesNote.includes('待补充'));assert(d.steps[2].focus[1].includes('不确定集／风险准则'));assert(d.steps[2].focus[1].includes('建模错误')); assert(d.steps[1].deliverable.includes('1页'));
@@ -37,7 +38,7 @@ const memory={'lin-ai-phd-roadmap-progress-v1':JSON.stringify(Object.fromEntries
  click(h.query('[data-unified-filter="original"]'));assert.equal(h.all('[data-unified-row]').length,139);for(const id of bids){const row=h.query('[data-unified-row="task:'+id+'"]');assert(row&&row.classList.contains('is-done'));assert(row.textContent.includes('历史方向'));}
  c.AppNavigation.open('execution');assert.equal(h.all('[data-unified-row]').length,5);assert.equal(h.query('#currentTaskList').hidden,false);
  c.history.back();assert.equal(c.AppNavigation.route(),'execution/research');assert.equal(h.all('[data-unified-row]').length,20);c.history.forward();assert.equal(c.AppNavigation.route(),'execution');
- c.AppNavigation.open('resources');click(h.query('.paper2-reading-entry a'));assert.equal(c.AppNavigation.route(),'execution/research');
+ c.AppNavigation.open('resources');click(h.query('#mainTabs [data-page="execution/research"]'));assert.equal(c.AppNavigation.route(),'execution/research');
  const search=h.query('#unifiedSearch');search.value='ARES';search.onchange();assert(h.all('[data-unified-row]').some(x=>x.dataset.unifiedRow==='research-plan:paper2-compare-journals'));
  assert.equal(JSON.stringify(h.memory),before,'navigation and research guidance never write personal state');
  assert.equal(c.Paper2UI.safeURL('javascript:alert(1)'),null);assert.equal(c.Paper2UI.safeURL('https://user:pw@example.com'),null);

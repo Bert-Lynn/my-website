@@ -91,7 +91,7 @@ const assertWorkspace = (h, page = 'execution') => {
   click(h.query('#skipLink'));
   assert.equal(h.document.activeElement, h.query('#pageTitle'));
   assert.equal(ctx.location.hash, '#modules', 'workspace skip link preserves the hub route');
-  assert.equal(h.query('#mainTabs').querySelectorAll('[data-page]')[0].dataset.page, 'execution');
+  assert.equal(h.query('#mainTabs').querySelectorAll('[data-page]')[0].dataset.page, 'resources');
   const firstEntryCount = ctx.history.entries.length;
   click(h.query('#enterWorkspace'));
   assert.equal(ctx.history.entries.length, firstEntryCount, 'repeat entry does not duplicate history');

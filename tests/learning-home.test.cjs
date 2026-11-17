@@ -80,7 +80,7 @@ const time = '2026-11-17T00:00:00Z';
     assert(h.query('[data-unified-row="lesson:'+second+'"]').open);
     const undo = h.query('[data-unified-lesson="'+first+'"]');
     undo.checked = false; undo.onchange();
-    click(h.query('.lh-back'));
+    click(h.query('#mainTabs [data-site-route="home"]'));
     assert.match(read(h,'#learningTodayTitle'),/读取和保存表格/);
     const remaining = ctx.UnifiedTasks.registry().filter(x=>['practice','delivery'].includes(x.kind));
     assert.equal(remaining.length,11);

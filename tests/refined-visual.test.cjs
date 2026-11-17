@@ -8,7 +8,7 @@ assert.equal(doc.querySelector('#enterWorkspace').getAttribute('href'),'#modules
 assert.equal(doc.querySelector('#coverTitle').getAttribute('tabindex'),'-1');
 assert.equal(doc.querySelector('#cover').querySelectorAll('form,input,select,textarea').length,0);
 assert(!/ink-landscape|feTurbulence|cover-brand-mark|山高水长|行而不辍|日有|积跬步/.test(html),'old landscape, stamp and decorative mottos are removed');
-assert(doc.querySelector('#cover svg[aria-hidden="true"]'),'cover artwork is decorative, not pretend task data');
+assert.equal(doc.querySelectorAll('#cover svg, #cover img').length,0,'cover has no decorative artwork or pretend task data');
 const ids=doc.querySelectorAll('[id]').map(n=>n.id);assert.equal(new Set(ids).size,ids.length);
 assert(!/https?:\/\/|@import/.test(theme+cover),'no third-party visual requests');
 assert(!/cinnabar|journal-serif/.test(theme+cover+course+task),'all theme layers use the shared modern tokens');

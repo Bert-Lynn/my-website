@@ -1,0 +1,105 @@
+/* Interior layouts: lists for reference, forms for evidence, and a clear place to continue. */
+:is(#careerLearning,#careerSkills,#careerAssessments,#careerProjects,#careerRoles){
+  --catalog-rule:var(--v7-rule,#dce1ea);
+  --catalog-accent:var(--v7-accent,#3157ad);
+  --catalog-muted:var(--v7-muted,#535b6b);
+  --catalog-tint:var(--v7-tint,#f3f6fb);
+  --catalog-ink:#182338;
+  color:var(--catalog-ink);
+}
+:is(#careerLearning,#careerSkills,#careerAssessments,#careerProjects,#careerRoles) :is(button,a,select,summary,input,textarea):focus-visible{outline:2px solid var(--catalog-accent);outline-offset:3px}
+:is(#careerLearning,#careerSkills,#careerAssessments,#careerProjects,#careerRoles) :is(summary,button,select){min-block-size:44px}
+:is(#careerLearning,#careerSkills,#careerAssessments,#careerProjects,#careerRoles) :is(p,a,small,dd,li,pre){overflow-wrap:anywhere}
+:is(#careerLearning,#careerSkills,#careerAssessments,#careerProjects,#careerRoles) summary{cursor:pointer}
+#careerLearning .v7-catalog-bar{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:1rem;border:0;padding:0 0 1.25rem;margin:0;background:none;box-shadow:none}
+#careerLearning .v7-catalog-bar h2{font-size:1.45rem;margin:0}
+#careerLearning .v7-catalog-bar p{margin:.25rem 0 0;color:var(--catalog-muted)}
+#careerLearning .v7-catalog-bar .course-real-progress{text-align:start}
+#careerLearning .v7-catalog-current{margin:0 0 2.25rem;padding:clamp(1.15rem,3vw,2.25rem);background:var(--catalog-tint);border:0;border-radius:0;border-inline-start:3px solid var(--catalog-accent);box-shadow:none}
+#careerLearning .v7-catalog-current h3{font-size:clamp(1.22rem,2.5vw,1.8rem);line-height:1.3}
+#careerLearning .course-catalog{background:none;border:none;box-shadow:none;padding:0}
+#careerLearning :is(.course-group,.video-course-card,.video-current-task,.course-directory,.module-intro){box-shadow:none;border-radius:0}
+#careerLearning .course-group{border:0;border-block-start:1px solid var(--catalog-rule);background:none;margin:0}
+#careerLearning .course-group>summary{padding:.8rem .5rem;background:none}
+#careerLearning .course-group>div{padding:0 0 .5rem}
+#careerLearning .course-compact-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);align-items:center;gap:.5rem 1.5rem;margin:0;padding:.75rem .5rem .75rem 1.3rem;border-block-start:1px solid var(--catalog-rule);border-radius:0;background:none}
+#careerLearning .course-compact-title h4{margin:0;font-size:1rem;line-height:1.4}
+#careerLearning .course-compact-status :is(button,a){min-block-size:44px;display:inline-flex;align-items:center}
+#careerLearning .v7-course-practices{margin-block:2.75rem;padding-top:1.25rem;border-block-start:1px solid var(--catalog-rule)}
+#careerLearning .v7-course-practices h2{font-size:1.5rem}
+#careerLearning .video-task-tabs{display:flex;flex-wrap:wrap;padding:0;gap:.35rem;background:none;border:0;box-shadow:none}
+#careerLearning .video-task-tabs button{flex:0 1 auto;border:1px solid var(--catalog-rule);border-radius:4px;background:white}
+#careerLearning .video-task-tabs .is-selected{background:var(--catalog-tint);border-color:var(--catalog-accent);color:var(--catalog-accent)}
+#careerLearning .video-current-task{background:var(--catalog-tint);border:0;padding:1.2rem}
+#careerLearning .video-course-list{display:block}
+#careerLearning .video-course-card{border:0;border-block-end:1px solid var(--catalog-rule);padding:1.25rem 0;background:none}
+#careerLearning :is(.video-resource-archive,.video-practice-archive,.course-direction-detail){background:none;border-radius:0;box-shadow:none;border:0;border-block-end:1px solid var(--catalog-rule)}
+
+#careerRoles .v7-jobs-meta{display:block;background:var(--catalog-tint);padding:clamp(1rem,3vw,1.65rem);border:0;border-radius:0;box-shadow:none}
+#careerRoles .v7-jobs-meta dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:0}
+#careerRoles .v7-jobs-meta dt{color:var(--catalog-muted);font-size:.9rem;margin-bottom:.2rem}
+#careerRoles .v7-jobs-meta dd{font-size:clamp(1rem,2vw,1.4rem);font-weight:700;line-height:1.35;margin:0}
+#careerRoles .current-match-note{background:none;border:0;padding:.5rem 0;margin:0 0 1.8rem;line-height:1.55}
+#careerRoles .v7-jobs-list .opportunity-heading{display:flex;align-items:end;flex-wrap:wrap;gap:.5rem 1rem}
+#careerRoles .v7-jobs-list .opportunity-heading h2{font-size:1.45rem;margin:0}
+#careerRoles .salary-filters{gap:.4rem;margin-block:.7rem;border:0;background:none;padding:0}
+#careerRoles .salary-filters button{border:1px solid var(--catalog-rule);border-radius:4px;background:white}
+#careerRoles .salary-filters button[aria-pressed=true]{border-color:var(--catalog-accent);background:var(--catalog-tint);color:var(--catalog-accent)}
+#careerRoles .v7-empty-jobs{padding:1.15rem;background:var(--catalog-tint)}
+#careerRoles .opportunity-list{gap:0}
+#careerRoles .opportunity{box-shadow:none;border-radius:0;border:0;border-block-start:1px solid var(--catalog-rule);background:none;margin:0}
+#careerRoles .opportunity>summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) auto;gap:.65rem 1rem;align-items:center;padding:1.1rem 0}
+#careerRoles .company-monogram{display:none}
+#careerRoles .opportunity-detail{padding:1rem;margin-bottom:.75rem;background:var(--catalog-tint)}
+#careerRoles :is(.v7-career-directions,.company-coverage){margin:1.2rem 0;border:0;border-block-start:1px solid var(--catalog-rule);border-radius:0;padding:.5rem 0;background:none;box-shadow:none}
+#careerRoles .role-directions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+#careerRoles .role-direction{text-align:start;border-radius:4px;box-shadow:none}
+#careerRoles .role-direction.selected{background:var(--catalog-tint);border-color:var(--catalog-accent)}
+
+#careerSkills .map-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border:0;background:var(--catalog-tint);border-radius:0;padding:1.2rem;box-shadow:none}
+#careerSkills .map-toolbar h2{font-size:1.28rem;margin:0}
+#careerSkills .v7-skill-legend{padding:.3rem 0}
+#careerSkills .v7-skill-legend .level-legend{border:0;background:var(--catalog-tint)}
+#careerSkills .skill-table{border:0;border-radius:0;box-shadow:none}
+#careerSkills .skill-table-head{background:var(--catalog-tint);border:0}
+#careerSkills .skill-table-row{border:0;border-block-end:1px solid var(--catalog-rule);border-radius:0}
+#careerSkills .skill-actions button{font-size:.9rem;min-block-size:44px}
+#careerAssessments .v7-self-check{display:grid;grid-template-columns:minmax(14rem,1fr) minmax(0,3fr);align-items:start;gap:1.5rem}
+#careerAssessments .assessment-queue{grid-column:1;background:var(--catalog-tint);border:0;border-radius:0;box-shadow:none}
+#careerAssessments .assessment-workbench{grid-column:2;grid-row:1;background:none;box-shadow:none;border:0;border-radius:0;padding:0;min-width:0}
+#careerAssessments .assessment-brief{border-block:1px solid var(--catalog-rule);padding:1rem 0;background:none;border-radius:0}
+#careerAssessments .assessment-meta{display:flex;flex-wrap:wrap}
+#careerAssessments .rubric{background:var(--catalog-tint);border:0;border-radius:0;padding:1rem;min-width:0}
+#careerAssessments .evidence-form{border:0;border-block-start:1px solid var(--catalog-rule);border-radius:0;padding:1rem 0;background:none}
+#careerProjects .proposed-project{border:0;box-shadow:none;border-radius:0;background:none;padding:0}
+#careerProjects .v7-project-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;margin:0 0 1.4rem;padding:clamp(1rem,4vw,2rem);background:var(--catalog-tint)}
+#careerProjects .v7-project-head h2{font-size:clamp(1.4rem,2.8vw,2rem);margin:.2rem 0}
+#careerProjects .v7-project-count strong,#careerProjects .v7-project-count span{display:block}
+#careerProjects .v7-project-count strong{font-size:1.6rem;color:var(--catalog-accent)}
+#careerProjects .v7-project-count span{font-size:.86rem;color:var(--catalog-muted)}
+#careerProjects :is(.current-project-stage,.work-project-context,.project-preview-detail,.project-growth-plan,.proposal-research,.archived-assistant-plan,.legacy-project-plan){background:none;border:0;border-radius:0;border-block-end:1px solid var(--catalog-rule);box-shadow:none}
+#careerProjects .current-project-stage>summary{padding:1rem .3rem;background:none}
+#careerProjects .current-project-stage-body{padding:1rem;background:var(--catalog-tint)}
+@media(max-width:700px){
+  #careerLearning .course-compact-row,#careerAssessments .v7-self-check{grid-template-columns:minmax(0,1fr)}
+  #careerAssessments .assessment-workbench{grid-column:1;grid-row:auto}
+  #careerSkills .skill-table-head{display:none}
+  #careerSkills .skill-table-row{display:grid;grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:480px){
+  #careerRoles .v7-jobs-meta dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #careerRoles .opportunity>summary{grid-template-columns:minmax(0,1fr) auto}
+  #careerRoles .salary-cell{grid-column:1;grid-row:2;text-align:start}
+  #careerRoles .opportunity .expand-symbol{grid-column:2;grid-row:1}
+  #careerRoles .role-directions,#careerProjects .v7-project-head{grid-template-columns:minmax(0,1fr)}
+}
+#careerRoles .v7-jobs-list .opportunity-heading{justify-content:space-between;text-align:start}
+#careerRoles .v7-jobs-list .opportunity-heading h2 small{font-size:.85rem;font-weight:500;color:var(--catalog-muted);margin-inline-start:.4em}
+#careerRoles .current-match-note{font-size:.9rem;color:var(--catalog-muted)}
+#careerRoles .opportunity summary h3{font-size:1.04rem;line-height:1.36}
+#careerRoles .opportunity summary .company-name{font-size:.84rem}
+#careerLearning .course-next-actions .primary-button,#careerAssessments .assessment-submit .primary-button{background:var(--catalog-accent);color:white}
+@media(max-width:480px){
+  #careerRoles .v7-jobs-list .opportunity-heading{align-items:stretch}
+  #careerRoles .v7-jobs-list .opportunity-heading>:first-child{flex:0 0 100%}
+}

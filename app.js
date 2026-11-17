@@ -636,7 +636,15 @@ function toggle(id){
   const input=document.querySelector('#check-'+id);if(source?.dataset?.id===id){if(input)input.focus({preventScroll:true});else document.querySelector('#pendingOnly').focus({preventScroll:true})}
   document.querySelector('#announcer').textContent=(progress[id]?'已完成：':'已恢复待办：')+tasks.find(t=>t.id===id).title+(saved?'，进度已记录。':'，未能保存。');
 }
-const pageNames={path:['学习路线','',''],home:['今天做什么','',''],modules:['个人成长','查看实际进度，选择要推进的任务或学习内容。','PERSONAL GROWTH'],today:['从研究，到第一件 AI 作品','面向 AI 应用 / Agent 开发实习。今天先做一件看得见结果的小事。','发展路线'],roles:['实习岗位参考','查看岗位要求和薪资资料。具体机会以投递时为准。','更多内容'],skills:['详细自查记录','这页保留全部技能记录。需要资料时，从课程学习进入对应模块。','详细记录'],resources:['课程学习','按当前方向学习，需要时回看原练习。','课程目录'],assessments:['检查自己会不会','照着题目做一次，再按实际结果保存记录。','练习自查'],projects:['项目作品','把每一步的代码、测试和结果，接成一个能演示的工具。','作品与证据'],overview:['博士计划','原来的论文、研究任务和时间安排都在这里。','更多内容'],timeline:['研究时间表','计划时间和实际完成时间分开记录。','博士计划'],outcomes:['论文与作品','查看原来的论文和项目任务。','博士计划'],storage:['进度与账号','不登录也能在本机保存。登录后可以同步到自己的账号。','保存进度']};
+const pageNames={
+  home:['学习计划','',''],path:['四个学习阶段','',''],modules:['进度总览','按你实际完成的内容统计。课程、项目和原任务分别记录。','我的记录'],
+  today:['学习方向','选择你想准备的岗位方向，课程与技能会按方向显示。','学习计划'],
+  resources:['课程','先选技能，再看对应课程或视频。','学习'],skills:['技能自查','对照已有要求，看看哪些技能已经掌握。','练习'],
+  assessments:['练习自查','完成题目后，按实际结果记录。','练习'],projects:['项目','查看每个项目要做什么、交什么。','练习'],
+  roles:['实习','按方向查看岗位。招聘状态、薪资与时间以岗位说明为准。','岗位'],
+  overview:['研究目标','查看论文目标和接下来要做的事。','研究'],timeline:['研究时间表','计划日期和实际完成日期分开记录。','研究'],
+  outcomes:['论文与成果','查看论文及原项目记录。','研究'],storage:['我的记录','查看保存状态，或登录同步。','个人账号']
+};
 let activeRoute='execution';
 const taskViewRoute=route=>/^execution\/(current|month|year|research|learning|demo|stage)$/.exec(route)?.[1];
 const isWorkspaceRoute=route=>taskViewRoute(route)||['cover','execution',...Object.keys(pageNames)].includes(route)||route.startsWith('learn/');
@@ -650,7 +658,7 @@ function setPage(next,historyMode=true){
   page=target;activeRoute=moduleId?'learn/'+moduleId:taskView?requested:target;if(taskView)view=taskView;else if(target==='execution')view='current';const more=document.getElementById('moreNavigation');if(more)more.open=false;
   if(target==='resources')window.CareerUI?.selectModule(moduleId);
   if(historyMode&&window.history?.pushState&&window.location?.hash!=='#'+activeRoute)window.history.pushState({page:activeRoute},'','#'+activeRoute);
-  render();const heading=document.querySelector(page==='cover'?'#coverTitle':page==='home'?'#learningHomeTitle':page==='path'?'#learningPathTitle':'#pageTitle'),scrollTarget=page==='cover'?document.querySelector('#cover'):heading;scrollTarget?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true});return true;
+  render();const heading=document.querySelector(page==='cover'?'#coverTitle':page==='home'?'#learningHomeTitle':page==='path'?'#learningPathTitle':'#pageTitle'),scrollTarget=page==='cover'?document.querySelector('#cover'):document.querySelector('.v7-topbar')||heading;scrollTarget?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true});return true;
 }
 window.AppNavigation={open:setPage,current:()=>page,route:()=>activeRoute};
 // Route only app destinations. In-page anchors and auth fragments remain untouched.
@@ -674,7 +682,7 @@ function render(){
   if(shell)shell.hidden=page==='cover';
   if(skip)skip.setAttribute('href',page==='cover'?'#coverTitle':page==='home'?'#learningHomeTitle':page==='path'?'#learningPathTitle':'#pageTitle');
   document.querySelector('#skillTabs').hidden=!['skills','assessments'].includes(page);
-  document.querySelector('#researchTabs').hidden=!['overview','timeline','outcomes'].includes(page);
+  document.querySelector('#researchTabs').hidden=!['overview','timeline','outcomes'].includes(page)&&!(page==='execution'&&view==='research');
   document.querySelector('.journey').hidden=page!=='timeline';
   document.querySelector('.progress-sidebar').hidden=page!=='execution'||['current','research'].includes(view);
   document.querySelector('.workspace-layout').classList.toggle('with-sidebar',page==='execution'&&!['current','research'].includes(view));
@@ -682,22 +690,29 @@ function render(){
   const researchView=page==='execution'&&view==='research',currentView=page==='execution'&&view==='current';
   document.getElementById('currentTaskList').hidden=!(currentView||researchView);
   document.getElementById('originalTaskPlan').hidden=currentView||researchView;
-  document.getElementById('pageEyebrow').hidden=currentView;
-  document.getElementById('pageSubtitle').hidden=currentView;
-  const carriedCount=carriedTasks(currentMonth()).length,oldPlanTab=document.querySelector('[data-task-section="execution/month"]');if(oldPlanTab)oldPlanTab.textContent='原月计划'+(carriedCount?' · '+carriedCount+' 项顺延':'');
+  document.getElementById('pageEyebrow').hidden=true;
+  document.getElementById('pageSubtitle').hidden=false;
+  const work=document.getElementById('v7Workspace');
+  if(work)work.hidden=['home','path'].includes(page);
+  const sectionKey=researchView||['overview','timeline','outcomes'].includes(page)?'research':
+    ['home','path','today'].includes(page)?'plan':page==='resources'?'courses':page==='projects'?'projects':
+    page==='roles'?'jobs':['storage','modules'].includes(page)?'records':'practice';
+  document.querySelectorAll('[data-site-section]').forEach(el=>{if(el.dataset.siteSection===sectionKey)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current')});
+  const carriedCount=carriedTasks(currentMonth()).length,oldPlanTab=document.querySelector('[data-task-section="execution/month"]');if(oldPlanTab)oldPlanTab.textContent='月计划'+(carriedCount?' · '+carriedCount+' 项顺延':'');
   document.querySelectorAll('[data-task-section]').forEach(b=>b.setAttribute('aria-current',(currentView?b.dataset.taskSection==='execution':researchView?b.dataset.taskSection==='execution/research':b.dataset.taskSection==='execution/month')?'page':'false'));
   const researchLinks=document.getElementById('researchTaskLinks');if(researchLinks)researchLinks.hidden=!researchView;
   const executionStats=document.querySelector('.execution-stats');if(executionStats)executionStats.hidden=researchView;
-  document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.setAttribute('aria-current',b.dataset.openPage===page?'page':'false'));
+  document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.setAttribute('aria-current',b.dataset.openPage===activeRoute?'page':'false'));
   const all=tally(tasks),now=currentMonth(),backlog=carriedTasks(view==='stage'?stages[selectedStage].start:activeMonth),mt=monthTasks(activeMonth),ms=tally(mt);
   document.querySelector('#todayLabel').textContent=now.replace('.','年')+'月 · 上海时间';
-  document.querySelector('#pageTitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[0]||pageNames.today[0]):page==='resources'?'课程学习':page==='execution'?(researchView?'科研与论文':currentView?'当前任务':'原月计划'):(pageNames[page]?.[0]||'个人成长');
-  document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?(researchView?'先阅读 AutoModSAT，梳理问题、方法与证据，再按科研任务推进；具体题目仍待确定。':currentView?'先完成当前阶段的指定视频、对应练习与项目交付；各项分别记录。':'原47项任务，未完成的会继续顺延。'):page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'按当前任务看视频，学完就用到自己的项目。':pageNames[page]?.[1]||'';
-  document.querySelector('#pageEyebrow').textContent=page==='execution'?'任务列表':page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'视频主线':pageNames[page]?.[2]||'研究工作台';
+  document.querySelector('#pageTitle').textContent=page==='execution'?(researchView?'研究任务':currentView?'练习':'月计划'):(pageNames[page]?.[0]||'AI 学习与研究');
+  const where=document.getElementById('v7Location');if(where)where.textContent=document.querySelector('#pageTitle').textContent;
+  document.querySelector('#pageSubtitle').textContent=page==='execution'?(researchView?'跟进阅读、论文和实验。':currentView?'做完对应练习，再自查或保存项目证据。':'保留原安排。没有做完的任务仍然可以接着做。'):pageNames[page]?.[1]||'';
+  document.querySelector('#pageEyebrow').textContent=pageNames[page]?.[2]||'';
   document.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==page);
   if(['home','path'].includes(page))window.LearningHome?.render();
   const primaryPage=page==='execution'?'execution':page==='resources'?'resources':['skills','assessments'].includes(page)?'skills':phdPages.includes(page)?'overview':page;
-  document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===primaryPage)));
+  document.querySelectorAll('button[data-page]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===primaryPage)));
   document.querySelector('#overallPct').innerHTML=all.pct+'<span>%</span>';
   document.querySelector('#overallCount').textContent=all.done+' / '+tasks.length+' 项已完成';
   document.querySelector('#progressRing').style.setProperty('--progress',all.pct);
@@ -739,7 +754,8 @@ function render(){
   document.querySelector('#nextMilestone').innerHTML=next?'<span class="next-milestone-date">目标 '+next.month+'</span><strong class="next-milestone-title">'+next.title+'</strong><p class="next-milestone-note">'+next.outcome+'</p>':'<p class="next-milestone-note">全部里程碑已完成 ✓</p>';
 }
 document.querySelectorAll('#viewTabs button').forEach(b=>b.onclick=()=>{if(b.dataset.view==='stage'){view='stage';render()}else setPage('execution/'+b.dataset.view)});
-document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.page));
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=e=>{if(b.tagName==='A'){if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault()}return setPage(b.dataset.page)});
+document.querySelectorAll('[data-site-route]').forEach(a=>a.onclick=e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault();return setPage(a.dataset.siteRoute)});
 document.querySelectorAll('[data-task-section]').forEach(b=>b.onclick=()=>setPage(b.dataset.taskSection));
 document.querySelector('#homeBtn').onclick=e=>{e.preventDefault();setPage('modules')};
 document.querySelector('#returnToModules').onclick=e=>{e.preventDefault();setPage('modules')};

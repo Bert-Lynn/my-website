@@ -12,15 +12,16 @@ const verifyExternal=nodes=>nodes.forEach(a=>{assert(/^https:\/\//.test(a.getAtt
 (async()=>{
  const h=app({hash:'#modules'}),ctx=h.ctx;await ctx.AppProgress.sync().start();
  const before=snapshot(ctx),hub=h.query('#moduleHub');
- assert(hub.children.indexOf(h.query('.hub-plan-progress'))<hub.children.indexOf(h.query('.hub-module-section')),'compact overall and category progress remains above modules');
- assert(hub.children.indexOf(h.query('.hub-record-details'))>hub.children.indexOf(h.query('.hub-module-section')),'independent statistics move below useful entrances');
- assert.equal(h.query('.hub-record-details').open,false);
+ const records=h.query('.v7-record-grid'),shortcuts=h.query('.v7-record-shortcuts');
+ assert(records&&shortcuts&&hub.children.indexOf(records)<hub.children.indexOf(shortcuts),'learning and original-plan progress are above route shortcuts');
+ assert(h.query('[data-hub-metric]')&&h.query('[data-hub-bucket]'),'separate records and original categories remain visible');
+ assert.equal(h.query('.hub-course-card').open,false);
  assert.equal(h.query('#hubOverallCount').textContent,'0 / 47 项已完成');
  assert.deepEqual(hrefs(h.all('.hub-course-shortcuts a')),sources('wa-m0').map(x=>x.url));
  verifyExternal(h.all('.hub-course-shortcuts a'));
  assert(!h.query('.hub-course-card').textContent.includes('控制流'),'current WA course entrance does not default to old Python diagnosis');
  click(h.query('[data-hub-route="resources"]'));
- assert.equal(ctx.AppNavigation.current(),'resources');assert.equal(h.query('#pageTitle').textContent,'课程学习');
+ assert.equal(ctx.AppNavigation.current(),'resources');assert.equal(h.query('#pageTitle').textContent,'课程');
  assert.deepEqual(hrefs(h.all('.video-card-actions a')),sources('wa-m0').map(x=>x.url));
  for(const source of sources('wa-m0'))assert(h.query('.video-course-list').textContent.includes(source.watchScope));
  assert.equal(h.query('.video-course-list').closest('details'),null,'official links are outside all collapsed panels');

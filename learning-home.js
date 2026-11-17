@@ -343,5 +343,5 @@
     };
   }
   root.addEventListener('careerprogresschange', render);
-  root.LearningHome = { render, select, dailyPack };
+  root.LearningHome = { render, select, dailyPack, skillName: id => basics[id]?.[0], stageName: id => ({'wa-m0':'读表和处理数据','wa-m1':'让 AI 调用函数','wa-m2':'给程序写测试','wa-m3':'比较结果、写说明'})[id] };
 })(window);

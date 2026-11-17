@@ -5,8 +5,8 @@ const {app,makeDocument}=require('./helpers/app-harness.cjs');
 const html=fs.readFileSync('index.html','utf8'),theme=fs.readFileSync('castle-theme.js','utf8');
 const initial=makeDocument(html);
 for(const word of ['成长小屋','任务簿','小课堂','科研角','研习手记','一点点向前'])assert(!html.includes(word),'professional visible copy replaces '+word);
-assert.equal(initial.querySelector('title').textContent,'个人成长 · 研究与学习工作台');
-for(const [route,label] of [['execution','任务'],['resources','课程学习'],['projects','项目作品'],['execution/research','科研']])assert(initial.querySelector('#mainTabs [data-page="'+route+'"]').textContent.includes(label));
+assert.equal(initial.querySelector('title').textContent,'AI 学习与研究');
+for(const [route,label] of [['execution','练习'],['resources','课程'],['projects','项目'],['execution/research','研究']])assert(initial.querySelector('#mainTabs [data-page="'+route+'"]').textContent.includes(label));
 assert(html.indexOf('task-actions.css')>html.indexOf('light-future.css'),'action layout is loaded after the existing B theme');
 const create=memory=>{
  const h=app({hash:'#execution',now:'2026-10-19T12:00:00Z',memory});

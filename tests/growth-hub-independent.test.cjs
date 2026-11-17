@@ -55,7 +55,7 @@ function verify(h, expected) {
   assert(h.query('.hub-progress-note').textContent.includes('自查通过不代表已投递或已录用'));
   assert(h.query('.hub-data-note').textContent.includes('不会自动发布或向外投递'));
   const hub=h.query('#moduleHub');
-  assert(hub.children.indexOf(h.query('.hub-plan-progress'))<hub.children.indexOf(h.query('.hub-module-section')),'actual progress is above module choices');
+  assert(hub.children.indexOf(h.query('.v7-record-grid'))<hub.children.indexOf(h.query('.v7-record-shortcuts')),'actual progress is above module choices');
   assert.equal(hub.querySelectorAll('form,input,textarea,select').length,0,'the chooser does not create pretend completion controls');
   assert.equal(h.all('[data-hub-route]').length,5);
   assert.deepEqual(h.all('[data-hub-route]').map(node=>node.dataset.hubRoute),['execution','resources','projects','execution/research','roles']);
@@ -67,7 +67,7 @@ function verify(h, expected) {
     assert.equal(h.query('#modules').hidden,true);
     assert.equal(h.query('#cover').hidden,true,'selecting a module never loops back through the cover');
     if(route==='execution') {
-      assert.equal(h.query('#pageTitle').textContent,'当前任务');
+      assert.equal(h.query('#pageTitle').textContent,'练习');
       assert.equal(h.evaluate('view'),'current');
       assert.equal(h.query('#currentTaskList').hidden,false);
       assert.equal(h.query('#originalTaskPlan').hidden,true);
@@ -77,7 +77,7 @@ function verify(h, expected) {
       assert.equal(h.all('#currentTaskList [data-id]').length,0,'current project outcomes do not reuse original task checkboxes');
     }
     if(route==='execution/research') {
-      assert.equal(h.query('#pageTitle').textContent,'科研与论文');
+      assert.equal(h.query('#pageTitle').textContent,'研究任务');
       assert.equal(h.all('#taskGroups [data-id]').length,23);
       assert(h.all('#taskGroups [data-id]').every(node=>h.evaluate('tasks.find(t=>t.id==='+JSON.stringify(node.dataset.id)+').category')==='research'));
       assert.equal(h.query('#researchTaskLinks').hidden,false);
