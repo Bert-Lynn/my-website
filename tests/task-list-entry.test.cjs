@@ -9,7 +9,7 @@ const inputFor = (h, id) => h.query('#taskGroups [data-id="' + id + '"]');
 (async () => {
   let h = app({ now }), ctx = h.ctx;
   await ctx.AppProgress.sync().start();
-  assert.equal(ctx.AppNavigation.current(), 'execution', 'bare URL opens the B task workspace directly');
+  assert.equal(ctx.AppNavigation.current(), 'home', 'bare URL opens the focused learning home');
   click(h.query('#enterWorkspace'));
   assert.equal(ctx.AppNavigation.current(), 'modules', 'the cover CTA opens the module chooser');
   click(h.query('[data-hub-route="execution"]'));
@@ -72,7 +72,7 @@ const inputFor = (h, id) => h.query('#taskGroups [data-id="' + id + '"]');
   assert.equal(ctx.phdCareerProgress.read().milestones['work-assistant']?.['wa-m0'], undefined, 'discarded draft is never saved by navigation');
   click(h.query('#homeBtn')); assert.equal(ctx.AppNavigation.current(), 'modules', 'brand link returns to module selection');
   ctx.location.hash = ''; ctx.dispatchEvent({ type: 'popstate' });
-  assert.equal(ctx.AppNavigation.current(), 'execution', 'empty hash during browser history returns to tasks');
+  assert.equal(ctx.AppNavigation.current(), 'home', 'empty hash during browser history returns to the focused learning home');
   click(h.query('#enterWorkspace'));
   assert.equal(ctx.AppNavigation.current(), 'modules', 're-entering opens the chooser once');
   click(h.query('[data-hub-route="execution"]'));

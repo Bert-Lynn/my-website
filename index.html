@@ -21,9 +21,10 @@
   <link rel="stylesheet" href="./course-clarity.css?v=20261015-courseclarity1">
   <link rel="stylesheet" href="./light-future.css?v=20261019-b2">
   <link rel="stylesheet" href="./task-actions.css?v=20261019-density1">
+  <link rel="stylesheet" href="./learning-home.css?v=10">
 </head>
-<body data-current-page="execution">
-<script>document.body.setAttribute('data-current-page',window.location.hash==='#cover'?'cover':window.location.hash==='#modules'?'modules':'execution');</script>
+<body data-current-page="home">
+<script>document.body.setAttribute('data-current-page',window.location.hash==='#cover'?'cover':window.location.hash==='#path'?'path':!window.location.hash||window.location.hash==='#home'?'home':window.location.hash==='#modules'?'modules':'execution');</script>
 <a class="skip-link" id="skipLink" href="#coverTitle">跳到主要内容</a>
 <section class="site-cover" id="cover" aria-labelledby="coverTitle">
   <header class="cover-header">
@@ -59,6 +60,144 @@
   <div class="cover-footer"><span>研究 · 学习 · 作品</span><span class="release-label">个人成长 · 2026.10.19</span></div>
 </section>
 <div class="site-shell" id="workspaceShell">
+  <section class="learning-home lh-site" id="learningHome" data-panel="home" aria-labelledby="learningHomeTitle">
+    <header class="lh-sitebar">
+      <div class="lh-sitebar-inner">
+        <a class="lh-sitebrand" href="#home" data-home-route="home">AI 学习</a>
+        <nav aria-label="学习导航" class="lh-site-nav">
+          <a href="#learningPackTitle" data-home-scroll="learningPackTitle">今天</a>
+          <a href="#path" data-home-route="path">学习路线</a>
+          <a href="#resources" data-home-route="resources">视频课程</a>
+        </nav>
+        <a class="lh-profile" href="#storage" data-home-route="storage">进度与账号</a>
+      </div>
+    </header>
+    <main class="lh-front">
+      <section class="lh-feature" aria-labelledby="learningHomeTitle">
+        <div class="lh-feature-copy">
+          <p class="lh-feature-label">今天学什么</p>
+          <h1 id="learningHomeTitle" tabindex="-1"><span id="learningTodayTitle">用 Python 读取和保存表格</span></h1>
+          <p id="learningTodayAction">学会打开一份 CSV 表格，再另存为新文件。</p>
+          <a class="lh-primary" href="#learningPackTitle" data-home-scroll="learningPackTitle">查看今日清单<span aria-hidden="true">↓</span></a>
+        </div>
+      </section>
+      <section class="lh-now" aria-labelledby="learningPackTitle">
+        <div class="lh-content">
+          <header class="lh-now-heading">
+            <div><p>现在开始</p><h2 id="learningPackTitle" tabindex="-1">今日清单</h2></div>
+            <div class="lh-progress">
+              <span id="learningPackCount" aria-live="polite"></span>
+              <progress id="learningPackProgress" aria-label="今天的必做进度" value="0" max="2"></progress>
+            </div>
+          </header>
+          <div id="learningPackRows" class="lh-plan-rows"></div>
+          <p id="learningPackStatus" class="sr-only" role="status"></p>
+          <section class="lh-instructions" aria-label="今日练习说明">
+            <p id="learningTodayCheck">练习做完后，打开新表核对 8 条记录。</p>
+            <div class="lh-actions">
+              <button id="learningTodayStepsButton" type="button" aria-controls="learningTodaySteps" aria-expanded="false">看怎么做</button>
+              <a id="learningDoneLink" href="#projects" data-home-route="projects" hidden>查看做好的作品</a>
+            </div>
+            <div id="learningTodaySteps" class="lh-steps" hidden>
+              <ol id="learningTodayStepsList">
+                <li><a id="learningTodaySample" href="./data/work-agent-starter.zip" download>下载样例</a>并解压。在解压后找到 <code>input/feedback.csv</code>。</li>
+                <li>新建 <code>analyze.py</code>，用 Python 读这张表，另存为 <code>preview.csv</code>。</li>
+                <li>打开 <code>preview.csv</code>，确认 8 条记录的编号和原话还在。</li>
+              </ol>
+              <figure id="learningSamplePreview" class="lh-specimen">
+                <figcaption><strong>另存后长这样</strong><span>前 3 条</span></figcaption>
+                <div class="lh-file"><span aria-hidden="true">▤</span><code>preview.csv</code></div>
+                <table aria-label="表格练习示例的前 3 条">
+                  <thead><tr><th scope="col">编号</th><th scope="col">用户原话</th></tr></thead>
+                  <tbody>
+                    <tr><td>F001</td><td>登录验证码等了很久也没收到</td></tr>
+                    <tr><td>F002</td><td>导出表格后得到空白文件</td></tr>
+                    <tr><td>F003</td><td>登录验证码一直不到</td></tr>
+                  </tbody>
+                </table>
+              </figure>
+              <div class="lh-steps-actions">
+                <a id="learningTodayVideo" href="https://www.bilibili.com/video/BV1sHU9BmEne/?p=142" target="_blank" rel="noopener noreferrer">看视频 · 15:41</a>
+                <a id="learningTodayRecord" href="#execution">去打勾</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section class="lh-stage-progress" aria-labelledby="learningStageProgressTitle">
+        <div class="lh-content">
+          <header class="lh-stage-progress-title">
+            <h2 id="learningStageProgressTitle">学习进度</h2>
+            <p id="learningStageProgressNote">只统计必做练习与验收。</p>
+          </header>
+          <table class="lh-stage-table" id="learningStageTable" aria-labelledby="learningStageProgressTitle" aria-describedby="learningStageProgressNote">
+            <thead><tr><th scope="col">学习阶段</th><th scope="col">完成 / 总数</th><th scope="col">下一项</th></tr></thead>
+            <tbody>
+              <tr data-progress-stage="wa-m0"><th scope="row">读表和处理数据</th><td class="lh-stage-count">—</td><td><a class="lh-stage-next" href="#execution" hidden></a><span class="lh-stage-empty">—</span></td></tr>
+              <tr data-progress-stage="wa-m1"><th scope="row">让 AI 调用函数</th><td class="lh-stage-count">—</td><td><a class="lh-stage-next" href="#execution" hidden></a><span class="lh-stage-empty">—</span></td></tr>
+              <tr data-progress-stage="wa-m2"><th scope="row">给程序写测试</th><td class="lh-stage-count">—</td><td><a class="lh-stage-next" href="#execution" hidden></a><span class="lh-stage-empty">—</span></td></tr>
+              <tr data-progress-stage="wa-m3"><th scope="row">比较结果、写说明</th><td class="lh-stage-count">—</td><td><a class="lh-stage-next" href="#execution" hidden></a><span class="lh-stage-empty">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="lh-goals" aria-label="学习目标">
+        <div class="lh-content lh-goals-inner">
+          <div><p class="lh-goal-label">本周目标</p><h2 id="learningWeekTitle">用 Python 筛选、去重和统计表格。</h2></div>
+          <div><p class="lh-goal-label">长期目标</p><h2>用 Python 写一个 AI 助手，让它调用函数、检查结果。</h2></div>
+        </div>
+      </section>
+      <div class="lh-content lh-path-home">
+          <section class="lh-course-signal" id="learningCourseSignal" aria-labelledby="learningSignalTitle">
+            <div class="lh-signal-heading">
+              <h2 id="learningSignalTitle">学习路线</h2>
+              <a href="#path" data-home-route="path">查看详情</a>
+            </div>
+            <ol class="lh-signal-track">
+              <li data-signal-stage="wa-m0"><span class="lh-node" aria-hidden="true"></span><span class="lh-signal-name">读表和处理数据</span><span class="lh-signal-status">现在学</span></li>
+              <li data-signal-stage="wa-m1"><span class="lh-node" aria-hidden="true"></span><span class="lh-signal-name">让 AI 调用函数</span><span class="lh-signal-status"></span></li>
+              <li data-signal-stage="wa-m2"><span class="lh-node" aria-hidden="true"></span><span class="lh-signal-name">给程序写测试</span><span class="lh-signal-status"></span></li>
+              <li data-signal-stage="wa-m3"><span class="lh-node" aria-hidden="true"></span><span class="lh-signal-name">比较结果、写说明</span><span class="lh-signal-status"></span></li>
+            </ol>
+          </section>
+      </div>
+      <footer class="lh-foot">
+        <nav class="lh-content lh-footlinks" aria-label="资料与记录">
+          <a href="#execution" data-home-route="execution">全部任务</a>
+          <a href="#projects" data-home-route="projects">作品</a>
+          <a href="#execution/research" data-home-route="execution/research">科研</a>
+          <a href="#roles" data-home-route="roles">实习</a>
+          <a href="#modules" data-home-route="modules">旧工作台</a>
+        </nav>
+      </footer>
+      <noscript><p>启用 JavaScript 后可以打开任务和查看进度。</p></noscript>
+    </main>
+  </section>
+  <section class="learning-home" id="learningPath" data-panel="path" aria-labelledby="learningPathTitle" hidden>
+    <header class="lh-head">
+      <a class="lh-wordmark" href="#home" data-home-route="home">AI 学习</a>
+      <nav aria-label="学习导航" class="lh-top-nav">
+        <a href="#home" data-home-route="home">回到今天</a>
+        <a href="#resources" data-home-route="resources">课程目录</a>
+      </nav>
+    </header>
+    <main class="lh-wrap lh-route">
+      <header class="lh-intro">
+        <h1 id="learningPathTitle" tabindex="-1">学习路线</h1>
+        <p>先学怎么处理表格，再学怎么接入 AI 和测试程序。</p>
+      </header>
+      <ol class="lh-path" aria-label="制作反馈分析程序的四步">
+        <li data-home-stage="wa-m0"><span aria-hidden="true">01</span><div><h2>用 Python 处理表格</h2><p>会读取、保存、筛选、去重和统计。</p></div><strong hidden>现在做这步</strong></li>
+        <li data-home-stage="wa-m1"><span aria-hidden="true">02</span><div><h2>让 AI 调用 Python 函数</h2><p>让模型按你提出的要求，自己挑函数、传参数、生成文件。</p></div><strong hidden>现在做这步</strong></li>
+        <li data-home-stage="wa-m2"><span aria-hidden="true">03</span><div><h2>给程序写测试</h2><p>练习检查空文件、重复记录和超时。程序出错，要能看出来。</p></div><strong hidden>现在做这步</strong></li>
+        <li data-home-stage="wa-m3"><span aria-hidden="true">04</span><div><h2>比较结果，写使用说明</h2><p>用同一组题比较两种做法。写清怎么跑，让别人能照着做。</p></div><strong hidden>现在做这步</strong></li>
+      </ol>
+      <nav class="lh-path-actions" aria-label="路线相关入口">
+        <a href="#home" data-home-route="home">回到今天</a>
+        <a href="#execution" data-home-route="execution">全部任务与记录</a>
+      </nav>
+    </main>
+  </section>
   <header class="app-header">
     <a href="#modules" id="homeBtn" class="brand" aria-label="返回模块选择"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor"/><path d="M5 7h5v4H5m14-4h-5v4h5M5 17h5v-4H5m14 4h-5v-4h5" stroke="currentColor"/></svg></span><span>个人成长<small>研究 · 学习 · 作品</small></span></a>
     
@@ -69,6 +208,7 @@
       <button type="button" aria-label="科研任务" data-page="execution/research" aria-pressed="false">科研</button>
     </nav>
     <details class="more-navigation" id="moreNavigation"><summary>更多</summary><nav aria-label="其他内容">
+      <button type="button" data-page="home">返回首页</button>
       <button type="button" aria-label="返回封面" data-page="cover" aria-pressed="false">返回封面</button>
       <button type="button" aria-label="发展路线" data-page="today" aria-pressed="false">发展路线</button>
       <button type="button" aria-label="博士计划" data-page="overview" aria-pressed="false">博士计划</button>
@@ -79,6 +219,7 @@
     <button class="cloud-pill" id="cloudEntry"><span class="connection-dot"></span><span id="cloudBadge">本地保存</span><span aria-hidden="true">↗</span></button>
   </header>
   <main>
+    <a href="#home" data-home-route="home" class="lh-back">返回首页</a>
     <a class="module-return" href="#modules" id="returnToModules"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4m5-5-5 5 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>返回模块选择</a>
     <div class="workspace-heading"><div><div class="period-label" id="pageEyebrow">任务列表</div><h1 id="pageTitle" tabindex="-1">我的任务</h1><p id="pageSubtitle">用户反馈分析 Agent · 课程、练习和项目交付分别记录。</p></div><span class="today-label" id="todayLabel"></span></div>
     <nav class="section-tabs" id="skillTabs" aria-label="详细记录分区" hidden><button data-open-page="skills">全部自查</button><button data-open-page="resources">回到学习</button><button data-open-page="assessments">练习与记录</button></nav>
@@ -138,10 +279,11 @@
 <script src="./video-learning.js?v=20261012-currentvideos1"></script>
 <script src="./employer-events.js?v=20261012-events1"></script>
 <script src="./employer-events-ui.js?v=20261012-events1"></script>
-<script src="./unified-tasks.js?v=20261019-density1"></script>
+<script src="./unified-tasks.js?v=20261117-home-plan"></script>
 <script src="./career-ui.js?v=20261019-density1"></script>
 <script src="./module-hub.js?v=20261019-action-clarity1"></script>
-<script src="./app.js?v=20261019-action-clarity1"></script>
+<script src="./learning-home.js?v=8"></script>
+<script src="./app.js?v=20261117-learning-home1"></script>
 <script src="./castle-theme.js?v=20261019-density1"></script>
 <script src="./compact-reading.js?v=20261015-reading1"></script>
 </body></html>

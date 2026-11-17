@@ -30,7 +30,7 @@ const assertWorkspace = (h, page = 'execution') => {
   const initial = makeDocument(html);
   assert(initial.querySelector('#cover'));
   assert.equal(initial.querySelector('#cover').hidden, false);
-  assert.equal(initial.body.getAttribute('data-current-page'), 'execution');
+  assert.equal(initial.body.getAttribute('data-current-page'), 'home');
   const heading = initial.querySelector('#coverTitle');
   assert.equal(heading.tagName, 'H1');
   assert.equal(heading.getAttribute('tabindex'), '-1', 'route focus has a heading target');

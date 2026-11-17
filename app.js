@@ -636,7 +636,7 @@ function toggle(id){
   const input=document.querySelector('#check-'+id);if(source?.dataset?.id===id){if(input)input.focus({preventScroll:true});else document.querySelector('#pendingOnly').focus({preventScroll:true})}
   document.querySelector('#announcer').textContent=(progress[id]?'已完成：':'已恢复待办：')+tasks.find(t=>t.id===id).title+(saved?'，进度已记录。':'，未能保存。');
 }
-const pageNames={modules:['个人成长','查看实际进度，选择要推进的任务或学习内容。','PERSONAL GROWTH'],today:['从研究，到第一件 AI 作品','面向 AI 应用 / Agent 开发实习。今天先做一件看得见结果的小事。','发展路线'],roles:['实习岗位参考','查看岗位要求和薪资资料。具体机会以投递时为准。','更多内容'],skills:['详细自查记录','这页保留全部技能记录。需要资料时，从课程学习进入对应模块。','详细记录'],resources:['课程学习','按当前方向学习，需要时回看原练习。','课程目录'],assessments:['检查自己会不会','照着题目做一次，再按实际结果保存记录。','练习自查'],projects:['项目作品','把每一步的代码、测试和结果，接成一个能演示的工具。','作品与证据'],overview:['博士计划','原来的论文、研究任务和时间安排都在这里。','更多内容'],timeline:['研究时间表','计划时间和实际完成时间分开记录。','博士计划'],outcomes:['论文与作品','查看原来的论文和项目任务。','博士计划'],storage:['进度与账号','不登录也能在本机保存。登录后可以同步到自己的账号。','保存进度']};
+const pageNames={path:['学习路线','',''],home:['今天做什么','',''],modules:['个人成长','查看实际进度，选择要推进的任务或学习内容。','PERSONAL GROWTH'],today:['从研究，到第一件 AI 作品','面向 AI 应用 / Agent 开发实习。今天先做一件看得见结果的小事。','发展路线'],roles:['实习岗位参考','查看岗位要求和薪资资料。具体机会以投递时为准。','更多内容'],skills:['详细自查记录','这页保留全部技能记录。需要资料时，从课程学习进入对应模块。','详细记录'],resources:['课程学习','按当前方向学习，需要时回看原练习。','课程目录'],assessments:['检查自己会不会','照着题目做一次，再按实际结果保存记录。','练习自查'],projects:['项目作品','把每一步的代码、测试和结果，接成一个能演示的工具。','作品与证据'],overview:['博士计划','原来的论文、研究任务和时间安排都在这里。','更多内容'],timeline:['研究时间表','计划时间和实际完成时间分开记录。','博士计划'],outcomes:['论文与作品','查看原来的论文和项目任务。','博士计划'],storage:['进度与账号','不登录也能在本机保存。登录后可以同步到自己的账号。','保存进度']};
 let activeRoute='execution';
 const taskViewRoute=route=>/^execution\/(current|month|year|research|learning|demo|stage)$/.exec(route)?.[1];
 const isWorkspaceRoute=route=>taskViewRoute(route)||['cover','execution',...Object.keys(pageNames)].includes(route)||route.startsWith('learn/');
@@ -650,11 +650,11 @@ function setPage(next,historyMode=true){
   page=target;activeRoute=moduleId?'learn/'+moduleId:taskView?requested:target;if(taskView)view=taskView;else if(target==='execution')view='current';const more=document.getElementById('moreNavigation');if(more)more.open=false;
   if(target==='resources')window.CareerUI?.selectModule(moduleId);
   if(historyMode&&window.history?.pushState&&window.location?.hash!=='#'+activeRoute)window.history.pushState({page:activeRoute},'','#'+activeRoute);
-  render();const heading=document.querySelector(page==='cover'?'#coverTitle':'#pageTitle'),scrollTarget=page==='cover'?document.querySelector('#cover'):heading;scrollTarget?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true});return true;
+  render();const heading=document.querySelector(page==='cover'?'#coverTitle':page==='home'?'#learningHomeTitle':page==='path'?'#learningPathTitle':'#pageTitle'),scrollTarget=page==='cover'?document.querySelector('#cover'):heading;scrollTarget?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true});return true;
 }
 window.AppNavigation={open:setPage,current:()=>page,route:()=>activeRoute};
 // Route only app destinations. In-page anchors and auth fragments remain untouched.
-function restoreLocationRoute(){const route=(window.location?.hash||'#execution').slice(1);if(isWorkspaceRoute(route)&&route!==activeRoute)setPage(route,false)}
+function restoreLocationRoute(){const route=(window.location?.hash||'#home').slice(1);if(isWorkspaceRoute(route)&&route!==activeRoute)setPage(route,false)}
 window.addEventListener('popstate',restoreLocationRoute);
 window.addEventListener('hashchange',restoreLocationRoute);
 function setMonth(month){activeMonth=month;view='month';setPage('execution/month')}
@@ -672,7 +672,7 @@ function render(){
   const cover=document.getElementById('cover'),shell=document.getElementById('workspaceShell'),skip=document.getElementById('skipLink');
   if(cover)cover.hidden=page!=='cover';
   if(shell)shell.hidden=page==='cover';
-  if(skip)skip.setAttribute('href',page==='cover'?'#coverTitle':'#pageTitle');
+  if(skip)skip.setAttribute('href',page==='cover'?'#coverTitle':page==='home'?'#learningHomeTitle':page==='path'?'#learningPathTitle':'#pageTitle');
   document.querySelector('#skillTabs').hidden=!['skills','assessments'].includes(page);
   document.querySelector('#researchTabs').hidden=!['overview','timeline','outcomes'].includes(page);
   document.querySelector('.journey').hidden=page!=='timeline';
@@ -695,6 +695,7 @@ function render(){
   document.querySelector('#pageSubtitle').textContent=page==='today'?(window.CareerUI?.homeHeading?.()[1]||pageNames.today[1]):page==='execution'?(researchView?'先阅读 AutoModSAT，梳理问题、方法与证据，再按科研任务推进；具体题目仍待确定。':currentView?'先完成当前阶段的指定视频、对应练习与项目交付；各项分别记录。':'原47项任务，未完成的会继续顺延。'):page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'按当前任务看视频，学完就用到自己的项目。':pageNames[page]?.[1]||'';
   document.querySelector('#pageEyebrow').textContent=page==='execution'?'任务列表':page==='resources'&&window.CareerUI?.role?.().id==='agent_engineering'?'视频主线':pageNames[page]?.[2]||'研究工作台';
   document.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==page);
+  if(['home','path'].includes(page))window.LearningHome?.render();
   const primaryPage=page==='execution'?'execution':page==='resources'?'resources':['skills','assessments'].includes(page)?'skills':phdPages.includes(page)?'overview':page;
   document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===primaryPage)));
   document.querySelector('#overallPct').innerHTML=all.pct+'<span>%</span>';
@@ -744,7 +745,7 @@ document.querySelector('#homeBtn').onclick=e=>{e.preventDefault();setPage('modul
 document.querySelector('#returnToModules').onclick=e=>{e.preventDefault();setPage('modules')};
 document.querySelectorAll('[data-research-route]').forEach(link=>link.onclick=e=>{e.preventDefault();setPage(link.dataset.researchRoute)});
 document.querySelector('#enterWorkspace').onclick=e=>{e.preventDefault();setPage('modules')};
-document.querySelector('#skipLink').onclick=e=>{e.preventDefault();const heading=document.querySelector(page==='cover'?'#coverTitle':'#pageTitle');heading?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true})};
+document.querySelector('#skipLink').onclick=e=>{e.preventDefault();const heading=document.querySelector(page==='cover'?'#coverTitle':page==='home'?'#learningHomeTitle':page==='path'?'#learningPathTitle':'#pageTitle');heading?.scrollIntoView({behavior:'auto',block:'start'});heading?.focus?.({preventScroll:true})};
 document.querySelector('#monthPicker').onchange=e=>setMonth(e.target.value);
 document.querySelector('#prevMonth').onclick=()=>navigateMonth(-1);
 document.querySelector('#nextMonth').onclick=()=>navigateMonth(1);
@@ -761,7 +762,7 @@ window.UnifiedTasks?.init({tasks:()=>tasks,progress:()=>progress,sync:()=>cloudS
 window.CareerUI?.init({openPage:setPage});
 window.ModuleHub?.init({tasks:()=>tasks,progress:()=>progress,sync:()=>cloudSync,openPage:setPage});
 document.querySelectorAll('.section-tabs [data-open-page]').forEach(b=>b.onclick=()=>setPage(b.dataset.openPage));
-{const route=(window.location?.hash||'#execution').slice(1);if(taskViewRoute(route)){page='execution';activeRoute=route;view=taskViewRoute(route);}else if(route.startsWith('learn/')){page='resources';activeRoute=route;window.CareerUI?.selectModule(route.slice(6));}else if(['cover','execution',...Object.keys(pageNames)].includes(route)){page=route;activeRoute=route;}else{page='execution';activeRoute='execution';}}
+{const route=(window.location?.hash||'#home').slice(1);if(taskViewRoute(route)){page='execution';activeRoute=route;view=taskViewRoute(route);}else if(route.startsWith('learn/')){page='resources';activeRoute=route;window.CareerUI?.selectModule(route.slice(6));}else if(['cover','execution',...Object.keys(pageNames)].includes(route)){page=route;activeRoute=route;}else{page='execution';activeRoute='execution';}}
 render();
 window.addEventListener('focus',refreshMonth);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshMonth()});
@@ -804,7 +805,7 @@ function renderCloud(state){
   }
 }
 if(window.PhdCloud){
-  cloudSync=window.PhdCloud.create({ids:tasks.map(t=>t.id),lessonIds:[...(window.LessonUI?.ids||[]),...(window.UnifiedTasks?.progressIds||[])],onCompletionDates:value=>{window.GoalUI?.dates(value);window.LessonUI?.dates?.(value.lessons);render()},onLessons:value=>{window.LessonUI?.update(value);window.GoalUI?.render();window.CareerUI?.render();window.ModuleHub?.render()},onProgress:value=>{const changed=tasks.some(t=>!!progress[t.id]!==!!value[t.id]);progress=value;if(changed)render()},onStatus:renderCloud});
+  cloudSync=window.PhdCloud.create({ids:tasks.map(t=>t.id),lessonIds:[...(window.LessonUI?.ids||[]),...(window.UnifiedTasks?.progressIds||[])],onCompletionDates:value=>{window.GoalUI?.dates(value);window.LessonUI?.dates?.(value.lessons);render()},onLessons:value=>{window.LessonUI?.update(value);window.GoalUI?.render();window.CareerUI?.render();window.ModuleHub?.render();window.LearningHome?.render()},onProgress:value=>{const changed=tasks.some(t=>!!progress[t.id]!==!!value[t.id]);progress=value;if(changed)render()},onStatus:renderCloud});
   progress=cloudSync.snapshot();window.LessonUI?.update(cloudSync.lessonSnapshot?.()||{});render();cloudSync.start();
 }
 

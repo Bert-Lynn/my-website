@@ -24,6 +24,11 @@ function makeDocument(html) {
       };
     }
     get id() { return this.attrs.id || ''; }
+    set id(value) { this.attrs.id = String(value); }
+    get className() { return this.attrs.class || ''; }
+    set className(value) { this.attrs.class = String(value); }
+    appendChild(child) { child.parentElement = this; this.children.push(child); return child; }
+    contains(node) { for (; node; node = node.parentElement) if (node === this) return true; return false; }
     [inspect.custom]() { return '<' + this.tagName.toLowerCase() + (this.id ? '#' + this.id : '') + ' ' + JSON.stringify(this.dataset) + '>'; }
     get innerHTML() { return this._html; }
     set innerHTML(value) {
@@ -35,8 +40,10 @@ function makeDocument(html) {
     *walk() { for (const child of this.children) { yield child; yield* child.walk(); } }
     setAttribute(key, value) { this.attrs[key] = String(value); }
     getAttribute(key) { return this.attrs[key] ?? null; }
+    removeAttribute(key) { delete this.attrs[key]; }
     hasAttribute(key) { return key in this.attrs; }
     focus() { doc.activeElement = this; }
+    click() { this.onclick?.({preventDefault(){}}); }
     scrollIntoView() { doc.lastScrolled = this; }
     querySelectorAll(selector) { return [...this.walk()].filter(node => matches(node, selector)); }
     querySelector(selector) { for (const node of this.walk()) if (matches(node, selector)) return node; return null; }
@@ -88,7 +95,7 @@ function makeDocument(html) {
     }
   }
   doc = new Element('document'); doc.innerHTML = html; doc.body = doc.querySelector('body');
-  doc.getElementById = id => doc.querySelector('#' + id); doc.addEventListener = () => {};
+  doc.createElement = tag => new Element(tag); doc.getElementById = id => doc.querySelector('#' + id); doc.addEventListener = () => {};
   return doc;
 }
 
@@ -124,7 +131,7 @@ function app({ memory = {}, hash = '', now = null, cloudClient = null } = {}) {
     setInterval() {}, setTimeout, clearTimeout, confirm: message => { confirmations.push(message); return allowNavigation; }, PHD_CLOUD_CONFIG: { enabled: false }
   };
   ctx.window = ctx; vm.createContext(ctx);
-  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'video-learning.js', 'internship-data.js', 'career-state.js', 'paper2-research.js', 'paper2-ui.js', 'goal-ui.js', 'lesson-ui.js', 'cloud-sync.js', 'unified-tasks.js', 'career-ui.js', 'module-hub.js', 'app.js']) {
+  for (const file of ['course-lessons.js', 'career-curriculum.js', 'learning-modules.js', 'project-outline.js', 'video-learning.js', 'internship-data.js', 'career-state.js', 'paper2-research.js', 'paper2-ui.js', 'goal-ui.js', 'lesson-ui.js', 'cloud-sync.js', 'unified-tasks.js', 'career-ui.js', 'module-hub.js', 'learning-home.js', 'app.js']) {
     if (fs.existsSync(path.join(root, file))) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), ctx, { filename: file });
     if (file === 'cloud-sync.js' && cloudClient) {
       const create = ctx.PhdCloud.create;

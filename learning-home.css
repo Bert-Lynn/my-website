@@ -1,0 +1,161 @@
+/* Full-width editorial home. Legacy workspace routes are isolated. */
+.learning-home[hidden],.learning-home [hidden],
+body:is([data-current-page="home"],[data-current-page="path"]) #workspaceShell > :not(.learning-home) {display:none!important}
+body:is([data-current-page="home"],[data-current-page="path"]) {background:#fff}
+body:is([data-current-page="home"],[data-current-page="path"]) #workspaceShell:not([hidden]) {display:block;max-width:none;width:100%;min-height:100vh;padding:0;border:0;background:transparent}
+.learning-home {
+ --lh-ink:#19212e;--lh-muted:#4a5668;--lh-rule:#dee3ec;--lh-blue:#174f96;--lh-hover:#113e7b;
+ color:var(--lh-ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+.learning-home a {color:var(--lh-blue);text-decoration:none}
+.learning-home :focus-visible,.lh-back:focus-visible {outline:2px solid #255aa7;outline-offset:4px}
+.lh-sitebar {border-bottom:1px solid #e4e8ee;background:#fff}
+.lh-sitebar-inner,.lh-content,.lh-head,.lh-route {width:min(calc(100% - 72px),1120px);margin-inline:auto}
+.lh-sitebar-inner {display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;min-height:60px}
+.learning-home .lh-sitebrand,.learning-home .lh-wordmark {display:inline-flex;align-items:center;color:var(--lh-ink);font-weight:780;min-height:44px;justify-self:start;white-space:nowrap}
+.lh-site-nav,.lh-top-nav,.lh-footlinks,.lh-path-actions {display:flex;align-items:center;flex-wrap:wrap;gap:0 25px}
+.lh-site-nav a,.lh-profile,.lh-top-nav a,.lh-footlinks a,.lh-path-actions a {display:inline-flex;align-items:center;min-height:44px;color:var(--lh-muted);font-size:.93rem;white-space:nowrap}
+.lh-site-nav a:hover,.lh-profile:hover,.lh-top-nav a:hover,.lh-footlinks a:hover,.lh-path-actions a:hover {color:var(--lh-blue)}
+.lh-profile {justify-self:end}
+.lh-front {display:block;max-width:none;margin:0;padding:0}
+.lh-feature {min-height:clamp(340px,29vw,405px);background:#f6f7f9;display:grid;align-items:center}
+.lh-feature-copy {width:min(calc(100% - 44px),870px);margin:auto;text-align:center;padding:52px 0}
+.lh-feature-label {color:#304c72;font-weight:740;font-size:1rem;letter-spacing:.09em;margin:0 0 12px}
+.lh-feature h1,.lh-route h1 {margin:0;color:#121d2e;font-size:clamp(2.25rem,3.6vw,3.18rem);font-weight:810;line-height:1.22;letter-spacing:-.044em;text-wrap:balance}
+.lh-feature #learningTodayAction {font-size:1.18rem;line-height:1.54;color:#35425a;margin:14px 0 0}
+.learning-home .lh-primary,.lh-actions :is(button,a) {
+ display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid var(--lh-blue);border-radius:999px;
+ min-height:46px;padding:7px 18px;background:var(--lh-blue);color:#fff;font:inherit;font-size:.97rem;font-weight:740;cursor:pointer;touch-action:manipulation
+}
+.learning-home .lh-primary {margin-top:23px}
+.learning-home .lh-primary:hover,.lh-actions :is(button,a):hover {background:var(--lh-hover);border-color:var(--lh-hover)}
+.lh-now {padding:45px 0 36px;background:#fff}
+.lh-now-heading {display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:21px}
+.lh-now-heading > div > p,.lh-goal-label {margin:0 0 6px;color:#305783;font-weight:740;font-size:.89rem;letter-spacing:.035em}
+.lh-now-heading h2 {font-size:2.1rem;line-height:1.2;margin:0;color:var(--lh-ink);letter-spacing:-.03em;font-weight:790}
+.lh-progress {display:grid;justify-items:end;gap:7px;white-space:nowrap;font-size:.85rem;color:var(--lh-muted);font-variant-numeric:tabular-nums}
+.lh-progress progress {width:95px;height:5px;appearance:none;border:0;border-radius:20px;background:#dbe6f2;overflow:hidden}
+.lh-progress progress::-webkit-progress-bar {background:#dbe6f2;border-radius:20px}
+.lh-progress progress::-webkit-progress-value {background:#3268a8;border-radius:20px}
+.lh-progress progress::-moz-progress-bar {background:#3268a8;border-radius:20px}
+.lh-task-group + .lh-task-group {margin-top:14px}
+.lh-task-group h3 {margin:0 0 4px;color:var(--lh-ink);font-size:1rem;font-weight:760}
+.lh-task-group-optional h3 {color:var(--lh-muted)}
+.lh-task-group ul {list-style:none;margin:0;padding:0}
+.lh-task-group li {
+ position:relative;display:grid;grid-template-columns:23px minmax(0,1fr) auto auto;grid-template-areas:"check name duration action";
+ align-items:center;gap:10px;padding:0 0 0 2px;min-height:53px;border-bottom:1px solid var(--lh-rule);font-size:1.04rem;line-height:1.4
+}
+.lh-task-group li:first-child {border-top:1px solid var(--lh-rule)}
+.lh-task-group :is(label,.lh-task-name) {grid-area:name;color:var(--lh-ink);min-width:0}
+.lh-task-group label {display:flex;min-height:44px;align-items:center;cursor:pointer;touch-action:manipulation}
+.lh-task-group input {grid-area:check;position:relative;z-index:1;width:18px;height:18px;margin:0;accent-color:var(--lh-blue);cursor:pointer;touch-action:manipulation}
+.lh-task-group label::before {content:"";position:absolute;left:0;top:0;bottom:0;width:40px;cursor:pointer;touch-action:manipulation}
+.lh-task-kind {grid-area:duration;color:var(--lh-muted);font-size:.86rem;white-space:nowrap}
+.lh-task-group a {grid-area:action;display:inline-flex;align-items:center;min-height:44px;padding:0 2px;font-size:.92rem;white-space:nowrap}
+.lh-task-group a:hover,.lh-steps a:hover,.lh-signal-heading a:hover {text-decoration:underline;text-underline-offset:4px}
+.lh-task-done label {color:var(--lh-muted);text-decoration:line-through}
+.lh-instructions {margin-top:17px}
+.lh-instructions > p {margin:0;color:var(--lh-muted);font-size:1.01rem;line-height:1.57}
+.lh-actions {display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+.lh-actions :is(button,a) {color:var(--lh-blue);background:transparent}
+.lh-actions :is(button,a):hover {color:#fff;background:var(--lh-blue)}
+.lh-steps {padding:11px 17px 13px;margin:14px 0 0;background:#f3f6fb;border-radius:12px}
+.lh-steps ol {margin:0 0 6px;padding-left:24px;overflow-wrap:anywhere;line-height:1.6}
+.lh-steps a,.lh-signal-heading a {display:inline-flex;align-items:center;min-height:44px;color:var(--lh-blue)}
+.lh-steps-actions {display:flex;flex-wrap:wrap;gap:6px 21px}
+.lh-specimen {margin:5px 0;background:#fff;border:1px solid var(--lh-rule);border-radius:8px;padding:8px 12px}
+.lh-specimen figcaption {display:flex;justify-content:space-between;gap:10px;color:var(--lh-muted);font-size:.9rem}
+.lh-file {color:var(--lh-blue);padding:7px 0;font-size:.9rem}
+.lh-specimen table {width:100%;border-collapse:collapse;text-align:left;font-size:.94rem}
+.lh-specimen :is(th,td) {padding:6px 8px;border-top:1px solid var(--lh-rule);overflow-wrap:anywhere}
+.lh-goals {background:#edf2fa}
+.lh-goals-inner {display:grid;grid-template-columns:1fr 1fr}
+.lh-goals-inner > div {padding:36px 34px 37px 0;min-width:0}
+.lh-goals-inner > div + div {padding-left:34px;border-left:1px solid #d3dce9}
+.lh-goals h2 {font-size:clamp(1.26rem,2.05vw,1.7rem);line-height:1.45;margin:0;letter-spacing:-.02em;font-weight:740}
+.lh-path-home {padding:38px 0 32px}
+.lh-signal-heading {display:flex;justify-content:space-between;gap:14px;align-items:center}
+.lh-signal-heading h2 {margin:0;font-size:1.32rem;font-weight:770}
+.lh-signal-track {list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0 0}
+.lh-signal-track li {position:relative;border-top:1px solid #cbd7e8;padding:15px 8px 0 0;color:var(--lh-muted);font-size:.95rem}
+.lh-node {position:absolute;top:-5px;left:0;width:9px;height:9px;border:1px solid #819ab7;border-radius:50%;background:#fff}
+.lh-signal-current .lh-node {border-color:#1d5c9c;background:#1d5c9c}
+.lh-signal-current .lh-node::after {content:"";position:absolute;inset:-4px;border:1px solid #4978ba;border-radius:50%;animation:lh-journey 4s ease-in-out infinite}
+.lh-signal-current .lh-signal-name {color:#143e6c;font-weight:730}
+.lh-signal-done .lh-node {background:#50766c;border-color:#50766c}
+.lh-signal-status {display:block;color:var(--lh-blue);font-size:.8rem;margin-top:4px}
+@keyframes lh-journey {0%,100%{opacity:.48}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce) {.lh-signal-current .lh-node::after {animation:none}}
+.lh-foot {background:#f6f8fb;border-top:1px solid #e6ebf1}
+.lh-footlinks {min-height:63px}
+.lh-head {display:flex;justify-content:space-between;align-items:center;min-height:60px;border-bottom:1px solid var(--lh-rule)}
+.lh-route {margin-block:38px 24px;padding:0}
+.lh-intro p {color:var(--lh-muted);line-height:1.55}
+.lh-path {list-style:none;margin:18px 0 5px;padding:0;border-top:1px solid var(--lh-rule)}
+.lh-path li {display:grid;grid-template-columns:2rem minmax(0,1fr) auto;gap:8px 13px;align-items:baseline;border-bottom:1px solid var(--lh-rule);padding:12px 10px}
+.lh-path-current {background:#eef3fb}
+.lh-path li > span,.lh-path li > strong {color:var(--lh-blue);font-variant-numeric:tabular-nums}
+.lh-path h2 {margin:0;font-size:1.18rem;line-height:1.35}
+.lh-path p {margin:3px 0 0;color:var(--lh-muted);font-size:.97rem;line-height:1.55}
+.lh-back {display:inline-flex;align-items:center;min-height:34px;margin:2px 12px 7px 0}
+@media(max-width:760px) {
+ .lh-sitebar-inner,.lh-content,.lh-head,.lh-route {width:calc(100% - 36px)}
+ .lh-sitebar-inner {min-height:55px;grid-template-columns:auto 1fr auto;gap:10px}
+ .lh-sitebrand {font-size:.93rem}
+ .lh-site-nav {justify-content:center;gap:0 9px}
+ .lh-site-nav a,.lh-profile {font-size:.82rem}
+ .lh-feature {min-height:287px}
+ .lh-feature-copy {padding:39px 0}
+ .lh-feature h1,.lh-route h1 {font-size:clamp(1.84rem,6.9vw,2.5rem);text-wrap:balance}
+ .lh-feature #learningTodayAction {font-size:1.05rem;margin-top:13px}
+ .learning-home .lh-primary {margin-top:18px}
+ .lh-now {padding:30px 0 27px}
+ .lh-now-heading {margin-bottom:16px}
+ .lh-now-heading h2 {font-size:1.7rem}
+ .lh-task-group li {grid-template-columns:18px minmax(0,1fr) auto;grid-template-areas:"check name action";gap:8px}
+ .lh-task-group-optional li {grid-template-areas:"check name action" ". duration action";row-gap:0;padding-block:3px 6px}
+ .lh-task-group-optional label {min-height:25px}
+ .lh-task-group label::before {width:44px}
+ .lh-task-group a {min-width:44px}
+ .lh-goals-inner {grid-template-columns:1fr}
+ .lh-goals-inner > div {padding:22px 0}
+ .lh-goals-inner > div + div {padding:22px 0;border-left:0;border-top:1px solid #d3dce9}
+ .lh-path-home {padding:23px 0 24px}
+ .lh-signal-track {grid-template-columns:repeat(2,minmax(0,1fr));row-gap:13px}
+ .lh-signal-track li {padding-top:11px}
+ .lh-footlinks {gap:0 14px}
+ .lh-path li {grid-template-columns:1.7rem minmax(0,1fr)}
+ .lh-path li > strong {grid-column:2}
+}
+@media(max-width:360px) {
+ .lh-sitebar-inner {width:calc(100% - 22px);gap:5px}
+ .lh-site-nav {gap:0 5px}
+ .lh-site-nav a,.lh-profile {font-size:.76rem}
+}
+
+.lh-stage-progress {padding:29px 0 35px;border-top:1px solid var(--lh-rule);background:#fff}
+.lh-stage-progress-title {display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:11px}
+.lh-stage-progress-title h2 {margin:0;color:var(--lh-ink);font-size:1.55rem;font-weight:780;line-height:1.35}
+.lh-stage-progress-title p {margin:0;color:var(--lh-muted);font-size:.88rem}
+.lh-stage-table {width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;font-size:.98rem;line-height:1.45}
+.lh-stage-table :is(th,td) {padding:6px 11px;border-bottom:1px solid var(--lh-rule);text-align:left;overflow-wrap:anywhere}
+.lh-stage-table thead th {background:#f5f7fb;color:var(--lh-muted);font-size:.88rem;font-weight:730}
+.lh-stage-table thead th:nth-child(1) {width:32%}
+.lh-stage-table thead th:nth-child(2) {width:21%}
+.lh-stage-table tbody th {font-weight:730}
+.lh-stage-current > th {color:var(--lh-blue)}
+.lh-stage-count {font-variant-numeric:tabular-nums;color:var(--lh-muted);white-space:nowrap}
+.lh-stage-empty {color:var(--lh-muted)}
+.lh-stage-next {display:inline-flex;align-items:center;min-height:44px}
+.lh-stage-next:hover {text-decoration:underline;text-underline-offset:3px}
+@media(max-width:760px) {
+ .lh-stage-progress {padding:22px 0 25px}
+ .lh-stage-progress-title h2 {font-size:1.34rem}
+ .lh-stage-progress-title p {font-size:.79rem}
+ .lh-stage-table {font-size:.88rem}
+ .lh-stage-table :is(th,td) {padding:4px 5px}
+ .lh-stage-table thead th {font-size:.79rem}
+ .lh-stage-table thead th:nth-child(1) {width:30%}
+ .lh-stage-table thead th:nth-child(2) {width:24%}
+}

@@ -97,6 +97,13 @@ function refreshSummaries(){
 }
 function allowChange(){return !root.CareerUI?.canNavigate||root.CareerUI.canNavigate()}
 function refresh(){root.CareerUI?.render?.();root.ModuleHub?.render?.()}
+// Both the original task view and the home checklist save the same existing lesson IDs.
+function saveLesson(id,checked){
+ if(!progressIds.includes(id)||!allowChange())return false;
+ const saved=opts.sync?.()?.setLesson?.(id,checked?'done':false);
+ if(saved){refresh();opts.changed?.()}
+ return Boolean(saved);
+}
 function render(){
  const el=root.document?.getElementById('currentTaskList');if(!el||!opts.tasks)return;
  const user=opts.sync?.()?.status?.().userId||'';if(user!==owner){owner=user;expanded.clear();focusStage='';requestedId=''}
@@ -109,7 +116,7 @@ function render(){
  el.querySelector('#unifiedStatus').onchange=e=>{if(!allowChange()){e.target.value=statusFilter;return}statusFilter=e.target.value;if(['done','carried','skipped'].includes(statusFilter))filter='all';refresh()};
  el.querySelectorAll('[data-unified-open]').forEach(b=>b.onclick=()=>openItem(b.dataset.unifiedOpen));
  el.querySelectorAll('[data-unified-row]').forEach(d=>d.ontoggle=()=>{if(d.open)expanded.add(d.dataset.unifiedRow);else expanded.delete(d.dataset.unifiedRow)});
- el.querySelectorAll('[data-unified-lesson]').forEach(input=>input.onchange=()=>{if(!allowChange()){input.checked=!input.checked;return}const sync=opts.sync?.();const saved=sync?.setLesson?.(input.dataset.unifiedLesson,input.checked?'done':false);if(saved){refresh();opts.changed?.()}else{input.checked=!input.checked;const a=root.document.getElementById('announcer');if(a)a.textContent='进度未成功保存，请稍后重试。'}});
+ el.querySelectorAll('[data-unified-lesson]').forEach(input=>input.onchange=()=>{if(!saveLesson(input.dataset.unifiedLesson,input.checked)){input.checked=!input.checked;const a=root.document.getElementById('announcer');if(a)a.textContent='进度未成功保存，请稍后重试。'}});
  el.querySelectorAll('[data-unified-task]').forEach(input=>input.onchange=()=>{if(!allowChange()){input.checked=!input.checked;return}opts.toggle?.(input.dataset.unifiedTask)});
  el.querySelectorAll('[data-unified-skill]').forEach(b=>b.onclick=()=>root.CareerUI?.openSkill?.(b.dataset.unifiedSkill));
  el.querySelectorAll('[data-unified-project]').forEach(b=>b.onclick=()=>root.CareerUI?.openArchivedTask?.(b.dataset.unifiedProject,b.dataset.unifiedMilestone));
@@ -123,5 +130,5 @@ function openItem(id){
  if(row){row.open=true;row.ontoggle?.();const work=row.querySelector('.task-work-detail');if(work){work.open=true;work.ontoggle?.()}row.scrollIntoView?.({block:'center'});row.querySelector('summary')?.focus?.({preventScroll:true})}
  return true;
 }
-root.UnifiedTasks={route(route){if(route!==lastRoute){if(route==='execution/research'){filter='research';statusFilter='all';query='';focusStage=''}else if(route==='execution'||route==='execution/current'){filter='recent';statusFilter='all';query='';focusStage=''}lastRoute=route}},progressIds,registry,selected,nextAction,actionDetails,openItem,render,refreshSummaries,init(o){opts=o},reset(){filter='recent';statusFilter='all';query='';focusStage=''},showTask(id){filter='recent';statusFilter='all';query='';requestedId='milestone:'+(root.PROJECT_OUTLINE?.projectId||'work-assistant')+':'+id;expanded.add(requestedId)}};
+root.UnifiedTasks={route(route){if(route!==lastRoute){if(route==='execution/research'){filter='research';statusFilter='all';query='';focusStage=''}else if(route==='execution'||route==='execution/current'){filter='recent';statusFilter='all';query='';focusStage=''}lastRoute=route}},progressIds,registry,selected,nextAction,actionDetails,openItem,saveLesson,render,refreshSummaries,init(o){opts=o},reset(){filter='recent';statusFilter='all';query='';focusStage=''},showTask(id){filter='recent';statusFilter='all';query='';requestedId='milestone:'+(root.PROJECT_OUTLINE?.projectId||'work-assistant')+':'+id;expanded.add(requestedId)}};
 })(window);
