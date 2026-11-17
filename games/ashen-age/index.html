@@ -73,7 +73,7 @@ const player=new THREE.Group();player.position.set(0,0,16);scene.add(player);
 const playerFallback=box(player,0,1.1,0,.5,1.8,.35,mat('#59635a'));
 let playerMixer=null,playerActions={},playerMode='Idle';
 loadGLB('lvj49vzlzd',player,1,0,Math.PI).then(({model,animations})=>{
-  player.remove(playerFallback); if(animations.length){playerMixer=new THREE.AnimationMixer(model);animations.forEach(clip=>playerActions[clip.name]=playerMixer.clipAction(clip));const idle=animations.find(a=>/idle/i.test(a.name))||animations[0];idle.play();}
+  player.remove(playerFallback); if(animations.length){playerMixer=new THREE.AnimationMixer(model);animations.forEach(clip=>playerActions[clip.name]=playerMixer.clipAction(clip));const idle=animations.find(a=>/idle/i.test(a.name))||animations[0];playerMixer.clipAction(idle).play();}
 }).catch(err=>{console.error('Knight GLB load failed',err);toast('骑士模型加载失败：'+(err?.message||'资源解析错误'))});
 function playHeroAction(name){if(!playerMixer)return;const clip=Object.keys(playerActions).find(k=>k.toLowerCase().includes(name.toLowerCase()));if(!clip)return;Object.entries(playerActions).forEach(([k,a])=>{if(k===clip)a.reset().fadeIn(.15).play();else a.fadeOut(.15)})}
 let ally=new THREE.Group();scene.add(ally);let allyBody=box(ally,0,1,0,.5,.8,.32,mat('#45634b'));sphere(ally,0,1.6,0,.22,M.skin);ally.visible=true;
