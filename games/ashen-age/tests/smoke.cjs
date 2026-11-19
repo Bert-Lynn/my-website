@@ -293,7 +293,7 @@ async function until(read, predicate, timeout = 12000) {
     page = await context.newPage();
     page.setDefaultTimeout(15000);
     watch(page);
-    const characterURL = new URL('./tests/characters.html', target);
+    const characterURL = new URL(process.env.CHARACTER_FIXTURE_URL || './tests/characters.html', target);
     await page.goto(characterURL.href, {waitUntil: 'domcontentloaded', timeout: 60000});
     await page.waitForFunction(() => window.characterQAReady === true, null, {timeout: 90000});
     await screenshot('16-character-front-poses');

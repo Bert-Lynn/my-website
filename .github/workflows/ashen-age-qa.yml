@@ -5,6 +5,10 @@ on:
     branches: ["ashen-age-repair"]
     paths: ["games/ashen-age/**", ".github/workflows/ashen-age-qa.yml"]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Deploy GitHub Pages"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
@@ -15,6 +19,7 @@ concurrency:
 
 jobs:
   browser-test:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -29,10 +34,13 @@ jobs:
       - name: Install isolated browser test tools
         run: |
           npm install --no-save --prefix /tmp/ashen-browser playwright@1.56.1
-          /tmp/ashen-browser/node_modules/.bin/playwright install --with-deps chromium
+          command -v google-chrome
       - name: Render and exercise the actual game
         env:
           NODE_PATH: /tmp/ashen-browser/node_modules
+          CHROMIUM_PATH: /usr/bin/google-chrome
+          CHARACTER_FIXTURE_URL: http://127.0.0.1:4173/games/ashen-age/tests/characters.html
+          GAME_URL: ${{ github.event_name == 'workflow_run' && 'https://bert-lynn.github.io/my-website/games/ashen-age/' || '' }}
           QA_OUTPUT: ${{ runner.temp }}/ashen-age-qa
         run: node games/ashen-age/tests/serve-and-test.cjs
       - name: Upload visual evidence and assertions
