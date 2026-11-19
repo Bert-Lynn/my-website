@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
+const polyhavenLoader = new GLTFLoader();
+const realisticTreeUrl = 'https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/tree_small_02/tree_small_02.gltf';
 
 const loader = new GLTFLoader();
 const cache = new Map();
@@ -84,6 +86,25 @@ export async function populateWorldAssets({scene, world, enemies, onProgress = (
     if (Math.abs(x) < 36 && z > -35 && z < 38) continue;
     const shrub = cloneAsset(loaded.bush, .9 + rand() * .7);
     shrub.position.set(x, 0, z); shrub.rotation.y = rand() * Math.PI * 2; scene.add(shrub);
+  }
+
+  // Add a small number of photogrammetry-grade Poly Haven trees as hero foliage.
+  // The high-detail source is intentionally limited to foreground placements;
+  // the CC0 Quaternius trees remain as distant LOD dressing for browser performance.
+  try {
+    const scanned = await polyhavenLoader.loadAsync(realisticTreeUrl);
+    const heroTrees = [
+      [-16,-48,10.5], [18,-58,11.0], [-42,-34,9.5],
+      [47,-46,10.5], [-61,12,9.0], [61,28,9.5]
+    ];
+    for (const [x,z,height] of heroTrees) {
+      const tree = cloneAsset(scanned,height,{roughness:.92});
+      tree.position.set(x,0,z);
+      tree.rotation.y = rand() * Math.PI * 2;
+      scene.add(tree);
+    }
+  } catch (error) {
+    console.warn('Photogrammetry tree asset unavailable; retaining compatible LOD trees.', error);
   }
 
   // A handful of full GLB buildings add scale and a recognisable village silhouette.
