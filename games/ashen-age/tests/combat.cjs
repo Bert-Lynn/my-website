@@ -133,7 +133,9 @@ function boneDelta(a, b) {
         while (true) {
           const state = await snapshot();
           const remaining = destination - state.player.position[index];
-          if (Math.abs(remaining) < .45) break;
+          // A slow software frame may advance 1.15 m at walk speed. Accept
+          // a sub-metre arrival radius instead of oscillating across the target.
+          if (Math.abs(remaining) < .75) break;
           if (Date.now() - started > 65000) throw new Error(`${label}: stalled at ${state.player.position.join(',')}`);
           const key = axis === 'x' ? (remaining > 0 ? 'KeyD' : 'KeyA') : (remaining > 0 ? 'KeyS' : 'KeyW');
           const shouldRun = Math.abs(remaining) > 2.5;

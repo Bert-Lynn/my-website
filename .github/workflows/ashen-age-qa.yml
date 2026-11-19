@@ -43,6 +43,8 @@ jobs:
           CHROMIUM_PATH: /usr/bin/google-chrome
           CHARACTER_FIXTURE_URL: http://127.0.0.1:4173/games/ashen-age/tests/characters.html
           GAME_URL: ${{ github.event_name == 'workflow_run' && 'https://bert-lynn.github.io/my-website/games/ashen-age/' || '' }}
+          QA_DEPLOYMENT_SMOKE: ${{ github.event_name == 'workflow_run' && '1' || '0' }}
+          QA_SUITE: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[verify-combat]') && 'combat.cjs' || '' }}
           QA_OUTPUT: ${{ runner.temp }}/ashen-age-qa
         run: node games/ashen-age/tests/serve-and-test.cjs
       - name: Upload visual evidence and assertions
