@@ -101,13 +101,15 @@ function authoredClips(model, bones, idlePose) {
   const referenceFloor = floorHeight();
   const definitions = {
     Attack: {
-      times: [0, 0.13, 0.28, 0.40, 0.58, 0.76],
+      // Compact diagonal longsword cut: chamber close to the shoulder,
+      // rotate through the torso, extend across the body, then recover.
+      times: [0, 0.12, 0.23, 0.34, 0.49, 0.66],
       poses: [
         {},
-        { rightArm: [0.45, 0.10, -0.35], rightForeArm: [0.05, 0.9, 0.05], turn: -0.28 },
-        { rightArm: [0.30, 0.42, -0.05], rightForeArm: [0.05, 0.65, 0.45], turn: -0.42 },
-        { rightArm: [-0.08, -0.14, 0.85], rightForeArm: [-0.28, -0.30, 0.70], turn: 0.32 },
-        { rightArm: [-0.30, -0.60, 0.20], rightForeArm: [-0.30, -0.55, 0.10], turn: 0.15 },
+        { rightArm: [0.18, 0.08, -0.12], rightForeArm: [0.02, 0.48, 0.02], leftArm: [-0.08, 0.02, 0.08], turn: -0.10 },
+        { rightArm: [0.08, 0.18, -0.02], rightForeArm: [0.02, 0.30, 0.08], leftArm: [-0.05, 0.02, 0.06], turn: -0.18 },
+        { rightArm: [-0.02, -0.10, 0.34], rightForeArm: [-0.10, -0.12, 0.28], leftArm: [-0.08, 0.04, 0.12], turn: 0.20 },
+        { rightArm: [-0.08, -0.20, 0.12], rightForeArm: [-0.08, -0.18, 0.10], turn: 0.08 },
         {},
       ],
     },
