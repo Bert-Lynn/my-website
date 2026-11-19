@@ -61,7 +61,7 @@ const envMap=pmrem.fromScene(reflectionRoom,.05);scene.environment=envMap.textur
 progress(8,'正在构建灰烬镇','准备石板道路、房屋、林地与光照。');
 
 const world=createEnvironment(scene,renderer);
-let indoor=null, indoorReturn=null;
+let indoor=null, indoorReturn=null, outdoorCameraObstacles=null;
 const roomMat={
  floor:new THREE.MeshStandardMaterial({color:'#a18c6d',roughness:.95}),
  plaster:new THREE.MeshStandardMaterial({color:'#d9c9a9',roughness:1}),
@@ -102,12 +102,12 @@ const interiors={guild:buildInterior('guild'),tavern:buildInterior('tavern'),smi
 function enterInterior(kind){
  if(!interiors[kind])return;
  indoorReturn=player.position.clone();world.group.visible=false;enemies.forEach(e=>e.root.visible=false);Object.values(party).forEach(a=>a.root.visible=false);
- indoor=kind;Object.values(interiors).forEach(g=>g.visible=false);interiors[kind].visible=true;
+ indoor=kind;outdoorCameraObstacles=controls._cameraObstacles;controls._cameraObstacles=[];Object.values(interiors).forEach(g=>g.visible=false);interiors[kind].visible=true;
  player.position.set(0,0,1.8);player.rotation.y=Math.PI;controls.reset();controls.yaw=0;controls.pitch=.18;controls.distance=5.2;controls.update(0,player,{blocked:false});close();
  toast('已进入室内，按 E 从正门离开。');
 }
 function leaveInterior(){
- if(!indoor)return;interiors[indoor].visible=false;indoor=null;world.group.visible=true;enemies.forEach(e=>e.root.visible=!e.dead);Object.values(party).forEach(a=>a.root.visible=true);
+ if(!indoor)return;interiors[indoor].visible=false;indoor=null;if(outdoorCameraObstacles){controls._cameraObstacles=outdoorCameraObstacles;outdoorCameraObstacles=null;}world.group.visible=true;enemies.forEach(e=>e.root.visible=!e.dead);Object.values(party).forEach(a=>a.root.visible=true);
  player.position.copy(indoorReturn);indoorReturn=null;controls.reset();controls.yaw=0;controls.update(0,player,{blocked:false});toast('已返回灰烬镇。');
 }
 
@@ -260,7 +260,19 @@ function refreshHUD(){
   const e=closestEnemy(20);$('target').hidden=!e||modal;if(e){$('target-name').textContent=e.big?'腐化狼王':'腐化灰狼';$('target-hp').style.width=Math.max(0,e.hp/e.maxHp)*100+'%';}
 }
 function update(dt){
-  if(indoor){hero.setMotion('Idle');Object.values(party).forEach(a=>a.setMotion('Idle'));return;}
+  if(indoor){
+    cool=Math.max(0,cool-dt);spellCool=Math.max(0,spellCool-dt);dodgeCool=Math.max(0,dodgeCool-dt);dodgeTime=Math.max(0,dodgeTime-dt);
+    previousPosition.copy(player.position);
+    const movement=controls.update(dt,player,{blocked:modal||!ready,walkSpeed:2.3,runSpeed:4.8,dodgeDirection:dodgeTime>0?dodgeDirection:null,dodgeSpeed:dodgeTime>0?8.5:0});
+    player.position.x=THREE.MathUtils.clamp(player.position.x,-8.1,8.1);
+    player.position.z=THREE.MathUtils.clamp(player.position.z,-5.7,5.5);
+    const speed=player.position.distanceTo(previousPosition)/Math.max(dt,.0001);
+    const motion=speed>.1?(movement.run?'Run':'Walk'):'Idle';
+    hero.setMotion(motion,motion==='Idle'?1:speed/hero.velocity[motion]);
+    const companion=party[active];
+    if(companion){const target=player.position.clone().add(new THREE.Vector3(-1.6,0,1.2).applyAxisAngle(up,player.rotation.y));companion.root.position.lerp(target,Math.min(1,dt*4));companion.root.rotation.y=player.rotation.y;companion.setMotion(speed>.1?motion:'Idle');}
+    return;
+  }
   cool=Math.max(0,cool-dt);spellCool=Math.max(0,spellCool-dt);dodgeCool=Math.max(0,dodgeCool-dt);dodgeTime=Math.max(0,dodgeTime-dt);attackTime=Math.max(0,attackTime-dt);
   previousPosition.copy(player.position);
   const movement=controls.update(dt,player,{blocked:modal||!ready,walkSpeed:2.3,runSpeed:4.8,dodgeDirection:dodgeTime>0?dodgeDirection:null,dodgeSpeed:dodgeTime>0?8.5:0,movementLocked:attackTime>0});
