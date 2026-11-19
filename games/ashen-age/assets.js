@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 
 const loader = new GLTFLoader();
 const cache = new Map();
@@ -23,7 +24,7 @@ async function get(key) {
   return cache.get(key);
 }
 function cloneAsset(gltf, height, materialOptions = {}) {
-  const root = gltf.scene.clone(true);
+  const root = cloneSkeleton(gltf.scene);
   root.traverse(o => {
     if (!o.isMesh) return;
     o.castShadow = true; o.receiveShadow = true;
@@ -60,7 +61,7 @@ export async function populateWorldAssets({scene, world, enemies, onProgress = (
     catch (error) { console.warn('Optional 3D asset unavailable:', key, error); }
     completed++; onProgress(completed / keys.length, key);
   }));
-  const required = ['commonTree','pineTree','birchTree','bush','house','inn','blacksmith','well','barrel','wolf'];
+  const required = ['commonTree','pineTree','birchTree','bush','house','inn','blacksmith','well','barrel','wolf','spider'];
   const missing = required.filter(key => !loaded[key]);
   if (missing.length) throw new Error('3D素材加载失败：' + missing.join(', '));
 
@@ -116,8 +117,22 @@ export async function populateWorldAssets({scene, world, enemies, onProgress = (
     if (loaded.wolf.animations?.length) {
       const mixer = new THREE.AnimationMixer(model);
       const clip = loaded.wolf.animations.find(c => /walk|run|idle/i.test(c.name)) || loaded.wolf.animations[0];
-      const action = mixer.clipAction(clip); action.play();
-      enemy.assetMixer = mixer; wolfMixers.push(mixer);
+      mixer.clipAction(clip).play(); enemy.assetMixer = mixer; wolfMixers.push(mixer);
+    }
+  }
+  // Forest spiders are a second real creature type with independent health and AI.
+  for (const [x,z] of [[-58,-67],[-78,-82],[-35,-91]]) {
+    const root = new THREE.Group(); root.position.set(x,0,z);
+    const model = cloneAsset(loaded.spider, 1.15, {roughness:.88}); root.add(model);
+    const torso = new THREE.Group(); root.add(torso);
+    const tail = new THREE.Group(); root.add(tail);
+    scene.add(root);
+    const spider = {root,torso,legs:[],tail,home:new THREE.Vector3(x,0,z),hp:68,maxHp:68,big:true,dead:false,cd:0,phase:Math.random()*6,respawn:0,creatureType:'spider'};
+    enemies.push(spider);
+    if (loaded.spider.animations?.length) {
+      const mixer=new THREE.AnimationMixer(model);
+      const clip=loaded.spider.animations.find(c=>/walk|idle/i.test(c.name))||loaded.spider.animations[0];
+      mixer.clipAction(clip).play();wolfMixers.push(mixer);
     }
   }
   return {
