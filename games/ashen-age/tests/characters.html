@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>Character animation visual QA</title><link rel="icon" href="data:,">
+<style>html,body{margin:0;overflow:hidden;background:#697d84}#caption{position:fixed;left:18px;top:16px;color:#fff;background:#152022cc;padding:12px;font:16px sans-serif;z-index:3}</style>
+<script type="importmap">{"imports":{"three":"../vendor/three.module.js","three/addons/":"../vendor/"}}</script>
+</head><body><div id="caption">Loading animated character</div><script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {loadCharacter} from '../characters.js';
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(1);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
+document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#6b818a');
+scene.environment=new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(),.04).texture;
+scene.add(new THREE.HemisphereLight('#eff4ff','#4b4a35',2));
+const light=new THREE.DirectionalLight('#fff2d5',3);light.position.set(2,4,3);scene.add(light);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.MeshStandardMaterial({color:'#7a846a',roughness:.95}));ground.rotation.x=-Math.PI/2;scene.add(ground);
+const camera=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.05,100);camera.position.set(0,1.45,6.6);camera.lookAt(0,1.0,0);
+const models=await Promise.all([loadCharacter('hero'),loadCharacter('hero'),loadCharacter('hero')]);
+models.forEach((c,i)=>{c.root.position.x=(i-1)*1.65;scene.add(c.root)});
+function advance(c,time){for(let t=0;t<time-1e-6;t+=.01)c.update(Math.min(.01,time-t));}
+window.showPoses=(poses=['Idle','Walk','Attack'],times=[.2,.3,.28],angle=0)=>{
+ models.forEach((c,i)=>{c.setMotion('Idle');advance(c,1.2);c.root.rotation.y=angle;if(['Idle','Walk','Run'].includes(poses[i]))c.setMotion(poses[i]);else c.playOnce(poses[i]);advance(c,times[i]);});
+ document.getElementById('caption').textContent=poses.map((p,i)=>`${p} ${times[i]}s`).join(' · ');
+ renderer.render(scene,camera);return models.map(c=>c.diagnostics());
+};
+window.showPoses();window.characterQAReady=true;
+</script></body></html>

@@ -1,121 +1,59 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>灰烬纪元：龙陨之地</title>
-<meta name="description" content="中世纪暗黑奇幻第三人称3D冒险RPG。探索灰烬镇、加入公会、结识伙伴、挑战腐化魔物。">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap');
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101611;color:#eee5d2;font-family:'Noto Serif SC',serif}#world{position:fixed;inset:0}canvas{display:block}
-.hud{position:fixed;inset:0;pointer-events:none}.brand{position:absolute;top:18px;left:22px;font:700 20px Cinzel;color:#d9bd83;letter-spacing:3px;text-shadow:0 2px 12px #000}.brand small{display:block;font:10px 'Noto Serif SC';letter-spacing:4px;color:#d1c2a3;margin-top:5px}.topstats{position:absolute;right:20px;top:18px;display:flex;gap:7px}.stat,.panel{background:#0c1210df;border:1px solid #b99b634d;box-shadow:0 8px 28px #0007;backdrop-filter:blur(8px)}.stat{padding:8px 12px;min-width:85px}.stat label{display:block;font-size:9px;color:#b8a681;letter-spacing:2px}.stat b{font:15px Cinzel;color:#f0e3c9}.quest{position:absolute;left:20px;top:100px;width:250px;padding:14px}.eyebrow{font:10px Cinzel;letter-spacing:2px;color:#d7b979}.quest h3{font-size:15px;margin:8px 0}.quest p{font-size:11px;line-height:1.8;color:#c6bca9;margin:0}.objective{font-size:11px;color:#e2ca97;margin-top:12px}.bottom{position:absolute;left:20px;bottom:18px;width:250px;padding:12px}.barlabel{display:flex;justify-content:space-between;font-size:10px;color:#d2c5aa;margin:0 0 4px}.bar{height:7px;background:#292e28;margin-bottom:8px}.fill{height:100%}.hp{background:#b74b43}.mp{background:#559dc2}.xp{background:#d5ae62}.keys{position:absolute;right:20px;bottom:20px;text-align:right;font-size:10px;color:#e0d2b4;line-height:1.9;text-shadow:0 2px 4px #000}.toast{position:absolute;top:80px;left:50%;transform:translateX(-50%);background:#101713ed;border:1px solid #b99b63;padding:8px 16px;font-size:12px;color:#ead6aa;opacity:0;transition:.2s}.toast.show{opacity:1}.prompt{position:absolute;left:50%;bottom:86px;transform:translateX(-50%);padding:8px 14px;background:#101713e8;border:1px solid #b99b63;color:#e8d6ad;font-size:12px;display:none}
-.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:16px;pointer-events:auto}.modal.open{display:flex}.sheet{width:min(660px,96vw);max-height:84vh;overflow:auto;background:linear-gradient(145deg,#1a241e,#0b100e);border:1px solid #a98a56;padding:22px;box-shadow:0 25px 90px #000}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #b99b634d;padding-bottom:12px;margin-bottom:14px}.head h2{margin:0;color:#d9bd83;font:700 20px Cinzel,'Noto Serif SC'}.close,.btn{cursor:pointer;color:#efdfbd;border:1px solid #9e8050;background:linear-gradient(#4a3b27,#2b2419);padding:7px 11px;font:11px 'Noto Serif SC'}.body{font-size:13px;line-height:1.9;color:#d1c7b4}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}.card{padding:12px;background:#111a16;border:1px solid #b99b634d}.card h4{margin:0 0 5px;color:#e7d3a7}.card p{font-size:11px;color:#bdb3a0;margin:0 0 10px}.tag{font-size:10px;border:1px solid #b99b6370;color:#d9bd83;padding:2px 6px;margin-right:4px}.comp{display:flex;gap:12px;border-bottom:1px solid #ffffff1a;padding:12px 0}.portrait{width:54px;height:54px;background:#29372c;border:1px solid #b99b6370;display:grid;place-items:center;font-size:26px;flex:none}.compmain{flex:1}.compmain h4{margin:0;color:#e9d5ad}.compmain p{font-size:11px;color:#c0b6a5;margin:4px 0}.meter{height:5px;background:#30372f;margin:5px 0 8px}.meter i{display:block;height:100%;background:#d6b879}.mobile{display:none}
-@media(max-width:700px){.brand{font-size:14px;left:10px}.topstats{right:8px;top:12px;gap:3px}.stat{min-width:55px;padding:6px}.stat label{font-size:7px}.stat b{font-size:11px}.quest{left:8px;top:78px;width:185px;padding:9px}.bottom{left:8px;width:190px}.keys{display:none}.mobile{display:block;position:fixed;bottom:16px;right:12px;pointer-events:auto}.mobile button{width:42px;height:42px;margin:2px;border-radius:50%;background:#162019dd;color:#ead5a8;border:1px solid #b99b63}}
-</style>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#171e21">
+  <meta name="description" content="灰烬纪元：第三人称 3D 奇幻冒险。探索灰烬镇、公会与酒馆，结识伙伴，迎战林地中的腐化生物。">
+  <title>灰烬纪元 · 龙陨之地</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill='%231e2929' d='M0 0h40v40H0z'/%3E%3Cpath fill='%23d4b477' d='m20 4 13 28-13-7-13 7z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css?v=20261119-1">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/"}}</script>
 </head>
 <body>
-<div id="world"></div>
-<div class="hud">
-<div class="brand">ASHEN AGE<small>灰 烬 纪 元 · 龙 陨 之 地</small></div>
-<div class="topstats"><div class="stat"><label>等级</label><b id="lvl">01</b></div><div class="stat"><label>金币</label><b id="gold">35</b></div><div class="stat"><label>区域</label><b id="region">灰烬镇</b></div></div>
-<div class="quest panel"><div class="eyebrow">CURRENT CONTRACT</div><h3 id="qtitle">公会新人的第一份委托</h3><p id="qdesc">镇外林地出现腐化狼群。去猎杀它们，证明你有资格成为一名真正的冒险者。</p><div class="objective" id="objective">◆ 前往公会接受委托</div></div>
-<div class="bottom panel"><div class="barlabel"><span>生命</span><span id="hptext">100 / 100</span></div><div class="bar"><div id="hp" class="fill hp" style="width:100%"></div></div><div class="barlabel"><span>法力</span><span id="mptext">50 / 50</span></div><div class="bar"><div id="mp" class="fill mp" style="width:100%"></div></div><div class="barlabel"><span>经验</span><span id="xptext">0 / 100</span></div><div class="bar"><div id="xp" class="fill xp" style="width:0%"></div></div></div>
-<div class="keys">WASD 移动 · 鼠标拖动旋转视角 · 滚轮缩放<br>J 攻击 · K 魔法 · 空格闪避 · E 互动<br>P 伙伴 · I 背包 · H 药水 · Esc 释放鼠标</div>
-<div id="prompt" class="prompt">按 E 互动</div><div id="toast" class="toast"></div></div>
-<div id="modal" class="modal"><div class="sheet"><div class="head"><h2 id="mtitle">冒险者公会</h2><button class="close" id="close">离开 ✕</button></div><div id="mbody" class="body"></div></div></div>
-<div class="mobile"><button data-k="KeyW">↑</button><br><button data-k="KeyA">←</button><button data-k="KeyS">↓</button><button data-k="KeyD">→</button><button data-k="KeyJ">⚔</button><button data-k="KeyE">E</button></div>
-<script type="module">
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-const gltfLoader = new GLTFLoader();
-const ASSET = id => `https://vibeassets.io/download/${id}`;
-function loadGLB(id, parent, scale=1, yOffset=0, rotationY=0) {
-  return new Promise((resolve,reject)=>gltfLoader.load(ASSET(id), gltf=>{
-    const model=gltf.scene; model.scale.setScalar(scale); model.position.y=yOffset; model.rotation.y=rotationY;
-    model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true; if(o.material){o.material.metalness=Math.max(o.material.metalness||0,0.08);o.material.roughness=Math.min(o.material.roughness??.8,.82)}}});
-    parent.add(model); resolve({model,animations:gltf.animations});
-  },undefined,reject));
-}
-
-const $=id=>document.getElementById(id),scene=new THREE.Scene();scene.background=new THREE.Color('#84918a');scene.fog=new THREE.FogExp2('#87938a',.006);
-const camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,350);
-const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.22;$('world').appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight('#dce8f0','#35432d',1.45));const sun=new THREE.DirectionalLight('#ffe4bd',3);sun.position.set(-35,60,25);sun.castShadow=true;sun.intensity=2.35;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-90;sun.shadow.camera.right=90;sun.shadow.camera.top=90;sun.shadow.camera.bottom=-90;scene.add(sun);
-const mat=(c,r=.85,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
-const M={grass:mat('#536b49'),path:mat('#907e5d'),wall:mat('#8c806b'),wood:mat('#543d2b'),roof:mat('#4b342b'),leaf:mat('#2c492f'),leaf2:mat('#3b5838'),trunk:mat('#51402d'),stone:mat('#777a70'),steel:mat('#9aa3a2',.32,.7),cloak:mat('#354d3b'),skin:mat('#c9a27d'),red:mat('#8c4237'),magic:mat('#83d9ff',.25,.1)};
-const box=(p,x,y,z,a,b,c,m)=>{let o=new THREE.Mesh(new THREE.BoxGeometry(a,b,c),m);o.position.set(x,y,z);o.castShadow=o.receiveShadow=true;p.add(o);return o};
-const sphere=(p,x,y,z,r,m)=>{let o=new THREE.Mesh(new THREE.SphereGeometry(r,14,12),m);o.position.set(x,y,z);o.castShadow=true;p.add(o);return o};
-const cyl=(p,x,y,z,a,b,h,m,n=9)=>{let o=new THREE.Mesh(new THREE.CylinderGeometry(a,b,h,n),m);o.position.set(x,y,z);o.castShadow=true;p.add(o);return o};
-const cone=(p,x,y,z,r,h,m)=>{let o=new THREE.Mesh(new THREE.ConeGeometry(r,h,8),m);o.position.set(x,y,z);o.castShadow=true;p.add(o);return o};
-function label(t){let c=document.createElement('canvas');c.width=512;c.height=128;let x=c.getContext('2d');x.fillStyle='#101713cc';x.fillRect(0,0,512,128);x.strokeStyle='#c6a66a';x.lineWidth=4;x.strokeRect(3,3,506,122);x.font='bold 48px serif';x.textAlign='center';x.fillStyle='#ead7ad';x.fillText(t,256,82);let s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false}));s.scale.set(4,1,1);return s}
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(240,240,60,60),M.grass);ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
-let road=new THREE.Mesh(new THREE.PlaneGeometry(7,170),M.path);road.rotation.x=-Math.PI/2;road.position.y=.03;scene.add(road);let cross=new THREE.Mesh(new THREE.PlaneGeometry(100,6),M.path);cross.rotation.x=-Math.PI/2;cross.position.set(0,.035,15);scene.add(cross);
-let pond=new THREE.Mesh(new THREE.CircleGeometry(10,48),mat('#31515a',.2,.2));pond.rotation.x=-Math.PI/2;pond.position.set(55,.05,-45);scene.add(pond);
-function tree(x,z,s=1){let g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(s);cyl(g,0,1,0,.18,.25,2,M.trunk);for(let i=0;i<3;i++)cone(g,0,2.1+i*.7,0,1.1-i*.17,2,M.leaf);scene.add(g)}
-for(let i=0;i<260;i++){let x=Math.sin(i*91.7)*.5*210,z=Math.cos(i*31.3)*.5*210;if(Math.abs(x)<29&&Math.abs(z)<34)continue;tree(x,z,.8+(i%5)*.13)}
-for(let i=0;i<65;i++){let x=Math.sin(i*73.4)*.5*210,z=Math.cos(i*21.8)*.5*210;let r=sphere(scene,x,.25,z,.45+(i%4)*.2,M.stone);r.scale.y=.55}
-const interactables=[];
-function building(x,z,w,d,title,kind){let g=new THREE.Group();g.position.set(x,0,z);box(g,0,1.35,0,w,2.7,d,M.wall);box(g,0,2.78,0,w+1,.2,d+1,M.wood);let roof=new THREE.Group();roof.position.y=2.85;let a=box(roof,0,.62,-d*.22,w+1.4,.18,d*.65,M.roof);a.rotation.x=.52;let b=box(roof,0,.62,d*.22,w+1.4,.18,d*.65,M.roof);b.rotation.x=-.52;g.add(roof);box(g,0,.9,d/2+.04,.9,1.8,.12,M.wood);box(g,-w*.28,1.7,d/2+.1,.55,.55,.12,M.steel);box(g,w*.28,1.7,d/2+.1,.55,.55,.12,M.steel);let l=label(title);l.position.set(0,4.2,d/2+.5);g.add(l);scene.add(g);interactables.push({x:x,z:z+d/2+2,title,kind})}
-building(-15,-12,13,10,'冒险者公会','guild');building(-35,10,11,9,'旅人酒馆','tavern');building(17,5,9,8,'铁匠铺','smith');building(3,25,10,8,'旅行商人','merchant');
-for(let i=0;i<24;i++){let a=i/24*Math.PI*2,x=Math.cos(a)*37,z=Math.sin(a)*31;cyl(scene,x,1.3,z,.2,.25,2.6,M.wood,7)}
-function human(x,z,kind){
-  const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);
-  const fallback=box(g,0,1,0,.5,1.7,.35,mat('#59635a'));
-  const modelId=kind==='garrick'?'9h7odik5fl':kind==='mira'?'k6bdm27lba':'fbd1hbd0su';
-  loadGLB(modelId,g,.95,0,Math.PI).then(({model,animations})=>{g.remove(fallback);if(animations.length){const mixer=new THREE.AnimationMixer(model);const idle=animations.find(a=>/idle/i.test(a.name))||animations[0];mixer.clipAction(idle).play();characterMixers.push(mixer)}}).catch(err=>console.error('NPC GLB load failed',kind,err));
-  return g;
-}
-const characterMixers=[];
-const companions=[{id:'lyra',name:'莉拉',role:'精灵游侠',icon:'🏹',desc:'来自北境林地的精灵弓手。寡言敏锐，正在寻找一件失落的东西。',aff:18,joined:true,gift:'月露花',gifted:false},{id:'garrick',name:'加里克',role:'流亡骑士',icon:'🛡️',desc:'曾效忠于一位已死去的领主。沉稳可靠，不愿谈起过去。',aff:6,joined:false,gift:'陈年麦酒',gifted:false},{id:'mira',name:'米拉',role:'见习术士',icon:'🔮',desc:'热衷古代魔法的年轻术士，对龙族历史有特殊研究。',aff:0,joined:false,gift:'古代符文',gifted:false}];
-interactables.push({x:-4,z:23,title:'莉拉',kind:'lyra'},{x:25,z:-13,title:'加里克',kind:'garrick'},{x:12,z:34,title:'米拉',kind:'mira'});
-const npcModels={lyra:human(-4,23,'lyra'),garrick:human(25,-13,'garrick'),mira:human(12,34,'mira')};
-const player=new THREE.Group();player.position.set(0,0,16);scene.add(player);
-const playerFallback=box(player,0,1.1,0,.5,1.8,.35,mat('#59635a'));
-let playerMixer=null,playerActions={},playerMode='Idle';
-loadGLB('lvj49vzlzd',player,1,0,Math.PI).then(({model,animations})=>{
-  player.remove(playerFallback); if(animations.length){playerMixer=new THREE.AnimationMixer(model);animations.forEach(clip=>playerActions[clip.name]=playerMixer.clipAction(clip));const idle=animations.find(a=>/idle/i.test(a.name))||animations[0];playerMixer.clipAction(idle).play();}
-}).catch(err=>{console.error('Knight GLB load failed',err);toast('骑士模型加载失败：'+(err?.message||'资源解析错误'))});
-function playHeroAction(name){if(!playerMixer)return;const clip=Object.keys(playerActions).find(k=>k.toLowerCase().includes(name.toLowerCase()));if(!clip)return;Object.entries(playerActions).forEach(([k,a])=>{if(k===clip)a.reset().fadeIn(.15).play();else a.fadeOut(.15)})}
-let ally=new THREE.Group();scene.add(ally);let allyBody=box(ally,0,1,0,.5,.8,.32,mat('#45634b'));sphere(ally,0,1.6,0,.22,M.skin);ally.visible=true;
-function wolf(x,z,big=false){let g=new THREE.Group();g.position.set(x,0,z);let f=mat(big?'#51413d':'#746052');let b=sphere(g,0,.72,0,big?.75:.52,f);b.scale.set(1.3,.72,.75);sphere(g,0,1.04,.48,.31,f);for(let q of [-1,1]){cyl(g,q*.3,.35,.15,.12,.14,.65,f);cone(g,q*.2,1.34,.4,.13,.32,f)}let eye=mat('#d15a3e',.25);sphere(g,-.14,1.1,.73,.05,eye);sphere(g,.14,1.1,.73,.05,eye);g.userData={hp:big?90:45,max:big?90:45,big,dead:false,cd:0};scene.add(g);enemies.push(g)}
-const enemies=[];for(let i=0;i<11;i++)wolf(-70+(i%4)*17,-63+Math.floor(i/4)*18,i%5===0);
-let state={hp:100,maxHp:100,mp:50,maxMp:50,xp:0,level:1,gold:35,potions:3,damage:22,kills:0,accepted:false,complete:false,inventory:[]};
-let active='lyra',yaw=0,pitch=.22,dist=6.8,keys={},drag=false,lastX=0,lastY=0,modal=false,cool=0,spellCool=0,dodge=0,nearest=null;
-function say(t){toast(t)}let toastTimer;function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2100)}
-function open(title,html){modal=true;$('mtitle').textContent=title;$('mbody').innerHTML=html;$('modal').classList.add('open');$('prompt').style.display='none'}function close(){modal=false;$('modal').classList.remove('open')}$('close').onclick=close;$('modal').onclick=e=>{if(e.target===$('modal'))close()};
-function gainXP(n){state.xp+=n;if(state.xp>=100){state.xp-=100;state.level++;state.maxHp+=12;state.maxMp+=6;state.hp=state.maxHp;state.mp=state.maxMp;toast('升级！当前等级 '+state.level)}}
-function kill(e){if(e.userData.dead)return;e.userData.dead=true;scene.remove(e);state.gold+=5;gainXP(25);if(state.accepted&&!state.complete){state.kills++;$('objective').textContent='◆ 击败腐化狼 '+Math.min(3,state.kills)+' / 3';if(state.kills>=3){state.complete=true;$('qtitle').textContent='委托完成：返回公会';$('qdesc').textContent='你已清理林地中的腐化狼群，回公会领取报酬。';$('objective').textContent='◆ 返回冒险者公会领取奖励'}}}
-function hit(){if(cool>0||modal)return;cool=.45;playHeroAction('attack');let e=enemies.filter(x=>!x.userData.dead&&x.position.distanceTo(player.position)<4.2).sort((a,b)=>a.position.distanceTo(player.position)-b.position.distanceTo(player.position))[0];if(e){e.userData.hp-=state.damage;if(e.userData.hp<=0)kill(e);toast('剑刃命中！')}else toast('攻击范围内没有目标')}
-function cast(){if(spellCool>0||modal)return;if(state.mp<12){toast('法力不足');return}spellCool=.8;state.mp-=12;let e=enemies.filter(x=>!x.userData.dead&&x.position.distanceTo(player.position)<18).sort((a,b)=>a.position.distanceTo(player.position)-b.position.distanceTo(player.position))[0];if(!e){toast('附近没有法术目标');return}e.userData.hp-=38;if(e.userData.hp<=0)kill(e);let orb=sphere(scene,player.position.x,1.5,player.position.z,.18,M.magic);let start=orb.position.clone(),end=e.position.clone().add(new THREE.Vector3(0,1,0)),t=0;let anim=()=>{t+=.04;orb.position.lerpVectors(start,end,Math.min(1,t));if(t<1)requestAnimationFrame(anim);else scene.remove(orb)};anim();toast('奥术飞弹！')}
-function companionHTML(){return '<p>旅途不必独行。伙伴会在战斗中提供支援。交谈、赠礼和共同冒险会改变彼此的关系。</p>'+companions.map(c=>'<div class="comp"><div class="portrait">'+c.icon+'</div><div class="compmain"><h4>'+c.name+' <span class="tag">'+c.role+'</span> '+(c.joined?'<span class="tag">已加入</span>':'')+'</h4><p>'+c.desc+'</p><div class="barlabel"><span>好感度</span><span>'+c.aff+'/100</span></div><div class="meter"><i style="width:'+c.aff+'%"></i></div><button class="btn" onclick="window.gameTalk(\''+c.id+'\')">交谈</button><button class="btn" onclick="window.gameGift(\''+c.id+'\')">赠礼</button>'+(c.joined?'':'<button class="btn" onclick="window.gameRecruit(\''+c.id+'\')">邀请加入</button>')+(c.joined?'<button class="btn" onclick="window.gameActive(\''+c.id+'\')">邀请同行</button>':'')+'</div></div>').join('')}
-window.gameTalk=id=>{let c=companions.find(x=>x.id===id);c.aff=Math.min(100,c.aff+3);open(c.name,'<p>'+c.desc+'</p><p>你们进行了一次坦诚的交谈。好感度 +3。</p>')};
-window.gameGift=id=>{let c=companions.find(x=>x.id===id);if(state.gold<12||c.gifted){toast(c.gifted?'今天已经送过礼物':'金币不足');return}state.gold-=12;c.gifted=true;c.aff=Math.min(100,c.aff+14);open(c.name,'<p>你送出了 '+c.gift+'。对方显然很喜欢这份礼物。好感度 +14。</p>')};
-window.gameRecruit=id=>{let c=companions.find(x=>x.id===id);if(c.aff<15){toast('好感度不足，先多相处一段时间');return}c.joined=true;c.aff+=5;open('伙伴加入','<p>'+c.name+' 接受了你的邀请，愿意与你一同踏上旅程。</p>')};
-window.gameActive=id=>{active=id;toast(companions.find(x=>x.id===id).name+' 加入同行');open('伙伴与羁绊',companionHTML())};
-window.openComp=()=>open('伙伴与羁绊',companionHTML());
-function interact(kind){if(kind==='guild'){open('灰烬镇冒险者公会','<p>告示板上钉满了委托。公会大厅里，冒险者们交换着遗迹、魔物和失踪商队的消息。</p><div class="cards"><div class="card"><h4>新手委托：腐化狼群</h4><p>清理镇外林地的腐化狼，击败三只并返回报告。</p><span class="tag">60 金币</span><span class="tag">80 经验</span><button class="btn" onclick="window.acceptQuest()">接受委托 / 交付</button></div><div class="card"><h4>古井异响</h4><p>旧城区封井每到午夜都会传来低语。</p><span class="tag">未解锁</span></div></div><button class="btn" onclick="window.openComp()">伙伴档案</button>')}
-if(kind==='tavern'){open('旅人酒馆 · 暖炉与麦酒','<p>炉火噼啪作响，吟游诗人弹着北境巨龙的古老歌谣。这里总能听到不该出现在告示板上的消息。</p><div class="cards"><div class="card"><h4>请伙伴喝一杯</h4><p>和同行伙伴聊聊过去。</p><span class="tag">12 金币</span><button class="btn" onclick="window.ale()">买一轮酒</button></div><div class="card"><h4>打听传闻</h4><p>北边古石阵的封印正在松动。</p><button class="btn" onclick="window.rumor()">打听消息</button></div><div class="card"><h4>休息一晚</h4><p>恢复生命与法力。</p><span class="tag">8 金币</span><button class="btn" onclick="window.rest()">入住客房</button></div></div>')}
-if(kind==='smith'){open('铁匠铺','<p>铁匠乌尔夫：“想让刀刃更锋利，就拿金币来。”</p><button class="btn" onclick="window.upgrade()">磨砺武器（45 金币，攻击 +5）</button><button class="btn" onclick="window.buyPotion()">购买生命药水（10 金币）</button>')}
-if(kind==='merchant'){open('旅行商人','<p>几件稀奇古怪的礼物摆在货架上，每件 12 金币。</p>'+companions.map(c=>'<button class="btn" onclick="window.buyGift(\''+c.gift+'\')">'+c.gift+'</button>').join(''))}
-if(['lyra','garrick','mira'].includes(kind)){let c=companions.find(x=>x.id===kind);open(c.name,'<p>'+c.desc+'</p><p>好感度：'+c.aff+'/100</p><button class="btn" onclick="window.gameTalk(\''+kind+'\')">交谈</button><button class="btn" onclick="window.openComp()">伙伴档案</button>')}}
-window.acceptQuest=()=>{if(state.complete){state.gold+=60;gainXP(80);state.complete=false;state.accepted=false;state.kills=0;$('qtitle').textContent='公会新人的第一份委托';$('qdesc').textContent='腐化狼群的委托已完成。你可以继续探索。';$('objective').textContent='◆ 委托已完成'}else{state.accepted=true;state.kills=0;$('qtitle').textContent='新手委托：腐化狼群';$('qdesc').textContent='公会要求你清理镇外林地的腐化狼。带着证明回来。';$('objective').textContent='◆ 击败腐化狼 0 / 3'}close();toast('公会委托已更新')};
-window.ale=()=>{if(state.gold<12){toast('金币不足');return}state.gold-=12;let c=companions.find(x=>x.id===active);c.aff=Math.min(100,c.aff+8);open('酒馆','<p>你和 '+c.name+' 分享了一杯麦酒。好感度 +8。</p>')};
-window.rumor=()=>{let c=companions.find(x=>x.id===active);c.aff=Math.min(100,c.aff+2);open('酒馆传闻','<p>老板压低声音：“三天前，北边古石阵亮起了蓝色的火。那是龙陨之地的封印正在松动。”</p><span class="tag">新线索：北境古石阵</span>')};
-window.rest=()=>{if(state.gold<8){toast('金币不足');return}state.gold-=8;state.hp=state.maxHp;state.mp=state.maxMp;close();toast('休息完毕，状态恢复')};
-window.upgrade=()=>{if(state.gold<45){toast('金币不足');return}state.gold-=45;state.damage+=5;close();toast('武器强化成功')};
-window.buyPotion=()=>{if(state.gold<10){toast('金币不足');return}state.gold-=10;state.potions++;close();toast('获得生命药水')};
-window.buyGift=name=>{if(state.gold<12){toast('金币不足');return}state.gold-=12;state.inventory.push(name);close();toast('获得 '+name)};
-let activeAlly=()=>companions.find(c=>c.id===active&&c.joined);
-let allyClock=0;
-function update(dt){let f=0,r=0;if(keys.KeyW||keys.ArrowUp)f++;if(keys.KeyS||keys.ArrowDown)f--;if(keys.KeyD||keys.ArrowRight)r++;if(keys.KeyA||keys.ArrowLeft)r--;let moving=f||r;if(moving&&!modal){playHeroAction('walk');let ang=Math.atan2(r,f)+yaw,dir=new THREE.Vector3(Math.sin(ang),0,Math.cos(ang)).normalize(),speed=keys.Space?10:5.4;player.position.addScaledVector(dir,speed*dt);player.rotation.y=Math.atan2(dir.x,dir.z);if(keys.Space&&dodge<=0){dodge=.35;state.mp=Math.max(0,state.mp-2)}}dodge=Math.max(0,dodge-dt);
-let target=player.position.clone().add(new THREE.Vector3(Math.sin(yaw)*Math.cos(pitch)*dist,Math.sin(pitch)*dist+1.2,Math.cos(yaw)*Math.cos(pitch)*dist));camera.position.lerp(target,.18);camera.lookAt(player.position.clone().add(new THREE.Vector3(0,1.5,0)));
-for(let e of enemies){if(e.userData.dead)continue;let d=e.position.distanceTo(player.position);if(d<22){if(d>1.8){let v=player.position.clone().sub(e.position).setY(0).normalize();e.position.addScaledVector(v,1.8*dt);e.rotation.y=Math.atan2(v.x,v.z)}else if(e.userData.cd<=0&&dodge<=0){e.userData.cd=1.3;state.hp-=e.userData.big?14:8;if(state.hp<=0){state.hp=state.maxHp;player.position.set(0,0,16);state.gold=Math.max(0,state.gold-10);toast('你被击倒，镇民救你回城（损失10金币）')}}}e.userData.cd=Math.max(0,e.userData.cd-dt)}
-let c=activeAlly();if(c){let offset=new THREE.Vector3(-1.8,0,-2).applyAxisAngle(new THREE.Vector3(0,1,0),yaw),dest=player.position.clone().add(offset);ally.position.lerp(dest,Math.min(1,dt*3));ally.visible=true;allyClock-=dt;if(allyClock<=0){let e=enemies.find(e=>!e.userData.dead&&e.position.distanceTo(player.position)<18);if(e){allyClock=2.5;e.userData.hp-=c.id==='lyra'?12:c.id==='mira'?16:9;if(e.userData.hp<=0)kill(e)}}}else ally.visible=false;
-cool=Math.max(0,cool-dt);spellCool=Math.max(0,spellCool-dt);state.mp=Math.min(state.maxMp,state.mp+dt*1.3);
-nearest=interactables.map(o=>({...o,d:Math.hypot(player.position.x-o.x,player.position.z-o.z)})).sort((a,b)=>a.d-b.d)[0];$('prompt').style.display=nearest&&nearest.d<5&&!modal?'block':'none';if(nearest)$('prompt').textContent='按 E 与 '+nearest.title+' 互动';
-$('hp').style.width=state.hp/state.maxHp*100+'%';$('mp').style.width=state.mp/state.maxMp*100+'%';$('xp').style.width=state.xp+'%';$('hptext').textContent=Math.ceil(state.hp)+' / '+state.maxHp;$('mptext').textContent=Math.floor(state.mp)+' / '+state.maxMp;$('xptext').textContent=state.xp+' / 100';$('lvl').textContent=String(state.level).padStart(2,'0');$('gold').textContent=state.gold;$('region').textContent=player.position.z<-35?'幽影林地':'灰烬镇'}
-const clock=new THREE.Clock();function loop(){requestAnimationFrame(loop);let dt=Math.min(clock.getDelta(),.04);if(!modal)update(dt);if(playerMixer)playerMixer.update(dt);characterMixers.forEach(m=>m.update(dt));renderer.render(scene,camera)}loop();
-window.addEventListener('keydown',e=>{keys[e.code]=true;if(e.repeat)return;if(e.code==='KeyJ')hit();if(e.code==='KeyK')cast();if(e.code==='KeyE'&&!modal&&nearest&&nearest.d<5)interact(nearest.kind);if(e.code==='KeyP'&&!modal)openComp();if(e.code==='KeyI'&&!modal)open('冒险者背包','<p>金币：'+state.gold+'　生命药水：'+state.potions+'</p><p>战利品：'+(state.inventory.join('、')||'暂无')+'</p><p>旅人长剑，攻击力 '+state.damage+'</p>');if(e.code==='KeyH'&&state.potions>0&&state.hp<state.maxHp){state.potions--;state.hp=Math.min(state.maxHp,state.hp+45);toast('使用生命药水')}if(e.code==='Escape')close()});window.addEventListener('keyup',e=>keys[e.code]=false);
-renderer.domElement.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY});window.addEventListener('pointerup',()=>drag=false);window.addEventListener('pointermove',e=>{if(!drag||modal)return;let dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=THREE.MathUtils.clamp(pitch+dy*.003,-.05,.75)});renderer.domElement.addEventListener('wheel',e=>dist=THREE.MathUtils.clamp(dist+e.deltaY*.006,3.5,10));window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-document.querySelectorAll('.mobile button').forEach(b=>{let code=b.dataset.k;b.onpointerdown=e=>{e.preventDefault();keys[code]=true};b.onpointerup=b.onpointerleave=()=>keys[code]=false});
-</script></body></html>
+  <main id="world" aria-label="第三人称 3D 游戏画面" tabindex="0"></main>
+  <div id="loading" class="loading">
+    <div class="load-mark" aria-hidden="true">A</div>
+    <div class="eyebrow">ASHEN AGE · DRAGONFALL</div>
+    <h1>灰烬纪元</h1><p class="load-subtitle">每一段旅途，都始于一场相遇。</p>
+    <div class="load-card" role="status" aria-live="polite">
+      <div class="load-row"><span id="load-label">正在准备 3D 世界</span><span id="load-number">0%</span></div>
+      <progress id="load-progress" max="100" value="0"></progress>
+      <p id="load-detail">首次进入需要加载角色与动作，之后可使用浏览器缓存。</p>
+      <button id="retry" class="button" hidden>重新加载</button>
+    </div>
+    <p class="load-foot">W A S D 移动　·　拖动鼠标环顾　·　Shift 奔跑</p>
+  </div>
+  <div id="hud" class="hud" hidden>
+    <header class="brand"><span class="brand-mark">A</span><div><strong>ASHEN AGE</strong><small>灰烬纪元 · 龙陨之地</small></div></header>
+    <div class="compass"><span id="compass">北　N</span><i></i><span id="region">灰烬镇</span></div>
+    <div class="topstats"><div><small>冒险等级</small><b id="lvl">01</b></div><div><small>金币</small><b id="gold">35</b></div><button id="quality" aria-label="切换画质">画质 · 精细</button></div>
+    <section class="quest"><div class="eyebrow">GUILD CONTRACT</div><h2 id="qtitle">旅途的第一份委托</h2><p id="qdesc">前往冒险者公会，了解林地中的异动。</p><div id="objective">◇ 前往公会接受委托</div><button id="track" class="track">⌖ 公会 <span id="distance"></span></button></section>
+    <nav class="menu"><button data-action="KeyP">伙伴与好友 <kbd>P</kbd></button><button data-action="KeyI">背包 <kbd>I</kbd></button><button data-action="KeyM">城镇地图 <kbd>M</kbd></button><button data-action="F1">操作 <kbd>?</kbd></button></nav>
+    <div id="target" class="target" hidden><span id="target-name">腐化灰狼</span><div><i id="target-hp"></i></div></div>
+    <div id="prompt" class="prompt" hidden><kbd>E</kbd><span id="prompt-text">互动</span></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <section class="vitals"><div class="character-name"><span>漂泊者</span><small>铁誓骑士</small></div><div class="bar hp"><i id="hp"></i><span id="hptext">100 / 100</span></div><div class="bar mp"><i id="mp"></i><span id="mptext">50 / 50</span></div><div class="xp"><i id="xp"></i></div><div class="vitals-foot"><span id="xptext">经验 0 / 100</span><span id="save-state">本机存档</span></div></section>
+    <div class="quickbar"><button data-action="KeyJ"><kbd>J</kbd><span>斩击</span><small id="attack-cd">长剑</small></button><button data-action="KeyK"><kbd>K</kbd><span>奥术</span><small id="spell-cd">12 法力</small></button><button data-action="Space"><kbd>空格</kbd><span>闪避</span><small id="dodge-cd">6 法力</small></button><button data-action="KeyH"><kbd>H</kbd><span>药水</span><small id="potions">× 3</small></button></div>
+    <aside class="ally-card"><div class="eyebrow">TRAVEL COMPANION</div><strong id="ally-name">莉拉</strong><span id="ally-role">精灵游侠</span><small id="ally-affinity">羁绊 18 · 熟识</small></aside>
+    <div class="hint">WASD 移动 <i>·</i> Shift 奔跑 <i>·</i> 鼠标拖动转镜头 <i>·</i> 滚轮缩放</div>
+    <span class="build">3D · 2026.11.19</span>
+  </div>
+  <div id="mobile" class="mobile" hidden><div class="dpad"><button data-k="KeyW" aria-label="前进">↑</button><button data-k="KeyA" aria-label="向左">←</button><button data-k="KeyS" aria-label="后退">↓</button><button data-k="KeyD" aria-label="向右">→</button></div><div class="touch-actions"><button data-k="ShiftLeft">跑</button><button data-k="KeyJ">斩击</button><button data-k="KeyK">奥术</button><button data-k="Space">闪避</button><button data-k="KeyE">互动</button></div></div>
+  <div id="modal" class="modal" hidden><section class="sheet" role="dialog" aria-modal="true" aria-labelledby="mtitle"><div class="sheet-head"><div><div class="eyebrow">ASHEN AGE</div><h2 id="mtitle"></h2></div><button id="close" class="close" aria-label="关闭窗口">✕</button></div><div id="mbody"></div></section></div>
+  <output id="qa-state" hidden></output>
+  <script>
+  window.showBootError = function (error) {
+    document.getElementById('loading').hidden = false;
+    document.getElementById('hud').hidden = true;
+    document.getElementById('load-label').textContent = '暂时无法进入世界';
+    document.getElementById('load-detail').textContent = error.message || '资源加载失败，请点击重试。';
+    document.getElementById('retry').hidden = false;
+    document.getElementById('load-number').textContent = '';
+    console.error(error);
+  };
+  document.getElementById('retry').onclick = function () { location.reload(); };
+  </script>
+  <script type="module">import('./main.js?v=20261119-1').catch(window.showBootError);</script>
+</body>
+</html>
