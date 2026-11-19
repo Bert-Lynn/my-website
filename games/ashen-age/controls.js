@@ -7,7 +7,7 @@ const HANDLED_CODES = new Set([...MOVE_CODES, ...ACTION_CODES]);
 
 /** Camera-relative third-person input. Actor meshes are expected to face local +Z. */
 export class ThirdPersonControls {
-  constructor({canvas, camera, onAction = () => {}, onZoom = () => {}, yaw = 0, pitch = .24, distance = 5.6, targetHeight = 1.25}) {
+  constructor({canvas, camera, colliders = [], onAction = () => {}, onZoom = () => {}, yaw = 0, pitch = .24, distance = 5.6, targetHeight = 1.25}) {
     this.canvas = canvas;
     this.camera = camera;
     this.onAction = onAction;
@@ -28,6 +28,13 @@ export class ThirdPersonControls {
     this._cameraGoal = new THREE.Vector3();
     this._lookTarget = new THREE.Vector3();
     this._turnTarget = new THREE.Quaternion();
+    this._cameraRay = new THREE.Ray();
+    this._cameraHit = new THREE.Vector3();
+    this._cameraOffset = new THREE.Vector3();
+    this._cameraObstacles = colliders.map(b => new THREE.Box3(
+      new THREE.Vector3(b.minX - .3, b.minY ?? 0, b.minZ - .3),
+      new THREE.Vector3(b.maxX + .3, b.maxY ?? 8, b.maxZ + .3)
+    ));
     this._last = {moving: false, speed: 0, run: false};
     this.canvas.style.touchAction = 'none';
     if (!this.canvas.hasAttribute('tabindex')) this.canvas.tabIndex = 0;
@@ -180,15 +187,32 @@ export class ThirdPersonControls {
       player.position.y + this.targetHeight + Math.sin(this.pitch) * this.distance,
       player.position.z + Math.cos(this.yaw) * horizontal
     );
+    // Retract before a wall, including at spawn. Test both the desired and
+    // smoothed positions so orbiting cannot ease the camera through a building.
+    this._avoidCameraObstacles(this._cameraGoal);
     if (!this._cameraPrimed) {
       this.camera.position.copy(this._cameraGoal);
       this._cameraPrimed = true;
     } else {
       this.camera.position.lerp(this._cameraGoal, 1 - Math.exp(-12 * dt));
     }
+    this._avoidCameraObstacles(this.camera.position);
     this.camera.lookAt(this._lookTarget);
     this._last = {moving, speed: moving ? speed : 0, run: moving && run};
     return {...this._last, direction: this._direction.clone()};
+  }
+
+  _avoidCameraObstacles(position) {
+    this._cameraOffset.subVectors(position, this._lookTarget);
+    const length = this._cameraOffset.length();
+    if (length < .001) return;
+    this._cameraRay.set(this._lookTarget, this._cameraOffset.divideScalar(length));
+    let allowed = length;
+    for (const box of this._cameraObstacles) {
+      const hit = this._cameraRay.intersectBox(box, this._cameraHit);
+      if (hit) allowed = Math.min(allowed, Math.max(.02, hit.distanceTo(this._lookTarget) - .18));
+    }
+    if (allowed < length) position.copy(this._lookTarget).addScaledVector(this._cameraRay.direction, allowed);
   }
 
   getState() {

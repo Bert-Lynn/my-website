@@ -63,7 +63,7 @@ const player=new THREE.Group();player.name='Player';player.position.set(0,0,16);
 if(storedPosition){player.position.set(THREE.MathUtils.clamp(storedPosition[0],-94,94),0,THREE.MathUtils.clamp(storedPosition[2],-94,94));}
 let hero,party={},npcs={},cool=0,spellCool=0,dodgeCool=0,dodgeTime=0,attackTime=0,pendingHit=null,allyClock=0,nearest=null,time=0;
 const dodgeDirection=new THREE.Vector3(0,0,-1),up=new THREE.Vector3(0,1,0),previousPosition=new THREE.Vector3();
-const controls=new ThirdPersonControls({canvas:renderer.domElement,camera,onAction:action,distance:5.4,pitch:.26,targetHeight:1.25});
+const controls=new ThirdPersonControls({canvas:renderer.domElement,camera,colliders:world.cameraColliders||world.colliders,onAction:action,distance:5.4,pitch:.26,targetHeight:1.25});
 const homes={lyra:new THREE.Vector3(-5,0,21),garrick:new THREE.Vector3(-10,0,-4),mira:new THREE.Vector3(12,0,21)};
 const npcInteractions=companions.map(c=>({x:homes[c.id].x,z:homes[c.id].z,title:c.name,kind:c.id}));
 const interactables=[...world.interactables,...npcInteractions];
@@ -191,7 +191,7 @@ function moveOutOfWalls(position,old){
     else{const exits=[{d:Math.abs(position.x-(b.minX-pad)),axis:'x',v:b.minX-pad},{d:Math.abs(position.x-(b.maxX+pad)),axis:'x',v:b.maxX+pad},{d:Math.abs(position.z-(b.minZ-pad)),axis:'z',v:b.minZ-pad},{d:Math.abs(position.z-(b.maxZ+pad)),axis:'z',v:b.maxZ+pad}];exits.sort((a,b)=>a.d-b.d);position[exits[0].axis]=exits[0].v;}
   }}
 }
-let hudClock=0,saveClock=0,qaClock=0,frameCount=0,frameTime=0,fps=0;
+let hudClock=0,saveClock=0,qaClock=0,frameCount=0,renderedFrames=0,frameTime=0,fps=0;
 function refreshHUD(){
   $('hp').style.width=state.hp/state.maxHp*100+'%';$('mp').style.width=state.mp/state.maxMp*100+'%';$('xp').style.width=state.xp+'%';
   $('hptext').textContent=Math.ceil(state.hp)+' / '+state.maxHp;$('mptext').textContent=Math.floor(state.mp)+' / '+state.maxMp;$('xptext').textContent='经验 '+state.xp+' / 100';
@@ -243,7 +243,7 @@ function update(dt){
 }
 function diagnostics(){
   const d=hero?.diagnostics();
-  return {ready,version:VERSION,player:{position:player.position.toArray(),rotation:player.rotation.y,mode:d?.mode,actionTime:d?.time,boneCount:d?.bones,skinnedMeshes:d?.skinnedMeshes,vertices:d?.vertices,bones:d?Object.entries(d.joints).map(([name,j])=>({name,q:j.quaternion,p:j.position})):[],animation:d},camera:{position:camera.position.toArray(),yaw:controls.yaw,pitch:controls.pitch},controls:controls.getState(),ally:party[active]?{id:active,position:party[active].root.position.toArray(),animation:party[active].diagnostics()}:null,state:{...state},modal,nearest,renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,webgl2:renderer.capabilities.isWebGL2,fps},environment:world.diagnostics()};
+  return {ready,version:VERSION,frame:renderedFrames,simulationTime:time,player:{position:player.position.toArray(),rotation:player.rotation.y,mode:d?.mode,actionTime:d?.time,boneCount:d?.bones,skinnedMeshes:d?.skinnedMeshes,vertices:d?.vertices,bones:d?Object.entries(d.joints).map(([name,j])=>({name,q:j.quaternion,p:j.position})):[],animation:d},camera:{position:camera.position.toArray(),yaw:controls.yaw,pitch:controls.pitch,insideCollider:(world.cameraColliders||world.colliders).some(b=>camera.position.x>b.minX-.3&&camera.position.x<b.maxX+.3&&camera.position.y>(b.minY??0)&&camera.position.y<(b.maxY??8)&&camera.position.z>b.minZ-.3&&camera.position.z<b.maxZ+.3),distanceToPlayer:camera.position.distanceTo(player.position)},controls:controls.getState(),ally:party[active]?{id:active,position:party[active].root.position.toArray(),animation:party[active].diagnostics()}:null,enemies:enemies.map((enemy,index)=>({index,position:enemy.root.position.toArray(),hp:enemy.hp,maxHp:enemy.maxHp,dead:enemy.dead})),state:{...state},modal,nearest,renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,webgl2:renderer.capabilities.isWebGL2,fps},environment:world.diagnostics()};
 }
 async function boot(){
   progress(15,'正在加载骑士与伙伴','准备骨骼模型、材质和行走动作。');
@@ -266,11 +266,19 @@ async function boot(){
 await boot();
 let previous=performance.now();
 function loop(now){
-  requestAnimationFrame(loop);const raw=(now-previous)/1000;previous=now;const dt=Math.min(raw,.1);time+=dt;
+  requestAnimationFrame(loop);const raw=Math.max(0,(now-previous)/1000);previous=now;
   if(!ready)return;
-  if(!modal&&!document.hidden)update(dt);else controls.update(dt,player,{blocked:true});
-  if(!document.hidden){hero.update(dt);Object.values(party).forEach(c=>c.update(dt));world.update(dt,time);}
-  renderer.render(scene,camera);frameCount++;frameTime+=raw;if(frameTime>=1){fps=Math.round(frameCount/frameTime);frameCount=0;frameTime=0;}
+  // Use the same elapsed time for movement, cooldowns and skeletons. Substeps
+  // keep collisions stable when rendering takes longer than a normal frame.
+  const dt=document.hidden?0:Math.min(raw,.5);
+  if(document.hidden)controls.update(0,player,{blocked:true});
+  const steps=Math.ceil(dt/(1/60)),step=steps?dt/steps:0;
+  for(let i=0;i<steps;i++){
+    if(!modal)update(step);else controls.update(step,player,{blocked:true});
+    hero.update(step);Object.values(party).forEach(c=>c.update(step));
+  }
+  time+=dt;if(dt)world.update(dt,time);
+  renderer.render(scene,camera);renderedFrames++;frameCount++;frameTime+=raw;if(frameTime>=1){fps=Math.round(frameCount/frameTime);frameCount=0;frameTime=0;}
   hudClock+=dt;qaClock+=dt;saveClock+=dt;
   if(hudClock>.12){refreshHUD();hudClock=0;}if(saveClock>6){saveGame();saveClock=0;}
   if(qaMode&&qaClock>.08){$('qa-state').textContent=JSON.stringify(diagnostics());qaClock=0;}

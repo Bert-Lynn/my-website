@@ -6,7 +6,12 @@ const target = new URL(process.env.GAME_URL || process.argv[2] || 'http://127.0.
 target.searchParams.set('qa', '1');
 const output = path.resolve(process.env.QA_OUTPUT || process.argv[3] || 'ashen-age-qa');
 fs.mkdirSync(output, {recursive: true});
-const report = {url: target.href, checks: [], runtimeErrors: [], consoleErrors: [], webglErrors: [], failedRequests: [], screenshots: []};
+const VISUAL_VIEWPORT = {width: 1280, height: 800};
+const FUNCTIONAL_VIEWPORT = {width: 800, height: 500};
+const report = {url: target.href, checks: [], runtimeErrors: [], consoleErrors: [], webglErrors: [], failedRequests: [], screenshots: [], screenshotProfiles: [], profiles: {
+  visual: {viewport: VISUAL_VIEWPORT, quality: '精细'},
+  functional: {viewport: FUNCTIONAL_VIEWPORT, quality: '流畅', renderer: 'Chromium ANGLE SwiftShader (CPU)', note: 'Functional input checks use fewer pixels; this is not a hardware GPU performance benchmark.'}
+}};
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const subtract = (a, b) => a.map((x, i) => x - b[i]);
 const magnitude = vector => Math.hypot(...vector);
@@ -59,7 +64,7 @@ async function until(read, predicate, timeout = 12000) {
       ...(process.env.CHROMIUM_PATH ? {executablePath: process.env.CHROMIUM_PATH} : {}),
       args: ['--no-sandbox', '--disable-dev-shm-usage', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader']
     });
-    const context = await browser.newContext({viewport: {width: 1280, height: 800}, deviceScaleFactor: 1});
+    const context = await browser.newContext({viewport: VISUAL_VIEWPORT, deviceScaleFactor: 1});
     page = await context.newPage();
     page.setDefaultTimeout(15000);
     const watch = observedPage => {
@@ -75,10 +80,22 @@ async function until(read, predicate, timeout = 12000) {
     const screenshot = async name => {
       await page.screenshot({path: path.join(output, `${name}.png`)});
       report.screenshots.push(`${name}.png`);
+      report.screenshotProfiles.push({name: `${name}.png`, viewport: page.viewportSize(), quality: await page.locator('#quality').count() ? await page.locator('#quality').innerText() : 'character visual fixture'});
     };
     const snapshot = async () => {
       const text = await page.locator('#qa-state').textContent();
       return text ? JSON.parse(text) : {ready: false};
+    };
+    const freshSnapshot = (previous, predicate = () => true, timeout = 15000) => until(snapshot, state => Number.isFinite(state.frame) && state.frame > previous.frame && predicate(state), timeout);
+    const profile = async (visual = false) => {
+      const before = await snapshot();
+      await page.setViewportSize(visual ? VISUAL_VIEWPORT : FUNCTIONAL_VIEWPORT);
+      const quality = page.locator('#quality');
+      const desired = visual ? '精细' : '流畅';
+      if (!(await quality.innerText()).includes(desired)) await quality.click();
+      const current = await freshSnapshot(before);
+      console.log('TEST_RENDER_PROFILE ' + JSON.stringify({visual, viewport: page.viewportSize(), quality: await quality.innerText(), frame: current.frame, observedFPS: current.renderer.fps}));
+      return current;
     };
     const startedAt = Date.now();
     await page.goto(target.href, {waitUntil: 'domcontentloaded', timeout: 60000});
@@ -90,6 +107,8 @@ async function until(read, predicate, timeout = 12000) {
     check('Required character assets finished loading', initial.ready === true, {version: initial.version, readyAfterMs: report.readyAfterMs, renderer: initial.renderer});
     check('Player has a skinned mesh and observable skeletal joints', initial.player.skinnedMeshes > 0 && initial.player.boneCount >= 20 && bonePose(initial).length >= 12, {poseValueCount: bonePose(initial).length, skinnedMeshes: initial.player.skinnedMeshes, boneCount: initial.player.boneCount});
     check('Scene is rendered with WebGL and actual triangles', initial.renderer.webgl2 === true && initial.renderer.triangles > 10000, initial.renderer);
+    check('Initial camera is outside scene collision volumes', initial.camera.insideCollider === false, initial.camera);
+    await profile(false);
 
     async function movement(code, label, takeWalkFrames = false) {
       const before = await snapshot();
@@ -103,13 +122,12 @@ async function until(read, predicate, timeout = 12000) {
         phaseA = await until(snapshot, state => magnitude(subtract(state.player.position, before.player.position)) > .45);
         if (takeWalkFrames) await screenshot(`${label}-walk-A`);
         await sleep(370);
-        phaseB = await snapshot();
+        phaseB = await freshSnapshot(phaseA, state => isLocomotion(state.player.mode));
         if (takeWalkFrames) await screenshot(`${label}-walk-B`);
       } finally {
         await page.keyboard.up(code);
       }
-      await sleep(400);
-      const after = await snapshot();
+      const after = await until(snapshot, state => !state.controls.keys[code] && isIdle(state.player.mode));
       const delta = subtract(after.player.position, before.player.position);
       const distance = magnitude(delta);
       const alignment = dot(delta, expected) / distance;
@@ -119,10 +137,9 @@ async function until(read, predicate, timeout = 12000) {
         check(`${label}: walking changes local limb poses`, isLocomotion(phaseA.player.mode) && isLocomotion(phaseB.player.mode) && jointChange !== null && jointChange > .01, {modeA: phaseA.player.mode, modeB: phaseB.player.mode, jointChange, timeA: phaseA.player.actionTime, timeB: phaseB.player.actionTime});
         check(`${label}: animation advances beyond its first frame`, Math.max(Number(phaseA.player.actionTime), Number(phaseB.player.actionTime)) > .1, {timeA: phaseA.player.actionTime, timeB: phaseB.player.actionTime});
       }
-      const settled = await until(snapshot, state => isIdle(state.player.mode));
-      await sleep(400);
-      const stopped = await snapshot();
-      check(`${label}: release returns to idle without sliding`, isIdle(stopped.player.mode) && magnitude(subtract(stopped.player.position, settled.player.position)) < .05, {mode: stopped.player.mode, drift: magnitude(subtract(stopped.player.position, settled.player.position))});
+      const settled = after;
+      const stopped = await freshSnapshot(settled, state => !state.controls.keys[code] && isIdle(state.player.mode));
+      check(`${label}: release returns to idle without sliding`, !stopped.controls.keys[code] && isIdle(stopped.player.mode) && stopped.frame > settled.frame && magnitude(subtract(stopped.player.position, settled.player.position)) < .05, {mode: stopped.player.mode, releasedKey: code, frameBefore: settled.frame, frameAfter: stopped.frame, drift: magnitude(subtract(stopped.player.position, settled.player.position))});
     }
 
     await movement('KeyW', '02-forward', true);
@@ -131,9 +148,9 @@ async function until(read, predicate, timeout = 12000) {
     await movement('KeyD', '05-right');
 
     // Rotate about 90 degrees using the real drag interaction, then repeat movement.
-    await page.mouse.move(700, 380);
+    await page.mouse.move(300, 280);
     await page.mouse.down();
-    await page.mouse.move(1090, 380, {steps: 16});
+    await page.mouse.move(690, 280, {steps: 4});
     await page.mouse.up();
     await sleep(600);
     const orbit = await snapshot();
@@ -162,7 +179,7 @@ async function until(read, predicate, timeout = 12000) {
     await page.keyboard.down('KeyW');
     await sleep(600);
     await page.keyboard.up('KeyW');
-    const afterModalMove = await snapshot();
+    const afterModalMove = await freshSnapshot(beforeModalMove, state => state.modal && state.controls.blocked);
     check('Dialog prevents character movement', magnitude(subtract(afterModalMove.player.position, beforeModalMove.player.position)) < .05);
     await page.keyboard.press('Escape');
     await dialog.waitFor({state: 'hidden'});
@@ -175,13 +192,18 @@ async function until(read, predicate, timeout = 12000) {
     await dialog.waitFor({state: 'hidden'});
     await until(snapshot, state => !state.modal && !state.controls.blocked);
 
-    // See the face as well as the back; this screenshot is for human visual review.
-    await page.mouse.move(280, 380);
+    // Return to full quality for human visual review of the actual hero's face.
+    const faceStart = await profile(true);
+    const faceDelta = Math.atan2(Math.sin(faceStart.player.rotation - faceStart.camera.yaw), Math.cos(faceStart.player.rotation - faceStart.camera.yaw));
+    const dragDistance = -faceDelta / .004;
+    const dragStart = dragDistance >= 0 ? 220 : 1060;
+    await page.mouse.move(dragStart, 380);
     await page.mouse.down();
-    await page.mouse.move(1060, 380, {steps: 24});
+    await page.mouse.move(dragStart + dragDistance, 380, {steps: 4});
     await page.mouse.up();
     await sleep(600);
     await screenshot('11-front');
+    await profile(false);
 
     // Pointer controls invoke the same action dispatcher at a narrow viewport.
     await page.setViewportSize({width: 430, height: 850});
@@ -201,11 +223,9 @@ async function until(read, predicate, timeout = 12000) {
       const movingTouch = await until(snapshot, state => magnitude(subtract(state.player.position, beforeTouch.player.position)) > .35);
       await page.mouse.move(210, 400);
       await page.mouse.up();
-      await sleep(400);
-      const touchReleased = await snapshot();
-      await sleep(400);
-      const touchSettled = await snapshot();
-      check('Touch movement releases correctly outside the button', isLocomotion(movingTouch.player.mode) && magnitude(subtract(touchSettled.player.position, touchReleased.player.position)) < .05, {keys: touchSettled.controls?.keys, finalMode: touchSettled.player.mode});
+      const touchReleased = await freshSnapshot(movingTouch, state => !state.controls.keys.KeyW && isIdle(state.player.mode));
+      const touchSettled = await freshSnapshot(touchReleased, state => !state.controls.keys.KeyW && isIdle(state.player.mode));
+      check('Touch movement releases correctly outside the button', isLocomotion(movingTouch.player.mode) && !touchReleased.controls.keys.KeyW && !touchSettled.controls.keys.KeyW && isIdle(touchReleased.player.mode) && isIdle(touchSettled.player.mode) && touchSettled.frame > touchReleased.frame && magnitude(subtract(touchSettled.player.position, touchReleased.player.position)) < .05, {keys: touchSettled.controls.keys, releaseMode: touchReleased.player.mode, finalMode: touchSettled.player.mode, movingFrame: movingTouch.frame, releaseFrame: touchReleased.frame, settledFrame: touchSettled.frame, drift: magnitude(subtract(touchSettled.player.position, touchReleased.player.position))});
     } else {
       check('Touch controls are visible at a narrow viewport', false);
     }
@@ -218,9 +238,11 @@ async function until(read, predicate, timeout = 12000) {
     page = await context.newPage();
     page.setDefaultTimeout(15000);
     watch(page);
+    await page.setViewportSize(FUNCTIONAL_VIEWPORT);
     await page.goto(target.href, {waitUntil: 'domcontentloaded', timeout: 60000});
     await page.locator('#qa-state').waitFor({state: 'attached'});
-    const townStart = await until(snapshot, state => state.ready, 90000);
+    await until(snapshot, state => state.ready, 90000);
+    const townStart = await profile(false);
     check('Fresh navigation starts with the expected camera bearing', Math.abs(townStart.camera.yaw) < .01, {yaw: townStart.camera.yaw});
 
     async function walkAxis(axis, destination, label) {
@@ -251,8 +273,8 @@ async function until(read, predicate, timeout = 12000) {
         if (held) await page.keyboard.up(held);
         await page.keyboard.up('Shift');
       }
-      await sleep(250);
-      const after = await snapshot();
+      const released = await until(snapshot, state => !state.controls.keys.KeyW && !state.controls.keys.KeyS && !state.controls.keys.KeyA && !state.controls.keys.KeyD && isIdle(state.player.mode));
+      const after = await freshSnapshot(released, state => isIdle(state.player.mode));
       check(label, Math.abs(after.player.position[index] - destination) < .9 && magnitude(subtract(after.player.position, before.player.position)) > 1, {from: before.player.position, to: after.player.position, targetAxis: axis, targetValue: destination});
     }
 
@@ -293,6 +315,7 @@ async function until(read, predicate, timeout = 12000) {
     page = await context.newPage();
     page.setDefaultTimeout(15000);
     watch(page);
+    await page.setViewportSize(VISUAL_VIEWPORT);
     const characterURL = new URL(process.env.CHARACTER_FIXTURE_URL || './tests/characters.html', target);
     await page.goto(characterURL.href, {waitUntil: 'domcontentloaded', timeout: 60000});
     await page.waitForFunction(() => window.characterQAReady === true, null, {timeout: 90000});
