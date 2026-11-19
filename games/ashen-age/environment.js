@@ -13,7 +13,7 @@ export function createEnvironment(scene, renderer) {
   function texture(kind, size=512) {
     const canvas=document.createElement('canvas');canvas.width=canvas.height=size;
     const c=canvas.getContext('2d'), s=size;
-    c.fillStyle=kind==='grass'?'#666952':kind==='wood'?'#66503a':kind==='slate'?'#384650':kind==='plaster'?'#b3a38a':kind==='cobble'?'#5a574e':'#77746a';c.fillRect(0,0,s,s);
+    c.fillStyle=kind==='grass'?'#78815a':kind==='wood'?'#66503a':kind==='slate'?'#384650':kind==='plaster'?'#b3a38a':kind==='cobble'?'#5a574e':'#77746a';c.fillRect(0,0,s,s);
     if(kind==='stone'||kind==='cobble'||kind==='slate') {
       const rows=kind==='cobble'?10:kind==='slate'?10:6, cols=kind==='cobble'?9:kind==='slate'?7:4;
       const h=s/rows,w=s/cols;
@@ -36,9 +36,9 @@ export function createEnvironment(scene, renderer) {
   }
   function mat(opts){const m=new THREE.MeshStandardMaterial(opts);materials.push(m);return m;}
   const stoneMap=texture('stone'), woodMap=texture('wood'), slateMap=texture('slate'), plasterMap=texture('plaster'), cobbleMap=texture('cobble'), groundMap=texture('grass');
-  const stone=mat({map:stoneMap,bumpMap:stoneMap,bumpScale:.07,roughness:.94,color:'#b2ad9e'});
+  const stone=mat({map:stoneMap,bumpMap:stoneMap,bumpScale:.07,roughness:.94,color:'#c5c0af'});
   const stoneDark=mat({map:stoneMap,bumpMap:stoneMap,bumpScale:.065,roughness:.94,color:'#747567'});
-  const plaster=mat({map:plasterMap,bumpMap:plasterMap,bumpScale:.035,roughness:1,color:'#c8bca2'});
+  const plaster=mat({map:plasterMap,bumpMap:plasterMap,bumpScale:.035,roughness:1,color:'#d8c9aa'});
   const wood=mat({map:woodMap,bumpMap:woodMap,bumpScale:.055,roughness:.9,color:'#796a54'});
   const woodDark=mat({map:woodMap,bumpMap:woodMap,bumpScale:.04,roughness:.92,color:'#514235'});
   const roofMat=mat({map:slateMap,bumpMap:slateMap,bumpScale:.06,roughness:.8,color:'#9da9ac'});
@@ -48,7 +48,7 @@ export function createEnvironment(scene, renderer) {
   const banner=mat({color:'#294959',roughness:1,side:THREE.DoubleSide});
   const burgundy=mat({color:'#783b32',roughness:1,side:THREE.DoubleSide});
   const pathMat=mat({map:cobbleMap,bumpMap:cobbleMap,bumpScale:.09,roughness:.98,color:'#b9b2a0'});
-  const groundMat=mat({map:groundMap,bumpMap:groundMap,bumpScale:.045,roughness:1,color:'#b9b28b',vertexColors:true});
+  const groundMat=mat({map:groundMap,bumpMap:groundMap,bumpScale:.045,roughness:1,color:'#c9c18f',vertexColors:true});
   const darkMat=mat({color:'#171e1b',roughness:1});
   const matrix=new THREE.Matrix4(), q=new THREE.Quaternion(), eul=new THREE.Euler(), v=new THREE.Vector3();
   const unit=new THREE.Vector3(1,1,1);
@@ -160,7 +160,7 @@ export function createEnvironment(scene, renderer) {
   const leafCanvas=document.createElement('canvas');leafCanvas.width=leafCanvas.height=128;const lc=leafCanvas.getContext('2d');
   for(let i=0;i<155;i++){const a=range(0,Math.PI*2),r=Math.sqrt(rand())*53,x=64+Math.cos(a)*r,y=64+Math.sin(a)*r;lc.fillStyle=color(range(48,82),range(74,105),range(35,61));lc.beginPath();lc.ellipse(x,y,range(3,7),range(1.6,3.8),a,0,Math.PI*2);lc.fill();}
   const leafTex=new THREE.CanvasTexture(leafCanvas);leafTex.colorSpace=THREE.SRGBColorSpace;textures.push(leafTex);
-  const leafMat=mat({map:leafTex,alphaTest:.45,side:THREE.DoubleSide,roughness:1,color:'#b7b887'});
+  const leafMat=mat({map:leafTex,alphaTest:.45,side:THREE.DoubleSide,roughness:1,color:'#c6d59a'});
   const treeBark=mat({map:woodMap,bumpMap:woodMap,bumpScale:.09,color:'#7b7464',roughness:1});
   function foliage(x,y,z,w,h,seedRot=0){for(let i=0;i<3;i++)addGeo(new THREE.PlaneGeometry(w,h),leafMat,x,y,z,range(-.3,.3),seedRot+i*Math.PI/3,range(-.16,.16));}
   function tree(x,z,s=1){const height=range(7,10)*s,lean=range(-.22,.22);cylinder(x,height*.36,z,.13*s,.31*s,height*.72,treeBark,8,lean*.2,0,lean*.15);for(let i=0;i<7;i++){const a=i*2.4+rand()*.4,r=range(.8,1.7)*s,cy=height*(.54+i*.055),cx=x+Math.sin(a)*r,cz=z+Math.cos(a)*r;beam(new THREE.Vector3(x,height*.35+i*.36,z),new THREE.Vector3(cx,cy,cz),.09*s,treeBark);foliage(cx,cy,cz,range(2.5,3.6)*s,range(2,2.8)*s,a);}foliage(x,height*.94,z,2.7*s,2.5*s);}
@@ -169,7 +169,7 @@ export function createEnvironment(scene, renderer) {
   for(const xyz of [[-26,1,1],[-47,22,1.25],[34,20,.85],[34,-2,1],[-21,38,.9],[-11,35,.85],[12,-24,.8]])treeLocations.push(xyz);
   treeLocations.forEach(x=>tree(...x));
   // Mottled boulders and irregular ruins provide cover and scale beyond the town.
-  const rockMat=mat({map:stoneMap,bumpMap:stoneMap,bumpScale:.09,roughness:1,color:'#7c8177'});
+  const rockMat=mat({map:stoneMap,bumpMap:stoneMap,bumpScale:.09,roughness:1,color:'#92958a'});
   for(let i=0;i<80;i++){const x=range(-105,105),z=range(-110,100);if(Math.abs(x)<43&&z>-35&&z<42)continue;const r=range(.3,1.65);const g=new THREE.IcosahedronGeometry(r,1);const p=g.attributes.position;for(let j=0;j<p.count;j++){const f=.86+.2*Math.sin(p.getX(j)*5+p.getY(j)*7+p.getZ(j)*9);p.setXYZ(j,p.getX(j)*f,p.getY(j)*f*.62,p.getZ(j)*f);}g.computeVertexNormals();addGeo(g,rockMat,x,r*.25,z,range(0,.5),range(0,6),range(0,.3));}
   // Low grass tufts are instanced; no per-blade objects, no alpha-blended overdraw.
   const grassVertices=[];for(let k=0;k<4;k++){const a=k*2.4,dx=Math.sin(a)*.1,dz=Math.cos(a)*.1,h=.25+rand()*.2;grassVertices.push(dx-.025,0,dz,dx+.025,0,dz,dx+.1,h,dz+.04);}
