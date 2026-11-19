@@ -58,7 +58,58 @@ scene.add(sun,sun.target);
 const pmrem=new THREE.PMREMGenerator(renderer),reflectionRoom=new RoomEnvironment();
 const envMap=pmrem.fromScene(reflectionRoom,.05);scene.environment=envMap.texture;scene.environmentIntensity=.65;pmrem.dispose();reflectionRoom.dispose();
 progress(8,'正在构建灰烬镇','准备石板道路、房屋、林地与光照。');
+
 const world=createEnvironment(scene,renderer);
+let indoor=null, indoorReturn=null;
+const roomMat={
+ floor:new THREE.MeshStandardMaterial({color:'#a18c6d',roughness:.95}),
+ plaster:new THREE.MeshStandardMaterial({color:'#d9c9a9',roughness:1}),
+ timber:new THREE.MeshStandardMaterial({color:'#68482f',roughness:.9}),
+ dark:new THREE.MeshStandardMaterial({color:'#3b2a20',roughness:.9}),
+ stone:new THREE.MeshStandardMaterial({color:'#8b8c7e',roughness:1}),
+ rug:new THREE.MeshStandardMaterial({color:'#8b4939',roughness:1}),
+ glow:new THREE.MeshStandardMaterial({color:'#ffd28b',emissive:'#ff9d38',emissiveIntensity:1.3})
+};
+function roomPart(g,x,y,z,w,h,d,m){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;g.add(o);return o;}
+function buildInterior(kind){
+ const g=new THREE.Group();g.name='Interior-'+kind;
+ roomPart(g,0,-.18,0,18,.35,14,roomMat.floor);
+ roomPart(g,0,3.1,-7,18,6.2,.35,roomMat.plaster);roomPart(g,-9,3.1,0,.35,6.2,14,roomMat.plaster);roomPart(g,9,3.1,0,.35,6.2,14,roomMat.plaster);
+ roomPart(g,0,6.25,0,18,.3,14,roomMat.dark);
+ for(let x=-7;x<=7;x+=3.5)roomPart(g,x,5.95,0,.16,.3,13,roomMat.timber);
+ const table=(x,z)=>{roomPart(g,x,.95,z,2.7,.18,1.45,roomMat.timber);for(const dx of [-1,1])for(const dz of [-.48,.48])roomPart(g,x+dx,.45,z+dz,.13,.9,.13,roomMat.dark);};
+ const bench=(x,z)=>{roomPart(g,x,.62,z,2.4,.18,.55,roomMat.timber);for(const dx of [-.95,.95])roomPart(g,x+dx,.3,z,.12,.6,.12,roomMat.dark);};
+ if(kind==='tavern'){
+  roomPart(g,0,1.05,-5,7,.22,1.2,roomMat.timber);roomPart(g,0,1.7,-5.35,7,.95,.22,roomMat.dark);
+  for(let x=-6;x<=6;x+=4){table(x,1.7);bench(x,2.8);bench(x,.65);}
+  roomPart(g,-6,1.5,-6.7,2.3,2.8,.3,roomMat.stone);roomPart(g,-6,1.15,-6.4,.8,.4,.1,roomMat.glow);
+  for(let i=0;i<4;i++)roomPart(g,5.6+i*.45,.65,-5.6,.35,1.3,.35,roomMat.timber);
+ }else if(kind==='guild'){
+  roomPart(g,0,1.3,-5.6,8,.25,.8,roomMat.dark);roomPart(g,0,2.15,-5.85,8,1.5,.25,roomMat.timber);
+  for(let x=-3;x<=3;x+=1.5)roomPart(g,x,2.15,-5.68,.04,1.25,.04,roomMat.glow);
+  for(let x of [-5,0,5]){table(x,1.5);bench(x,2.7);}
+  roomPart(g,0,4.4,-6.55,4,.75,.16,roomMat.rug);
+ }else{
+  roomPart(g,-5,.9,-4,2.5,.18,1.5,roomMat.stone);roomPart(g,-5,1.45,-4,2.7,.95,.2,roomMat.dark);
+  roomPart(g,4,.9,-3,3,.18,2,roomMat.timber);for(let i=0;i<4;i++)roomPart(g,3+i*.65,1.55,-3,.5,1.1,.5,roomMat.stone);
+ }
+ roomPart(g,0,1.35,6.82,2.1,2.7,.22,roomMat.dark);roomPart(g,0,.1,6.65,2.5,.2,.6,roomMat.stone);
+ const light=new THREE.PointLight('#ffd69a',kind==='tavern'?100:75,24,2);light.position.set(0,4,0);g.add(light);
+ g.visible=false;scene.add(g);return g;
+}
+const interiors={guild:buildInterior('guild'),tavern:buildInterior('tavern'),smith:buildInterior('smith')};
+function enterInterior(kind){
+ if(!interiors[kind])return;
+ indoorReturn=player.position.clone();world.group.visible=false;enemies.forEach(e=>e.root.visible=false);Object.values(party).forEach(a=>a.root.visible=false);
+ indoor=kind;Object.values(interiors).forEach(g=>g.visible=false);interiors[kind].visible=true;
+ player.position.set(0,0,1.8);player.rotation.y=Math.PI;controls.reset();controls.yaw=0;controls.pitch=.18;controls.distance=5.2;controls.update(0,player,{blocked:false});close();
+ toast('已进入室内，按 E 从正门离开。');
+}
+function leaveInterior(){
+ if(!indoor)return;interiors[indoor].visible=false;indoor=null;world.group.visible=true;enemies.forEach(e=>e.root.visible=!e.dead);Object.values(party).forEach(a=>a.root.visible=true);
+ player.position.copy(indoorReturn);indoorReturn=null;controls.reset();controls.yaw=0;controls.update(0,player,{blocked:false});toast('已返回灰烬镇。');
+}
+
 const player=new THREE.Group();player.name='Player';player.position.set(0,0,16);player.rotation.y=Math.PI;scene.add(player);
 if(storedPosition){player.position.set(THREE.MathUtils.clamp(storedPosition[0],-94,94),0,THREE.MathUtils.clamp(storedPosition[2],-94,94));}
 let hero,party={},npcs={},cool=0,spellCool=0,dodgeCool=0,dodgeTime=0,attackTime=0,pendingHit=null,allyClock=0,nearest=null,time=0;
@@ -130,9 +181,9 @@ function inventory(){open('冒险者背包',`<div class="cards"><div class="card
 function map(){open('灰烬镇 · 行路指引','<p>选择目的地以跟踪距离。镇北木门通往幽影林地。</p><div class="map-list">'+world.interactables.map(item=>`<button data-do="track" data-id="${item.kind}"><strong>${item.title}</strong><span>距你 ${Math.round(Math.hypot(item.x-player.position.x,item.z-player.position.z))} 米 · 跟踪目的地</span></button>`).join('')+'</div><p class="note">公会在北侧，酒馆在西侧，铁匠铺在东侧，商人在南侧。按住 Shift 奔跑。</p>');}
 function help(){open('冒险者操作手册','<table class="controls-table"><tr><td>W / S</td><td>朝镜头前方 / 后方移动</td></tr><tr><td>A / D</td><td>朝画面左侧 / 右侧移动</td></tr><tr><td>Shift</td><td>按住奔跑</td></tr><tr><td>鼠标拖动 / 滚轮</td><td>转动镜头 / 调整距离</td></tr><tr><td>J / K / 空格</td><td>斩击 / 奥术飞弹 / 闪避</td></tr><tr><td>E / P / I / M</td><td>互动 / 伙伴好友 / 背包 / 地图</td></tr><tr><td>H / Esc</td><td>使用药水 / 关闭窗口</td></tr></table><p class="note">进度自动保存在当前浏览器。画面右上角可切换精细 / 流畅画质。</p>');}
 function interact(kind){
-  if(kind==='guild')open('灰烬镇冒险者公会',`<p>火漆封着新的委托。公会需要可靠的人，清理北边林道上的腐化狼群。</p><div class="cards"><div class="card"><h3>林道上的阴影</h3><p>击败三只腐化灰狼，再向公会报告。</p><span class="tag">60 金币</span><span class="tag">80 经验</span><p>${state.claimed?'委托已完成，报酬已领取。':state.complete?'目标已完成，可以领取报酬。':state.accepted?`已击败 ${state.kills} / 3`:'沿镇北木门进入林地。'}</p><button class="btn" data-do="quest" ${state.claimed?'disabled':''}>${state.complete?'领取报酬':state.accepted?'继续委托':'接受委托'}</button></div><div class="card"><h3>公会伙伴名录</h3><p>可靠的伙伴会让危险的旅程多一份胜算。</p><button class="btn secondary" data-do="companions">查看伙伴</button></div></div>`);
-  else if(kind==='tavern')open('旅人酒馆 · 暖炉与麦酒','<p>火炉映亮陈旧的木桌。酒客们谈着北境的传闻，你可以和同行伙伴坐下休息。</p><div class="cards"><div class="card"><h3>共饮一杯</h3><p>花费 12 金币，同行伙伴好感 +8。</p><button class="btn" data-do="ale">买一轮酒</button></div><div class="card"><h3>听听传闻</h3><p>古石阵的封印似乎正在松动。</p><button class="btn" data-do="rumor">打听消息</button></div><div class="card"><h3>休息一晚</h3><p>花费 8 金币，恢复生命、法力，开始新的一天。</p><button class="btn" data-do="rest">入住客房</button></div></div>');
-  else if(kind==='smith')open('铁匠铺','<p>铁匠把尚有余温的长剑放在砧上：“一把可靠的剑，会替你挡下许多麻烦。”</p><button class="btn" data-do="upgrade">磨砺长剑 · 45 金币 · 攻击 +5</button><button class="btn" data-do="potion">购买药水 · 10 金币</button>');
+  if(kind==='guild')open('灰烬镇冒险者公会',`<p>火漆封着新的委托。公会需要可靠的人，清理北边林道上的腐化狼群。</p><div class="cards"><div class="card"><h3>林道上的阴影</h3><p>击败三只腐化灰狼，再向公会报告。</p><span class="tag">60 金币</span><span class="tag">80 经验</span><p>${state.claimed?'委托已完成，报酬已领取。':state.complete?'目标已完成，可以领取报酬。':state.accepted?`已击败 ${state.kills} / 3`:'沿镇北木门进入林地。'}</p><button class="btn" data-do="quest" ${state.claimed?'disabled':''}>${state.complete?'领取报酬':state.accepted?'继续委托':'接受委托'}</button></div><div class="card"><h3>公会伙伴名录</h3><p>可靠的伙伴会让危险的旅程多一份胜算。</p><button class="btn secondary" data-do="companions">查看伙伴</button></div></div><button class="btn" data-do="enter" data-id="guild">进入公会大厅</button>`);
+  else if(kind==='tavern')open('旅人酒馆 · 暖炉与麦酒','<p>火炉映亮陈旧的木桌。酒客们谈着北境的传闻，你可以和同行伙伴坐下休息。</p><div class="cards"><div class="card"><h3>共饮一杯</h3><p>花费 12 金币，同行伙伴好感 +8。</p><button class="btn" data-do="ale">买一轮酒</button></div><div class="card"><h3>听听传闻</h3><p>古石阵的封印似乎正在松动。</p><button class="btn" data-do="rumor">打听消息</button></div><div class="card"><h3>休息一晚</h3><p>花费 8 金币，恢复生命、法力，开始新的一天。</p><button class="btn" data-do="rest">入住客房</button></div></div><button class="btn" data-do="enter" data-id="tavern">进入酒馆</button>');
+  else if(kind==='smith')open('铁匠铺','<p>铁匠把尚有余温的长剑放在砧上：“一把可靠的剑，会替你挡下许多麻烦。”</p><button class="btn" data-do="upgrade">磨砺长剑 · 45 金币 · 攻击 +5</button><button class="btn" data-do="potion">购买药水 · 10 金币</button><button class="btn" data-do="enter" data-id="smith">进入铁匠铺</button>');
   else if(kind==='merchant')open('旅行商人','<p>商人收集了适合赠予伙伴的小物件，每件 12 金币。</p>'+companions.map(c=>`<button class="btn" data-do="buygift" data-id="${c.id}">${c.gift} · 12 金币</button>`).join(''));
   else if(companions.some(c=>c.id===kind))openComp();
 }
@@ -141,6 +192,7 @@ $('mbody').addEventListener('click',event=>{
   const button=event.target.closest('[data-do]');if(!button||button.disabled)return;
   const cmd=button.dataset.do,id=button.dataset.id,c=companions.find(c=>c.id===id),current=companions.find(c=>c.id===active);
   if(cmd==='companions'){openComp();return;}
+  if(cmd==='enter'){enterInterior(id);return;}
   if(cmd==='track'){tracked=id;close();toast('已跟踪 '+world.interactables.find(i=>i.kind===id).title);return;}
   if(cmd==='quest'){
     if(state.claimed)return;
@@ -168,7 +220,7 @@ $('mbody').addEventListener('click',event=>{
 function action(code){
   if(code==='Escape'){close();return;}if(!ready||modal)return;
   if(code==='KeyJ')hit();if(code==='KeyK')cast();if(code==='Space')dodge();if(code==='KeyH')usePotion();
-  if(code==='KeyE'&&nearest?.d<3.4)interact(nearest.kind);
+  if(code==='KeyE'&&indoor){leaveInterior();return;}if(code==='KeyE'&&nearest?.d<3.4)interact(nearest.kind);
   if(code==='KeyP')openComp();if(code==='KeyI')inventory();if(code==='KeyM')map();if(code==='F1')help();
 }
 document.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>action(button.dataset.action)));
@@ -207,6 +259,7 @@ function refreshHUD(){
   const e=closestEnemy(20);$('target').hidden=!e||modal;if(e){$('target-name').textContent=e.big?'腐化狼王':'腐化灰狼';$('target-hp').style.width=Math.max(0,e.hp/e.maxHp)*100+'%';}
 }
 function update(dt){
+  if(indoor){hero.setMotion('Idle');Object.values(party).forEach(a=>a.setMotion('Idle'));return;}
   cool=Math.max(0,cool-dt);spellCool=Math.max(0,spellCool-dt);dodgeCool=Math.max(0,dodgeCool-dt);dodgeTime=Math.max(0,dodgeTime-dt);attackTime=Math.max(0,attackTime-dt);
   previousPosition.copy(player.position);
   const movement=controls.update(dt,player,{blocked:modal||!ready,walkSpeed:2.3,runSpeed:4.8,dodgeDirection:dodgeTime>0?dodgeDirection:null,dodgeSpeed:dodgeTime>0?8.5:0,movementLocked:attackTime>0});
@@ -243,7 +296,7 @@ function update(dt){
 }
 function diagnostics(){
   const d=hero?.diagnostics();
-  return {ready,version:VERSION,frame:renderedFrames,simulationTime:time,player:{position:player.position.toArray(),rotation:player.rotation.y,mode:d?.mode,actionTime:d?.time,boneCount:d?.bones,skinnedMeshes:d?.skinnedMeshes,vertices:d?.vertices,bones:d?Object.entries(d.joints).map(([name,j])=>({name,q:j.quaternion,p:j.position})):[],animation:d},camera:{position:camera.position.toArray(),yaw:controls.yaw,pitch:controls.pitch,insideCollider:(world.cameraColliders||world.colliders).some(b=>camera.position.x>b.minX-.3&&camera.position.x<b.maxX+.3&&camera.position.y>(b.minY??0)&&camera.position.y<(b.maxY??8)&&camera.position.z>b.minZ-.3&&camera.position.z<b.maxZ+.3),distanceToPlayer:camera.position.distanceTo(player.position)},controls:controls.getState(),ally:party[active]?{id:active,position:party[active].root.position.toArray(),animation:party[active].diagnostics()}:null,enemies:enemies.map((enemy,index)=>({index,position:enemy.root.position.toArray(),hp:enemy.hp,maxHp:enemy.maxHp,dead:enemy.dead})),state:{...state},modal,nearest,renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,webgl2:renderer.capabilities.isWebGL2,fps},environment:world.diagnostics()};
+  return {ready,version:VERSION,indoor,frame:renderedFrames,simulationTime:time,player:{position:player.position.toArray(),rotation:player.rotation.y,mode:d?.mode,actionTime:d?.time,boneCount:d?.bones,skinnedMeshes:d?.skinnedMeshes,vertices:d?.vertices,bones:d?Object.entries(d.joints).map(([name,j])=>({name,q:j.quaternion,p:j.position})):[],animation:d},camera:{position:camera.position.toArray(),yaw:controls.yaw,pitch:controls.pitch,insideCollider:(world.cameraColliders||world.colliders).some(b=>camera.position.x>b.minX-.3&&camera.position.x<b.maxX+.3&&camera.position.y>(b.minY??0)&&camera.position.y<(b.maxY??8)&&camera.position.z>b.minZ-.3&&camera.position.z<b.maxZ+.3),distanceToPlayer:camera.position.distanceTo(player.position)},controls:controls.getState(),ally:party[active]?{id:active,position:party[active].root.position.toArray(),animation:party[active].diagnostics()}:null,enemies:enemies.map((enemy,index)=>({index,position:enemy.root.position.toArray(),hp:enemy.hp,maxHp:enemy.maxHp,dead:enemy.dead})),state:{...state},modal,nearest,renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,webgl2:renderer.capabilities.isWebGL2,fps},environment:world.diagnostics()};
 }
 async function boot(){
   progress(15,'正在加载骑士与伙伴','准备骨骼模型、材质和行走动作。');
