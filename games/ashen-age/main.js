@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { createEnvironment } from './environment.js?v=20261119-2';
-import { loadCharacter } from './characters.js?v=20261119-2';
-import { ThirdPersonControls } from './controls.js?v=20261119-2';
+import { createEnvironment } from './environment.js?v=20261119-3';
+import { loadCharacter } from './characters.js?v=20261119-3';
+import { ThirdPersonControls } from './controls.js?v=20261119-3';
+import { populateWorldAssets } from './assets.js?v=20261119-3';
 
-const VERSION = '2026.11.19-2';
+const VERSION = '2026.11.19-3';
 const $ = id => document.getElementById(id);
 const qaMode = new URLSearchParams(location.search).has('qa');
 const SAVE_KEY = 'ashen-age-v3-save';
@@ -299,6 +300,8 @@ function diagnostics(){
   return {ready,version:VERSION,indoor,frame:renderedFrames,simulationTime:time,player:{position:player.position.toArray(),rotation:player.rotation.y,mode:d?.mode,actionTime:d?.time,boneCount:d?.bones,skinnedMeshes:d?.skinnedMeshes,vertices:d?.vertices,bones:d?Object.entries(d.joints).map(([name,j])=>({name,q:j.quaternion,p:j.position})):[],animation:d},camera:{position:camera.position.toArray(),yaw:controls.yaw,pitch:controls.pitch,insideCollider:(world.cameraColliders||world.colliders).some(b=>camera.position.x>b.minX-.3&&camera.position.x<b.maxX+.3&&camera.position.y>(b.minY??0)&&camera.position.y<(b.maxY??8)&&camera.position.z>b.minZ-.3&&camera.position.z<b.maxZ+.3),distanceToPlayer:camera.position.distanceTo(player.position)},controls:controls.getState(),ally:party[active]?{id:active,position:party[active].root.position.toArray(),animation:party[active].diagnostics()}:null,enemies:enemies.map((enemy,index)=>({index,position:enemy.root.position.toArray(),hp:enemy.hp,maxHp:enemy.maxHp,dead:enemy.dead})),state:{...state},modal,nearest,renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,webgl2:renderer.capabilities.isWebGL2,fps},environment:world.diagnostics()};
 }
 async function boot(){
+  progress(6,'正在加载真实世界素材','下载树木、房屋、家具与怪物模型。');
+  const environmentAssets = await populateWorldAssets({scene,world,enemies,onProgress:(ratio,key)=>progress(6+ratio*9,'正在加载场景素材',`已载入 ${key}`)});
   progress(15,'正在加载骑士与伙伴','准备骨骼模型、材质和行走动作。');
   const loaded={};const estimates={'knight.glb':6754704,'garrick.glb':3934364,'mira.glb':3213988};
   const onProgress=event=>{loaded[event.file]=event.loaded;const total=Object.values(estimates).reduce((a,b)=>a+b,0);progress(15+Math.min(1,Object.values(loaded).reduce((a,b)=>a+b,0)/total)*72,'正在加载骑士与伙伴',`人物资源 ${Math.round(Object.values(loaded).reduce((a,b)=>a+b,0)/1024/1024*10)/10} MB`);};
@@ -328,7 +331,7 @@ function loop(now){
   const steps=Math.ceil(dt/(1/60)),step=steps?dt/steps:0;
   for(let i=0;i<steps;i++){
     if(!modal)update(step);else controls.update(step,player,{blocked:true});
-    hero.update(step);Object.values(party).forEach(c=>c.update(step));
+    hero.update(step);Object.values(party).forEach(c=>c.update(step));environmentAssets?.update(step);
   }
   time+=dt;if(dt)world.update(dt,time);
   renderer.render(scene,camera);renderedFrames++;frameCount++;frameTime+=raw;if(frameTime>=1){fps=Math.round(frameCount/frameTime);frameCount=0;frameTime=0;}
