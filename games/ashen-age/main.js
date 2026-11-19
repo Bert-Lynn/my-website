@@ -16,7 +16,7 @@ const companions = [
   {id:'garrick',name:'加里克',role:'流亡骑士',initial:'加',desc:'曾效忠于一位已逝的领主。沉稳可靠，愿意站在你与危险之间。',aff:6,joined:false,gift:'陈年麦酒',giftDay:0,talkDay:0},
   {id:'mira',name:'米拉',role:'见习术士',initial:'米',desc:'研究古代符文的年轻术士，希望在龙陨之地找到魔法的起源。',aff:0,joined:false,gift:'古代符文',giftDay:0,talkDay:0},
 ];
-let active='lyra', ready=false, modal=false, highQuality=true, storedPosition=null, tracked='guild';
+let active='lyra', ready=false, modal=false, highQuality=true, storedPosition=null, tracked='guild', environmentAssets=null;
 if(!qaMode){
   try{
     const save=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');
@@ -313,7 +313,7 @@ function diagnostics(){
 }
 async function boot(){
   progress(6,'正在加载真实世界素材','下载树木、房屋、家具与怪物模型。');
-  const environmentAssets = await populateWorldAssets({scene,world,enemies,onProgress:(ratio,key)=>progress(6+ratio*9,'正在加载场景素材',`已载入 ${key}`)});
+  environmentAssets = await populateWorldAssets({scene,world,enemies,onProgress:(ratio,key)=>progress(6+ratio*9,'正在加载场景素材',`已载入 ${key}`)});
   progress(15,'正在加载骑士与伙伴','准备骨骼模型、材质和行走动作。');
   const loaded={};const estimates={'knight.glb':6754704,'garrick.glb':3934364,'mira.glb':3213988};
   const onProgress=event=>{loaded[event.file]=event.loaded;const total=Object.values(estimates).reduce((a,b)=>a+b,0);progress(15+Math.min(1,Object.values(loaded).reduce((a,b)=>a+b,0)/total)*72,'正在加载骑士与伙伴',`人物资源 ${Math.round(Object.values(loaded).reduce((a,b)=>a+b,0)/1024/1024*10)/10} MB`);};
