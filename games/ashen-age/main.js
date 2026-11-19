@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { createEnvironment } from './environment.js?v=20261119-1';
-import { loadCharacter } from './characters.js?v=20261119-1';
-import { ThirdPersonControls } from './controls.js?v=20261119-1';
+import { createEnvironment } from './environment.js?v=20261119-2';
+import { loadCharacter } from './characters.js?v=20261119-2';
+import { ThirdPersonControls } from './controls.js?v=20261119-2';
 
-const VERSION = '2026.11.19-1';
+const VERSION = '2026.11.19-2';
 const $ = id => document.getElementById(id);
 const qaMode = new URLSearchParams(location.search).has('qa');
 const SAVE_KEY = 'ashen-age-v3-save';
