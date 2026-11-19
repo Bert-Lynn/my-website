@@ -7,7 +7,7 @@ target.searchParams.set('qa', '1');
 target.searchParams.set('live-check', String(Date.now()));
 const output = path.resolve(process.env.QA_OUTPUT || process.argv[3] || 'ashen-age-qa');
 fs.mkdirSync(output, {recursive: true});
-const expectedVersion = '2026.11.19-1';
+const expectedVersion = '2026.11.19-8';
 const report = {
   url: target.href, expectedVersion, scope: 'Public deployment, same-origin assets, rendered hero, camera-relative W, walking skeleton, release, and one-shot attack. Guild, tavern, and full combat workflows are covered by the pre-deployment suites.',
   checks: [], requests: [], failedRequests: [], runtimeErrors: [], consoleErrors: [], webglErrors: [], screenshots: [],
