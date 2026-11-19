@@ -65,105 +65,105 @@
   {
     "path": "assets/nature/common-tree.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/nature_pack/CommonTree_1.glb",
-    "sha256": "1ec431431a6b9ce4ffcefb5460426457f573eafc",
     "size": 158708,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "1ec431431a6b9ce4ffcefb5460426457f573eafc"
   },
   {
     "path": "assets/nature/pine-tree.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/nature_pack/PineTree_1.glb",
-    "sha256": "ad802951468ccc02465a2a0ee1b4a7395acc28fb",
     "size": 106060,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "ad802951468ccc02465a2a0ee1b4a7395acc28fb"
   },
   {
     "path": "assets/nature/birch-tree.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/nature_pack/BirchTree_1.glb",
-    "sha256": "f471d85eacf2d55daaf5eb2adc384f0fa6fc9401",
     "size": 98204,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "f471d85eacf2d55daaf5eb2adc384f0fa6fc9401"
   },
   {
     "path": "assets/nature/bush.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/nature_pack/Bush_1.glb",
-    "sha256": "db58091cfc310c34b4ce0339fded9dbd01991e0e",
     "size": 21348,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "db58091cfc310c34b4ce0339fded9dbd01991e0e"
   },
   {
     "path": "assets/nature/moss-rock.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/nature_pack/Rock_Moss_1.glb",
-    "sha256": "6416ffe51639c45249138b092f8292ec62c4db62",
     "size": 6560,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "6416ffe51639c45249138b092f8292ec62c4db62"
   },
   {
     "path": "assets/village/house.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/medieval_village_pack/House_1.glb",
-    "sha256": "b2733641f276a98615436b998d8f0d1c5e68a441",
     "size": 410268,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "b2733641f276a98615436b998d8f0d1c5e68a441"
   },
   {
     "path": "assets/village/inn.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/medieval_village_pack/Inn.glb",
-    "sha256": "773f9184c4c80f20ec37de300b3f7e4106754e83",
     "size": 468600,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "773f9184c4c80f20ec37de300b3f7e4106754e83"
   },
   {
     "path": "assets/village/blacksmith.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/medieval_village_pack/Blacksmith.glb",
-    "sha256": "83917c55b132d8e51e6c2b969911e14c857956a8",
     "size": 670832,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "83917c55b132d8e51e6c2b969911e14c857956a8"
   },
   {
     "path": "assets/village/well.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/medieval_village_pack/Well.glb",
-    "sha256": "80996c09cdb0680e5f62b62535cdb8bbebba700b",
     "size": 110340,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "80996c09cdb0680e5f62b62535cdb8bbebba700b"
   },
   {
     "path": "assets/village/barrel.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/medieval_village_pack/Barrel.glb",
-    "sha256": "1457721d6f0782804d5da0946f9f14661c65c66b",
     "size": 52384,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "1457721d6f0782804d5da0946f9f14661c65c66b"
   },
   {
     "path": "assets/creatures/wolf.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/animals_pack/Wolf.glb",
-    "sha256": "c54b02936167a3b0d9a7e8d467432ba4fa788d6b",
     "size": 608660,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "c54b02936167a3b0d9a7e8d467432ba4fa788d6b"
   },
   {
     "path": "assets/creatures/spider.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/easy_enemies_pack/Spider.glb",
-    "sha256": "2dcf260a0dc6f6aaaeaa763c3dee33e04fd38feb",
     "size": 449008,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "2dcf260a0dc6f6aaaeaa763c3dee33e04fd38feb"
   },
   {
     "path": "assets/weapons/sword.glb",
     "url": "https://raw.githubusercontent.com/trebeljahr/quaternius-showcase/main/public/glb/medieval_weapons_pack/Sword.glb",
-    "sha256": "d79773820a686fd56c9c76eb38aeca2706adcb75",
     "size": 48384,
     "license": "CC0-1.0",
-    "source": "https://quaternius.com/packs/medievalvillage.html"
+    "source": "https://quaternius.com/packs/medievalvillage.html",
+    "git_blob_sha": "d79773820a686fd56c9c76eb38aeca2706adcb75"
   }
 ]
