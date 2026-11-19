@@ -38,3 +38,36 @@ the user's local save. `tests/characters.html` is an isolated visual inspection
 page for gait, silhouette and strike poses.
 
 Tests and source/build tooling are removed from the production Pages artifact.
+
+
+## Added environment and creature assets (2026-11-19)
+
+The expanded village and forest now load real GLB meshes from the Quaternius Showcase
+repository. The corresponding Quaternius packs identify these assets as CC0-1.0.
+The source GLBs are pinned by SHA-256 in `assets-manifest.json`, copied into this
+site at build time, and served same-origin rather than fetched from third-party
+CDNs during play.
+
+| In-game use | GLB asset | Original pack |
+| --- | --- | --- |
+| Broadleaf forest trees | CommonTree_1.glb | Quaternius Nature Pack |
+| Pine forest trees | PineTree_1.glb | Quaternius Nature Pack |
+| Birch trees | BirchTree_1.glb | Quaternius Nature Pack |
+| Undergrowth | Bush_1.glb | Quaternius Nature Pack |
+| Mossy rocks | Rock_Moss_1.glb | Quaternius Nature Pack |
+| Village houses | House_1.glb | Quaternius Medieval Village Pack |
+| Inn exterior | Inn.glb | Quaternius Medieval Village Pack |
+| Blacksmith exterior | Blacksmith.glb | Quaternius Medieval Village Pack |
+| Well, barrels | Well.glb, Barrel.glb | Quaternius Medieval Village Pack |
+| Forest wolves | Wolf.glb | Quaternius Ultimate Animated Animal Pack |
+| Forest spiders | Spider.glb | Quaternius Easy Enemies Pack |
+| Sword prop reference | Sword.glb | Quaternius Medieval Weapons Pack |
+
+Source repository: https://github.com/trebeljahr/quaternius-showcase
+Pack license references: https://quaternius.com/packs/medievalvillagemegakit.html
+and https://quaternius.com/packs/ultimateanimatedanimals.html
+
+The Quaternius assets are stylized game-ready models, not photogrammetric or
+photorealistic scans. They replace the previous primitive tree/building/creature
+placeholders with actual textured or material-authored GLB meshes. The existing
+enterable guild, tavern and smith interiors remain separate gameplay spaces.
