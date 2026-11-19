@@ -1,0 +1,44 @@
+name: Verify Ashen Age 3D
+
+on:
+  push:
+    branches: ["ashen-age-repair"]
+    paths: ["games/ashen-age/**", ".github/workflows/ashen-age-qa.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ashen-age-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare pinned same-origin game assets
+        run: |
+          python -m pip install Pillow==12.0.0 --disable-pip-version-check
+          python games/ashen-age/scripts/prepare_assets.py
+      - name: Install isolated browser test tools
+        run: |
+          npm install --no-save --prefix /tmp/ashen-browser playwright@1.56.1
+          /tmp/ashen-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Render and exercise the actual game
+        env:
+          NODE_PATH: /tmp/ashen-browser/node_modules
+          QA_OUTPUT: ${{ runner.temp }}/ashen-age-qa
+        run: node games/ashen-age/tests/serve-and-test.cjs
+      - name: Upload visual evidence and assertions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ashen-age-browser-evidence
+          path: ${{ runner.temp }}/ashen-age-qa
+          retention-days: 7

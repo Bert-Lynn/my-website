@@ -1,0 +1,65 @@
+[
+  {
+    "path": "vendor/three.module.js",
+    "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "sha256": "ce1fa418de16a19495a9f72495580e3015d7745c296d3ce0485897f902ddedfb",
+    "size": 1314681
+  },
+  {
+    "path": "vendor/loaders/GLTFLoader.js",
+    "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js",
+    "sha256": "45139faddd5aaf48ed2d62203d976e5cbd703db1a592de40527f9f6cf58abd44",
+    "size": 110273
+  },
+  {
+    "path": "vendor/utils/BufferGeometryUtils.js",
+    "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/utils/BufferGeometryUtils.js",
+    "sha256": "c25b7930e570e9ec56173cd3b866ec8d2e10016630db3937efb439daf1cedbf6",
+    "size": 31768
+  },
+  {
+    "path": "vendor/utils/SkeletonUtils.js",
+    "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/utils/SkeletonUtils.js",
+    "sha256": "ee412be1aa05f3051c2bda8ea89612c1ba70c5c87de62b56040282120d5eb991",
+    "size": 8802
+  },
+  {
+    "path": "vendor/environments/RoomEnvironment.js",
+    "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/environments/RoomEnvironment.js",
+    "sha256": "85869bdd22f7cf0b22e68dcefe6cb710480af0f5c901a76f7a7764fd07fc8014",
+    "size": 3606
+  },
+  {
+    "path": "vendor/LICENSE",
+    "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/LICENSE",
+    "sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+    "size": 1081
+  },
+  {
+    "path": "assets/knight.glb",
+    "url": "https://vibeassets.io/download/lvj49vzlzd",
+    "sha256": "4b395a647608bd526ed14ec68f5b9f381a7364efa4ed2f95368e39a4324fe87e",
+    "size": 8245224,
+    "optimize": true,
+    "license": "CC0-1.0",
+    "source": "https://vibeassets.io/a/lvj49vzlzd"
+  },
+  {
+    "path": "assets/garrick.glb",
+    "url": "https://vibeassets.io/download/9h7odik5fl",
+    "sha256": "cdd7a5918ec3f054e6d5288cc956f3e1c6d8f12bafa8cb1fcee45e6de12e6f5f",
+    "size": 3934364,
+    "optimize": true,
+    "license": "CC0-1.0",
+    "source": "https://vibeassets.io/a/9h7odik5fl"
+  },
+  {
+    "path": "assets/mira.glb",
+    "url": "https://vibeassets.io/download/k6bdm27lba",
+    "sha256": "007e12ccb3ff66f7fe99c4b9051bbef054c812617fdf5e76f8d2b14c2376a341",
+    "size": 3213988,
+    "optimize": true,
+    "license": "CC0-1.0",
+    "source": "https://vibeassets.io/a/k6bdm27lba"
+  }
+]

@@ -1,0 +1,4 @@
+/vendor/
+/assets/*.glb
+/asset-build.json
+/qa-output/
