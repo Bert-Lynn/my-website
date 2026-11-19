@@ -18,7 +18,7 @@ def valid_bytes(data, item):
     if item.get('sha256'):
         return hashlib.sha256(data).hexdigest() == item['sha256']
     if item.get('git_blob_sha'):
-        payload = b'blob ' + str(len(data)).encode() + b'\\0' + data
+        payload = b'blob ' + str(len(data)).encode() + b'\0' + data
         return hashlib.sha1(payload).hexdigest() == item['git_blob_sha']
     raise ValueError('Asset manifest requires sha256 or git_blob_sha: ' + item['path'])
 
